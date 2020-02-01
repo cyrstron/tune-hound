@@ -1,0 +1,44 @@
+{
+  "name": "tune-hound-client",
+  "version": "1.0.0",
+  "description": "music navigator service",
+  "main": "./.dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --mode development --open --hot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cyrstron/tune-hound.git"
+  },
+  "author": "cyrstron",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cyrstron/tune-hound/issues"
+  },
+  "homepage": "https://github.com/cyrstron/tune-hound#readme",
+  "dependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/classnames": "^2.2.9",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
+    "@types/spotify-web-playback-sdk": "^0.1.7",
+    "axios": "^0.19.2",
+    "classnames": "^2.2.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.4.2",
+    "dotenv-webpack": "^1.7.0",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "node-sass": "^4.13.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "sass-loader": "^8.0.2",
+    "ts-loader": "^6.2.1",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "typescript": "^3.7.5",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.2"
+  }
+}

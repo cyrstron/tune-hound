@@ -1,0 +1,34 @@
+{
+    "compilerOptions": {
+      "target": "es2017",
+      "module": "commonjs", 
+      "lib": [
+        "esnext",
+        "dom",
+        "dom.iterable"
+      ],
+      "downlevelIteration": true,
+      "allowJs": true,
+      "sourceMap": true, 
+      "strict": true,           
+      "noImplicitAny": true,   
+      "removeComments": true,  
+      "preserveConstEnums": true,  
+      "outDir": "./.dist",     
+      "jsx": "react",  
+      "baseUrl": "./src",     
+      "paths": {
+        "@app/*": [""]
+      }, 
+      "allowSyntheticDefaultImports": true, 
+      "esModuleInterop": true,
+      "experimentalDecorators": true,   
+      "emitDecoratorMetadata": true,
+      "resolveJsonModule": true
+    },
+    "include": [
+      "./src/**/*",
+      "./node_modules/@types",
+      "tsconfig.json"
+    ]
+}
