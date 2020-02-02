@@ -79,7 +79,19 @@ module.exports = (_env, argv) => {
           target: 'http://localhost:3001',
           secure: false,
         },
-        '/login': {
+        '/deezer-callback': {
+          target: 'http://localhost:3001',
+          secure: false,
+        },
+        '/deezer-channel': {
+          target: 'http://localhost:3001',
+          secure: false,
+        },
+        '/login-spotify': {
+          target: 'http://localhost:3001',
+          secure: false,
+        },
+        '/login-deezer': {
           target: 'http://localhost:3001',
           secure: false,
         },
