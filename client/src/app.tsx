@@ -7,6 +7,9 @@ import {Search} from './components/search/search';
 import styles from './app.scss';
 import { SpotifyProvider } from './apis/spotify';
 import { DeezerProvider } from 'apis/deezer';
+import { withDeezer } from 'apis/deezer/hocs/with-deezer';
+import { DeezerService } from 'apis/deezer/services/deezer-service';
+import { Header } from 'components/header/header';
 
 const cx = classNames.bind(styles);
 
@@ -36,34 +39,10 @@ class App extends Component<{}, AppState> {
     }
   }
 
-  componentDidMount() {
-    const {
-      'spotify_access_token': spotifyAccessToken,
-      'spotify_refresh_token': spotifyRefreshToken,
-    } = document.cookie.split('; ')
-      .map((cookiePair) => cookiePair.split('='))
-      .reduce((cookies, [key, value]) => {
-        cookies[key] = value;
-
-        return cookies;
-      }, {} as {[key: string]: string});
-
-    this.setState({
-      spotifyAccessToken,
-      spotifyRefreshToken
-    });
-  }
-
   logoutSpotify = () => {
     this.setState({
       spotifyAccessToken: undefined,
       spotifyRefreshToken: undefined,
-    });
-  }
-
-  logoutDeezer = () => {
-    this.setState({
-      deezerAccessToken: undefined,
     });
   }
 
@@ -93,34 +72,11 @@ class App extends Component<{}, AppState> {
     }    
   }
 
-
-  loginDeezer = async () => {
-    window.open('/login-deezer');
-
-    try {
-      const deezerAccessToken = await new Promise<string>((res, rej) => {
-        const onMessage = (e: MessageEvent) => {
-          window.removeEventListener('message', onMessage);
-
-          res(e.data);
-        };
-
-        window.addEventListener('message', onMessage);
-      });
-
-      this.setState({
-        deezerAccessToken,
-      });
-    } catch (err) {
-      console.log(err);
-    }    
-  }
-
   render() {
     const {spotifyAccessToken, deezerAccessToken} = this.state;
     return (
-      <DeezerProvider>
-      {/* <SpotifyProvider token={process.env.SPOTIFY_TOKEN as string}> */}
+      <>
+        <Header />
         <div className={cx('app')}>
           App
         </div>
@@ -128,11 +84,6 @@ class App extends Component<{}, AppState> {
           {!spotifyAccessToken && (
             <button onClick={this.loginSpotify}>
               Connect Spotify
-            </button>
-          )}
-          {!deezerAccessToken && (
-            <button onClick={this.loginDeezer}>
-              Connect Deezer
             </button>
           )}
           {spotifyAccessToken && (
@@ -143,16 +94,8 @@ class App extends Component<{}, AppState> {
               <Search token={spotifyAccessToken} refreshToken={this.refreshSpotifyToken}/>
             </>
           )}
-          {deezerAccessToken && (
-            <>
-              <button onClick={this.logoutDeezer}>
-                Logout Deezer
-              </button>
-            </>
-          )}
         </div>
-      {/* </SpotifyProvider> */}
-      </DeezerProvider>
+      </>
     );
   }
 }

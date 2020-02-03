@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { DeezerCtxProvider } from "./";
+import { DeezerService } from "./services/deezer-service";
 
 export interface DeezerProviderProps {
-  // token: string;
 }
 
 export interface DeezerProviderState {
   isConnected?: boolean;
-  DZ?: DeezerSdk.DZ;
+  dz?: DeezerService;
 }
 
 class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState> {
@@ -15,23 +15,29 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
   script?: HTMLScriptElement;
   root?: HTMLDivElement;
 
-  async componentDidMount() {
-    window.dzAsyncInit = this.init;
-
+  async init(): Promise<DeezerService> {
     this.script = document.createElement('script');
     this.root = document.createElement('div');
 
-    this.root.id = 'dz-root';
+    const script = this.script!
+    const root = this.root!
 
-    this.script.type = 'text/javascript';
-    this.script.src = 'https://e-cdns-files.dzcdn.net/js/min/dz.js';
+    root.id = 'dz-root';
 
-    document.body.append(this.script);
-    document.body.append(this.root);
-  }
+    script.type = 'text/javascript';
+    script.src = 'https://e-cdns-files.dzcdn.net/js/min/dz.js';
 
-  init = async () => {
-    window.DZ.init({
+    document.body.append(script);
+    document.body.append(root);
+
+    await new Promise((res, rej) => {
+      script.onload = res;
+      script.onerror = rej;
+    });
+
+    const dz = new DeezerService(window.DZ, this.onLogout);
+
+    await dz.init({
       appId: process.env.DEEZER_PLAYER_ID as string,
       channelUrl: 'http://127.0.0.1:3000/deezer-channel',
       player: {
@@ -39,35 +45,56 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
           console.log('dz loaded');
         }
       }
-    });
+    });    
+    
+    return dz;
+  }
 
-    const options = await new Promise((resolve, reject) => {
-      window.DZ.ready((options) => {
-        resolve(options);
-      });
-    });
-
-    console.log(options);
-
+  onLogout = () => {
     this.setState({
-      isConnected: true,
-      DZ: window.DZ,
+      isConnected: false,
     });
-  };
+  }
+
+  connect = async () => {
+    try {
+      let {dz} = this.state;
+
+      if (!dz) { 
+        dz = await this.init();
+
+        this.setState({dz});
+      }
+
+      await dz.login();
+
+      this.setState({
+        isConnected: true,
+      });
+    } catch (err) {
+      console.log(err);
+      this.setState({
+        isConnected: false,
+      });
+    }
+  }
 
   componentWillUnmount() {
     this.script && this.script.remove();
     this.root && this.root.remove();
-
-    delete window.dzAsyncInit;
   }
 
   render() {
     const {children} = this.props;
-    const {DZ, isConnected} = this.state;
+    const {dz, isConnected} = this.state;
+
+    const value = {
+      dz: isConnected ? dz : undefined, 
+      connectDeezer: this.connect
+    }
 
     return (
-      <DeezerCtxProvider value={isConnected ? DZ : undefined}>
+      <DeezerCtxProvider value={value}>
         {children}
       </DeezerCtxProvider>
     )

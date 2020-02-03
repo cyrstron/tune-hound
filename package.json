@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:client": "cd ./client && npm run dev",
+    "dev:server": "cd ./server && npm run dev",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\""
   },
   "repository": {
     "type": "git",
@@ -15,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/cyrstron/tune-hound/issues"
   },
-  "homepage": "https://github.com/cyrstron/tune-hound#readme"
+  "homepage": "https://github.com/cyrstron/tune-hound#readme",
+  "dependencies": {
+    "concurrently": "^5.1.0"
+  }
 }

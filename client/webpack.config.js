@@ -72,6 +72,7 @@ module.exports = (_env, argv) => {
       new CleanWebpackPlugin(),
     ],
     devServer: {
+      host: '127.0.0.1',
       port: 3000,
       historyApiFallback: true,
       proxy: {
