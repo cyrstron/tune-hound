@@ -9,5 +9,5 @@
 3. Set application domain to `http://127.0.0.1:3000`
 4. Set redirect URI to `http://127.0.0.1:3000/deezer-callback`
 5. Copy Application ID & Secret Key from the app info tab
-6. Add them to `.env` as `DEEZER_PLAYER_ID` and `DEEZER_PLAYER_SECRET`
+6. Add them to root `.env` file as `DEEZER_PLAYER_ID` and `DEEZER_PLAYER_SECRET`
 7. **Switch on Flash support in your browser to stream Deezer audio files in the app**
