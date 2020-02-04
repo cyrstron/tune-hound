@@ -6,6 +6,7 @@ export {DeezerProvider} from './deezer-provider';
 export interface DeezerCtx {
   dz?: DeezerService;
   connectDeezer: () => Promise<void>;
+  isDeezerPending: boolean;
 }
 
 export const deezerCtx = createContext<DeezerCtx | undefined>(undefined);

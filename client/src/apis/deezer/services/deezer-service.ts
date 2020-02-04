@@ -33,6 +33,16 @@ export class DeezerService {
     });    
   }
 
+  async isLoggedIn(): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.dz.getLoginStatus((response) => {
+        const {authResponse} = response;
+
+        resolve(!!authResponse && !!authResponse.accessToken);
+      });
+    })
+  }
+
   logout(): Promise<void> {
     this.onLogout && this.onLogout();
 

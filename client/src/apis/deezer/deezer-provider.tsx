@@ -15,6 +15,27 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
   script?: HTMLScriptElement;
   root?: HTMLDivElement;
 
+  async componentDidMount() {
+    const wasConnected = localStorage.getItem('deezer') === 'true';
+
+    if (!wasConnected) {
+      this.setState({
+        isConnected: false,
+      });
+
+      return;
+    };
+
+    const dz = await this.init();
+
+    const isLoggedIn = await dz.isLoggedIn();
+
+    this.setState({
+      isConnected: isLoggedIn,
+      dz,
+    });
+  }
+
   async init(): Promise<DeezerService> {
     this.script = document.createElement('script');
     this.root = document.createElement('div');
@@ -51,6 +72,8 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
   }
 
   onLogout = () => {
+    localStorage.removeItem('deezer');
+
     this.setState({
       isConnected: false,
     });
@@ -62,13 +85,14 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
 
       if (!dz) { 
         dz = await this.init();
-
-        this.setState({dz});
       }
 
       await dz.login();
 
+      localStorage.setItem('deezer', 'true');
+
       this.setState({
+        dz,
         isConnected: true,
       });
     } catch (err) {
@@ -90,7 +114,8 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
 
     const value = {
       dz: isConnected ? dz : undefined, 
-      connectDeezer: this.connect
+      connectDeezer: this.connect,
+      isDeezerPending: isConnected === undefined,
     }
 
     return (

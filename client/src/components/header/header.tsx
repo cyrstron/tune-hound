@@ -30,7 +30,7 @@ class Header extends Component<Props> {
   }
 
   render() {
-    const {dz} = this.props;
+    const {dz, isDeezerPending} = this.props;
 
     return (
       <>
@@ -38,12 +38,12 @@ class Header extends Component<Props> {
           App
         </div>
         <div>
-          {/* {!spotifyAccessToken && (
-            <button onClick={this.loginSpotify}>
-              Connect Spotify
-            </button>
-          )} */}
-          {!dz && (
+          {isDeezerPending && (
+            <span>
+              Checking Deezer connection...
+            </span>
+          )}
+          {!dz && !isDeezerPending && (
             <button onClick={this.connectDeezer}>
               Connect Deezer
             </button>
