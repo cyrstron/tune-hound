@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { SpotifyCtxProvider, SpotifyCtx } from ".";
+import axios from "axios";
 
 export interface SpotifyProviderProps {
 }
@@ -14,6 +15,12 @@ export interface SpotifyProviderState {
   error?: Spotify.Error;
 }
 
+declare global {
+  interface Window {
+    player: Spotify.SpotifyPlayer;
+  }
+}
+
 class SpotifyProvider extends Component<SpotifyProviderProps, SpotifyProviderState> {
   state: SpotifyProviderState = {};
   script?: HTMLScriptElement;
@@ -22,28 +29,39 @@ class SpotifyProvider extends Component<SpotifyProviderProps, SpotifyProviderSta
   reject?: (err: Error) => void;
 
   async componentDidMount() {
-    const accessToken = localStorage.getItem('spotifyAccessToken');
     const refreshToken = localStorage.getItem('spotifyRefreshToken');
 
-    if (!accessToken || !refreshToken) {
+    if (!refreshToken) {
       this.setState({
         isConnected: false,
       });
 
       return;
+    } 
+    
+    try {
+      const {
+        data: {'access_token': accessToken}
+      } = await axios.get(`/refresh-token?refresh_token=${refreshToken}`);
+  
+      this.setState({
+        accessToken,
+        refreshToken,
+      });
+  
+      const player = await this.init();
+  
+      this.setState({
+        player,
+        isConnected: true,
+      });
+    } catch (err) {
+      console.log(err);
+
+      this.setState({
+        isConnected: false,
+      });
     }
-
-    this.setState({
-      accessToken,
-      refreshToken,
-    });
-
-    const player = await this.init();
-
-    this.setState({
-      player,
-      isConnected: true,
-    });
   }
 
   getToken = (
@@ -68,7 +86,7 @@ class SpotifyProvider extends Component<SpotifyProviderProps, SpotifyProviderSta
 
   onSdkReady = async () => {
     const player: Spotify.SpotifyPlayer = new window.Spotify.Player({
-      name: 'Web Playback SDK Quick Start Player',
+      name: 'Tune Hound Preview Player',
       getOAuthToken: this.getToken,
     });
   
@@ -145,7 +163,6 @@ class SpotifyProvider extends Component<SpotifyProviderProps, SpotifyProviderSta
         refreshToken,
       });
 
-      localStorage.setItem('spotifyAccessToken', accessToken);
       localStorage.setItem('spotifyRefreshToken', refreshToken);
 
       if (!player) {
@@ -166,7 +183,6 @@ class SpotifyProvider extends Component<SpotifyProviderProps, SpotifyProviderSta
   }
 
   disconnect = () => {
-    localStorage.removeItem('spotifyAccessToken');
     localStorage.removeItem('spotifyRefreshToken');
 
     this.setState({

@@ -128,11 +128,12 @@ app.get('/refresh-token', async (req, res) => {
   try {
     const {
       data: {access_token}
-    } = await axios.post('https://accounts.spotify.com/api/token', {
+    } = await axios.post('https://accounts.spotify.com/api/token', qs.stringify({
       grant_type: 'refresh_token',
       refresh_token,
-    }, {
+    }), {
       headers: { 
+        'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': 'Basic ' + (Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString('base64'))
       },
     });
