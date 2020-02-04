@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {App} from './app';
-import { DeezerProvider } from 'apis/deezer';
+import { ApisProvider } from './apis';
 
 import './index.scss';
 
 ReactDOM.render((
   <>
-    <DeezerProvider>
+    <ApisProvider>
       <App />
-    </DeezerProvider>
+    </ApisProvider>
   </>
 ), document.getElementById('root'));

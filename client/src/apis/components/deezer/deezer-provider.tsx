@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { DeezerCtxProvider } from "./";
+import { DeezerCtxProvider } from ".";
 import { DeezerService } from "./services/deezer-service";
 
 export interface DeezerProviderProps {
@@ -37,11 +37,8 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
   }
 
   async init(): Promise<DeezerService> {
-    this.script = document.createElement('script');
-    this.root = document.createElement('div');
-
-    const script = this.script!
-    const root = this.root!
+    const script = document.createElement('script');
+    const root = document.createElement('div');
 
     root.id = 'dz-root';
 
@@ -50,6 +47,9 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
 
     document.body.append(script);
     document.body.append(root);
+
+    this.script = script;
+    this.root = root;
 
     await new Promise((res, rej) => {
       script.onload = res;

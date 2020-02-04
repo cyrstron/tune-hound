@@ -2,6 +2,7 @@ import { createContext } from 'react';
 import { DeezerService } from './services/deezer-service';
 
 export {DeezerProvider} from './deezer-provider';
+export {withDeezer} from './hocs/with-deezer'
 
 export interface DeezerCtx {
   dz?: DeezerService;

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames/bind';
-import { DeezerCtx } from 'apis/deezer';
-
-import { withDeezer } from 'apis/deezer/hocs/with-deezer';
+import { withApis, ApisCtx } from '../../apis';
 
 import styles from './header.scss';
 
@@ -12,7 +10,7 @@ interface HeaderProps {
 
 }
 
-type Props = HeaderProps & DeezerCtx;
+type Props = HeaderProps & ApisCtx;
 
 class Header extends Component<Props> {
   connectDeezer = async () => {
@@ -29,8 +27,20 @@ class Header extends Component<Props> {
     await dz.logout();
   }
 
+  connectSpotify = async () => {
+    const {connectSpotify} = this.props;
+    
+    await connectSpotify();
+  }
+
+  disconnectSpotify = () => {
+    const {disconnectSpotify} = this.props;
+
+    disconnectSpotify();
+  }
+
   render() {
-    const {dz, isDeezerPending} = this.props;
+    const {dz, isDeezerPending, spotifyPlayer, isSpotifyPending} = this.props;
 
     return (
       <>
@@ -50,30 +60,30 @@ class Header extends Component<Props> {
           )}
           {dz && (
             <button onClick={this.disconnectDeezer}>
-              Disconnect Deezer
+              Disconnect Spotify
             </button>
           )}
-          {/* {spotifyAccessToken && (
-            <>
-              <button onClick={this.logoutSpotify}>
-                Logout Spotify
-              </button>
-              <Search token={spotifyAccessToken} refreshToken={this.refreshSpotifyToken}/>
-            </>
+          {isSpotifyPending && (
+            <span>
+              Checking Spotify connection...
+            </span>
           )}
-          {deezerAccessToken && (
-            <>
-              <button onClick={this.logoutDeezer}>
-                Logout Deezer
-              </button>
-            </>
-          )} */}
+          {!spotifyPlayer && !isSpotifyPending && (
+            <button onClick={this.connectSpotify}>
+              Connect Spotify
+            </button>
+          )}
+          {spotifyPlayer && (
+            <button onClick={this.disconnectSpotify}>
+              Disconnect Spotify
+            </button>
+          )}
         </div>
       </>
     );
   }
 }
 
-const HeaderWithDeezer = withDeezer<{}>(Header);
+const HeaderWithApis = withApis<{}>(Header);
 
-export {HeaderWithDeezer as Header}
+export {HeaderWithApis as Header}
