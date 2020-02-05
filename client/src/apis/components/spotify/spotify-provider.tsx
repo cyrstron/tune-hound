@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { SpotifyCtxProvider, SpotifyCtx } from ".";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { ActivePlayerPopup } from "./components/active-player-popup";
 
 export interface SpotifyProviderProps {
 }
@@ -10,8 +11,8 @@ export interface SpotifyProviderState {
   accessToken?: string;
   refreshToken?: string;
   player?: Spotify.SpotifyPlayer;
-  instance?: Spotify.WebPlaybackInstance;
-  state?: Spotify.PlaybackState;
+  deviceId?: string;
+  state?: Spotify.PlaybackState | null;
   error?: Spotify.Error;
 }
 
@@ -25,8 +26,7 @@ class SpotifyProvider extends Component<SpotifyProviderProps, SpotifyProviderSta
   state: SpotifyProviderState = {};
   script?: HTMLScriptElement;
 
-  resolve?: (player: Spotify.SpotifyPlayer) => void;
-  reject?: (err: Error) => void;
+  resolve?: () => void;
 
   async componentDidMount() {
     const refreshToken = localStorage.getItem('spotifyRefreshToken');
@@ -76,8 +76,16 @@ class SpotifyProvider extends Component<SpotifyProviderProps, SpotifyProviderSta
     this.setState({error})
   }
 
-  onPlayerReady: Spotify.PlaybackInstanceListener = (instance) => {
-    this.setState({instance});
+  onPlayerReady: Spotify.PlaybackInstanceListener = ({'device_id': deviceId}) => {
+    console.log(`Player is ready`);
+
+    this.setState({deviceId});
+  }
+
+  onPlayerNotReady: Spotify.PlaybackInstanceListener = ({'device_id': deviceId}) => {
+    console.log(`Player is not ready`);
+
+    this.setState({deviceId});
   }
 
   onStateChange: Spotify.PlaybackStateListener = (state) => {
@@ -85,30 +93,7 @@ class SpotifyProvider extends Component<SpotifyProviderProps, SpotifyProviderSta
   }
 
   onSdkReady = async () => {
-    const player: Spotify.SpotifyPlayer = new window.Spotify.Player({
-      name: 'Tune Hound Preview Player',
-      getOAuthToken: this.getToken,
-    });
-  
-    player.addListener('initialization_error', this.handleError);
-    player.addListener('authentication_error', this.handleError);
-    player.addListener('account_error', this.handleError);
-    player.addListener('playback_error', this.handleError);
-
-    player.addListener('player_state_changed', this.onStateChange);
-    player.addListener('ready', this.onPlayerReady);
-    player.addListener('not_ready', this.onPlayerReady);
-  
-    const isConnected = await player.connect();
-
-    if (!isConnected) {
-      this.reject && this.reject(new Error('Connection failed'));
-    } else {
-      this.resolve && this.resolve(player);
-    }
-
-    delete this.resolve;
-    delete this.reject;    
+    this.resolve && this.resolve();
   }
   
   async init(): Promise<Spotify.SpotifyPlayer> {
@@ -123,10 +108,67 @@ class SpotifyProvider extends Component<SpotifyProviderProps, SpotifyProviderSta
 
     window.onSpotifyWebPlaybackSDKReady = this.onSdkReady;
 
-    return new Promise<Spotify.SpotifyPlayer>((res, rej) => {
+    await new Promise<Spotify.SpotifyPlayer>((res) => {
       this.resolve = res;
-      this.reject = rej;
     });
+
+    delete this.resolve;
+    
+    const player: Spotify.SpotifyPlayer = new window.Spotify.Player({
+      name: 'Tune Hound Preview Player',
+      getOAuthToken: this.getToken,
+    });
+  
+    player.addListener('initialization_error', this.handleError);
+    player.addListener('authentication_error', this.handleError);
+    player.addListener('account_error', this.handleError);
+    player.addListener('playback_error', this.handleError);
+
+    player.addListener('player_state_changed', this.onStateChange);
+
+    const isConnected = await player.connect();
+
+    if (!isConnected) {
+      throw new Error('Connection failed');
+    }
+    
+    const deviceId = await new Promise<string>((res) => { 
+      const onReady = ({'device_id': deviceId}: Spotify.WebPlaybackInstance) => {
+        res(deviceId);
+
+        player.removeListener('ready', onReady);
+        player.removeListener('not_ready', onReady);
+
+        player.addListener('ready', this.onPlayerReady);
+        player.addListener('not_ready', this.onPlayerNotReady);
+      }
+
+      player.addListener('ready', onReady);
+      player.addListener('not_ready', onReady);
+    });
+
+    this.setState({deviceId});
+
+    try {
+      await axios.put<void>('https://api.spotify.com/v1/me/player', {
+        device_ids: [deviceId],
+        play: true,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${this.state.accessToken!}`
+        }
+      });
+    } catch (err) {
+      const error = err as AxiosError<SpotifyApi.RestrictionError>;
+
+      if (error?.response?.data?.error?.reason !== 'PREMIUM_REQUIRED') throw error;
+
+      this.setState({
+        state: null,
+      });
+    }
+
+    return player;
   }
 
   async login(): Promise<{
@@ -200,7 +242,7 @@ class SpotifyProvider extends Component<SpotifyProviderProps, SpotifyProviderSta
 
   render() {
     const {children} = this.props;
-    const {player, isConnected} = this.state;
+    const {player, isConnected, state} = this.state;
 
     const value: SpotifyCtx = {
       spotifyPlayer: isConnected ? player : undefined,
@@ -210,9 +252,14 @@ class SpotifyProvider extends Component<SpotifyProviderProps, SpotifyProviderSta
     }
 
     return (
-      <SpotifyCtxProvider value={value}>
-        {children}
-      </SpotifyCtxProvider>
+      <>
+        {state === null && (
+          <ActivePlayerPopup />
+        )}
+        <SpotifyCtxProvider value={value}>
+          {children}
+        </SpotifyCtxProvider>
+      </>
     )
   }
 }

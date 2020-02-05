@@ -5,7 +5,8 @@
       "lib": [
         "esnext",
         "dom",
-        "dom.iterable"
+        "dom.iterable",
+        "scripthost"
       ],
       "downlevelIteration": true,
       "allowJs": true,

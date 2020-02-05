@@ -43,6 +43,19 @@ export class DeezerService {
     })
   }
 
+  get isFlashEnabled(): boolean {
+    let isFlashEnabled;
+
+    try {
+      isFlashEnabled = !!(new ActiveXObject('ShockwaveFlash.ShockwaveFlash'));
+    } catch(exception) {
+      isFlashEnabled = 'application/x-shockwave-flash' in navigator.mimeTypes && 
+        typeof navigator.mimeTypes['application/x-shockwave-flash'] !== 'undefined';
+    }
+
+    return isFlashEnabled;
+  }
+
   logout(): Promise<void> {
     this.onLogout && this.onLogout();
 

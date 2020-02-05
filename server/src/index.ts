@@ -18,7 +18,7 @@ app.get('/login-spotify', (_req, res) => {
     qs.stringify({
       response_type: 'code',
       client_id: process.env.SPOTIFY_CLIENT_ID,
-      scope: 'user-read-private user-read-email streaming',
+      scope: 'user-read-private user-read-email streaming user-read-playback-state user-modify-playback-state user-read-currently-playing',
       redirect_uri: 'http://localhost:3000/spotify-callback',
     })
   }`);

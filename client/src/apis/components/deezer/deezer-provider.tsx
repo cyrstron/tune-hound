@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { DeezerCtxProvider } from ".";
 import { DeezerService } from "./services/deezer-service";
+import { FlashPopup } from "./components/flash-popup";
 
 export interface DeezerProviderProps {
 }
@@ -8,6 +9,7 @@ export interface DeezerProviderProps {
 export interface DeezerProviderState {
   isConnected?: boolean;
   dz?: DeezerService;
+  isFlashEnabled?: boolean;
 }
 
 class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState> {
@@ -33,6 +35,17 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
     this.setState({
       isConnected: isLoggedIn,
       dz,
+      isFlashEnabled: dz.isFlashEnabled,
+    });
+  }
+
+  updateFlashStatus = () => {
+    const {dz} = this.state;
+
+    if (!dz) return;
+
+    this.setState({
+      isFlashEnabled: dz.isFlashEnabled,
     });
   }
 
@@ -110,7 +123,7 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
 
   render() {
     const {children} = this.props;
-    const {dz, isConnected} = this.state;
+    const {dz, isConnected, isFlashEnabled} = this.state;
 
     const value = {
       dz: isConnected ? dz : undefined, 
@@ -119,9 +132,16 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
     }
 
     return (
-      <DeezerCtxProvider value={value}>
-        {children}
-      </DeezerCtxProvider>
+      <>
+        {isFlashEnabled ===false && (
+          <FlashPopup
+            updateFlashStatus={this.updateFlashStatus}
+          />
+        )}
+        <DeezerCtxProvider value={value}>
+          {children}
+        </DeezerCtxProvider>
+      </>
     )
   }
 }

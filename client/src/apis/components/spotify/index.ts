@@ -13,3 +13,15 @@ export interface SpotifyCtx {
   spotifyPlayer?: Spotify.SpotifyPlayer;
   isSpotifyPending: boolean;
 }
+
+declare global { 
+  namespace SpotifyApi {
+    interface RestrictionError {
+      error: {
+        status: number;
+        message: string;
+        reason: string;
+      }
+    }
+  }
+}

@@ -60,7 +60,7 @@ class Header extends Component<Props> {
           )}
           {dz && (
             <button onClick={this.disconnectDeezer}>
-              Disconnect Spotify
+              Disconnect Deezer
             </button>
           )}
           {isSpotifyPending && (
