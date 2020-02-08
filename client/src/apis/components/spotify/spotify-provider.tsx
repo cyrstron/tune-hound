@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { SpotifyCtxProvider, SpotifyCtx } from ".";
+import {SpotifyService} from './services/spotify-service';
 import axios from "axios";
 
 export interface SpotifyProviderProps {
