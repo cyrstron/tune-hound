@@ -1,5 +1,4 @@
 import {SpotifyWebApi} from './services/spotify-web-api';
-import { AxiosError } from 'axios';
 
 export interface SpotifyServiceHandlets {
   onError: Spotify.ErrorListener,

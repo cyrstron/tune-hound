@@ -12,11 +12,14 @@ export interface SpotifyProviderState {
   isConnected?: boolean;
   deviceId?: string;
   state?: Spotify.PlaybackState | null;
+  isActiveIgnored: boolean;
   error?: Spotify.Error;
 }
 
 class SpotifyProvider extends Component<SpotifyProviderProps, SpotifyProviderState> {
-  state: SpotifyProviderState = {};
+  state: SpotifyProviderState = {
+    isActiveIgnored: !!localStorage.getItem('isSpotifyActiveIgnored'),
+  };
 
   api: SpotifyWebApi;
   service: SpotifyService;
@@ -26,6 +29,18 @@ class SpotifyProvider extends Component<SpotifyProviderProps, SpotifyProviderSta
 
     this.api = new SpotifyWebApi(axios);
     this.service = new SpotifyService(this.api);
+  }
+
+  setIsActiveIgnored = (isIgnored: boolean) => {
+    if (isIgnored) {
+      localStorage.setItem('isSpotifyActiveIgnored', `${isIgnored}`);
+    } else {
+      localStorage.removeItem('isSpotifyActiveIgnored');
+    }
+
+    this.setState({
+      isActiveIgnored: isIgnored,
+    });
   }
 
   async componentDidMount() {
@@ -140,7 +155,7 @@ class SpotifyProvider extends Component<SpotifyProviderProps, SpotifyProviderSta
 
   render() {
     const {children} = this.props;
-    const {isConnected, state} = this.state;
+    const {isConnected, isActiveIgnored ,state} = this.state;
 
     const value: SpotifyCtx = {
       spotifyService: isConnected ? this.service : undefined,
@@ -151,8 +166,8 @@ class SpotifyProvider extends Component<SpotifyProviderProps, SpotifyProviderSta
 
     return (
       <>
-        {state === null && (
-          <ActivePlayerPopup />
+        {state === null && !isActiveIgnored && (
+          <ActivePlayerPopup setIgnored={this.setIsActiveIgnored}/>
         )}
         <SpotifyCtxProvider value={value}>
           {children}

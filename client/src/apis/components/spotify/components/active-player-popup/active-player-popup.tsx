@@ -6,6 +6,7 @@ import styles from './active-player-popup.scss';
 const cx = classNames.bind(styles);
 
 interface ActivePlayerPopupProps {
+  setIgnored: (isIgnored: boolean) => void;
 }
 
 interface ActivePlayerPopupState {
@@ -13,10 +14,6 @@ interface ActivePlayerPopupState {
 }
 
 class ActivePlayerPopup extends Component<ActivePlayerPopupProps, ActivePlayerPopupState> {
-  state: ActivePlayerPopupState = {
-    isIgnored: false,
-  }
-
   isUnmounted: boolean = false;
 
   componentWillUnmount() {
@@ -24,16 +21,12 @@ class ActivePlayerPopup extends Component<ActivePlayerPopupProps, ActivePlayerPo
   }
 
   onIgnore = () => {
-    this.setState({
-      isIgnored: true
-    });
+    const {setIgnored} = this.props;
+
+    setIgnored(true);
   }
 
   render() {
-    const {isIgnored} = this.state;
-
-    if (isIgnored) return null;
-
     return (
       <div className={cx('notification')}>
         You have to enable 'Tune Hound Preview Player' in your
