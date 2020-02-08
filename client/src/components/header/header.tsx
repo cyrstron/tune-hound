@@ -40,7 +40,7 @@ class Header extends Component<Props> {
   }
 
   render() {
-    const {dz, isDeezerPending, spotifyPlayer, isSpotifyPending} = this.props;
+    const {dz, isDeezerPending, spotifyService, isSpotifyPending} = this.props;
 
     return (
       <>
@@ -60,7 +60,7 @@ class Header extends Component<Props> {
           )}
           {dz && (
             <button onClick={this.disconnectDeezer}>
-              Disconnect Spotify
+              Disconnect Deezer
             </button>
           )}
           {isSpotifyPending && (
@@ -68,12 +68,12 @@ class Header extends Component<Props> {
               Checking Spotify connection...
             </span>
           )}
-          {!spotifyPlayer && !isSpotifyPending && (
+          {!spotifyService && !isSpotifyPending && (
             <button onClick={this.connectSpotify}>
               Connect Spotify
             </button>
           )}
-          {spotifyPlayer && (
+          {spotifyService && (
             <button onClick={this.disconnectSpotify}>
               Disconnect Spotify
             </button>

@@ -18,7 +18,7 @@ app.get('/login-spotify', (_req, res) => {
     qs.stringify({
       response_type: 'code',
       client_id: process.env.SPOTIFY_CLIENT_ID,
-      scope: 'user-read-private user-read-email streaming',
+      scope: 'user-read-private user-read-email streaming user-read-playback-state user-modify-playback-state user-read-currently-playing',
       redirect_uri: 'http://localhost:3000/spotify-callback',
     })
   }`);
@@ -44,12 +44,25 @@ app.get('/deezer-channel', (_req, res) => {
 app.get('/spotify-callback', async (req, res) => {
   const code: string | null = req.query.code || null;
 
+  const dateNow = Date.now();
+
   try {
     const {
-      data: {access_token, refresh_token}
+      data: {
+        'access_token': accessToken,
+        'refresh_token': refreshToken,
+        'expires_in': expiresIn,
+        'scope': spotifyScope,
+        'error': error,
+      }
     } = await axios.post<{
-      access_token: string,
-      refresh_token: string,
+      'access_token'?: string,
+      'refresh_token'?: string,
+      'expires_in'?: string,
+      'scope'?: string,
+      'token_type'?: 'Bearer',
+      'error'?: string,
+      'state'?: string,
     }>('https://accounts.spotify.com/api/token', 
       qs.stringify({
         code,
@@ -65,8 +78,11 @@ app.get('/spotify-callback', async (req, res) => {
     const htmlString = await new Promise((res, rej) => {
       ejs.renderFile(
         path.resolve(__dirname, './views/spotify-redirect.ejs'), {
-          accessToken: access_token,
-          refreshToken: refresh_token,
+          expiresIn: dateNow + +expiresIn * 1000,
+          accessToken,
+          refreshToken,
+          error,
+          spotifyScope,
         }, 
         (err, html) => {
           if (err) {
@@ -123,14 +139,14 @@ app.get('/deezer-callback', async (req, res) => {
 });
 
 app.get('/refresh-token', async (req, res) => {
-  const refresh_token = req.query.refresh_token;
+  const refreshToken = req.query.refresh_token;
 
   try {
     const {
-      data: {access_token}
+      data
     } = await axios.post('https://accounts.spotify.com/api/token', qs.stringify({
-      grant_type: 'refresh_token',
-      refresh_token,
+      'grant_type': 'refresh_token',
+      'refresh_token': refreshToken,
     }), {
       headers: { 
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -138,9 +154,7 @@ app.get('/refresh-token', async (req, res) => {
       },
     });
 
-    res.send({
-      'access_token': access_token
-    });
+    res.send(data);
   } catch (err) {
     res.sendStatus(401);
   }

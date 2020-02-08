@@ -9,8 +9,11 @@
 5. Copy **Client ID** & **Client Secret** from the app info panel
 6. Add them to root `.env` file as `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`
 7. Connect Spotify to the application
-8. Go to your [Spotify App Player](https://open.spotify.com/) and click desktop icon near volume Control
-8. Choose `Tune Hound Preview Player`
+
+### If you don't have Premium account
+
+1. Go to your [Spotify App Player](https://open.spotify.com/) and click desktop icon near volume control
+2. Choose `Tune Hound Preview Player`
 
 *It is recommended to disable your ad blocker to avoid multiple error messages in your console*
 

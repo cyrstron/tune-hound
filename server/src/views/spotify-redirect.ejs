@@ -9,12 +9,23 @@
 <body>
   <div>Loading...</div>
   <script>
-    const accessToken = "<%= accessToken %>";
-    const refreshToken = "<%= refreshToken %>";
+    const accessToken = "<%= accessToken || '' %>";
+    const refreshToken = "<%= refreshToken || '' %>";
+    const expiresIn = +"<%= expiresIn || '' %>";
+    const scope = "<%= spotifyScope || '' %>";
+    const error = "<%= error || '' %>";
 
-    window.opener.postMessage({
+    const payload = error ? {
+      error
+    } : {
       accessToken,
       refreshToken,
+      expiresIn,
+      scope,
+    };
+
+    window.opener.postMessage({
+      spotifyAuth: payload,
     }, '*');
 
     window.close();
