@@ -1,66 +1,45 @@
+import {checkFlashEnabled, mountDeezerScript} from './services/helpers';
+import {DeezerWebApi} from './services/deezer-web-api';
+
 export class DeezerService {
   script?: HTMLScriptElement;
   root?: HTMLDivElement;
 
+  api?: DeezerWebApi;
+
   onLogout?: () => void;
 
-  constructor(
-    public dz: DeezerSdk.DZ,
-    onLogout?: () => void,
-  ) {
-    this.onLogout = onLogout;
+  async mount(options: DeezerSdk.InitOptions): Promise<DeezerSdk.SdkOptions> {
+    const {script, root} = await mountDeezerScript();
+
+    this.api = new DeezerWebApi(window.DZ);
+
+    this.script = script;
+    this.root = root;
+
+    const response = await this.api.init(options);
+
+    return response;
   }
 
-  async init(options: DeezerSdk.InitOptions): Promise<DeezerSdk.SdkOptions> {
-    window.DZ.init(options);
-
-    return new Promise<DeezerSdk.SdkOptions>((resolve) => {
-      window.DZ.ready(resolve);
-    });
+  async connect() {
+    return this.api && this.api.login();
   }
 
-  async login(): Promise<DeezerSdk.LoginResponse> {
-    return new Promise<DeezerSdk.LoginResponse>((resolve, reject) => {
-      window.DZ.login((response) => {
-        const {authResponse} = response;
+  disconnect() {
+    this.api && this.api.logout();
+  }
 
-        if (authResponse && authResponse.accessToken) {
-          resolve(response);
-        } else {
-          reject(response);
-        }
-      });
-    });    
+  unmount() {
+    this.script && this.script.remove();
+    this.root && this.root.remove();
   }
 
   async isLoggedIn(): Promise<boolean> {
-    return new Promise((resolve) => {
-      this.dz.getLoginStatus((response) => {
-        const {authResponse} = response;
-
-        resolve(!!authResponse && !!authResponse.accessToken);
-      });
-    })
+    return !!this.api && this.api.isLoggedIn();
   }
 
   get isFlashEnabled(): boolean {
-    let isFlashEnabled;
-
-    try {
-      isFlashEnabled = !!(new ActiveXObject('ShockwaveFlash.ShockwaveFlash'));
-    } catch(exception) {
-      isFlashEnabled = 'application/x-shockwave-flash' in navigator.mimeTypes && 
-        typeof navigator.mimeTypes['application/x-shockwave-flash'] !== 'undefined';
-    }
-
-    return isFlashEnabled;
-  }
-
-  logout(): Promise<void> {
-    this.onLogout && this.onLogout();
-
-    return new Promise((res) => {
-      this.dz.logout(res);
-    });
+    return checkFlashEnabled();
   }
 }

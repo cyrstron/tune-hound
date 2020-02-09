@@ -20,11 +20,9 @@ class Header extends Component<Props> {
   }
 
   disconnectDeezer = async () => {
-    const {dz} = this.props;
+    const {disconnectDeezer} = this.props;
 
-    if (!dz) return;
-
-    await dz.logout();
+    await disconnectDeezer();
   }
 
   connectSpotify = async () => {

@@ -7,6 +7,7 @@ export {withDeezer} from './hocs/with-deezer'
 export interface DeezerCtx {
   dz?: DeezerService;
   connectDeezer: () => Promise<void>;
+  disconnectDeezer: () => void;
   isDeezerPending: boolean;
 }
 
@@ -17,5 +18,6 @@ export const DeezerCtxConsumer = deezerCtx.Consumer;
 declare global {
   interface Window {
     DZ: DeezerSdk.DZ;
+    dzAsyncInit?: () => void;
   }
 }

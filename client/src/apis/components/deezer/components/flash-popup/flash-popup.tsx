@@ -6,7 +6,6 @@ import styles from './flash-popup.scss';
 const cx = classNames.bind(styles);
 
 interface FlashPopupProps {
-  updateFlashStatus: () => void;
 }
 
 interface FlashPopupState {
@@ -27,7 +26,6 @@ class FlashPopup extends Component<FlashPopupProps, FlashPopupState> {
   }
 
   onApply = () => {
-    this.props.updateFlashStatus();
   }
 
   onIgnore = () => {

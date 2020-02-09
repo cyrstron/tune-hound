@@ -1,4 +1,5 @@
 import {SpotifyWebApi} from './services/spotify-web-api';
+import {mountSpotifyScript} from './services/helpers';
 
 export interface SpotifyServiceHandlets {
   onError: Spotify.ErrorListener,
@@ -16,6 +17,7 @@ export class SpotifyService {
   user?: SpotifyApi.CurrentUsersProfileResponse;
 
   resolve?: () => void;
+  reject?: (e: string | Event) => void;
 
   onError?: Spotify.ErrorListener;
   onStateChange?: Spotify.PlaybackStateListener;
@@ -42,36 +44,10 @@ export class SpotifyService {
     callback(authTokens.accessToken); 
   }
 
-  onSdkReady = () => {
-    delete window.onSpotifyWebPlaybackSDKReady;
-
-    this.resolve && this.resolve();
-  }
-
   async mount(handlers: SpotifyServiceHandlets) {
-    const script = document.createElement('script');
-
-    script.type = 'text/javascript';
-    script.src = 'https://sdk.scdn.co/spotify-player.js';
-
-    document.body.append(script);
+    const script = await mountSpotifyScript();
 
     this.script = script;
-
-    window.onSpotifyWebPlaybackSDKReady = this.onSdkReady;
-
-    await new Promise<Spotify.SpotifyPlayer>((res, rej) => {
-      script.onerror = (e) => {
-        script.onerror = null;
-        delete this.resolve;
-
-        rej(e);
-      };
-      
-      this.resolve = res;
-    });
-
-    delete this.resolve;
 
     this.player = new window.Spotify.Player({
       name: 'Tune Hound Preview Player',
