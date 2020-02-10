@@ -11,11 +11,14 @@ export interface DeezerProviderState {
   isConnected?: boolean;
   dz?: DeezerService;
   isFlashEnabled?: boolean;
+  isFlashIgnored: boolean;
   error?: Error;
 }
 
 class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState> {
-  state: DeezerProviderState = {};
+  state: DeezerProviderState = {
+    isFlashIgnored: !!localStorage.getItem('deezerFlashIgnored') || false,
+  };
 
   service: DeezerService;
 
@@ -26,7 +29,7 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
   }
 
   async componentDidMount() {
-    const wasConnected = localStorage.getItem('deezer') === 'true';
+    const wasConnected = localStorage.getItem('deezerConnected') === 'true';
 
     if (!wasConnected) {
       this.setState({
@@ -61,7 +64,7 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
     try {
       this.service.disconnect();
   
-      localStorage.removeItem('deezer');
+      localStorage.removeItem('deezerConnected');
   
       this.setState({
         isConnected: false,
@@ -85,10 +88,18 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
         });
       }
       
-      localStorage.setItem('deezer', 'true');
+      localStorage.setItem('deezerConnected', 'true');
     } catch (error) {
       this.setState({error});
     }
+  }
+
+  ignoreFlash = () => {
+    localStorage.setItem('deezerFlashIgnored', 'true');
+
+    this.setState({
+      isFlashIgnored: true,
+    });
   }
 
   componentWillUnmount() {
@@ -97,7 +108,7 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
 
   render() {
     const {children} = this.props;
-    const {isConnected, isFlashEnabled} = this.state;
+    const {isConnected, isFlashEnabled, isFlashIgnored} = this.state;
 
     const value = {
       dz: isConnected ? this.service : undefined, 
@@ -108,8 +119,10 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
 
     return (
       <>
-        {isFlashEnabled ===false && (
-          <FlashPopup />
+        {!isFlashIgnored && isFlashEnabled === false && (
+          <FlashPopup 
+            ignoreFlash={this.ignoreFlash}
+          />
         )}
         <DeezerCtxProvider value={value}>
           {children}

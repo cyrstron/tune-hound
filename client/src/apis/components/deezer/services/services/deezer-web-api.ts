@@ -3,17 +3,23 @@ export class DeezerWebApi {
     public dz: DeezerSdk.DZ,
   ) {}
 
-  async init(options: DeezerSdk.InitOptions): Promise<DeezerSdk.SdkOptions> {    
-    window.DZ.init({
-      ...options,
-      player: {
-        onload: () => {
-          console.log('Player loaded')
-        },
-      }
-    });
+  async init(options: DeezerSdk.InitOptions) {    
+    await new Promise((res) => {
+      window.DZ.init({
+        ...options,
+        player: {
+          onload: res,
+        }
+      });
+
+    })
+
     return new Promise<DeezerSdk.SdkOptions>((resolve) => {
-      window.DZ.ready(resolve);
+      window.DZ.ready((response) => {
+        setTimeout(() => {
+          resolve(response);
+        }, 1000);
+      });
     });
   }
 

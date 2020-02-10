@@ -15,7 +15,7 @@ export async function mountDeezerScript() {
       delete window.dzAsyncInit;
       script.onerror = null;
 
-      setTimeout(res, 1000);
+      res();
     }
 
     script.onerror = (e) => {
