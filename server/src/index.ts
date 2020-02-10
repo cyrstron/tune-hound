@@ -19,7 +19,7 @@ app.get('/login-spotify', (_req, res) => {
       response_type: 'code',
       client_id: process.env.SPOTIFY_CLIENT_ID,
       scope: 'user-read-private user-read-email streaming user-read-playback-state user-modify-playback-state user-read-currently-playing',
-      redirect_uri: 'http://localhost:3000/spotify-callback',
+      redirect_uri: `${process.env.HOST}/spotify-callback`,
     })
   }`);
 });
@@ -29,7 +29,7 @@ app.get('/login-deezer', (_req, res) => {
     qs.stringify({
       app_id: process.env.DEEZER_CLIENT_ID,
       perms: 'basic_access,email,listening_history,offline_access,manage_library,manage_community,delete_library',
-      redirect_uri: 'http://127.0.0.1:3000/deezer-callback',
+      redirect_uri: `${process.env.HOST}/deezer-callback`,
     })
   }`);
 });
@@ -66,7 +66,7 @@ app.get('/spotify-callback', async (req, res) => {
     }>('https://accounts.spotify.com/api/token', 
       qs.stringify({
         code,
-        redirect_uri: 'http://localhost:3000/spotify-callback',
+        redirect_uri: `${process.env.HOST}/spotify-callback`,
         grant_type: 'authorization_code'
       }), {
       headers: {
@@ -142,6 +142,10 @@ app.get('/refresh-token', async (req, res) => {
   const refreshToken = req.query.refresh_token;
 
   try {
+    const authToken = `Basic ${
+      Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64')
+    }`;
+    
     const {
       data
     } = await axios.post('https://accounts.spotify.com/api/token', qs.stringify({
@@ -150,7 +154,7 @@ app.get('/refresh-token', async (req, res) => {
     }), {
       headers: { 
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + (Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString('base64'))
+        'Authorization': authToken,
       },
     });
 

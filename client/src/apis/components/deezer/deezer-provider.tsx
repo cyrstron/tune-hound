@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { DeezerCtxProvider } from ".";
 import { DeezerService } from "./services/deezer-service";
 import { FlashPopup } from "./components/flash-popup";
-import { mountDeezerScript } from "./services/services/helpers";
 
 export interface DeezerProviderProps {
+  appId: string;
+  channelUrl: string;
 }
 
 export interface DeezerProviderState {
@@ -47,9 +48,11 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
   }
 
   async init(): Promise<void> {
+    const {appId, channelUrl} = this.props;
+    
     await this.service.mount({
-      appId: process.env.DEEZER_PLAYER_ID as string,
-      channelUrl: 'http://127.0.0.1:3000/deezer-channel',
+      appId,
+      channelUrl,
     });
 
     const isLoggedIn = await this.service.isLoggedIn(); 

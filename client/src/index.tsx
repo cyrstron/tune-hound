@@ -7,7 +7,10 @@ import './index.scss';
 
 ReactDOM.render((
   <>
-    <ApisProvider>
+    <ApisProvider
+      deezerAppId={process.env.DEEZER_PLAYER_ID as string}
+      deezerChannelUrl={`${process.env.HOST}/deezer-channel`}
+    >
       <App />
     </ApisProvider>
   </>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { SpotifyCtxProvider, SpotifyCtx } from ".";
 import {SpotifyService} from './services/spotify-service';
-import axios from "axios";
 import { ActivePlayerPopup } from "./components/active-player-popup";
 import { SpotifyWebApi, SpotifyAuthPayload } from "./services/services/spotify-web-api";
 
