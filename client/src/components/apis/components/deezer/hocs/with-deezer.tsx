@@ -1,5 +1,5 @@
 import React from 'react';
-import { DeezerCtxConsumer, DeezerCtx } from ".."
+import { DeezerCtxConsumer, DeezerCtx } from "../../deezer"
 import { ComponentType } from "react";
 
 const withDeezer = <Props extends {}>(Component: ComponentType<Props & DeezerCtx>) => {

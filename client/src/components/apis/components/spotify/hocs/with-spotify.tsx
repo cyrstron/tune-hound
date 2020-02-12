@@ -1,5 +1,5 @@
 import React from 'react';
-import { SpotifyCtxConsumer, SpotifyCtx } from ".."
+import { SpotifyCtxConsumer, SpotifyCtx } from "../../spotify"
 import { ComponentType } from "react";
 
 const withSpotify = <Props extends {}>(Component: ComponentType<Props & SpotifyCtx>) => {

@@ -1,5 +1,5 @@
 import {ComponentType} from 'react';
-import { ApisCtx } from '../';
+import { ApisCtx } from '..';
 import { withDeezer, DeezerCtx } from '../components/deezer';
 import { withSpotify } from '../components/spotify';
 
