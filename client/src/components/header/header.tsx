@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames/bind';
-import { withApis, ApisCtx } from '../../apis';
+import { withApis, ApisCtx } from '../apis';
 
 import styles from './header.scss';
 

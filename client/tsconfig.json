@@ -17,9 +17,9 @@
       "preserveConstEnums": true,  
       "outDir": "./.dist",     
       "jsx": "react",  
-      "baseUrl": "./src",     
+      "baseUrl": "src", 
       "paths": {
-        "@app/*": [""]
+        "@app/*": ["./*"]
       }, 
       "allowSyntheticDefaultImports": true, 
       "esModuleInterop": true,

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { DeezerCtxProvider } from ".";
+import { DeezerCtxProvider } from "../deezer";
 import { DeezerService } from "./services/deezer-service";
 import { FlashPopup } from "./components/flash-popup";
 
