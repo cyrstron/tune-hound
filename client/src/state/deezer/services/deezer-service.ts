@@ -1,5 +1,5 @@
-import {mountDeezerScript} from './services/helpers';
-import {DeezerWebApi} from './services/deezer-web-api';
+import {mountDeezerScript} from './helpers';
+import {DeezerWebApi} from './deezer-web-api';
 
 export class DeezerService {
   script?: HTMLScriptElement;
@@ -33,6 +33,10 @@ export class DeezerService {
   unmount() {
     this.script && this.script.remove();
     this.root && this.root.remove();
+  }
+
+  get isMounted() {
+    return !!this.script;
   }
 
   async isLoggedIn(): Promise<boolean> {

@@ -1,15 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 
-import {rootReducer} from 'state';
+import {rootReducer, sagaMiddleware} from 'state';
 import {App} from './app';
 import {ApisProvider} from './components/apis';
 
 import './index.scss';
 
-const store = createStore(rootReducer);
+const store = createStore(
+  rootReducer,
+  applyMiddleware(sagaMiddleware),
+);
 
 ReactDOM.render((
   <Provider store={store}>
