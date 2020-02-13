@@ -21,15 +21,9 @@ class DeezerProviderComponent extends Component<DeezerProviderProps, {}> {
   }
 
   async componentDidMount() {
-    const wasConnected = localStorage.getItem('deezerConnected') === 'true';
+    const {isConnected} = this.props;
 
-    if (!wasConnected) {
-      this.setState({
-        isConnected: false,
-      });
-
-      return;
-    };
+    if (!isConnected) return;
 
     try {
       await this.init();
@@ -50,7 +44,6 @@ class DeezerProviderComponent extends Component<DeezerProviderProps, {}> {
     
     this.setState({
       isConnected: isLoggedIn,
-      isFlashEnabled: this.service.isFlashEnabled,
     });
   }
 
