@@ -6,21 +6,12 @@ import { FlashPopup } from "./components/flash-popup";
 export interface DeezerProviderProps {
   appId: string;
   channelUrl: string;
-}
-
-export interface DeezerProviderState {
-  isConnected?: boolean;
-  dz?: DeezerService;
-  isFlashEnabled?: boolean;
-  isFlashIgnored: boolean;
+  isConnected: boolean;
   error?: Error;
+  isPending: boolean;
 }
 
-class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState> {
-  state: DeezerProviderState = {
-    isFlashIgnored: !!localStorage.getItem('deezerFlashIgnored') || false,
-  };
-
+class DeezerProviderComponent extends Component<DeezerProviderProps, {}> {
   service: DeezerService;
 
   constructor(props: DeezerProviderProps) {
@@ -135,4 +126,4 @@ class DeezerProvider extends Component<DeezerProviderProps, DeezerProviderState>
   }
 }
 
-export {DeezerProvider}
+export {DeezerProviderComponent}

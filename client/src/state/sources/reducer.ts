@@ -4,21 +4,35 @@ import {
   getDeezerConnectedState, 
   getFlashIgnoredState, 
   getSpotifyPlayerMsgState, 
-  getSpotifyAuthState 
+  getSpotifyAuthState ,
+  getIsFlashEnabled
 } from "./helpers";
 
 export interface SourcesState {
-  isDeezerConnected: boolean;
-  isFlashMsgIgnored: boolean;
-  isSpotifyPlayerMsgIgnored: boolean;
-  spotifyAuthData?: SpotifyAuthData;
+  deezer: {
+    isConnected: boolean;
+    isFlashMsgIgnored: boolean;
+    isFlashEnabled: boolean;
+    error?: Error;
+    isPending: boolean;
+  },
+  spotify: {
+    isPlayerMsgIgnored: boolean;
+    authData?: SpotifyAuthData;
+  }
 }
 
 const initialAuthState: SourcesState = {
-  isDeezerConnected: getDeezerConnectedState(),
-  isFlashMsgIgnored: getFlashIgnoredState(),
-  isSpotifyPlayerMsgIgnored: getSpotifyPlayerMsgState(),
-  spotifyAuthData: getSpotifyAuthState(),
+  deezer: {
+    isConnected: getDeezerConnectedState(),
+    isFlashMsgIgnored: getFlashIgnoredState(),
+    isFlashEnabled: getIsFlashEnabled(),
+    isPending: false,
+  },
+  spotify: {
+    isPlayerMsgIgnored: getSpotifyPlayerMsgState(),
+    authData: getSpotifyAuthState(),
+  },
 };
 
 export function sourcesReducer(

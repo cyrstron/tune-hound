@@ -17,6 +17,19 @@ export function getSpotifyPlayerMsgState(): boolean {
   return !!localStorage.getItem(SPOTIFY_PLAYER_MSG_IGNORED_KEY) || false;
 }
 
+export function getIsFlashEnabled() {
+  let isFlashEnabled;
+
+  try {
+    isFlashEnabled = !!(new ActiveXObject('ShockwaveFlash.ShockwaveFlash'));
+  } catch(exception) {
+    isFlashEnabled = 'application/x-shockwave-flash' in navigator.mimeTypes && 
+      typeof navigator.mimeTypes['application/x-shockwave-flash'] !== 'undefined';
+  }
+
+  return isFlashEnabled;
+}
+
 export interface SpotifyAuthData {
   accessToken: string;
   refreshToken: string;
