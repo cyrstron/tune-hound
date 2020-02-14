@@ -52,7 +52,7 @@ export async function mountDeezerScript(): Promise<{
   script.type = 'text/javascript';
   script.src = 'https://e-cdns-files.dzcdn.net/js/min/dz.js';
 
-  await new Promise((res, rej) => {
+  const DZ = await new Promise<DeezerSdk.DZ>((res, rej) => {
     document.body.append(script);
     document.body.append(root);
 
@@ -74,7 +74,7 @@ export async function mountDeezerScript(): Promise<{
   });
 
   return {
-    DZ: window.DZ,
+    DZ,
     script,
     root,
   };

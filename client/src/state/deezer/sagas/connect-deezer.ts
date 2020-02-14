@@ -26,7 +26,10 @@ export function* connectDeezerSaga() {
 
     try {
       if (!deezerService.isMounted) {
-        yield deezerService.mount(deezerConfig);
+        yield deezerService.mount({
+          ...deezerConfig, 
+          player: {},
+        });
       }
     
       const isLoggedIn = yield deezerService.isLoggedIn();

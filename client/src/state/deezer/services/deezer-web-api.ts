@@ -4,28 +4,18 @@ export class DeezerWebApi {
   ) {}
 
   async init(options: DeezerSdk.InitOptions) {    
-    await new Promise((res) => {
-      window.DZ.init({
-        ...options,
-        player: {
-          onload: res,
-        }
-      });
-
-    })
+    this.dz.init(options);
 
     return new Promise<DeezerSdk.SdkOptions>((resolve) => {
-      window.DZ.ready((response) => {
-        setTimeout(() => {
-          resolve(response);
-        }, 1000);
+      this.dz.ready((response) => {
+        resolve(response);
       });
     });
   }
 
   async login(): Promise<DeezerSdk.LoginResponse> {
     return new Promise<DeezerSdk.LoginResponse>((resolve, reject) => {
-      window.DZ.login((response) => {
+      this.dz.login((response) => {
         const {authResponse} = response;
 
         if (authResponse && authResponse.accessToken) {
