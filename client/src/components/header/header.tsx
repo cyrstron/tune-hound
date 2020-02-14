@@ -7,12 +7,17 @@ import styles from './header.scss';
 const cx = classNames.bind(styles);
 
 interface HeaderProps {
-
+  isDeezerConnected: boolean;
+  wasDeezerConnected: boolean;
+  isDeezerPending: boolean;
+  deezerError?: Error;
+  connectDeezer: () => void;
+  disconnectDeezer: () => void;
 }
 
-type Props = HeaderProps & ApisCtx;
+type Props = HeaderProps;
 
-class Header extends Component<Props> {
+class HeaderComponent extends Component<Props> {
   connectDeezer = async () => {
     const {connectDeezer} = this.props;
 
@@ -25,20 +30,26 @@ class Header extends Component<Props> {
     await disconnectDeezer();
   }
 
-  connectSpotify = async () => {
-    const {connectSpotify} = this.props;
+  // connectSpotify = async () => {
+  //   const {connectSpotify} = this.props;
     
-    await connectSpotify();
-  }
+  //   await connectSpotify();
+  // }
 
-  disconnectSpotify = () => {
-    const {disconnectSpotify} = this.props;
+  // disconnectSpotify = () => {
+  //   const {disconnectSpotify} = this.props;
 
-    disconnectSpotify();
-  }
+  //   disconnectSpotify();
+  // }
 
   render() {
-    const {dz, isDeezerPending, spotifyService, isSpotifyPending} = this.props;
+    const {
+      // dz, 
+      isDeezerPending, 
+      isDeezerConnected
+      // spotifyService, 
+      // isSpotifyPending
+    } = this.props;
 
     return (
       <>
@@ -51,17 +62,17 @@ class Header extends Component<Props> {
               Checking Deezer connection...
             </span>
           )}
-          {!dz && !isDeezerPending && (
+          {!isDeezerConnected && !isDeezerPending && (
             <button onClick={this.connectDeezer}>
               Connect Deezer
             </button>
           )}
-          {dz && (
+          {isDeezerConnected && (
             <button onClick={this.disconnectDeezer}>
               Disconnect Deezer
             </button>
           )}
-          {isSpotifyPending && (
+          {/* {isSpotifyPending && (
             <span>
               Checking Spotify connection...
             </span>
@@ -75,13 +86,11 @@ class Header extends Component<Props> {
             <button onClick={this.disconnectSpotify}>
               Disconnect Spotify
             </button>
-          )}
+          )} */}
         </div>
       </>
     );
   }
 }
 
-const HeaderWithApis = withApis<{}>(Header);
-
-export {HeaderWithApis as Header}
+export {HeaderComponent}

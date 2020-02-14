@@ -5,7 +5,7 @@ import {
   getIsFlashEnabled
 } from "./services/helpers";
 import {
-  SET_DEEZER_DISCONNECTED,
+  SET_DEEZER_IS_CONNECTED,
   CONNECT_DEEZER_PENDING,
   CONNECT_DEEZER_FAILURE,
   CONNECT_DEEZER_SUCCESS,
@@ -33,10 +33,10 @@ export function deezerReducer(
   action: DeezerAction,
 ) {
   switch(action.type) {
-    case SET_DEEZER_DISCONNECTED:
+    case SET_DEEZER_IS_CONNECTED:
       return {
         ...state,
-        isConnected: false,
+        isConnected: action.payload.isConnected,
       };
     case CONNECT_DEEZER_PENDING:
       return {

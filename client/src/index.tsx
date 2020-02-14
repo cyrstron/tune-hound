@@ -1,26 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {createStore, applyMiddleware} from 'redux';
 
-import {rootReducer, sagaMiddleware} from 'state';
+import { createAppStore } from './state';
 import {App} from './app';
-import {ApisProvider} from './components/apis';
+// import {ApisProvider} from './components/apis';
 
 import './index.scss';
 
-const store = createStore(
-  rootReducer,
-  applyMiddleware(sagaMiddleware),
-);
+const store = createAppStore();
 
 ReactDOM.render((
   <Provider store={store}>
-    <ApisProvider
+    {/* <ApisProvider
       deezerAppId={process.env.DEEZER_PLAYER_ID as string}
       deezerChannelUrl={`${process.env.HOST}/deezer-channel`}
-    >
+    > */}
       <App />
-    </ApisProvider>
+    {/* </ApisProvider> */}
   </Provider>
 ), document.getElementById('root'));

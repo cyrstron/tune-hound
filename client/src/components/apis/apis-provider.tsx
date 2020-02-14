@@ -12,14 +12,14 @@ const ApisProvider: FC<ApiProviderProps> = ({
   deezerAppId,
   deezerChannelUrl
 }) => (
-  <DeezerProvider 
-    appId={deezerAppId}
-    channelUrl={deezerChannelUrl}
-  >
+  // <DeezerProvider 
+  //   appId={deezerAppId}
+  //   channelUrl={deezerChannelUrl}
+  // >
     <SpotifyProvider>
       {children}
     </SpotifyProvider>
-  </DeezerProvider>
+  // </DeezerProvider>
 );
 
 export {ApisProvider}

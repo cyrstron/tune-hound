@@ -32,7 +32,18 @@ export function getIsFlashEnabled() {
   return isFlashEnabled;
 }
 
-export async function mountDeezerScript() {
+declare global {
+  interface Window {
+    DZ: DeezerSdk.DZ;
+    dzAsyncInit?: () => void;
+  }
+}
+
+export async function mountDeezerScript(): Promise<{
+  DZ: DeezerSdk.DZ,
+  script: HTMLScriptElement,
+  root: HTMLDivElement,
+}> {
   const script = document.createElement('script');
   const root = document.createElement('div');
 
@@ -49,7 +60,7 @@ export async function mountDeezerScript() {
       delete window.dzAsyncInit;
       script.onerror = null;
 
-      res();
+      res(window.DZ);
     }
 
     script.onerror = (e) => {
@@ -63,6 +74,7 @@ export async function mountDeezerScript() {
   });
 
   return {
+    DZ: window.DZ,
     script,
     root,
   };

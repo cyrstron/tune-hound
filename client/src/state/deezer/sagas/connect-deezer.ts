@@ -1,7 +1,7 @@
 import { take, getContext, put } from "redux-saga/effects";
 import {deezerConfig} from 'consts/config';
 import { 
-  setDeezerDisconnected,
+  setDeezerIsConnected,
   connectDeezerPending, 
   connectDeezerSuccess, 
   connectDeezerFailure,
@@ -52,7 +52,7 @@ export function* connectDeezerSaga() {
     
     setDeezerConnectedState(false);
 
-    const disconnectAction = setDeezerDisconnected();
+    const disconnectAction = setDeezerIsConnected(false);
 
     yield put(disconnectAction);
   }

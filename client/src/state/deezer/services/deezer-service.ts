@@ -10,9 +10,9 @@ export class DeezerService {
   onLogout?: () => void;
 
   async mount(options: DeezerSdk.InitOptions) {
-    const {script, root} = await mountDeezerScript();
+    const {script, root, DZ} = await mountDeezerScript();
 
-    this.api = new DeezerWebApi(window.DZ);
+    this.api = new DeezerWebApi(DZ);
 
     this.script = script;
     this.root = root;

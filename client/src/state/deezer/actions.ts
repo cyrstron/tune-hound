@@ -1,57 +1,70 @@
 import {
-  SET_DEEZER_DISCONNECTED, 
+  SET_DEEZER_IS_CONNECTED, 
   CONNECT_DEEZER,
+  DISCONNECT_DEEZER,
   CONNECT_DEEZER_PENDING,
   CONNECT_DEEZER_FAILURE,
   CONNECT_DEEZER_SUCCESS,
 } from './consts';
 
-export interface SetDeezerDisconnectedAction {
-  type: typeof SET_DEEZER_DISCONNECTED;
+export interface SetDeezerIsConnectedAction {
+  type: typeof SET_DEEZER_IS_CONNECTED;
+  payload: {
+    isConnected: boolean;
+  }
 }
 
-export const setDeezerDisconnected = (): SetDeezerDisconnectedAction => ({
-  type: SET_DEEZER_DISCONNECTED,
+export const setDeezerIsConnected = (isConnected: boolean): SetDeezerIsConnectedAction => ({
+  type: SET_DEEZER_IS_CONNECTED,
+  payload: {isConnected},
 });
 
 export interface ConnectDeezerAction {
   type: typeof CONNECT_DEEZER;
 }
 
-export const connectDeezer = (isConnected: boolean): ConnectDeezerAction => ({
+export const connectDeezer = (): ConnectDeezerAction => ({
   type: CONNECT_DEEZER,
 });
 
-export interface ConnectDeezerPending {
+export interface DisconnectDeezerAction {
+  type: typeof DISCONNECT_DEEZER;
+}
+
+export const disconnectDeezer = (): DisconnectDeezerAction => ({
+  type: DISCONNECT_DEEZER,
+});
+
+export interface ConnectDeezerPendingAction {
   type: typeof CONNECT_DEEZER_PENDING;
 }
 
-export const connectDeezerPending = (): ConnectDeezerPending => ({
+export const connectDeezerPending = (): ConnectDeezerPendingAction => ({
   type: CONNECT_DEEZER_PENDING,
 });
 
-export interface ConnectDeezerFailure {
+export interface ConnectDeezerFailureAction {
   type: typeof CONNECT_DEEZER_FAILURE;
   payload: {
     error: Error;
   };
 }
 
-export const connectDeezerFailure = (error: Error): ConnectDeezerFailure => ({
+export const connectDeezerFailure = (error: Error): ConnectDeezerFailureAction => ({
   type: CONNECT_DEEZER_FAILURE,
   payload: {error},
 });
 
-export interface ConnectDeezerSuccess {
+export interface ConnectDeezerSuccessAction {
   type: typeof CONNECT_DEEZER_SUCCESS;
 }
 
-export const connectDeezerSuccess = (): ConnectDeezerSuccess => ({
+export const connectDeezerSuccess = (): ConnectDeezerSuccessAction => ({
   type: CONNECT_DEEZER_SUCCESS,
 });
 
-export type DeezerAction = SetDeezerDisconnectedAction
+export type DeezerAction = SetDeezerIsConnectedAction
   | ConnectDeezerAction
-  | ConnectDeezerPending
-  | ConnectDeezerFailure
-  | ConnectDeezerSuccess;
+  | ConnectDeezerPendingAction
+  | ConnectDeezerFailureAction
+  | ConnectDeezerSuccessAction;

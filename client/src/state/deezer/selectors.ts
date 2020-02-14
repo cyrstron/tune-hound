@@ -1,8 +1,12 @@
 import { AppState } from "state";
 
-export const selectDeezerConnected = (
+export const selectDeezerIsConnected = (
   {deezer}: AppState,
 ): boolean => deezer.isConnected;
+
+export const selectDeezerWasConnected = (
+  {deezer}: AppState,
+): boolean => deezer.wasConnected;
 
 export const selectFlashMsgIgnored = (
   {deezer}: AppState,

@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import React, {Component} from 'react';
-import { Header } from 'components/header/header';
+import { Header } from 'components/header';
 
 import styles from './app.scss';
 

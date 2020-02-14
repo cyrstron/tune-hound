@@ -5,25 +5,23 @@ import { DeezerService } from './services/deezer-service';
 import {DeezerProviderComponent} from './deezer-provider';
 import { connect } from 'react-redux';
 import { 
-  selectDeezerConnected, 
+  connectDeezer,
+  disconnectDeezer,
+  selectDeezerWasConnected,
   selectDeezerError, 
   selectDeezerPending,
-} from '@app/state/sources';
-
-declare global {
-  interface Window {
-    DZ: DeezerSdk.DZ;
-    dzAsyncInit?: () => void;
-  }
-}
+} from '@app/state/deezer';
 
 const mapStateToProps = (state: AppState) => ({
-  isConnected: selectDeezerConnected(state),
+  wasConnected: selectDeezerWasConnected(state),
   error: selectDeezerError(state),
   isPending: selectDeezerPending(state),
 });
 
-export const DeezerProvider = connect(mapStateToProps)(DeezerProviderComponent);
+export const DeezerProvider = connect(mapStateToProps, {
+  connectDeezer,
+  disconnectDeezer,
+})(DeezerProviderComponent);
 
 export interface DeezerCtx {
   dz?: DeezerService;

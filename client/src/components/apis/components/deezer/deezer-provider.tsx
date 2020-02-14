@@ -67,13 +67,13 @@ class DeezerProviderComponent extends Component<DeezerProviderProps, {}> {
         await this.init();
       }
   
-      if (!this.state.isConnected) {
-        await this.service.connect();
+      // if (!this.state.isConnected) {
+      //   await this.service.connect();
 
-        this.setState({
-          isConnected: true,
-        });
-      }
+      //   this.setState({
+      //     isConnected: true,
+      //   });
+      // }
       
       localStorage.setItem('deezerConnected', 'true');
     } catch (error) {
@@ -95,26 +95,26 @@ class DeezerProviderComponent extends Component<DeezerProviderProps, {}> {
 
   render() {
     const {children} = this.props;
-    const {isConnected, isFlashEnabled, isFlashIgnored} = this.state;
+    // const {isConnected, isFlashEnabled, isFlashIgnored} = this.state;
 
-    const value = {
-      dz: isConnected ? this.service : undefined, 
-      connectDeezer: this.connect,
-      disconnectDeezer: this.disconnect,
-      isDeezerPending: isConnected === undefined,
-    }
+    // const value = {
+    //   dz: isConnected ? this.service : undefined, 
+    //   connectDeezer: this.connect,
+    //   disconnectDeezer: this.disconnect,
+    //   isDeezerPending: isConnected === undefined,
+    // }
 
-    return (
-      <>
-        {!isFlashIgnored && isFlashEnabled === false && (
-          <FlashPopup 
-            ignoreFlash={this.ignoreFlash}
-          />
-        )}
-        <DeezerCtxProvider value={value}>
-          {children}
-        </DeezerCtxProvider>
-      </>
+    return (null
+      // <>
+      //   {!isFlashIgnored && isFlashEnabled === false && (
+      //     <FlashPopup 
+      //       ignoreFlash={this.ignoreFlash}
+      //     />
+      //   )}
+      //   <DeezerCtxProvider value={value}>
+      //     {children}
+      //   </DeezerCtxProvider>
+      // </>
     )
   }
 }
