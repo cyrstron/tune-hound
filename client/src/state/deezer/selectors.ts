@@ -23,3 +23,7 @@ export const selectDeezerError = (
 export const selectDeezerPending = (
   {deezer}: AppState,
 ): boolean => deezer.isPending;
+
+export const selectDeezerPlayerReady = (
+  {deezer}: AppState,
+): boolean => deezer.isPlayerReady;

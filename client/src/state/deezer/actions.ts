@@ -5,6 +5,7 @@ import {
   CONNECT_DEEZER_PENDING,
   CONNECT_DEEZER_FAILURE,
   CONNECT_DEEZER_SUCCESS,
+  SET_DEEZER_PLAYER_READY,
 } from './consts';
 
 export interface SetDeezerIsConnectedAction {
@@ -63,8 +64,17 @@ export const connectDeezerSuccess = (): ConnectDeezerSuccessAction => ({
   type: CONNECT_DEEZER_SUCCESS,
 });
 
+export interface SetDeezerPlayerReadyAction {
+  type: typeof SET_DEEZER_PLAYER_READY;
+}
+
+export const setDeezerPlayerReady = (): SetDeezerPlayerReadyAction => ({
+  type: SET_DEEZER_PLAYER_READY,
+});
+
 export type DeezerAction = SetDeezerIsConnectedAction
   | ConnectDeezerAction
   | ConnectDeezerPendingAction
   | ConnectDeezerFailureAction
-  | ConnectDeezerSuccessAction;
+  | ConnectDeezerSuccessAction
+  | SetDeezerPlayerReadyAction;

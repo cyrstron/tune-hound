@@ -1,14 +1,15 @@
 import createSagaMiddleware from 'redux-saga';
-import {combineReducers, createStore, applyMiddleware} from 'redux';
+import {combineReducers, createStore, applyMiddleware, compose} from 'redux';
+import {DEEZER_SERVICE_CTX_KEY} from 'consts';
 
 import {authReducer, AuthState} from './auth';
 import { 
   deezerReducer, 
-  DeezerState, 
-  DEEZER_SERVICE_CTX_KEY, 
+  DeezerState,  
   DeezerService 
 } from './deezer';
 import { rootSaga } from './sagas';
+import { composeWithDevTools } from "redux-devtools-extension";
 
 export interface AppState {
   auth: AuthState;
@@ -30,7 +31,7 @@ export const createAppStore = () => {
   
   const store = createStore(
     rootReducer,
-    applyMiddleware(sagaMiddleware),
+    composeWithDevTools(applyMiddleware(sagaMiddleware)),
   );
 
   sagaMiddleware.run(rootSaga);

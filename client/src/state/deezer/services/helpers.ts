@@ -1,6 +1,7 @@
 import { 
   IS_DEEZER_CONNECTED_KEY, 
   FLASH_MSG_IGNORED_KEY,
+  IS_DEEZER_DISABLED_KEY,
 } from "consts";
 
 export function getDeezerConnectedState(): boolean {
@@ -12,6 +13,18 @@ export function setDeezerConnectedState(isConnected: boolean): void {
     localStorage.setItem(IS_DEEZER_CONNECTED_KEY, 'true');
   } else {
     localStorage.removeItem(IS_DEEZER_CONNECTED_KEY);
+  }
+}
+
+export function getDeezerDisabledState(): boolean {
+  return !!localStorage.getItem(IS_DEEZER_DISABLED_KEY) || false;
+}
+
+export function setDeezerDisabledState(isDisabled: boolean): void {
+  if (isDisabled) {
+    localStorage.setItem(IS_DEEZER_DISABLED_KEY, 'true');
+  } else {
+    localStorage.removeItem(IS_DEEZER_DISABLED_KEY);
   }
 }
 

@@ -1,19 +1,24 @@
-import { DeezerAction, ConnectDeezerFailureAction } from "./actions";
+import { DeezerAction } from "./actions";
 import {
   getDeezerConnectedState, 
   getFlashIgnoredState,
-  getIsFlashEnabled
+  getIsFlashEnabled,
+  getDeezerDisabledState
 } from "./services/helpers";
 import {
   SET_DEEZER_IS_CONNECTED,
   CONNECT_DEEZER_PENDING,
   CONNECT_DEEZER_FAILURE,
   CONNECT_DEEZER_SUCCESS,
+  SET_DEEZER_PLAYER_READY,
 } from './consts';
 
 export interface DeezerState {
+  isMounted: boolean;
+  isDisabled: boolean;
   wasConnected: boolean;
   isConnected: boolean;
+  isPlayerReady: boolean;
   isFlashMsgIgnored: boolean;
   isFlashEnabled: boolean;
   error?: Error;
@@ -21,8 +26,11 @@ export interface DeezerState {
 }
 
 const initialDeezerState: DeezerState = {
+  isDisabled: getDeezerDisabledState(),
+  isMounted: false,
   wasConnected: getDeezerConnectedState(),
   isConnected: false,
+  isPlayerReady: false,
   isFlashMsgIgnored: getFlashIgnoredState(),
   isFlashEnabled: getIsFlashEnabled(),
   isPending: false,
@@ -56,6 +64,11 @@ export function deezerReducer(
         error: undefined,
         isConnected: true,
         isPending: false,
+      };
+    case SET_DEEZER_PLAYER_READY:
+      return {
+        ...state,
+        isPlayerReady: true,
       };
     default:
       return state;

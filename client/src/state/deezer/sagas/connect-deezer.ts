@@ -1,16 +1,17 @@
-import { take, getContext, put } from "redux-saga/effects";
-import {deezerConfig} from 'consts/config';
+import { take, getContext, put, call, takeLeading } from "redux-saga/effects";
+import {eventChannel, END, EventChannel} from 'redux-saga';
+import {deezerConfig, DEEZER_SERVICE_CTX_KEY} from 'consts';
 import { 
   setDeezerIsConnected,
   connectDeezerPending, 
   connectDeezerSuccess, 
   connectDeezerFailure,
+  setDeezerPlayerReady,
 } from "../actions";
 import { DeezerService } from "../services";
 import {
   CONNECT_DEEZER, 
-  DISCONNECT_DEEZER, 
-  DEEZER_SERVICE_CTX_KEY,
+  DISCONNECT_DEEZER,
 } from '../consts';
 import { setDeezerConnectedState } from "../services/helpers";
 
@@ -24,15 +25,20 @@ export function* connectDeezerSaga() {
 
     const deezerService: DeezerService = yield getContext(DEEZER_SERVICE_CTX_KEY);
 
+
     try {
+      let isLoggedIn: boolean;
+
       if (!deezerService.isMounted) {
-        yield deezerService.mount({
+        const response: DeezerSdk.SdkOptions = yield deezerService.mount({
           ...deezerConfig, 
           player: {},
         });
+
+        isLoggedIn = !!response?.token?.access_token;
+      } else {
+        isLoggedIn = yield deezerService.isLoggedIn();
       }
-    
-      const isLoggedIn = yield deezerService.isLoggedIn();
 
       if (!isLoggedIn) {
         yield deezerService.connect();

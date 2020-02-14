@@ -10,4 +10,4 @@ export const DISCONNECT_DEEZER = '@app/deezer/DISCONNECT_DEEZER';
 export const SET_DEEZER_IS_CONNECTED = '@app/deezer/SET_DEEZER_IS_CONNECTED';
 export const SET_FLASH_IGNORED = '@app/deezer/SET_FLASH_IGNORED';
 
-export const DEEZER_SERVICE_CTX_KEY = 'DEEZER_SERVICE_CTX_KEY';
+export const SET_DEEZER_PLAYER_READY = '@app/deezer/SET_PLAYER_READY';
