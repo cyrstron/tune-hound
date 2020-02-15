@@ -1,6 +1,8 @@
 import { spawn } from 'redux-saga/effects';
-import {connectDeezerSaga} from './connect-deezer';
+import {connectionFlow} from './connection-flow';
+import {ignoreFlash} from './ignore-flash';
 
 export function* deezerSaga() {
-  yield spawn(connectDeezerSaga);
+  yield spawn(connectionFlow);
+  yield spawn(ignoreFlash);
 }

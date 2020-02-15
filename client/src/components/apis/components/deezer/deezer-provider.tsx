@@ -1,7 +1,5 @@
-import React, { Component } from "react";
-import { DeezerCtxProvider } from "../deezer";
+import { Component } from "react";
 import { DeezerService } from "./services/deezer-service";
-import { FlashPopup } from "./components/flash-popup";
 
 export interface DeezerProviderProps {
   appId: string;

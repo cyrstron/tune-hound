@@ -24,6 +24,10 @@ export const selectDeezerPending = (
   {deezer}: AppState,
 ): boolean => deezer.isPending;
 
-export const selectDeezerPlayerReady = (
+export const selectDeezerMounted = (
   {deezer}: AppState,
-): boolean => deezer.isPlayerReady;
+): boolean => deezer.isMounted;
+
+export const selectDeezerInited = (
+  {deezer}: AppState,
+): boolean => deezer.isInited;

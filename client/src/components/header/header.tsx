@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import { withApis, ApisCtx } from '../apis';
 
 import styles from './header.scss';
+import { FlashPopup } from './components/flash-popup';
 
 const cx = classNames.bind(styles);
 
@@ -18,6 +19,14 @@ interface HeaderProps {
 type Props = HeaderProps;
 
 class HeaderComponent extends Component<Props> {
+  componentDidMount() {
+    const {wasDeezerConnected, connectDeezer} = this.props;
+
+    if (wasDeezerConnected) {
+      connectDeezer();
+    }
+  }
+
   connectDeezer = async () => {
     const {connectDeezer} = this.props;
 
@@ -53,13 +62,14 @@ class HeaderComponent extends Component<Props> {
 
     return (
       <>
+      <FlashPopup />
         <div className={cx('header')}>
           App
         </div>
         <div>
           {isDeezerPending && (
             <span>
-              Checking Deezer connection...
+              Loading...
             </span>
           )}
           {!isDeezerConnected && !isDeezerPending && (

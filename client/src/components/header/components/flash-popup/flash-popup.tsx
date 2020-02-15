@@ -6,21 +6,32 @@ import styles from './flash-popup.scss';
 const cx = classNames.bind(styles);
 
 interface FlashPopupProps {
-  ignoreFlash: () => void;
+  isEnabled: boolean;
+  isIgnored: boolean;
+  isConnected: boolean;
+  setIgnored: (isIgnored: boolean) => void;
 }
 
-class FlashPopup extends Component<FlashPopupProps, {}> {
+class FlashPopupComponent extends Component<FlashPopupProps, {}> {
   onApply = () => {
     location.reload();
   }
 
   onIgnore = () => {
-    const {ignoreFlash} = this.props;
+    const {setIgnored} = this.props;
 
-    ignoreFlash();
+    setIgnored(true);
   }
 
   render() {
+    const {
+      isEnabled,
+      isIgnored,
+      isConnected,
+    } = this.props;
+
+    if (!isConnected || isIgnored || isEnabled) return null;
+
     return (
       <div className={cx('notification')}>
         You should enable Flash to stream audio files from Deezer.
@@ -34,4 +45,4 @@ class FlashPopup extends Component<FlashPopupProps, {}> {
 
 }
 
-export {FlashPopup}
+export {FlashPopupComponent};

@@ -32,6 +32,15 @@ export function getFlashIgnoredState(): boolean {
   return !!localStorage.getItem(FLASH_MSG_IGNORED_KEY) || false;
 }
 
+export function setFlashIgnored(isIgnored: boolean): void {
+  if (isIgnored) {
+    localStorage.setItem(FLASH_MSG_IGNORED_KEY, 'true');
+  } else {
+    localStorage.removeItem(FLASH_MSG_IGNORED_KEY);
+  }
+}
+
+
 export function getIsFlashEnabled() {
   let isFlashEnabled;
 

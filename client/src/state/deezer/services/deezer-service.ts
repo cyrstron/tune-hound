@@ -9,15 +9,27 @@ export class DeezerService {
 
   onLogout?: () => void;
 
-  async mount(options: DeezerSdk.InitOptions) {
+  async mount() {
     const {script, root, DZ} = await mountDeezerScript();
 
     this.api = new DeezerWebApi(DZ);
 
     this.script = script;
     this.root = root;
+  }
+
+  async init(options: DeezerSdk.InitOptions) {
+    if (!this.api) throw new Error('Deezer API is not mounted');
 
     const response = await this.api.init(options);
+
+    return response;
+  }
+
+  async me() {
+    if (!this.api) throw new Error('Deezer API is not mounted');
+
+    const response = await this.api.me();
 
     return response;
   }
