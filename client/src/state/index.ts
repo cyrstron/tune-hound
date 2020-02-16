@@ -10,16 +10,19 @@ import {
 } from './deezer';
 import { rootSaga } from './sagas';
 import { composeWithDevTools } from "redux-devtools-extension";
+import { SearchState, searchReducer } from './search';
 
 export interface AppState {
   auth: AuthState;
   deezer: DeezerState;
+  search: SearchState;
 }
 
 export const createAppStore = () => {
   const rootReducer = combineReducers<AppState>({
     auth: authReducer,
     deezer: deezerReducer,
+    search: searchReducer,
   });
   
   const sagaMiddleware = createSagaMiddleware({

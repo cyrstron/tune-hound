@@ -14,7 +14,7 @@ export interface DeezerUser {
   lastname: string;
   firstname: string;
   email: string;
-  status: number;
+  status: 0 | 1 | 2;
   birthday: string;
   inscription_date: string;
   gender: "F" | "M" | "";
@@ -33,6 +33,59 @@ export interface DeezerUser {
   type: "user";
 }
 
+export interface DeezerTrack {
+
+}
+
 export type DeezerResponseType = DeezerUser['type'];
 
 export type DeezerUserResponse = DeezerApiResponse<DeezerUser>;
+export type DeezerTrackResponse = DeezerApiResponse<DeezerTrack>;
+export type DeezerTrackSearchResponse = DeezerApiResponse<{
+  data: DeezerTrack[],
+}>;
+
+export type DeezerSearchNamespace = 'album' |
+  'artist' |
+  'history' |
+  'playlist' |
+  'radio' |
+  'track' |
+  'user';
+
+export type DeezerSearchOrder =  'RANKING' |
+  'TRACK_ASC' |
+  'TRACK_DESC' | 
+  'ARTIST_ASC' | 
+  'ARTIST_DESC' | 
+  'ALBUM_ASC' | 
+  'ALBUM_DESC' | 
+  'RATING_ASC' | 
+  'RATING_DESC' | 
+  'DURATION_ASC' | 
+  'DURATION_DESC';
+
+export interface DeezerBasicSearchOptions {
+  strict?: boolean;
+  order?: DeezerSearchOrder;
+}
+
+export interface DeezerAdvancedSearchOptions {
+  artist?: string;
+  album?: string;
+  track?: string;
+  label?: string;
+  durMin?: number;
+  durMax?: number;
+  bpmMin?: number;
+  bpmMax?: number;
+  [key: string]: string | number | undefined;
+}
+
+export type DeezerNamespaceSearchOptions = DeezerBasicSearchOptions & {
+  namespace?: string
+};
+
+export type DeezerTrackSearchOptions = DeezerBasicSearchOptions & DeezerAdvancedSearchOptions;
+
+export type DeezerSearchOptions = DeezerNamespaceSearchOptions | DeezerTrackSearchOptions;

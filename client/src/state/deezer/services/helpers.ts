@@ -3,6 +3,7 @@ import {
   FLASH_MSG_IGNORED_KEY,
   IS_DEEZER_DISABLED_KEY,
 } from "consts";
+import { DeezerAdvancedSearchOptions } from "../types";
 
 export function getDeezerConnectedState(): boolean {
   return !!localStorage.getItem(IS_DEEZER_CONNECTED_KEY) || false;
@@ -100,4 +101,33 @@ export async function mountDeezerScript(): Promise<{
     script,
     root,
   };
+}
+
+export const deezerSearchOptionsKeys: {
+  [key: string]: string
+} = {
+  artist: 'artist',
+  album: 'album',
+  track: 'track',
+  label: 'label',
+  durMin: 'dur_min',
+  durMax: 'dur_max',
+  bpmMin: 'bpm_min',
+  bpmMax: 'bpm_max',
+};
+
+export function getAdvancedSearchString(
+  query: string, 
+  props: DeezerAdvancedSearchOptions = {}
+): string {
+  return Object.keys(props)
+    .reduce<string>((queryString, propKey) => {
+      const value = (props)[propKey];
+      const key = deezerSearchOptionsKeys[propKey];
+
+      if (!value) return queryString;
+
+      return `${query} ${key}:"${value}"`
+
+    }, `"${query}"`);
 }

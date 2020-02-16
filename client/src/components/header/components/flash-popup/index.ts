@@ -5,13 +5,15 @@ import {
   selectFlashEnabled, 
   selectFlashMsgIgnored, 
   selectDeezerIsConnected,
-  setFlashIgnored
+  setFlashIgnored,
+  selectDeezerIsPremium
 } from '@app/state/deezer';
 
 const mapStateToProps = (state: AppState) => ({
   isEnabled: selectFlashEnabled(state),
   isIgnored: selectFlashMsgIgnored(state),
   isConnected: selectDeezerIsConnected(state),
+  isPremium: selectDeezerIsPremium(state),
 });
 
 const FlashPopup = connect(mapStateToProps, {

@@ -31,3 +31,7 @@ export const selectDeezerMounted = (
 export const selectDeezerInited = (
   {deezer}: AppState,
 ): boolean => deezer.isInited;
+
+export const selectDeezerIsPremium = (
+  {deezer}: AppState,
+): boolean => !!deezer.currentUser && deezer.currentUser['status'] > 0;

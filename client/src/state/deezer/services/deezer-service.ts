@@ -1,5 +1,6 @@
 import {mountDeezerScript} from './helpers';
 import {DeezerWebApi} from './deezer-web-api';
+import { DeezerSearchOptions } from '../types';
 
 export class DeezerService {
   script?: HTMLScriptElement;
@@ -54,4 +55,11 @@ export class DeezerService {
   async isLoggedIn(): Promise<boolean> {
     return !!this.api && this.api.isLoggedIn();
   }
+
+  search(query: string, options: DeezerSearchOptions) {
+    if (!this.api) throw new Error('Deezer API is not mounted');
+
+    return this.api.search(query, options);    
+  }
+  
 }

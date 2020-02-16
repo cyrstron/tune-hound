@@ -6,7 +6,7 @@ interface SearchProps {
   refreshToken: () => Promise<void>;
 }
 
-const Search = ({token, refreshToken}: SearchProps) => {
+const SearchComponent = ({token, refreshToken}: SearchProps) => {
   const [query, setQuery] = useState<string>('');
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -40,4 +40,4 @@ const Search = ({token, refreshToken}: SearchProps) => {
   );
 }
 
-export {Search};
+export {SearchComponent};

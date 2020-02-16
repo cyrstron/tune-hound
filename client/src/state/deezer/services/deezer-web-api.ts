@@ -1,5 +1,16 @@
 import {deezerConfig} from 'consts';
-import {DeezerUserResponse, DeezerUser} from '../types';
+import {toQueryString} from 'services/helpers';
+import {
+  DeezerUserResponse, 
+  DeezerUser, 
+  DeezerTrackSearchResponse, 
+  DeezerTrack, 
+  DeezerSearchOptions, 
+  DeezerApiResponse, 
+  DeezerTrackSearchOptions
+} from '../types';
+import {getAdvancedSearchString } from './helpers';
+
 
 const {connectionTimeout} = deezerConfig;
 
@@ -68,5 +79,53 @@ export class DeezerWebApi {
         }
       });
     })
+  }
+
+  searchTrack(query: string, {
+    strict,
+    order,
+    ...advancedProps
+  }: DeezerTrackSearchOptions = {}): Promise<DeezerTrack[]> {
+    const queryString = toQueryString({
+      q: getAdvancedSearchString(query, advancedProps),
+      strict: strict ? 'on' : undefined,
+      order,
+    });
+
+    return new Promise((res, rej) => {
+      this.dz.api(`/search${queryString}`, (response: DeezerTrackSearchResponse) => {
+        if ('error' in response) {
+          rej(response.error);
+        } else {
+          res(response.data);
+        }
+      });
+    })
+  }
+
+  search(
+    query: string,  
+    options: DeezerSearchOptions = {}
+  ) {
+    if (!('namespace' in options)) {
+      return this.searchTrack(query, options);
+    }
+
+    const {namespace, strict, order} = options;
+
+    const queryString = toQueryString({
+      strict: strict ? 'on' : undefined,
+      order,
+    });
+
+    return new Promise((res, rej) => {
+      this.dz.api(`/search/${namespace}${queryString}`, (response: DeezerApiResponse<{data: any}>) => {
+        if ('error' in response) {
+          rej(response.error);
+        } else {
+          res(response.data);
+        }
+      });
+    });
   }
 }
