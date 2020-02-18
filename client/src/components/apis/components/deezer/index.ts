@@ -34,5 +34,4 @@ export const deezerCtx = createContext<DeezerCtx | undefined>(undefined);
 export const DeezerCtxProvider = deezerCtx.Provider;
 export const DeezerCtxConsumer = deezerCtx.Consumer;
 
-
 export {withDeezer} from './hocs/with-deezer';

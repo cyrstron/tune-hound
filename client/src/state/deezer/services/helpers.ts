@@ -117,7 +117,7 @@ export const deezerSearchOptionsKeys: {
 };
 
 export function getAdvancedSearchString(
-  query: string, 
+  query: string,
   props: DeezerAdvancedSearchOptions = {}
 ): string {
   return Object.keys(props)

@@ -56,10 +56,10 @@ export class DeezerService {
     return !!this.api && this.api.isLoggedIn();
   }
 
-  search(query: string, options: DeezerSearchOptions) {
+  search(options: DeezerSearchOptions) {
     if (!this.api) throw new Error('Deezer API is not mounted');
 
-    return this.api.search(query, options);    
+    return this.api.search(options);
   }
   
 }

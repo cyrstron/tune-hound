@@ -13,7 +13,7 @@ export function* executeDeezerSearchSaga(query: string, options: DeezerSearchOpt
   yield put(pendingAction);
 
   try {
-    const result: any[] = yield deezerService.search(query, options);
+    const result: any[] = yield deezerService.search(options);
 
     const successAction = executeSearchSuccess(result.map(item => ({deezer: item})));
 

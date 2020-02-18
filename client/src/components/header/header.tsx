@@ -4,6 +4,7 @@ import { withApis, ApisCtx } from '../apis';
 
 import styles from './header.scss';
 import { FlashPopup } from './components/flash-popup';
+import { Search } from '../search';
 
 const cx = classNames.bind(styles);
 
@@ -98,6 +99,7 @@ class HeaderComponent extends Component<Props> {
             </button>
           )} */}
         </div>
+        <Search />
       </>
     );
   }

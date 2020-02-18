@@ -68,6 +68,10 @@ export type DeezerSearchOrder =  'RANKING' |
 export interface DeezerBasicSearchOptions {
   strict?: boolean;
   order?: DeezerSearchOrder;
+  namespace: DeezerSearchNamespace;
+  query: string;
+  limit?: number;
+  index?: number;
 }
 
 export interface DeezerAdvancedSearchOptions {
@@ -82,10 +86,10 @@ export interface DeezerAdvancedSearchOptions {
   [key: string]: string | number | undefined;
 }
 
-export type DeezerNamespaceSearchOptions = DeezerBasicSearchOptions & {
-  namespace?: string
-};
+export type DeezerNamespaceSearchOptions = DeezerBasicSearchOptions;
 
-export type DeezerTrackSearchOptions = DeezerBasicSearchOptions & DeezerAdvancedSearchOptions;
+export type DeezerTrackSearchOptions = DeezerBasicSearchOptions & 
+  DeezerAdvancedSearchOptions & 
+  {namespace: 'track'};
 
 export type DeezerSearchOptions = DeezerNamespaceSearchOptions | DeezerTrackSearchOptions;
