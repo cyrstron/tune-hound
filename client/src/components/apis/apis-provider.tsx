@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { DeezerProvider } from "./components/deezer";
+// import { DeezerProvider } from "./components/deezer";
 import { SpotifyProvider } from "./components/spotify";
 
 interface ApiProviderProps {
