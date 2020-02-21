@@ -127,7 +127,7 @@ export function getAdvancedSearchString(
 
       if (!value) return queryString;
 
-      return `${query} ${key}:"${value}"`
+      return `${queryString} ${key}:"${value}"`
 
-    }, `"${query}"`);
+    }, `track:"${query}"`);
 }

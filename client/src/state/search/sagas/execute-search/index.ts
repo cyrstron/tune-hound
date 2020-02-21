@@ -4,7 +4,7 @@ import { ExecuteSearchAction } from '../../actions';
 import { executeDeezerSearchSaga } from './execute-deezer-search';
 
 export function* watchSearch() {
-  takeEvery(EXECUTE_SEARCH, executeSearchSaga);
+  yield takeEvery(EXECUTE_SEARCH, executeSearchSaga);
 }
 
 export function* executeSearchSaga({

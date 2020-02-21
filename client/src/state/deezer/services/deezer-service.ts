@@ -60,6 +60,5 @@ export class DeezerService {
     if (!this.api) throw new Error('Deezer API is not mounted');
 
     return this.api.search(options);
-  }
-  
+  }  
 }

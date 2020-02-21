@@ -4,6 +4,11 @@ import { DeezerSearchForm } from './components/deezer-search-form';
 import { DeezerSearchOptions } from '@app/state/deezer/types';
 
 export interface SearchProps {
+  executeSearch: (    
+    source: SearchSource,
+    query: string,
+    options?: DeezerSearchOptions
+  ) => void;
 }
 
 export type DeezerSearchParams = DeezerSearchOptions & {
@@ -12,7 +17,9 @@ export type DeezerSearchParams = DeezerSearchOptions & {
 
 export type SpotifySearchParams = {source: 'spotify'};
 
-export type SearchState = DeezerSearchParams | SpotifySearchParams;
+export type SearchState = DeezerSearchParams | SpotifySearchParams & {
+  query: string;
+};
 
 const sources: Array<{
   value: SearchSource;
@@ -31,6 +38,11 @@ class SearchComponent extends Component<SearchProps, SearchState> {
 
   onSubmit = (e: FormEvent) => {
     e.preventDefault();
+
+    const {executeSearch} = this.props;
+    const {source, query, ...options} = this.state;
+
+    executeSearch(source, query, options as DeezerSearchOptions);
   }
 
   onSourceChange = ({target}: ChangeEvent<HTMLInputElement>) => {

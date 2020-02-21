@@ -159,10 +159,11 @@ class DeezerSearchFormComponent extends Component<DeezerSearchFormProps, DeezerS
       <div>
         <select name='namespace' onChange={this.onNamespaceChange} value={namespace}>
           {namespaces.map(({label, value}) => (
-            <option value={value}>{label}</option>
+            <option key={value} value={value}>{label}</option>
           ))}
         </select>
         <input type="text" onChange={this.onQueryChange} value={query}/>
+        <button type='submit'>Search</button>
         <button onClick={this.onToggleAdvance}>
           Advanced {isAdvancedOpen ? '⇑' : '⇓'}
         </button>
@@ -175,7 +176,7 @@ class DeezerSearchFormComponent extends Component<DeezerSearchFormProps, DeezerS
             {' '}
             <select name='namespace' onChange={this.onSortingChange} value={order}>
               {sortings.map(({label, value}) => (
-                <option value={value}>{label}</option>
+                <option key={value} value={value}>{label}</option>
               ))}
             </select>
             {namespace === 'track' && (

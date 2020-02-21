@@ -1,5 +1,5 @@
 import {put} from 'redux-saga/effects';
-import { DeezerSearchOptions } from "@app/state/deezer/types";
+import { DeezerSearchOptions, DeezerSearchResult } from "@app/state/deezer/types";
 import { getContext } from "redux-saga/effects";
 import { DEEZER_SERVICE_CTX_KEY } from "@app/consts";
 import { DeezerService } from "@app/state/deezer";
@@ -13,9 +13,12 @@ export function* executeDeezerSearchSaga(query: string, options: DeezerSearchOpt
   yield put(pendingAction);
 
   try {
-    const result: any[] = yield deezerService.search(options);
+    const {data, total}: DeezerSearchResult = yield deezerService.search({
+      query,
+      ...options
+    });
 
-    const successAction = executeSearchSuccess(result.map(item => ({deezer: item})));
+    const successAction = executeSearchSuccess(data.map(item => ({deezer: item})), total);
 
     yield put(successAction);
   } catch (err) {

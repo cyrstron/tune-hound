@@ -36,7 +36,7 @@ export function* connectDeezerSaga() {
       const isInited: boolean = yield select(selectDeezerInited);
 
       if (!isInited) {
-        const response = yield deezerService.init({
+        yield deezerService.init({
           ...initConfig,
           player: {},
         });

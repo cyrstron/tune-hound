@@ -1,6 +1,8 @@
+import { DeezerTrack } from "../deezer/types";
+
 export type SearchSource = 'deezer' | 'spotify';
 
 export interface SearchResult {
-  deezer?: any;
+  deezer?: DeezerTrack;
   spotify?: any;
 }

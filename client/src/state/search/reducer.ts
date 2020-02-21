@@ -7,14 +7,19 @@ import {
 import { EXECUTE_SEARCH_PENDING, EXECUTE_SEARCH_SUCCESS, EXECUTE_SEARCH_FAILURE, RESET_SEARCH_RESULT } from './consts';
 
 export interface SearchState {
-  source?: SearchSource;
   result?: SearchResult[];
+  total?: number;
+  pageIndex: number;
+  pageSize: number;
   error?: Error;
   isPending: boolean;
 }
 
 const initialSearchState: SearchState = {
   isPending: false,
+  pageIndex: 0,
+  pageSize: 20,
+  result: undefined,
 }
 
 export function searchReducer(
@@ -27,13 +32,16 @@ export function searchReducer(
         ...state,
         isPending: true,
         error: undefined,
+        total: undefined,
         result: undefined,
       };
     case EXECUTE_SEARCH_SUCCESS:
       return {
         ...state,
         isPending: false,
+        pageIndex: 0,
         result: (action as ExecuteSearchSuccessAction).payload.data,
+        total: (action as ExecuteSearchSuccessAction).payload.total,
       };
     case EXECUTE_SEARCH_FAILURE:
       return {

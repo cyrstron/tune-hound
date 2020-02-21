@@ -42,12 +42,16 @@ export interface ExecuteSearchSuccessAction {
   type: typeof EXECUTE_SEARCH_SUCCESS;
   payload: {
     data: any;
+    total?: number;
   }
 }
 
-export const executeSearchSuccess = (data: SearchResult[]): ExecuteSearchSuccessAction => ({
+export const executeSearchSuccess = (
+  data: SearchResult[], 
+  total?: number
+): ExecuteSearchSuccessAction => ({
   type: EXECUTE_SEARCH_SUCCESS,
-  payload: {data},
+  payload: {data, total},
 });
 
 export interface ExecuteSearchFailureAction {

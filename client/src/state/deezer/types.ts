@@ -34,16 +34,58 @@ export interface DeezerUser {
 }
 
 export interface DeezerTrack {
-
+  id: number;
+  readable: boolean;
+  title: string;
+  title_short: string;
+  title_version: string;
+  link: string;
+  duration: number;
+  rank: number;
+  explicit_lyrics: boolean;
+  explicit_content_lyrics: number;
+  explicit_content_cover: number;
+  preview: string;
+  artist: {
+    id: number;
+    name: string;
+    links: string;
+    picture: string;
+    picture_small: string;
+    picture_medium: string;
+    picture_big: string;
+    picture_xl: string;
+    tracklist: string;
+    type: 'artist';
+  };
+  album: {
+    id: number;
+    title: string;
+    cover: string;
+    cover_small: string;
+    cover_medium: string;
+    cover_big: string;
+    cover_xl: string;
+    tracklist: string;
+    type: 'album';
+  };
+  type: 'track';
 }
 
-export type DeezerResponseType = DeezerUser['type'];
+export type DeezerResponseType = DeezerUser['type'] | DeezerTrack['type'];
 
 export type DeezerUserResponse = DeezerApiResponse<DeezerUser>;
-export type DeezerTrackResponse = DeezerApiResponse<DeezerTrack>;
-export type DeezerTrackSearchResponse = DeezerApiResponse<{
+
+export interface DeezerTrackSearchResult {
   data: DeezerTrack[],
-}>;
+  total: number;
+  next: string;
+};
+
+export type DeezerSearchResult = DeezerTrackSearchResult;
+
+export type DeezerTrackResponse = DeezerApiResponse<DeezerTrack>;
+export type DeezerTrackSearchResponse = DeezerApiResponse<DeezerTrackSearchResult>;
 
 export type DeezerSearchNamespace = 'album' |
   'artist' |
@@ -66,10 +108,10 @@ export type DeezerSearchOrder =  'RANKING' |
   'DURATION_DESC';
 
 export interface DeezerBasicSearchOptions {
-  strict?: boolean;
-  order?: DeezerSearchOrder;
   namespace: DeezerSearchNamespace;
   query: string;
+  strict?: boolean;
+  order?: DeezerSearchOrder;
   limit?: number;
   index?: number;
 }
