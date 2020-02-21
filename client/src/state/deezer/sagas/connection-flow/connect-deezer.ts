@@ -35,20 +35,18 @@ export function* connectDeezerSaga() {
 
       const isInited: boolean = yield select(selectDeezerInited);
 
-      let isLoggedIn = true;
-
       if (!isInited) {
         const response = yield deezerService.init({
           ...initConfig,
           player: {},
         });
 
-        isLoggedIn = !!response && !!response.token && !!response.token.accessToken;
-
         const initAction = setDeezerInited();
 
         yield put(initAction);
       }
+
+      const isLoggedIn: boolean = yield deezerService.isLoggedIn();
 
       if (!isLoggedIn) {
         yield deezerService.connect();

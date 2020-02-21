@@ -3,7 +3,7 @@ export const deezerConfig = {
     appId: process.env.DEEZER_PLAYER_ID!,
     channelUrl: `${process.env.HOST}/deezer-channel`,
   },
-  connectionTimeout: 10000,
+  connectionTimeout: 5000,
 };
 
 export const spotifyConfig = {

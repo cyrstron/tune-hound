@@ -56,9 +56,14 @@ export class DeezerWebApi {
 
   isLoggedIn(): Promise<boolean> {
     return new Promise((resolve) => {
+      const timerId = setTimeout(() => {
+        resolve(false);
+      }, connectionTimeout);
+
       this.dz.getLoginStatus((response) => {
         const {authResponse} = response;
 
+        clearTimeout(timerId);
         resolve(!!authResponse && !!authResponse.accessToken);
       });
     })
