@@ -202,16 +202,6 @@ class DeezerSearchFormComponent extends Component<DeezerSearchFormProps, DeezerS
                 </label>
                 <br/>
                 <label>
-                  Track:
-                  <input 
-                    type="text" 
-                    onChange={this.onAdvancedChange} 
-                    value={track}
-                    name='track'
-                  />
-                </label>
-                <br/>
-                <label>
                   Label:
                   <input 
                     type="text" 

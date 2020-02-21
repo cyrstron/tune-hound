@@ -108,7 +108,6 @@ export const deezerSearchOptionsKeys: {
 } = {
   artist: 'artist',
   album: 'album',
-  track: 'track',
   label: 'label',
   durMin: 'dur_min',
   durMax: 'dur_max',

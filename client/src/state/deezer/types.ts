@@ -119,7 +119,6 @@ export interface DeezerBasicSearchOptions {
 export interface DeezerAdvancedSearchOptions {
   artist?: string;
   album?: string;
-  track?: string;
   label?: string;
   durMin?: number;
   durMax?: number;
