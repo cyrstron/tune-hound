@@ -20,19 +20,38 @@ export function getSpotifyAuthState() {
   let spotifyAuthData: SpotifyAuthData | undefined;
 
   try {
-    spotifyAuthData = spotifyAuthDataString ? JSON.parse(spotifyAuthDataString) : undefined;
+    const parsedAuthData: Omit<SpotifyAuthData, 'expiresIn'> & { 
+      expiresIn: number,
+    } | undefined = spotifyAuthDataString ? JSON.parse(spotifyAuthDataString) : undefined;
+
+    spotifyAuthData = parsedAuthData && {
+      ...parsedAuthData,
+      expiresIn: new Date(parsedAuthData.expiresIn),
+    };
   } catch {}
 
   return spotifyAuthData
 }
 
-export async function mountSpotifyScript(): Promise<HTMLScriptElement> {
+export function setSpotifyAuthState(authData: SpotifyAuthData) {
+  const authDataString = JSON.stringify({
+    ...authData,
+    expiresIn: +authData.expiresIn,
+  });
+
+  localStorage.setItem(SPOTIFY_AUTH_KEY, authDataString);
+}
+
+export async function mountSpotifyScript(): Promise<{
+  script: HTMLScriptElement,
+  spotify: typeof Spotify,
+}> {
   const script = document.createElement('script');
 
   script.type = 'text/javascript';
   script.src = 'https://sdk.scdn.co/spotify-player.js';
 
-  await new Promise((resolve, reject) => {
+  const spotify = await new Promise<typeof Spotify>((resolve, reject) => {
     document.body.append(script);
 
     script.onerror = (e) => {
@@ -44,10 +63,9 @@ export async function mountSpotifyScript(): Promise<HTMLScriptElement> {
     window.onSpotifyWebPlaybackSDKReady = () => {
       delete window.onSpotifyWebPlaybackSDKReady;
 
-      resolve();
+      resolve(window.Spotify);
     }
-
   });
 
-  return script;
+  return {script, spotify};
 }

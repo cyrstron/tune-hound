@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classNames from 'classnames/bind';
-import { withApis, ApisCtx } from '../apis';
 
 import styles from './header.scss';
 import { FlashPopup } from './components/flash-popup';
@@ -15,16 +14,31 @@ interface HeaderProps {
   deezerError?: Error;
   connectDeezer: () => void;
   disconnectDeezer: () => void;
+  isSpotifyConnected: boolean;
+  wasSpotifyConnected: boolean;
+  isSpotifyPending: boolean;
+  spotifyError?: Error;
+  connectSpotify: () => void;
+  disconnectSpotify: () => void;
 }
 
 type Props = HeaderProps;
 
 class HeaderComponent extends Component<Props> {
   componentDidMount() {
-    const {wasDeezerConnected, connectDeezer} = this.props;
+    const {
+      wasDeezerConnected, 
+      connectDeezer,
+      wasSpotifyConnected, 
+      connectSpotify,
+    } = this.props;
 
     if (wasDeezerConnected) {
       connectDeezer();
+    }
+
+    if (wasSpotifyConnected) {
+      connectSpotify();
     }
   }
 
@@ -40,25 +54,24 @@ class HeaderComponent extends Component<Props> {
     await disconnectDeezer();
   }
 
-  // connectSpotify = async () => {
-  //   const {connectSpotify} = this.props;
+  connectSpotify = async () => {
+    const {connectSpotify} = this.props;
     
-  //   await connectSpotify();
-  // }
+    connectSpotify();
+  }
 
-  // disconnectSpotify = () => {
-  //   const {disconnectSpotify} = this.props;
+  disconnectSpotify = () => {
+    const {disconnectSpotify} = this.props;
 
-  //   disconnectSpotify();
-  // }
+    disconnectSpotify();
+  }
 
   render() {
     const {
-      // dz, 
       isDeezerPending, 
-      isDeezerConnected
-      // spotifyService, 
-      // isSpotifyPending
+      isDeezerConnected,
+      isSpotifyPending, 
+      isSpotifyConnected,
     } = this.props;
 
     return (
@@ -83,21 +96,21 @@ class HeaderComponent extends Component<Props> {
               Disconnect Deezer
             </button>
           )}
-          {/* {isSpotifyPending && (
+          {isSpotifyPending && (
             <span>
               Checking Spotify connection...
             </span>
           )}
-          {!spotifyService && !isSpotifyPending && (
+          {!isSpotifyConnected && !isSpotifyPending && (
             <button onClick={this.connectSpotify}>
               Connect Spotify
             </button>
           )}
-          {spotifyService && (
+          {isSpotifyConnected && (
             <button onClick={this.disconnectSpotify}>
               Disconnect Spotify
             </button>
-          )} */}
+          )}
         </div>
         <Search />
       </>

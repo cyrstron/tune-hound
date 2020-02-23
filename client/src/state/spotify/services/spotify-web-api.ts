@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosStatic } from "axios";
+import { AxiosInstance } from "axios";
 
 export interface SpotifyAuthPayload {
   accessToken: string;
@@ -8,59 +8,32 @@ export interface SpotifyAuthPayload {
 }
 
 export class SpotifyWebApi {
-  accessToken?: string;
-  refreshToken?: string;
-  expiresIn?: Date;
-  scope?: string;
+  spotifyUrl = 'https://api.spotify.com';
 
   constructor(
-    public axios: AxiosInstance, 
-    authTokens?: SpotifyAuthPayload
-  ) {
-    authTokens && this.setAuthTokens(authTokens);
-  }
+    public axios: AxiosInstance
+  ) {}
 
-  async getCurrentUser(): Promise<SpotifyApi.CurrentUsersProfileResponse> {
-    await this.checkAccessToken();
-
-    const {data} = await this.axios.get<SpotifyApi.CurrentUsersProfileResponse>('https://api.spotify.com/v1/me', {
+  async getCurrentUser(accessToken: string): Promise<SpotifyApi.CurrentUsersProfileResponse> {
+    const {data} = await this.axios.get<SpotifyApi.CurrentUsersProfileResponse>(`${this.spotifyUrl}/v1/me`, {
       headers: {
-        'Authorization': `Bearer ${this.accessToken}`
+        'Authorization': `Bearer ${accessToken}`
       }
     });
 
     return data;
   }
 
-  async setActiveDevice(deviceId: string): Promise<void> {
-    await this.checkAccessToken();
-
-    await this.axios.put<void>('https://api.spotify.com/v1/me/player', {
+  async setActiveDevice(deviceId: string, accessToken: string): Promise<void> {
+    await this.axios.put<void>(`${this.spotifyUrl}/v1/me/player`, {
       device_ids: [deviceId],
       play: true,
     }, {
       headers: {
-        'Authorization': `Bearer ${this.accessToken}`
+        'Authorization': `Bearer ${accessToken}`
       }
     });
   }
-
-  async setAuthTokens({
-    refreshToken,
-    accessToken,
-    expiresIn,
-    scope,
-  }: SpotifyAuthPayload) {
-    this.refreshToken = refreshToken;
-    this.accessToken = accessToken;
-    this.expiresIn = expiresIn;
-    this.scope = scope;
-
-    if (expiresIn < new Date()) {
-      await this.refreshAccessToken();
-    }
-  }
-
 
   async login() {
     window.open('/login-spotify');
@@ -90,22 +63,13 @@ export class SpotifyWebApi {
       window.addEventListener('message', onMessage);
     });
 
-    this.setAuthTokens({
+    return {
       ...authTokens, 
       expiresIn: new Date(expiresIn)
-    });
+    };
   }
 
-  resetAuthTokens() {
-    this.accessToken = undefined;
-    this.refreshToken = undefined;
-    this.expiresIn = undefined;
-    this.scope = undefined;
-  }
-
-  async refreshAccessToken(): Promise<void> {
-    this.checkRefreshToken();
-
+  async refreshAccessToken(refreshToken: string) {
     const {
       data: {
         'access_token': accessToken, 
@@ -114,37 +78,11 @@ export class SpotifyWebApi {
     } = await this.axios.get<{
       'access_token': string,
       'expires_in': number,
-    }>(`/refresh-token?refresh_token=${this.refreshToken}`);
-
-    this.accessToken = accessToken;
-    this.expiresIn = new Date(expiresIn);
-  }
-
-  async checkAccessToken(): Promise<void> {
-    if (!this.accessToken) throw new Error('Spotify loggin in required!');
-
-    if (this.expiresIn! < new Date()) {
-      await this.refreshAccessToken();
-    }
-  }
-
-  checkRefreshToken() {
-    if(!this.refreshToken) throw new Error('Spotify loggin in required!');
-  }
-
-  getAuthTokens(): SpotifyAuthPayload | undefined {
-    if (
-      !this.accessToken ||
-      !this.refreshToken ||
-      !this.expiresIn ||
-      !this.scope
-    ) return;
+    }>(`/refresh-token?refresh_token=${refreshToken}`);
 
     return {
-      refreshToken: this.refreshToken,
-      expiresIn: this.expiresIn,
-      accessToken: this.accessToken,
-      scope: this.scope,
-    };
+      accessToken,
+      expiresIn,
+    }
   }
 }

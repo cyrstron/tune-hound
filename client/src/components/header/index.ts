@@ -8,27 +8,30 @@ import {
   selectDeezerPending,
   selectDeezerError,
 } from '@app/state/deezer';
+import { 
+  selectSpotifyIsConnected,
+  selectSpotifyWasConnected,
+  connectSpotify,
+  disconnectSpotify,
+  selectSpotifyConnectPending,
+  selectSpotifyConnectError,
+} from '@app/state/spotify';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 
 const mapStateToProps = (state: AppState) => ({
   isDeezerConnected: selectDeezerIsConnected(state),
   wasDeezerConnected: selectDeezerWasConnected(state),
   isDeezerPending: selectDeezerPending(state),
   deezerError: selectDeezerError(state),
+  spotifyError: selectSpotifyConnectError(state),
+  isSpotifyPending: selectSpotifyConnectPending(state),
+  wasSpotifyConnected: selectSpotifyWasConnected(state),
+  isSpotifyConnected: selectSpotifyIsConnected(state),
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  connectDeezer: () => {
-    const action = connectDeezer();
-
-    dispatch(action);
-  },
-  disconnectDeezer: () => {
-    const action = disconnectDeezer();
-
-    dispatch(action);
-  },
-})
-
-export const Header = connect(mapStateToProps, mapDispatchToProps)(HeaderComponent);
+export const Header = connect(mapStateToProps, {
+  connectDeezer,
+  disconnectDeezer,
+  connectSpotify,
+  disconnectSpotify,
+})(HeaderComponent);
