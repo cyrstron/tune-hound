@@ -21,3 +21,14 @@ export const selectIsSpotifyPremium = (state: AppState) => {
 
 export const selectSpotifyIsConnected = ({spotify}: AppState) => spotify.isConnected;
 export const selectSpotifyWasConnected = ({spotify}: AppState) => spotify.wasConnected;
+
+export const selectIsSpotifyPlayerActive = ({spotify}: AppState) => spotify.playbackState !== null;
+export const selectIsSpotifyPlayerMsgIgnored = ({spotify}: AppState) => spotify.isPlayerMsgIgnored;
+
+export const selectShouldShowSpotifyPlayerMessage = (state: AppState) => {
+  const isConnected = selectSpotifyIsConnected(state);
+  const isActive = selectIsSpotifyPlayerActive(state);
+  const isIgnored = selectIsSpotifyPlayerMsgIgnored(state);
+
+  return isConnected && !isActive && !isIgnored;
+}

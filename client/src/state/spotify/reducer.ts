@@ -1,26 +1,33 @@
-import { SpotifyAction, SetSpotifyAuthDataAction, UpdateSpotifyAccessTokenSuccessAction, SetSpotifyCurrentUserAction, UpdateSpotifyAccessTokenFailureAction, ConnectSpotifyFailureAction } from "./actions";
+import { 
+  SpotifyAction, 
+  SetSpotifyAuthDataAction, 
+  UpdateSpotifyAccessTokenSuccessAction, 
+  SetSpotifyCurrentUserAction, 
+  UpdateSpotifyAccessTokenFailureAction,
+  ConnectSpotifyFailureAction, 
+  SetSpotifyPlayerStateAction,
+  SetSpotifyPlayerErrorAction,
+  SetSpotifyPlayerReadyAction,
+} from "./actions";
 import { 
   SpotifyAuthData, 
   getSpotifyPlayerMsgState, 
   getSpotifyAuthState,
 } from "./services/helpers";
 import {
-  CONNECT_SPOTIFY,
   CONNECT_SPOTIFY_PENDING,
   CONNECT_SPOTIFY_FAILURE,
   CONNECT_SPOTIFY_SUCCESS,
-  SET_SPOTIFY_PLAYBACK_STATE,
+  SET_SPOTIFY_PLAYER_STATE,
   SET_SPOTIFY_PLAYER_READY,
-  SET_SPOTIFY_NOT_PLAYER_READY,
   SET_SPOTIFY_AUTH_DATA,
-  UPDATE_SPOTIFY_ACCESS_TOKEN,
-  UPDATE_SPOTIFY_ACCESS_TOKEN_PENDING,
   UPDATE_SPOTIFY_ACCESS_TOKEN_SUCCESS,
   UPDATE_SPOTIFY_ACCESS_TOKEN_FAILURE,
   SPOTIFY_MOUNTED,
   SPOTIFY_INITED,
   SET_SPOTIFY_IS_CONNECTED,
   SET_SPOTIFY_CURRENT_USER,
+  SET_SPOTIFY_PLAYER_ERROR,
 } from './consts';
 
 export interface SpotifyState {
@@ -31,10 +38,11 @@ export interface SpotifyState {
   isDisabled: boolean;
   isMounted: boolean;
   authData?: SpotifyAuthData;
-  deviceId?: string;
   error?: Error;
   playbackState?: Spotify.PlaybackState | null;
   playbackError?: Spotify.Error;
+  playbackInstance?: Spotify.WebPlaybackInstance;
+  isPlaybackReady: boolean;
   currentUser?: SpotifyApi.CurrentUsersProfileResponse;
 }
 
@@ -48,6 +56,7 @@ const initialSpotifyState: SpotifyState = {
   isDisabled: false,
   isPending: false,
   isMounted: false,
+  isPlaybackReady: false,
 };
 
 export function spotifyReducer(
@@ -104,6 +113,22 @@ export function spotifyReducer(
         ...state,
         isMounted: true,
       };
+    case SET_SPOTIFY_PLAYER_STATE:
+      return {
+        ...state,
+        playbackState: (action as SetSpotifyPlayerStateAction).payload.state,
+      };
+    case SET_SPOTIFY_PLAYER_ERROR:
+      return {
+        ...state,
+        playbackError: (action as SetSpotifyPlayerErrorAction).payload.error,
+      };      
+    case SET_SPOTIFY_PLAYER_READY:
+      return {
+        ...state,
+        playbackInstance: (action as SetSpotifyPlayerReadyAction).payload.instance,
+        isPlaybackReady: (action as SetSpotifyPlayerReadyAction).payload.isReady,
+      }
     default:
       return state;
   }

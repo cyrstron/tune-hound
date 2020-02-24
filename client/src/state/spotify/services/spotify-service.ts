@@ -52,6 +52,16 @@ export class SpotifyService {
     }
   }
 
+  getState() {
+    const {player} = this;
+
+    if (!player) {
+      throw new Error('Player wasn\'t mounted');
+    };
+
+    return player.getCurrentState();
+  }
+
   disconnect() {
     this.player && this.player.disconnect();
   }

@@ -1,5 +1,5 @@
 import { getContext, put, select, call, take, all, fork } from "redux-saga/effects";
-import { eventChannel, EventChannel } from 'redux-saga';
+import { eventChannel, EventChannel, END } from 'redux-saga';
 
 import { 
   connectSpotifyPending, 
@@ -8,6 +8,8 @@ import {
   setSpotifyCurrentUser, 
   connectSpotifyFailure,
   connectSpotifySuccess,
+  setSpotifyPlayerReady,
+  setSpotifyPlayerState,
 } from "../../actions";
 import { SPOTIFY_SERVICE_CTX_KEY } from "@app/consts";
 import { SpotifyService } from "../../services/spotify-service";
@@ -60,6 +62,20 @@ export function* connectSpotifySaga() {
 
     yield fork(initSpotifyPlayer, spotifyService);
 
+    yield all([    
+      yield fork(listenPlayerErrors, spotifyService),
+      yield fork(listenPlayerReady, spotifyService),
+      yield fork(listenPlayerStateChange, spotifyService),
+    ]);
+
+    yield spotifyService.connect();
+
+    const playerState = yield spotifyService.getState();
+
+    const stateAction = setSpotifyPlayerState(playerState);
+
+    yield put(stateAction);
+
     const successAction = connectSpotifySuccess();
 
     yield put(successAction);
@@ -80,12 +96,16 @@ function* initSpotifyPlayer(spotifyService: SpotifyService) {
   });
 
   while (true) {
-    const getToken = yield take(channel);
+    const getToken: END | ((token?: string) => void) = yield take(channel);
     
     const [isLoggedIn, isExpired] = yield all([
       select(selectIsSpotifyLoggedIn),
       select(selectIsSpotifyTokenExpired),
     ]);
+
+    if (typeof getToken === 'object') {
+      return;
+    }
 
     if (!isLoggedIn) {
       getToken();
@@ -102,35 +122,118 @@ function* initSpotifyPlayer(spotifyService: SpotifyService) {
   }
 }
 
-function* initPlayerErrorListeners(spotifyService: SpotifyService) {
-  const channel: EventChannel<(token: string) => void> = eventChannel(emitter => {
-    spotifyService.initPlayer((getToken) => {
-      emitter(getToken);
-    });
+function* listenPlayerErrors(spotifyService: SpotifyService) {
+  const {player} = spotifyService;
+
+  if (!player) return;
+
+  const channel = eventChannel<Spotify.Error>(emitter => {
+    player.addListener('initialization_error', emitter);
+    player.addListener('authentication_error', emitter);
+    player.addListener('account_error', emitter);
+    player.addListener('playback_error', emitter);
       
-    return () => {};
+    return () => {
+      player.removeListener('initialization_error', emitter);
+      player.removeListener('authentication_error', emitter);
+      player.removeListener('account_error', emitter);
+      player.removeListener('playback_error', emitter);
+    };
   });
 
   while (true) {
-    const getToken = yield take(channel);
-    
-    const [isLoggedIn, isExpired] = yield all([
-      select(selectIsSpotifyLoggedIn),
-      select(selectIsSpotifyTokenExpired),
-    ]);
+    const error: Spotify.Error | END = yield take(channel);
 
-    if (!isLoggedIn) {
-      getToken();
+    if (
+      typeof error === 'object' && 
+      'type' in error && 
+      error.type === END.type
+    ) {
       return;
     }
 
-    if (isExpired) {
-      yield call(updateSpotifyTokenSaga);
+    console.log(error);
+  }
+}
+
+function* listenPlayerReady(spotifyService: SpotifyService) {
+  const {player} = spotifyService;
+
+  if (!player) return;
+
+  const channel = eventChannel<{
+    instance: Spotify.WebPlaybackInstance;
+    isReady: boolean;
+  }>(emitter => {
+    const onReady = (instance: Spotify.WebPlaybackInstance) => {
+      emitter({
+        instance,
+        isReady: true,
+      });
+    };
+    const onNotReady = (instance: Spotify.WebPlaybackInstance) => {
+      emitter({
+        instance,
+        isReady: false,
+      });
+    };
+
+    player.addListener('ready', onReady);
+    player.addListener('not_ready', onNotReady);
+      
+    return () => {
+      player.removeListener('ready', onReady);
+      player.removeListener('not_ready', onNotReady);
+    };
+  });
+
+  while (true) {
+    const readyEvent: {
+      instance: Spotify.WebPlaybackInstance;
+      isReady: boolean;
+    } | END = yield take(channel);
+
+    if (
+      typeof readyEvent === 'object' && 
+      'type' in readyEvent
+    ) {
+      return;
     }
 
-    const accessToken: string = yield select(selectSpotifyAccessToken);
+    const {instance, isReady} = readyEvent;
 
-    getToken(accessToken);
+    const readyAction = setSpotifyPlayerReady(instance, isReady);
+    
+    yield put(readyAction);
   }
+}
 
+function* listenPlayerStateChange(spotifyService: SpotifyService) {
+  const {player} = spotifyService;
+
+  if (!player) return;
+
+  const channel = eventChannel<Spotify.PlaybackState | null>(emitter => {
+    player.addListener('player_state_changed', emitter);
+      
+    return () => {
+      player.removeListener('player_state_changed', emitter);
+    };
+  });
+
+  while (true) {
+    const state: Spotify.PlaybackState | null | END = yield take(channel);
+    
+    if (
+      state &&
+      typeof state === 'object' && 
+      'type' in state
+    ) {
+      return;
+    }
+
+    const stateAction = setSpotifyPlayerState(state);
+
+    yield put(stateAction);
+  }
 }

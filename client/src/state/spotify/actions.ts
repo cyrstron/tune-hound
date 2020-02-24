@@ -4,9 +4,9 @@ import {
   CONNECT_SPOTIFY_FAILURE,
   CONNECT_SPOTIFY_SUCCESS,
   DISCONNECT_SPOTIFY,
-  SET_SPOTIFY_PLAYBACK_STATE,
+  SET_SPOTIFY_PLAYER_STATE,
   SET_SPOTIFY_PLAYER_READY,
-  SET_SPOTIFY_NOT_PLAYER_READY,
+  SET_SPOTIFY_PLAYER_ERROR,
   SET_SPOTIFY_AUTH_DATA,
   UPDATE_SPOTIFY_ACCESS_TOKEN,
   UPDATE_SPOTIFY_ACCESS_TOKEN_PENDING,
@@ -128,6 +128,50 @@ export const updateSpotifyAccessTokenFailure = (error: Error): UpdateSpotifyAcce
   payload: {error},
 });
 
+export interface SetSpotifyPlayerReadyAction {
+  type: typeof SET_SPOTIFY_PLAYER_READY;
+  payload: {
+    instance: Spotify.WebPlaybackInstance;
+    isReady: boolean;
+  }
+}
+
+export const setSpotifyPlayerReady = (
+  instance: Spotify.WebPlaybackInstance,
+  isReady: boolean,
+): SetSpotifyPlayerReadyAction => ({
+  type: SET_SPOTIFY_PLAYER_READY,
+  payload: {instance, isReady},
+});
+
+export interface SetSpotifyPlayerStateAction {
+  type: typeof SET_SPOTIFY_PLAYER_STATE;
+  payload: {
+    state: Spotify.PlaybackState | null;
+  }
+}
+
+export const setSpotifyPlayerState = (
+  state: Spotify.PlaybackState | null,
+): SetSpotifyPlayerStateAction => ({
+  type: SET_SPOTIFY_PLAYER_STATE,
+  payload: {state},
+});
+
+export interface SetSpotifyPlayerErrorAction {
+  type: typeof SET_SPOTIFY_PLAYER_ERROR;
+  payload: {
+    error: Spotify.Error;
+  }
+}
+
+export const setSpotifyPlayerError = (
+  error: Spotify.Error,
+): SetSpotifyPlayerErrorAction => ({
+  type: SET_SPOTIFY_PLAYER_ERROR,
+  payload: {error},
+});
+
 export interface SetSpotifyCurrentUserAction {
   type: typeof SET_SPOTIFY_CURRENT_USER;
   payload: {
@@ -154,4 +198,7 @@ export type SpotifyAction = ConnectSpotifyAction
   | UpdateSpotifyAccessTokenSuccessAction
   | UpdateSpotifyAccessTokenFailureAction
   | SetSpotifyCurrentUserAction
+  | SetSpotifyPlayerReadyAction
+  | SetSpotifyPlayerStateAction
+  | SetSpotifyPlayerErrorAction
   | ConnectSpotifyPendingAction;
