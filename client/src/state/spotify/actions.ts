@@ -13,7 +13,7 @@ import {
   UPDATE_SPOTIFY_ACCESS_TOKEN_SUCCESS,
   UPDATE_SPOTIFY_ACCESS_TOKEN_FAILURE,
   SPOTIFY_MOUNTED,
-  SPOTIFY_INITED,
+  SET_SPOTIFY_PLAYER_INITED,
   SET_SPOTIFY_IS_CONNECTED,
   SET_SPOTIFY_CURRENT_USER,
 } from './consts';
@@ -186,6 +186,20 @@ export const setSpotifyCurrentUser = (
   payload: {user},
 });
 
+export interface SetSpotifyPlayerInitedAction {
+  type: typeof SET_SPOTIFY_PLAYER_INITED;
+  payload: {
+    isInited: boolean;
+  }
+}
+
+export const setSpotifyPlayerInited = (
+  isInited: boolean
+): SetSpotifyPlayerInitedAction => ({
+  type: SET_SPOTIFY_PLAYER_INITED,
+  payload: {isInited}
+})
+
 export type SpotifyAction = ConnectSpotifyAction
   | ConnectSpotifyPendingAction
   | ConnectSpotifyFailureAction
@@ -201,4 +215,5 @@ export type SpotifyAction = ConnectSpotifyAction
   | SetSpotifyPlayerReadyAction
   | SetSpotifyPlayerStateAction
   | SetSpotifyPlayerErrorAction
+  | SetSpotifyPlayerInitedAction
   | ConnectSpotifyPendingAction;

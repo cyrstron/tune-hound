@@ -10,13 +10,16 @@ import {
   connectSpotifySuccess,
   setSpotifyPlayerReady,
   setSpotifyPlayerState,
+  setSpotifyPlayerInited,
 } from "../../actions";
 import { SPOTIFY_SERVICE_CTX_KEY } from "@app/consts";
 import { SpotifyService } from "../../services/spotify-service";
 import { 
   selectIsSpotifyLoggedIn, 
   selectIsSpotifyTokenExpired, 
-  selectSpotifyAccessToken 
+  selectSpotifyAccessToken, 
+  selectIsSpotifyMounted,
+  selectIsSpotifyPlayerInited
 } from "../../selectors";
 import { SpotifyAuthData, setSpotifyAuthState } from "../../services/helpers";
 import {updateSpotifyTokenSaga} from '../update-token';
@@ -54,13 +57,25 @@ export function* connectSpotifySaga() {
 
     yield put(setCurrentUserAction);
 
-    yield spotifyService.mount();
+    const isMounted: boolean = yield select(selectIsSpotifyMounted);
 
-    const mountAction = spotifyMounted();
+    if (!isMounted) {
+      yield spotifyService.mount();  
+  
+      const mountAction = spotifyMounted();
+  
+      yield put(mountAction);
+    }
+    
+    const isInited: boolean = yield select(selectIsSpotifyPlayerInited);
 
-    yield put(mountAction);
+    if (!isInited) {
+      yield fork(initSpotifyPlayer, spotifyService);
 
-    yield fork(initSpotifyPlayer, spotifyService);
+      const initedAction = setSpotifyPlayerInited(true);
+  
+      yield put(initedAction);
+    }
 
     yield all([    
       yield fork(listenPlayerErrors, spotifyService),

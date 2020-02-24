@@ -4,7 +4,15 @@ import {
 } from "consts";
 
 export function getSpotifyPlayerMsgState(): boolean {
-  return !!localStorage.getItem(SPOTIFY_PLAYER_MSG_IGNORED_KEY) || false;
+  return !!localStorage.getItem(SPOTIFY_PLAYER_MSG_IGNORED_KEY);
+}
+
+export function setSpotifyPlayerMsgState(isIgnored: boolean) {
+  if (isIgnored) {
+    localStorage.setItem(SPOTIFY_PLAYER_MSG_IGNORED_KEY, `${isIgnored}`);
+  } else {
+    localStorage.removeItem(SPOTIFY_PLAYER_MSG_IGNORED_KEY);
+  }
 }
 
 export interface SpotifyAuthData {
@@ -41,6 +49,11 @@ export function setSpotifyAuthState(authData: SpotifyAuthData) {
 
   localStorage.setItem(SPOTIFY_AUTH_KEY, authDataString);
 }
+
+export function resetSpotifyAuthState() {
+  localStorage.removeItem(SPOTIFY_AUTH_KEY);
+}
+
 
 export async function mountSpotifyScript(): Promise<{
   script: HTMLScriptElement,

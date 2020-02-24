@@ -8,6 +8,7 @@ import {
   SetSpotifyPlayerStateAction,
   SetSpotifyPlayerErrorAction,
   SetSpotifyPlayerReadyAction,
+  SetSpotifyPlayerInitedAction,
 } from "./actions";
 import { 
   SpotifyAuthData, 
@@ -24,8 +25,8 @@ import {
   UPDATE_SPOTIFY_ACCESS_TOKEN_SUCCESS,
   UPDATE_SPOTIFY_ACCESS_TOKEN_FAILURE,
   SPOTIFY_MOUNTED,
-  SPOTIFY_INITED,
-  SET_SPOTIFY_IS_CONNECTED,
+  SET_SPOTIFY_PLAYER_INITED,
+  DISCONNECT_SPOTIFY,
   SET_SPOTIFY_CURRENT_USER,
   SET_SPOTIFY_PLAYER_ERROR,
 } from './consts';
@@ -42,6 +43,7 @@ export interface SpotifyState {
   playbackState?: Spotify.PlaybackState | null;
   playbackError?: Spotify.Error;
   playbackInstance?: Spotify.WebPlaybackInstance;
+  isPlayerInited: boolean;
   isPlaybackReady: boolean;
   currentUser?: SpotifyApi.CurrentUsersProfileResponse;
 }
@@ -57,6 +59,7 @@ const initialSpotifyState: SpotifyState = {
   isPending: false,
   isMounted: false,
   isPlaybackReady: false,
+  isPlayerInited: false,
 };
 
 export function spotifyReducer(
@@ -82,6 +85,17 @@ export function spotifyReducer(
         ...state,
         isPending: false,
         error: (action as ConnectSpotifyFailureAction).payload.error,
+      };
+    case DISCONNECT_SPOTIFY: 
+      return {
+        ...state,
+        isConnected: false,
+        authData: undefined,
+        playbackState: undefined,
+        playbackError: undefined,
+        playbackInstance: undefined,
+        isPlaybackReady: false,
+        currentUser: undefined,
       };
     case SET_SPOTIFY_AUTH_DATA:
       return {
@@ -128,7 +142,12 @@ export function spotifyReducer(
         ...state,
         playbackInstance: (action as SetSpotifyPlayerReadyAction).payload.instance,
         isPlaybackReady: (action as SetSpotifyPlayerReadyAction).payload.isReady,
-      }
+      };
+    case SET_SPOTIFY_PLAYER_INITED:
+      return {
+        ...state,
+        isPlayerInited: (action as SetSpotifyPlayerInitedAction).payload.isInited,
+      };
     default:
       return state;
   }

@@ -20,6 +20,8 @@ export const selectIsSpotifyPremium = (state: AppState) => {
 }
 
 export const selectSpotifyIsConnected = ({spotify}: AppState) => spotify.isConnected;
+export const selectIsSpotifyMounted = ({spotify}: AppState) => spotify.isMounted;
+export const selectIsSpotifyPlayerInited = ({spotify}: AppState) => spotify.isPlayerInited;
 export const selectSpotifyWasConnected = ({spotify}: AppState) => spotify.wasConnected;
 
 export const selectIsSpotifyPlayerActive = ({spotify}: AppState) => spotify.playbackState !== null;
