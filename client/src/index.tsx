@@ -16,10 +16,5 @@ ReactDOM.render((
     <PopupProvider>
       <App />
     </PopupProvider>
-    {/* <ApisProvider
-      deezerAppId={process.env.DEEZER_PLAYER_ID as string}
-      deezerChannelUrl={`${process.env.HOST}/deezer-channel`}
-    > */}
-    {/* </ApisProvider> */}
   </Provider>
 ), document.getElementById('root'));

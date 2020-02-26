@@ -7,7 +7,7 @@ import {
 } from '../consts';
 import { setSpotifyPlayerMsgState } from "../services/helpers";
 
-export function* ignoreFlash() {
+export function* ignoreSpotifyActivePlayerMsg() {
   const {
     payload: {isIgnored},
   }: SetSpotifyActivePlayerIgnoredAction = yield take(SET_SPOTIFY_ACTIVE_PLAYER_IGNORED);

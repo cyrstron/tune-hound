@@ -231,4 +231,5 @@ export type SpotifyAction = ConnectSpotifyAction
   | SetSpotifyPlayerStateAction
   | SetSpotifyPlayerErrorAction
   | SetSpotifyPlayerInitedAction
+  | SetSpotifyActivePlayerIgnoredAction
   | ConnectSpotifyPendingAction;

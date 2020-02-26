@@ -9,6 +9,7 @@ import {
   SetSpotifyPlayerErrorAction,
   SetSpotifyPlayerReadyAction,
   SetSpotifyPlayerInitedAction,
+  SetSpotifyActivePlayerIgnoredAction,
 } from "./actions";
 import { 
   SpotifyAuthData, 
@@ -29,6 +30,7 @@ import {
   DISCONNECT_SPOTIFY,
   SET_SPOTIFY_CURRENT_USER,
   SET_SPOTIFY_PLAYER_ERROR,
+  SET_SPOTIFY_ACTIVE_PLAYER_IGNORED,
 } from './consts';
 
 export interface SpotifyState {
@@ -148,6 +150,11 @@ export function spotifyReducer(
         ...state,
         isPlayerInited: (action as SetSpotifyPlayerInitedAction).payload.isInited,
       };
+    case SET_SPOTIFY_ACTIVE_PLAYER_IGNORED:
+      return {
+        ...state,
+        isPlayerMsgIgnored: (action as SetSpotifyActivePlayerIgnoredAction).payload.isIgnored,
+      }
     default:
       return state;
   }
