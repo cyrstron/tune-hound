@@ -1,43 +1,103 @@
-import React, { useState, ChangeEvent, useCallback, FormEvent } from 'react';
-import axios from 'axios';
+import React, {Component, FormEvent, ChangeEvent} from 'react';
+import {SearchSource} from '@app/state/search/types';
+import { DeezerSearchForm } from './components/deezer-search-form';
+import { DeezerSearchOptions } from '@app/state/deezer/types';
 
-interface SearchProps {
-  token: string;
-  refreshToken: () => Promise<void>;
+export interface SearchProps {
+  executeSearch: (    
+    source: SearchSource,
+    query: string,
+    options?: DeezerSearchOptions
+  ) => void;
 }
 
-const Search = ({token, refreshToken}: SearchProps) => {
-  const [query, setQuery] = useState<string>('');
+export type DeezerSearchParams = DeezerSearchOptions & {
+  source: 'deezer';
+};
 
-  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const {value} = e.target;
+export type SpotifySearchParams = {source: 'spotify'};
 
-    setQuery(value);
-  }, [setQuery]);
+export type SearchState = DeezerSearchParams | SpotifySearchParams & {
+  query: string;
+};
 
-  const onSubmit = useCallback(async (e: FormEvent) => {
+const sources: Array<{
+  value: SearchSource;
+  label: string;
+}> = [
+  {value: 'deezer', label: 'Deezer'},
+  {value: 'spotify', label: 'Spotify'},
+];
+
+class SearchComponent extends Component<SearchProps, SearchState> {
+  state: SearchState = {
+    source: 'deezer' as 'deezer',
+    namespace: 'track',
+    query: '',
+  }
+
+  onSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    try {
-      const {data} = await axios.get(`https://api.spotify.com/v1/search?q=${query}&type=artist`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+    const {executeSearch} = this.props;
+    const {source, query, ...options} = this.state;
 
-      console.log(data);
-    } catch (err) {
-      await refreshToken();
+    executeSearch(source, query, options as DeezerSearchOptions);
+  }
 
-      return;
+  onSourceChange = ({target}: ChangeEvent<HTMLInputElement>) => {
+    const {value} = target;
+
+    switch (value) {
+      case 'deezer':
+        this.setState({
+          source: 'deezer',
+          namespace: 'track',
+          query: '',
+        });
+        break;
+      case 'spotify':
+        this.setState({
+          source: 'spotify',
+        });
+        break;
+      default:
+        break;
     }
-  }, [query, token]);
+  }
 
-  return (
-    <form onSubmit={onSubmit}>
-      <input onChange={onChange} value={query} />
-    </form>
-  );
+  onParamsChange = (params: Omit<SearchState, 'source'>) => {
+    this.setState(params);
+  }
+
+  render() {
+    const {
+      source,
+      ...searchParams
+    } = this.state;
+
+    return (
+      <form onSubmit={this.onSubmit}>
+        {sources.map(({value, label}) => (
+          <label key={value}>
+            <input 
+              value={value} 
+              name='source' 
+              onChange={this.onSourceChange} 
+              checked={source === value}
+              type='radio'
+            /> {label}
+          </label>
+        ))}
+        {source === 'deezer' && (
+          <DeezerSearchForm 
+            searchParams={searchParams as DeezerSearchOptions}
+            onChange={this.onParamsChange}
+          />
+        )}
+      </form>
+    );
+  }
 }
 
-export {Search};
+export {SearchComponent};

@@ -28,4 +28,4 @@
 7. Add them to root `.env` file as `DEEZER_PLAYER_ID` and `DEEZER_PLAYER_SECRET`
 8. **Enable Flash support in your browser to stream Deezer audio files in the app**
 
-**Deezer SDK works properly only on `127.0.0.1`. Do not use `localhost`!**
+* **Deezer SDK works properly only on `127.0.0.1`. Do not use `localhost`!**

@@ -1,18 +1,48 @@
 import React, { Component } from 'react';
 import classNames from 'classnames/bind';
-import { withApis, ApisCtx } from '../apis';
 
 import styles from './header.scss';
+import { FlashPopup } from './components/flash-popup';
+import { ActivePlayerPopup } from './components/active-player-popup';
+import { Search } from '../search';
 
 const cx = classNames.bind(styles);
 
 interface HeaderProps {
-
+  isDeezerConnected: boolean;
+  wasDeezerConnected: boolean;
+  isDeezerPending: boolean;
+  deezerError?: Error;
+  connectDeezer: () => void;
+  disconnectDeezer: () => void;
+  isSpotifyConnected: boolean;
+  wasSpotifyConnected: boolean;
+  isSpotifyPending: boolean;
+  spotifyError?: Error;
+  connectSpotify: () => void;
+  disconnectSpotify: () => void;
 }
 
-type Props = HeaderProps & ApisCtx;
+type Props = HeaderProps;
 
-class Header extends Component<Props> {
+class HeaderComponent extends Component<Props> {
+  componentDidMount() {
+    const {
+      wasDeezerConnected, 
+      connectDeezer,
+      wasSpotifyConnected, 
+      connectSpotify,
+    } = this.props;
+
+    if (wasDeezerConnected) {
+      connectDeezer();
+    }
+
+    if (wasSpotifyConnected) {
+      connectSpotify();
+    }
+  }
+
   connectDeezer = async () => {
     const {connectDeezer} = this.props;
 
@@ -28,7 +58,7 @@ class Header extends Component<Props> {
   connectSpotify = async () => {
     const {connectSpotify} = this.props;
     
-    await connectSpotify();
+    connectSpotify();
   }
 
   disconnectSpotify = () => {
@@ -38,7 +68,12 @@ class Header extends Component<Props> {
   }
 
   render() {
-    const {dz, isDeezerPending, spotifyService, isSpotifyPending} = this.props;
+    const {
+      isDeezerPending, 
+      isDeezerConnected,
+      isSpotifyPending, 
+      isSpotifyConnected,
+    } = this.props;
 
     return (
       <>
@@ -48,15 +83,15 @@ class Header extends Component<Props> {
         <div>
           {isDeezerPending && (
             <span>
-              Checking Deezer connection...
+              Loading...
             </span>
           )}
-          {!dz && !isDeezerPending && (
+          {!isDeezerConnected && !isDeezerPending && (
             <button onClick={this.connectDeezer}>
               Connect Deezer
             </button>
           )}
-          {dz && (
+          {isDeezerConnected && (
             <button onClick={this.disconnectDeezer}>
               Disconnect Deezer
             </button>
@@ -66,22 +101,23 @@ class Header extends Component<Props> {
               Checking Spotify connection...
             </span>
           )}
-          {!spotifyService && !isSpotifyPending && (
+          {!isSpotifyConnected && !isSpotifyPending && (
             <button onClick={this.connectSpotify}>
               Connect Spotify
             </button>
           )}
-          {spotifyService && (
+          {isSpotifyConnected && (
             <button onClick={this.disconnectSpotify}>
               Disconnect Spotify
             </button>
           )}
         </div>
+        <Search />
+        <FlashPopup />
+        <ActivePlayerPopup/>
       </>
     );
   }
 }
 
-const HeaderWithApis = withApis<{}>(Header);
-
-export {HeaderWithApis as Header}
+export {HeaderComponent}
