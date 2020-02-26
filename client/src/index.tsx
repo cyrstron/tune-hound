@@ -4,8 +4,7 @@ import {Provider} from 'react-redux';
 
 import { createAppStore } from './state';
 import {App} from './app';
-import { PopupProvider } from './components/popup-provider/popup-provider';
-// import {ApisProvider} from './components/apis';
+import { PopupProvider } from './components/popup-provider';
 
 import './index.scss';
 
