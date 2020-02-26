@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import {FlashPopupComponent} from './flash-popup';
+import {FlashPopupComponent, FlashPopupProps} from './flash-popup';
 import {AppState} from '@app/state';
 import {
   selectFlashEnabled, 

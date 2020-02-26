@@ -19,7 +19,7 @@ export const selectIsSpotifyPremium = (state: AppState) => {
   return !!user && user.product === 'product';
 }
 
-export const selectSpotifyIsConnected = ({spotify}: AppState) => spotify.isConnected;
+export const selectIsSpotifyConnected = ({spotify}: AppState) => spotify.isConnected;
 export const selectIsSpotifyMounted = ({spotify}: AppState) => spotify.isMounted;
 export const selectIsSpotifyPlayerInited = ({spotify}: AppState) => spotify.isPlayerInited;
 export const selectSpotifyWasConnected = ({spotify}: AppState) => spotify.wasConnected;
@@ -28,9 +28,11 @@ export const selectIsSpotifyPlayerActive = ({spotify}: AppState) => spotify.play
 export const selectIsSpotifyPlayerMsgIgnored = ({spotify}: AppState) => spotify.isPlayerMsgIgnored;
 
 export const selectShouldShowSpotifyPlayerMessage = (state: AppState) => {
-  const isConnected = selectSpotifyIsConnected(state);
+  const isConnected = selectIsSpotifyConnected(state);
   const isActive = selectIsSpotifyPlayerActive(state);
   const isIgnored = selectIsSpotifyPlayerMsgIgnored(state);
 
   return isConnected && !isActive && !isIgnored;
 }
+
+export const selectSpotifyPlayerDeviceId = ({spotify}: AppState) => spotify.playbackInstance?.['device_id'];

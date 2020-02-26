@@ -14,7 +14,7 @@ import {
   UPDATE_SPOTIFY_ACCESS_TOKEN_FAILURE,
   SPOTIFY_MOUNTED,
   SET_SPOTIFY_PLAYER_INITED,
-  SET_SPOTIFY_IS_CONNECTED,
+  SET_SPOTIFY_ACTIVE_PLAYER_IGNORED,
   SET_SPOTIFY_CURRENT_USER,
 } from './consts';
 import { SpotifyAuthData } from './services/helpers';
@@ -198,7 +198,22 @@ export const setSpotifyPlayerInited = (
 ): SetSpotifyPlayerInitedAction => ({
   type: SET_SPOTIFY_PLAYER_INITED,
   payload: {isInited}
-})
+});
+
+
+export interface SetSpotifyActivePlayerIgnoredAction {
+  type: typeof SET_SPOTIFY_ACTIVE_PLAYER_IGNORED;
+  payload: {
+    isIgnored: boolean;
+  }
+};
+
+export const setSpotifyActivePlayerIgnored = (
+  isIgnored: boolean,
+): SetSpotifyActivePlayerIgnoredAction => ({
+  type: SET_SPOTIFY_ACTIVE_PLAYER_IGNORED,
+  payload: {isIgnored},
+});
 
 export type SpotifyAction = ConnectSpotifyAction
   | ConnectSpotifyPendingAction

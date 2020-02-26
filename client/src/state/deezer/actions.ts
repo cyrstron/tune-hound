@@ -120,6 +120,7 @@ export type DeezerAction = SetDeezerIsConnectedAction
   | ConnectDeezerPendingAction
   | ConnectDeezerFailureAction
   | ConnectDeezerSuccessAction
+  | DisconnectDeezerAction
   | SetFlashIgnoredAction
   | SetDeezerDisabledAction
   | SetDeezerMountedAction

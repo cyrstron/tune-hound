@@ -9,7 +9,7 @@ import {
   selectDeezerError,
 } from '@app/state/deezer';
 import { 
-  selectSpotifyIsConnected,
+  selectIsSpotifyConnected,
   selectSpotifyWasConnected,
   connectSpotify,
   disconnectSpotify,
@@ -26,7 +26,7 @@ const mapStateToProps = (state: AppState) => ({
   spotifyError: selectSpotifyConnectError(state),
   isSpotifyPending: selectSpotifyConnectPending(state),
   wasSpotifyConnected: selectSpotifyWasConnected(state),
-  isSpotifyConnected: selectSpotifyIsConnected(state),
+  isSpotifyConnected: selectIsSpotifyConnected(state),
 });
 
 export const Header = connect(mapStateToProps, {

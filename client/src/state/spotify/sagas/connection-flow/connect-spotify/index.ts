@@ -1,5 +1,4 @@
-import { getContext, put, select, call, take, all, fork } from "redux-saga/effects";
-import { eventChannel, EventChannel, END } from 'redux-saga';
+import { getContext, put, select, call, all, spawn } from "redux-saga/effects";
 
 import { 
   connectSpotifyPending, 
@@ -8,7 +7,6 @@ import {
   setSpotifyCurrentUser, 
   connectSpotifyFailure,
   connectSpotifySuccess,
-  setSpotifyPlayerReady,
   setSpotifyPlayerState,
   setSpotifyPlayerInited,
 } from "../../../actions";
@@ -26,20 +24,24 @@ import {updateSpotifyTokenSaga} from '../../update-token';
 import { createPlayerErrorsChannel, watchPlayerErrors } from "./sagas/player-errors";
 import { createPlayerReadyChannel, watchPlayerReady } from "./sagas/player-ready";
 import { createPlayerStateChannel, watchPlayerStateChange } from "./sagas/player-state";
+import { initSpotifyPlayer } from "./sagas/player-init";
 
 export function* connectSpotifySaga() {
   const pendingAction = connectSpotifyPending();
 
   yield put(pendingAction);
 
-  const spotifyService: SpotifyService = yield getContext(SPOTIFY_SERVICE_CTX_KEY);
+  const [
+    spotifyService, 
+    isLoggedIn, 
+    isExpired
+  ]: [SpotifyService, boolean, boolean] = yield all([
+    getContext(SPOTIFY_SERVICE_CTX_KEY),
+    select(selectIsSpotifyLoggedIn),
+    select(selectIsSpotifyTokenExpired)
+  ]);
 
   try {
-    const [isLoggedIn, isExpired]: [boolean, boolean] = yield all([
-      select(selectIsSpotifyLoggedIn),
-      select(selectIsSpotifyTokenExpired)
-    ]);
-
     if (!isLoggedIn) {
       const authData: SpotifyAuthData = yield spotifyService.api.login();
 
@@ -73,7 +75,7 @@ export function* connectSpotifySaga() {
     const isInited: boolean = yield select(selectIsSpotifyPlayerInited);
 
     if (!isInited) {
-      yield fork(initSpotifyPlayer, spotifyService);
+      yield spawn(initSpotifyPlayer, spotifyService);
 
       const initedAction = setSpotifyPlayerInited(true);
   
@@ -84,10 +86,10 @@ export function* connectSpotifySaga() {
     const readyChannel = createPlayerReadyChannel(spotifyService);
     const stateChannel = createPlayerStateChannel(spotifyService);
 
-    yield all([    
-      yield fork(watchPlayerErrors, errorsChannel),
-      yield fork(watchPlayerReady, readyChannel),
-      yield fork(watchPlayerStateChange, stateChannel),
+    yield all([
+      spawn(watchPlayerErrors, errorsChannel),
+      spawn(watchPlayerReady, readyChannel),
+      spawn(watchPlayerStateChange, stateChannel),
     ]);
 
     yield spotifyService.connect();
@@ -111,41 +113,7 @@ export function* connectSpotifySaga() {
     const failureAction = connectSpotifyFailure(err);
 
     yield put(failureAction);
-  }
-}
 
-function* initSpotifyPlayer(spotifyService: SpotifyService) {
-  const channel: EventChannel<(token: string) => void> = eventChannel(emitter => {
-    spotifyService.initPlayer((getToken) => {
-      emitter(getToken);
-    });
-      
-    return () => {};
-  });
-
-  while (true) {
-    const getToken: END | ((token?: string) => void) = yield take(channel);
-    
-    const [isLoggedIn, isExpired] = yield all([
-      select(selectIsSpotifyLoggedIn),
-      select(selectIsSpotifyTokenExpired),
-    ]);
-
-    if (typeof getToken === 'object') {
-      return;
-    }
-
-    if (!isLoggedIn) {
-      getToken();
-      return;
-    }
-
-    if (isExpired) {
-      yield call(updateSpotifyTokenSaga);
-    }
-
-    const accessToken: string = yield select(selectSpotifyAccessToken);
-
-    getToken(accessToken);
+    return;
   }
 }

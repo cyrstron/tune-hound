@@ -6,7 +6,7 @@ import styles from './flash-popup.scss';
 
 const cx = classNames.bind(styles);
 
-interface FlashPopupProps {
+export interface FlashPopupProps {
   isEnabled: boolean;
   isIgnored: boolean;
   isConnected: boolean;

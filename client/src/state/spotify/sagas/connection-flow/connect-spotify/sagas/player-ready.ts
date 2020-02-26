@@ -1,7 +1,9 @@
 import {eventChannel, EventChannel, END} from 'redux-saga';
-import {take, put} from 'redux-saga/effects';
+import {take, put, select, all, getContext} from 'redux-saga/effects';
 import { SpotifyService } from '../../../../services/spotify-service';
 import { setSpotifyPlayerReady } from '@app/state/spotify/actions';
+import { selectIsSpotifyPremium, selectIsSpotifyPlayerActive, selectSpotifyAccessToken, selectSpotifyPlayerDeviceId } from '@app/state/spotify/selectors';
+import { SPOTIFY_SERVICE_CTX_KEY } from '@app/consts';
 
 export function createPlayerReadyChannel(
   spotifyService: SpotifyService
@@ -62,6 +64,28 @@ export function* watchPlayerReady(
     }
 
     const {instance, isReady} = readyEvent;
+    const deviceId = instance['device_id'];
+
+    const [spotifyService, isPremium, isActive, accessToken, prevDeviceId]: [
+      SpotifyService,
+      boolean,
+      boolean,
+      string,
+      string | undefined
+    ] = yield all([
+      getContext(SPOTIFY_SERVICE_CTX_KEY),
+      select(selectIsSpotifyPremium),
+      select(selectIsSpotifyPlayerActive),
+      select(selectIsSpotifyPlayerActive),
+      select(selectSpotifyAccessToken),
+      select(selectSpotifyPlayerDeviceId),
+    ]);
+
+    try {
+      if (isPremium && !isActive && accessToken && (!prevDeviceId || prevDeviceId !== deviceId)) {
+        yield spotifyService.setActiveDevice(deviceId, accessToken);
+      }
+    } catch {}
 
     const readyAction = setSpotifyPlayerReady(instance, isReady);
     

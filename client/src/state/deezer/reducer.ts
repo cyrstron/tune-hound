@@ -12,6 +12,7 @@ import {
 } from "./services/helpers";
 import {
   SET_DEEZER_IS_CONNECTED,
+  DISCONNECT_DEEZER,
   CONNECT_DEEZER_PENDING,
   CONNECT_DEEZER_FAILURE,
   CONNECT_DEEZER_SUCCESS,
@@ -76,6 +77,12 @@ export function deezerReducer(
         isConnected: true,
         isPending: false,
       };
+    case DISCONNECT_DEEZER:
+      return {
+        ...state,
+        wasConnected: false,
+        isConnected: false,
+      }
     case SET_DEEZER_DISABLED:
       return {
         ...state,

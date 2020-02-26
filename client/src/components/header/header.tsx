@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 
 import styles from './header.scss';
 import { FlashPopup } from './components/flash-popup';
+import { ActivePlayerPopup } from './components/active-player-popup';
 import { Search } from '../search';
 
 const cx = classNames.bind(styles);
@@ -76,7 +77,6 @@ class HeaderComponent extends Component<Props> {
 
     return (
       <>
-      <FlashPopup />
         <div className={cx('header')}>
           App
         </div>
@@ -113,6 +113,8 @@ class HeaderComponent extends Component<Props> {
           )}
         </div>
         <Search />
+        <FlashPopup />
+        <ActivePlayerPopup/>
       </>
     );
   }

@@ -38,6 +38,10 @@ export class SpotifyService {
     });
   }
 
+  setActiveDevice(deviceId: string, accessToken: string) {
+    return this.api.setActiveDevice(deviceId, accessToken);
+  }
+
   async connect() {
     const {player} = this;
 
