@@ -1,7 +1,9 @@
 import React, {Component, FormEvent, ChangeEvent} from 'react';
 import {SearchSource} from '@app/state/search/types';
 import { DeezerSearchForm } from './components/deezer-search-form';
+import { SpotifySearchForm } from './components/spotify-search-form';
 import { DeezerSearchOptions } from '@app/state/deezer/types';
+import { SpotifySearchOptions } from '@app/state/spotify/types';
 
 export interface SearchProps {
   executeSearch: (    
@@ -15,7 +17,7 @@ export type DeezerSearchParams = DeezerSearchOptions & {
   source: 'deezer';
 };
 
-export type SpotifySearchParams = {source: 'spotify'};
+export type SpotifySearchParams = SpotifySearchOptions & {source: 'spotify'};
 
 export type SearchState = DeezerSearchParams | SpotifySearchParams & {
   query: string;
@@ -59,6 +61,8 @@ class SearchComponent extends Component<SearchProps, SearchState> {
       case 'spotify':
         this.setState({
           source: 'spotify',
+          type: 'track',
+          query: '',
         });
         break;
       default:
@@ -66,8 +70,8 @@ class SearchComponent extends Component<SearchProps, SearchState> {
     }
   }
 
-  onParamsChange = (params: Omit<SearchState, 'source'>) => {
-    this.setState(params);
+  onParamsChange = (params: SpotifySearchOptions | DeezerSearchOptions) => {
+    this.setState(params as Omit<SearchState, 'source'>);
   }
 
   render() {
@@ -92,6 +96,12 @@ class SearchComponent extends Component<SearchProps, SearchState> {
         {source === 'deezer' && (
           <DeezerSearchForm 
             searchParams={searchParams as DeezerSearchOptions}
+            onChange={this.onParamsChange}
+          />
+        )}
+        {source === 'spotify' && (
+          <SpotifySearchForm 
+            searchParams={searchParams as SpotifySearchOptions}
             onChange={this.onParamsChange}
           />
         )}
