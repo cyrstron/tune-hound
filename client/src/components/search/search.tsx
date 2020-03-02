@@ -33,8 +33,8 @@ const sources: Array<{
 
 class SearchComponent extends Component<SearchProps, SearchState> {
   state: SearchState = {
-    source: 'deezer' as 'deezer',
-    namespace: 'track',
+    source: 'spotify' as 'spotify',
+    type: 'track',
     query: '',
   }
 

@@ -2,7 +2,7 @@ import React, {Component, ChangeEvent, MouseEvent} from 'react';
 import {
   SpotifySearchItemType, 
   SpotifySearchOptions,
-  SpotifyAdvancedSearchQuery,
+  SpotifyBasicAdvancedSearchQuery,
 } from '@app/state/spotify/types';
 import {AdvancedQueryControl} from './components/advanced-query-control';
 
@@ -59,6 +59,15 @@ class SpotifySearchFormComponent extends Component<DeezerSearchFormProps, Deezer
     });
   }
 
+  onAdvancedQueryChange = (query: SpotifyBasicAdvancedSearchQuery) => {
+    const {searchParams, onChange} = this.props;
+
+    onChange({
+      ...searchParams,
+      query,
+    });
+  }
+
   render() {
     const {
       type,
@@ -83,7 +92,11 @@ class SpotifySearchFormComponent extends Component<DeezerSearchFormProps, Deezer
           Advanced {isAdvancedOpen ? '⇑' : '⇓'}
         </button>
         {isAdvancedOpen && (
-          <AdvancedQueryControl query={query}/>
+          <AdvancedQueryControl 
+            query={typeof query !== 'string' ? query : undefined} 
+            onChange={this.onAdvancedQueryChange}
+            type={type}
+          />
         )}
       </div>
     )
