@@ -8,6 +8,7 @@ import {
 } from '@app/state/spotify/types';
 import {IndexatedInput} from '../indexated-input';
 import { IndexatedInputs } from '../indexated-inputs';
+import { YearRangeInput } from '../year-range-input';
 
 export interface AdvancedQueryControl {
   query?: SpotifyAdvancedSearchQuery;
@@ -31,7 +32,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
     if (!query) return;
 
     onChange({
-      ...query,
+      ...query || {},
       or: values,
     });
   }
@@ -42,7 +43,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
     if (!query) return;
 
     onChange({
-      ...query,
+      ...query || {},
       not: values,
     });
   }
@@ -54,7 +55,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
     if (type === 'playlist' || type === 'track') return;
     
     onChange({
-      ...query,
+      ...query || {},
       track: value,
     } as SpotifyArtistAdvancedSearchQuery | SpotifyAlbumAdvancedSearchQuery);
   }
@@ -66,7 +67,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
     if (type === 'playlist' || type === 'album') return;
     
     onChange({
-      ...query,
+      ...query || {},
       album: value,
     } as SpotifyArtistAdvancedSearchQuery | SpotifyTrackAdvancedSearchQuery);
   }
@@ -78,7 +79,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
     if (type === 'playlist' || type === 'artist') return;
     
     onChange({
-      ...query,
+      ...query || {},
       artist: value,
     } as SpotifyTrackAdvancedSearchQuery | SpotifyAlbumAdvancedSearchQuery);
   }
@@ -90,7 +91,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
     if (type === 'playlist') return;
     
     onChange({
-      ...query,
+      ...query || {},
       genre: value,
     } as (
       SpotifyTrackAdvancedSearchQuery | 
@@ -106,7 +107,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
     if (type !== 'album') return;
     
     onChange({
-      ...query,
+      ...query || {},
       isNew: checked,
     } as SpotifyAlbumAdvancedSearchQuery);
   }
@@ -118,15 +119,27 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
     if (type !== 'album') return;
     
     onChange({
-      ...query,
+      ...query || {},
       isHipster: checked,
+    } as SpotifyAlbumAdvancedSearchQuery);
+  }
+
+  onYearChange = (fromYear?: number, toYear?: number) => {
+    const {onChange, query} = this.props;
+    
+    onChange({
+      ...query || {},
+      year: toYear !== undefined ? {
+        from: fromYear,
+        to: toYear,
+      } : fromYear,
     } as SpotifyAlbumAdvancedSearchQuery);
   }
 
   render() {
     const {query, type} = this.props;
 
-    const hasOtherFields = query && (query.and.length > 1 || query.and[0] !== '');
+    const hasOtherFields = query && (query.and?.length > 1 || query.and?.[0] !== '');
 
     return (
       <div>
@@ -135,20 +148,18 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
           values={query && query.and} 
           onChange={this.onAndChange} 
         />
-        {hasOtherFields && (
-          <IndexatedInputs 
-            label='Include:'
-            values={query && query.or} 
-            onChange={this.onOrChange} 
-          />
-        )}
-        {hasOtherFields && (
-          <IndexatedInputs 
-            label='Exclude:'
-            values={query && query.not} 
-            onChange={this.onNotChange} 
-          />
-        )}
+        <IndexatedInputs 
+          label='Include:'
+          values={query && query.or} 
+          onChange={this.onOrChange}
+          disabled={!hasOtherFields}
+        />
+        <IndexatedInputs 
+          label='Exclude:'
+          values={query && query.not} 
+          onChange={this.onNotChange} 
+          disabled={!hasOtherFields}
+        />
         {type !== 'track' && type !== 'playlist' && (
           <div>
             <label>
@@ -156,6 +167,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
               <input 
                 value={query && 'track' in query ? query.track : ''}
                 onChange={this.onTrackChange}
+                disabled={!hasOtherFields}
               />
             </label>
           </div>
@@ -167,6 +179,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
               <input 
                 value={query && 'album' in query ? query.album : ''}
                 onChange={this.onAlbumChange}
+                disabled={!hasOtherFields}
               />
             </label>
           </div>
@@ -178,6 +191,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
               <input 
                 value={query && 'artist' in query ? query.artist : ''}
                 onChange={this.onArtistChange}
+                disabled={!hasOtherFields}
               />
             </label>
           </div>
@@ -189,6 +203,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
               <input 
                 value={query && 'genre' in query ? query.genre : ''}
                 onChange={this.onGenreChange}
+                disabled={!hasOtherFields}
               />
             </label>
           </div>
@@ -199,6 +214,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
               <input 
                 checked={query && 'isNew' in query ? query.isNew : false}
                 onChange={this.onIsNewChange}
+                disabled={!hasOtherFields}
                 type='checkbox'
               />
               {' '}
@@ -210,8 +226,9 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
           <div>
             <label>
               <input 
-                checked={query && 'isHipster' in query ? query.isNew : false}
+                checked={query && 'isHipster' in query ? query.isHipster : false}
                 onChange={this.onIsHipsterChange}
+                disabled={!hasOtherFields}
                 type='checkbox'
               />
               {' '}
@@ -219,6 +236,12 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
             </label>
           </div>
         )}
+        <YearRangeInput 
+          onChange={this.onYearChange}
+          fromValue={query && (typeof query.year === 'object' ? query.year.from : query.year)}
+          toValue={(query?.year && typeof query.year === 'object') ? query.year.to : undefined}
+          disabled={!hasOtherFields}
+        />
       </div>
     );
   }

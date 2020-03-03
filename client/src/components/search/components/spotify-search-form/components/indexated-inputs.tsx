@@ -5,6 +5,7 @@ export interface IndexatedInputsProps {
   values?: string[]
   onChange: (values: string[]) => void;
   label: string;
+  disabled?: boolean;
 }
 
 class IndexatedInputs extends Component<IndexatedInputsProps> {
@@ -36,7 +37,7 @@ class IndexatedInputs extends Component<IndexatedInputsProps> {
   }
 
   render() {
-    const {values, label} = this.props;
+    const {values, label, disabled} = this.props;
 
     const hasAddButton = !!values && !!values[values.length - 1];
 
@@ -49,6 +50,7 @@ class IndexatedInputs extends Component<IndexatedInputsProps> {
             onChange={this.onAndChange} 
             index={index} 
             key={index}
+            disabled={disabled}
           />
         ))}
         {hasAddButton && (

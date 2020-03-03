@@ -1,8 +1,8 @@
 import React, {Component, ChangeEvent, HTMLProps} from 'react';
 
-export interface YearInputProps extends Omit<HTMLProps<HTMLInputElement>, 'onChange'> {
+export interface YearInputProps extends Omit<HTMLProps<HTMLInputElement>, 'onChange' | 'value'> {
   onChange: (year: number) => void;
-  value: number;
+  value: number | null;
   label: string;
 }
 
@@ -22,13 +22,14 @@ class YearInput extends Component<YearInputProps> {
   }
 
   render() {
-    const {onChange, label, ...props} = this.props;
+    const {onChange, label, value, ...props} = this.props;
 
     return (
       <label>
         {label}
         <input 
           {...props}
+          value={value || ''}
           onChange={this.onChange}
         />
       </label>
