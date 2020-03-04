@@ -1,4 +1,7 @@
-import { DeezerTrack } from "../deezer/types";
+import { DeezerTrack, DeezerSearchOptions } from "../deezer/types";
+import { SpotifySearchOptions } from "../spotify/types";
+
+export type SearchOptions = DeezerSearchOptions | SpotifySearchOptions;
 
 export type SearchSource = 'deezer' | 'spotify';
 

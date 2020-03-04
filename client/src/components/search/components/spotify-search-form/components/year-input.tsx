@@ -27,6 +27,7 @@ class YearInput extends Component<YearInputProps> {
     return (
       <label>
         {label}
+        {' '}
         <input 
           {...props}
           value={value || ''}

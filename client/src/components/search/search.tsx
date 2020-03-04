@@ -1,5 +1,5 @@
 import React, {Component, FormEvent, ChangeEvent} from 'react';
-import {SearchSource} from '@app/state/search/types';
+import {SearchSource, SearchOptions} from '@app/state/search/types';
 import { DeezerSearchForm } from './components/deezer-search-form';
 import { SpotifySearchForm } from './components/spotify-search-form';
 import { DeezerSearchOptions } from '@app/state/deezer/types';
@@ -8,8 +8,7 @@ import { SpotifySearchOptions } from '@app/state/spotify/types';
 export interface SearchProps {
   executeSearch: (    
     source: SearchSource,
-    query: string,
-    options?: DeezerSearchOptions
+    options: SearchOptions,
   ) => void;
 }
 
@@ -42,9 +41,9 @@ class SearchComponent extends Component<SearchProps, SearchState> {
     e.preventDefault();
 
     const {executeSearch} = this.props;
-    const {source, query, ...options} = this.state;
+    const {source, ...options} = this.state;
 
-    executeSearch(source, query, options as DeezerSearchOptions);
+    executeSearch(source, options as DeezerSearchOptions);
   }
 
   onSourceChange = ({target}: ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +69,7 @@ class SearchComponent extends Component<SearchProps, SearchState> {
     }
   }
 
-  onParamsChange = (params: SpotifySearchOptions | DeezerSearchOptions) => {
+  onParamsChange = (params: SearchOptions) => {
     this.setState(params as Omit<SearchState, 'source'>);
   }
 

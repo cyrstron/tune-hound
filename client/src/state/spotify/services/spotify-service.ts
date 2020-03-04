@@ -1,5 +1,6 @@
 import {SpotifyWebApi} from './spotify-web-api';
 import {mountSpotifyScript} from './helpers';
+import { SpotifySearchOptions } from '../types';
 
 export interface SpotifyServiceHandlets {
   onError: Spotify.ErrorListener,
@@ -72,5 +73,9 @@ export class SpotifyService {
 
   unmount() {
     this.script && this.script.remove();
+  }
+
+  search(options: SpotifySearchOptions): any {
+
   }
 }

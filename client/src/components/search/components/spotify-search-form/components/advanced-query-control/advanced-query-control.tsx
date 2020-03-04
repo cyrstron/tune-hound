@@ -164,6 +164,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
           <div>
             <label>
               Track:
+              {' '}
               <input 
                 value={query && 'track' in query ? query.track : ''}
                 onChange={this.onTrackChange}
@@ -176,6 +177,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
           <div>
             <label>
               Album:
+              {' '}
               <input 
                 value={query && 'album' in query ? query.album : ''}
                 onChange={this.onAlbumChange}
@@ -188,6 +190,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
           <div>
             <label>
               Artist:
+              {' '}
               <input 
                 value={query && 'artist' in query ? query.artist : ''}
                 onChange={this.onArtistChange}
@@ -200,6 +203,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
           <div>
             <label>
               Genre:
+              {' '}
               <input 
                 value={query && 'genre' in query ? query.genre : ''}
                 onChange={this.onGenreChange}

@@ -5,29 +5,33 @@ import {
   EXECUTE_SEARCH_FAILURE,
   RESET_SEARCH_RESULT,
 } from './consts';
-import { SearchSource, SearchResult } from './types';
+import { SearchSource, SearchResult, SearchOptions } from './types';
 import {DeezerSearchOptions} from '../deezer/types';
+import { SpotifySearchOptions } from '../spotify/types';
 
 export interface ExecuteSearchAction  {
   type: typeof EXECUTE_SEARCH,
   payload: {
     source: 'deezer',
-    query: string,
-    options?: DeezerSearchOptions,
+    options: DeezerSearchOptions,
   } | {
     source: 'spotify',
-    query: string,
-    options?: any,
+    options: SpotifySearchOptions,
   }
 };
 
 export const executeSearch = (
   source: SearchSource,
-  query: string,
-  options?: DeezerSearchOptions,
+  options: SearchOptions,
 ): ExecuteSearchAction => ({
   type: EXECUTE_SEARCH,
-  payload: {source, query, options},
+  payload: {source, options} as {
+    source: 'deezer',
+    options: DeezerSearchOptions,
+  } | {
+    source: 'spotify',
+    options: SpotifySearchOptions,
+  },
 });
 
 export interface ExecuteSearchPendingAction {

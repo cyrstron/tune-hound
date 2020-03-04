@@ -68,10 +68,33 @@ class SpotifySearchFormComponent extends Component<DeezerSearchFormProps, Deezer
     });
   }
 
+  onMarketChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const {value} = e.target;
+    const {searchParams, onChange} = this.props;
+
+    onChange({
+      ...searchParams,
+      market: value,
+    });
+  }
+
+  onIncludeExternalChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const {checked} = e.target;
+    const {searchParams, onChange} = this.props;
+
+    onChange({
+      ...searchParams,
+      includeExternal: checked,
+    });
+  }
+
+
   render() {
     const {
       type,
       query,
+      market,
+      includeExternal,
     } = this.props.searchParams;
     const {isAdvancedOpen} = this.state;
 
@@ -92,11 +115,36 @@ class SpotifySearchFormComponent extends Component<DeezerSearchFormProps, Deezer
           Advanced {isAdvancedOpen ? '⇑' : '⇓'}
         </button>
         {isAdvancedOpen && (
-          <AdvancedQueryControl 
-            query={typeof query !== 'string' ? query : undefined} 
-            onChange={this.onAdvancedQueryChange}
-            type={type}
-          />
+          <>
+            <AdvancedQueryControl 
+              query={typeof query !== 'string' ? query : undefined} 
+              onChange={this.onAdvancedQueryChange}
+              type={type}
+            />
+            <div>
+              <label>
+                Market:
+                {' '}
+                <input 
+                  value={market || ''}
+                  onChange={this.onMarketChange}
+                  disabled={!query}
+                />
+              </label>
+            </div>
+            <div>
+              <label>
+                <input 
+                  type='checkbox'
+                  onChange={this.onIncludeExternalChange}
+                  checked={!!includeExternal}
+                  disabled={!query}
+                />
+                {' '}
+                Include External
+              </label>
+            </div>
+          </>
         )}
       </div>
     )

@@ -5,7 +5,7 @@ import { DEEZER_SERVICE_CTX_KEY } from "@app/consts";
 import { DeezerService } from "@app/state/deezer";
 import { executeSearchPending, executeSearchSuccess, executeSearchFailure } from '../../actions';
 
-export function* executeDeezerSearchSaga(query: string, options: DeezerSearchOptions) {
+export function* executeDeezerSearchSaga(options: DeezerSearchOptions) {
   const deezerService: DeezerService = yield getContext(DEEZER_SERVICE_CTX_KEY);
 
   const pendingAction = executeSearchPending();
@@ -13,10 +13,7 @@ export function* executeDeezerSearchSaga(query: string, options: DeezerSearchOpt
   yield put(pendingAction);
 
   try {
-    const {data, total}: DeezerSearchResult = yield deezerService.search({
-      query,
-      ...options
-    });
+    const {data, total}: DeezerSearchResult = yield deezerService.search(options);
 
     const successAction = executeSearchSuccess(data.map(item => ({deezer: item})), total);
 
