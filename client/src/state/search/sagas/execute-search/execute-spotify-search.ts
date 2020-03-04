@@ -1,10 +1,11 @@
-import {put} from 'redux-saga/effects';
+import {put, call, select} from 'redux-saga/effects';
 import { getContext } from "redux-saga/effects";
-import { DEEZER_SERVICE_CTX_KEY, SPOTIFY_SERVICE_CTX_KEY } from "@app/consts";
-import { DeezerService } from "@app/state/deezer";
+import { SPOTIFY_SERVICE_CTX_KEY } from "@app/consts";
+import { updateSpotifyTokenSaga } from "@app/state/spotify/sagas/update-token";
 import { executeSearchPending, executeSearchSuccess, executeSearchFailure } from '../../actions';
 import { SpotifySearchOptions } from '@app/state/spotify/types';
 import { SpotifyService } from '@app/state/spotify/services/spotify-service';
+import { selectSpotifyAccessToken } from '@app/state/spotify';
 
 export function* executeSpotifySearchSaga(options: SpotifySearchOptions) {
   const spotifySearch: SpotifyService = yield getContext(SPOTIFY_SERVICE_CTX_KEY);
@@ -13,8 +14,12 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions) {
 
   yield put(pendingAction);
 
+  yield call(updateSpotifyTokenSaga);
+
+  const accessToken: string = yield select(selectSpotifyAccessToken);
+
   try {
-    const result = yield spotifySearch.search(options);
+    const result = yield spotifySearch.search(options, accessToken);
 
     const successAction = executeSearchSuccess(result);
 

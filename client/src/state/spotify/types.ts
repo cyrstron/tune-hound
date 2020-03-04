@@ -25,13 +25,14 @@ export interface SpotifyArtistAdvancedSearchQuery extends SpotifyBasicAdvancedSe
   year?: SpotifyYearSearchTag;
 }
 
+export type SpotifySearchTagType = 'hipster' | 'new';
+
 export interface SpotifyAlbumAdvancedSearchQuery extends SpotifyBasicAdvancedSearchQuery {
   artist?: string;
   track?: string;
   genre?: string;
   year?: SpotifyYearSearchTag;
-  isNew?: boolean;
-  isHipster?: boolean;
+  tag?: SpotifySearchTagType;
 }
 
 export interface SpotifyPlaylistAdvancedSearchQuery extends SpotifyBasicAdvancedSearchQuery {

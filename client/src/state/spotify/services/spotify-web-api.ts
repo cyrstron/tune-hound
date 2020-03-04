@@ -1,4 +1,6 @@
 import { AxiosInstance } from "axios";
+import { SpotifySearchOptions } from "../types";
+import { getAdvancedSearchString } from "./helpers";
 
 export interface SpotifyAuthPayload {
   accessToken: string;
@@ -29,6 +31,19 @@ export class SpotifyWebApi {
       device_ids: [deviceId],
       play: true,
     }, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+  }
+
+  async search({query, includeExternal, ...params}: SpotifySearchOptions, accessToken: string): Promise<void> {
+    await this.axios.get<void>(`${this.spotifyUrl}/v1/search`, {
+      params: {
+        ...params,
+        'include_external': includeExternal,
+        q: typeof query === 'string' ? query : getAdvancedSearchString(query),
+      },
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }

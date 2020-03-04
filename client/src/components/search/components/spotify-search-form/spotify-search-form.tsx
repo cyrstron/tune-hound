@@ -144,6 +144,7 @@ class SpotifySearchFormComponent extends Component<DeezerSearchFormProps, Deezer
                 Include External
               </label>
             </div>
+            <button type='submit'>Search</button>
           </>
         )}
       </div>

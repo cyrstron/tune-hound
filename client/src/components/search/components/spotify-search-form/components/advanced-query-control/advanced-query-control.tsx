@@ -4,7 +4,8 @@ import {
   SpotifySearchItemType,
   SpotifyAlbumAdvancedSearchQuery,
   SpotifyArtistAdvancedSearchQuery,
-  SpotifyTrackAdvancedSearchQuery
+  SpotifyTrackAdvancedSearchQuery,
+  SpotifySearchTagType
 } from '@app/state/spotify/types';
 import {IndexatedInput} from '../indexated-input';
 import { IndexatedInputs } from '../indexated-inputs';
@@ -100,27 +101,15 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
     ));
   }
 
-  onIsNewChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {checked} = e.target;
+  onTagChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const {value} = e.target;
     const {onChange, query, type} = this.props;
 
     if (type !== 'album') return;
     
     onChange({
       ...query || {},
-      isNew: checked,
-    } as SpotifyAlbumAdvancedSearchQuery);
-  }
-
-  onIsHipsterChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {checked} = e.target;
-    const {onChange, query, type} = this.props;
-
-    if (type !== 'album') return;
-    
-    onChange({
-      ...query || {},
-      isHipster: checked,
+      tag: value ? value as SpotifySearchTagType : undefined,
     } as SpotifyAlbumAdvancedSearchQuery);
   }
 
@@ -214,29 +203,43 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
         )}
         {type === 'album' && (
           <div>
+            Tag:
+            <br/>
             <label>
               <input 
-                checked={query && 'isNew' in query ? query.isNew : false}
-                onChange={this.onIsNewChange}
+                name='spotify-search-tag'
+                checked={!query || !('tag' in query) || !query.tag}
+                onChange={this.onTagChange}
                 disabled={!hasOtherFields}
-                type='checkbox'
+                type='radio'
+                value=''
               />
               {' '}
-              Only last releases
+              None
             </label>
-          </div>
-        )}
-        {type === 'album' && (
-          <div>
             <label>
               <input 
-                checked={query && 'isHipster' in query ? query.isHipster : false}
-                onChange={this.onIsHipsterChange}
+                name='spotify-search-tag'
+                checked={query && 'tag' in query && query.tag === 'new'}
+                onChange={this.onTagChange}
                 disabled={!hasOtherFields}
-                type='checkbox'
+                type='radio'
+                value='new'
               />
               {' '}
-              Only unpopular
+              New
+            </label>
+            <label>
+              <input 
+                name='spotify-search-tag'
+                checked={query && 'tag' in query && query.tag === 'hipster'}
+                onChange={this.onTagChange}
+                disabled={!hasOtherFields}
+                type='radio'
+                value='hipster'
+              />
+              {' '}
+              Rare
             </label>
           </div>
         )}
