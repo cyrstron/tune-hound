@@ -75,7 +75,7 @@ export class SpotifyService {
     this.script && this.script.remove();
   }
 
-  search(options: SpotifySearchOptions, accessToken: string): any {
+  search(options: SpotifySearchOptions, accessToken: string) {
     return this.api.search(options, accessToken);
   }
 }

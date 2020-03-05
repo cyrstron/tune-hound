@@ -7,7 +7,7 @@ import { SpotifySearchOptions } from '@app/state/spotify/types';
 import { SpotifyService } from '@app/state/spotify/services/spotify-service';
 import { selectSpotifyAccessToken } from '@app/state/spotify';
 
-export function* executeSpotifySearchSaga(options: SpotifySearchOptions) {
+export function* executeSpotifySearchSaga(options: SpotifySearchOptions, limit?: number, offset?: number) {
   const spotifySearch: SpotifyService = yield getContext(SPOTIFY_SERVICE_CTX_KEY);
 
   const pendingAction = executeSearchPending();
@@ -19,7 +19,16 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions) {
   const accessToken: string = yield select(selectSpotifyAccessToken);
 
   try {
-    const result = yield spotifySearch.search(options, accessToken);
+    const {
+      tracks, 
+      albums, 
+      playlists, 
+      artists
+    }: SpotifyApi.SearchResponse = yield spotifySearch.search({
+      ...options,
+      limit,
+      offset,
+    }, accessToken);
 
     const successAction = executeSearchSuccess(result);
 

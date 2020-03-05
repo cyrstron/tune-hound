@@ -1,4 +1,4 @@
-import {SearchSource, SearchResult} from './types';
+import {SearchResult, SearchOptions} from './types';
 import {
   SearchAction, 
   ExecuteSearchSuccessAction, 
@@ -7,6 +7,7 @@ import {
 import { EXECUTE_SEARCH_PENDING, EXECUTE_SEARCH_SUCCESS, EXECUTE_SEARCH_FAILURE, RESET_SEARCH_RESULT } from './consts';
 
 export interface SearchState {
+  searchQuery?: SearchOptions;
   result?: SearchResult[];
   total?: number;
   pageIndex: number;

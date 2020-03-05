@@ -37,8 +37,11 @@ export class SpotifyWebApi {
     });
   }
 
-  async search({query, includeExternal, ...params}: SpotifySearchOptions, accessToken: string): Promise<void> {
-    await this.axios.get<void>(`${this.spotifyUrl}/v1/search`, {
+  async search(
+    {query, includeExternal, ...params}: SpotifySearchOptions, 
+    accessToken: string
+  ): Promise<SpotifyApi.SearchResponse> {
+    const {data} = await this.axios.get<SpotifyApi.SearchResponse>(`${this.spotifyUrl}/v1/search`, {
       params: {
         ...params,
         'include_external': includeExternal,
@@ -48,6 +51,8 @@ export class SpotifyWebApi {
         'Authorization': `Bearer ${accessToken}`
       }
     });
+
+    return data;
   }
 
   async login() {
