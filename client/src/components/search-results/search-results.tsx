@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { SearchResult } from '@app/state/search/types';
+import { SearchedTrack } from './components/searched-track';
 
 export interface SearchResultsProps {
   totalPages?: number;
@@ -36,11 +37,13 @@ export class SearchResultsComponent extends Component<SearchResultsProps> {
     return (
       <div>
         <ul>
-        {currentPage.map(({deezer}) => deezer && deezer.type === 'track' && (
-          <li key={deezer.id}>
-            "{deezer.title}" by <strong>{deezer.artist.name}</strong> from "{deezer.album.title}"
-          </li>
-        ))}
+        {currentPage.map((item, index) => {
+          if (item.type === 'track') {
+            return (
+              <SearchedTrack key={index} track={item}/>
+            )
+          }
+        })}
         </ul>
         <div>
           Page {pageIndex + 1} of {totalPages}

@@ -1,13 +1,22 @@
-import {SearchResult, SearchOptions} from './types';
+import {SearchResult, SearchOptions, SearchSource} from './types';
 import {
   SearchAction, 
   ExecuteSearchSuccessAction, 
   ExecuteSearchFailureAction
 } from './actions';
-import { EXECUTE_SEARCH_PENDING, EXECUTE_SEARCH_SUCCESS, EXECUTE_SEARCH_FAILURE, RESET_SEARCH_RESULT } from './consts';
+import { 
+  EXECUTE_SEARCH_PENDING, 
+  EXECUTE_SEARCH_SUCCESS, 
+  EXECUTE_SEARCH_FAILURE, 
+  RESET_SEARCH_RESULT,
+  EXECUTE_SEARCH,
+  SET_SEARCH_PAGE_INDEX,
+  SET_SEARCH_PAGE_SIZE,
+} from './consts';
 
 export interface SearchState {
   searchQuery?: SearchOptions;
+  searchSource?: SearchSource;
   result?: SearchResult[];
   total?: number;
   pageIndex: number;
@@ -28,6 +37,12 @@ export function searchReducer(
   action: SearchAction,
 ): SearchState {
   switch(action.type) {
+    case EXECUTE_SEARCH:
+      return {
+        ...state,
+        searchQuery: action.payload.options,
+        searchSource: action.payload.source,
+      };
     case EXECUTE_SEARCH_PENDING:
       return {
         ...state,
@@ -41,18 +56,28 @@ export function searchReducer(
         ...state,
         isPending: false,
         pageIndex: 0,
-        result: (action as ExecuteSearchSuccessAction).payload.data,
-        total: (action as ExecuteSearchSuccessAction).payload.total,
+        result: action.payload.data,
+        total: action.payload.total,
       };
     case EXECUTE_SEARCH_FAILURE:
       return {
         ...state,
         isPending: false,
-        error: (action as ExecuteSearchFailureAction).payload.error,
+        error: action.payload.error,
       };
     case RESET_SEARCH_RESULT:
       return {
         ...initialSearchState
+      };
+    case SET_SEARCH_PAGE_INDEX:
+      return {
+        ...state,
+        pageIndex: action.payload.pageIndex,
+      };
+    case SET_SEARCH_PAGE_SIZE:
+      return {
+        ...state,
+        pageSize: action.payload.pageSize,
       };
     default:
       return state;

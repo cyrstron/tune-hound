@@ -6,8 +6,9 @@ import { executeSearchPending, executeSearchSuccess, executeSearchFailure } from
 import { SpotifySearchOptions } from '@app/state/spotify/types';
 import { SpotifyService } from '@app/state/spotify/services/spotify-service';
 import { selectSpotifyAccessToken } from '@app/state/spotify';
+import { SearchResult } from '../../types';
 
-export function* executeSpotifySearchSaga(options: SpotifySearchOptions, limit?: number, offset?: number) {
+export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageIndex: number, pageSize: number) {
   const spotifySearch: SpotifyService = yield getContext(SPOTIFY_SERVICE_CTX_KEY);
 
   const pendingAction = executeSearchPending();
@@ -26,11 +27,76 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, limit?:
       artists
     }: SpotifyApi.SearchResponse = yield spotifySearch.search({
       ...options,
-      limit,
-      offset,
+      limit: pageSize,
+      offset: pageSize * pageIndex,
     }, accessToken);
 
-    const successAction = executeSearchSuccess(result);
+    let results: SearchResult[] = [];
+    let totalNumber = 0;
+
+    if (tracks) {
+      const {items, total} = tracks;
+
+      results = items.map((item) => ({
+        type: 'track',
+        name: item.name,
+        artists: item.artists.map(({name}) => name),
+        album: item.album.name,
+        coverUrl: item.album.images[0].url,
+        duration: item.duration_ms / 1000,
+        sources: {
+          spotify: item,
+        }
+      }));
+
+      totalNumber = total;
+    } else if (albums) {
+      const {items, total} = albums;
+
+      results = items.map((item) => ({
+        type: 'album',
+        title: item.name,
+        artists: item.artists.map(({name}) => name),
+        coverUrl: item.images[0].url,
+        year: item.release_date,
+        sources: {
+          spotify: item,
+        }
+      }));
+
+      totalNumber = total;
+    } else if (playlists) {
+      const {items, total} = playlists;
+
+      results = items.map((item) => ({
+        type: 'playlist',
+        title: item.name,
+        coverUrl: item.images[0].url,
+        // tracks: item.tracks.map(() => ({
+
+        // })),
+        sources: {
+          spotify: item,
+        }
+      }));
+
+      totalNumber = total;
+    } else if (artists) {
+      const {items, total} = artists;
+
+      results = items.map((item) => ({
+        type: 'artist',
+        name: item.name,
+        coverUrl: item.images[0].url,
+        sources: {
+          spotify: item,
+        }
+      }));
+
+      totalNumber = total;
+    }
+
+    const successAction = executeSearchSuccess(results, totalNumber);
 
     yield put(successAction);
   } catch (err) {

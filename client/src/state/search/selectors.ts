@@ -3,6 +3,8 @@ import { AppState } from "..";
 export const selectSearchResult = (state: AppState) => state.search.result;
 export const selectPageIndex = (state: AppState) => state.search.pageIndex;
 export const selectPageSize = (state: AppState) => state.search.pageSize;
+export const selectSearchQuery = (state: AppState) => state.search.searchQuery;
+export const selectSearchSource = (state: AppState) => state.search.searchSource;
 export const selectTotalItems = (state: AppState) => state.search.total;
 export const selectIsSearchPending = (state: AppState) => state.search.isPending;
 export const selectSearchError = (state: AppState) => state.search.error;

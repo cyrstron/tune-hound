@@ -8,67 +8,64 @@ export type SearchSource = 'deezer' | 'spotify';
 export interface SearchedTrack {
   type: 'track';
   name: string;
-  artist: string;
+  artists: string[];
   album: string;
-  year: string;
-  coverUrl: string;
   duration: number;
+  coverUrl: string;
   sources: {
     deezer?: DeezerTrack;
-    spotify?: SpotifyApi.TrackSearchResponse;
+    spotify?: SpotifyApi.TrackObjectFull;
   }
 }
 
 export interface SearchedAlbum {
   type: 'album';
-  artist: string;
+  artists: string[];
   title: string;
   year: string;
-  tracks: Array<{
-    name: string;
-    duration: number;
-  }>;
+  // tracks: Array<{
+  //   name: string;
+  //   duration: number;
+  // }>;
   coverUrl: string;
   sources: {
     deezer?: any;
-    spotify?: SpotifyApi.AlbumSearchResponse;
+    spotify?: SpotifyApi.AlbumObjectSimplified;
   }
 }
 
 export interface SearchedArtist {
   type: 'artist';
-  artist: string;
-  title: string;
-  year: string;
-  tracks: Array<{
-    name: string;
-    duration: number;
-    coverUrl: string;
-  }>;
-  albums: Array<{
-    title: string;
-    coverUrl: string;
-  }>;
+  name: string;
+  // tracks: Array<{
+  //   name: string;
+  //   duration: number;
+  //   coverUrl: string;
+  // }>;
+  coverUrl: string;
+  // albums: Array<{
+  //   title: string;
+  //   coverUrl: string;
+  // }>;
   sources: {
     deezer?: any;
-    spotify?: SpotifyApi.ArtistSearchResponse;
+    spotify?: SpotifyApi.ArtistObjectFull;
   }
 }
 
 export interface SearchedPlaylist {
   type: 'playlist';
   title: string;
-  year: string;
-  tracks: Array<{
-    name: string;
-    duration: number;
-    artist: string;
-    coverUrl: string;
-    album: string;
-  }>;
+  // tracks: Array<{
+  //   name: string;
+  //   duration: number;
+  //   artist: string;
+  //   coverUrl: string;
+  //   album: string;
+  // }>;
   sources: {
     deezer?: any;
-    spotify?: SpotifyApi.PlaylistSearchResponse;
+    spotify?: SpotifyApi.PlaylistObjectSimplified;
   }
 }
 
