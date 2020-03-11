@@ -5,7 +5,6 @@ import { DEEZER_SERVICE_CTX_KEY } from "@app/consts";
 import { DeezerService } from "@app/state/deezer";
 import { executeSearchPending, executeSearchSuccess, executeSearchFailure } from '../../actions';
 import { SearchResult } from '../../types';
-import { selectPageIndex, selectPageSize } from '../../selectors';
 
 export function* executeDeezerSearchSaga(options: DeezerSearchOptions, pageIndex: number, pageSize: number) {
   const deezerService: DeezerService = yield getContext(DEEZER_SERVICE_CTX_KEY);

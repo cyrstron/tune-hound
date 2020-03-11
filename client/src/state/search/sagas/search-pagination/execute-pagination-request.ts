@@ -1,13 +1,10 @@
 import {all, select, call} from 'redux-saga/effects';
 import { selectSearchSource, selectSearchQuery } from '../../selectors';
 import { SearchSource, SearchOptions } from '../../types';
-import { DeezerSearchOptions } from '@app/state/deezer/types';
-import { SpotifySearchOptions } from '@app/state/spotify/types';
-import { executeDeezerSearchSaga } from '../execute-search/execute-deezer-search';
-import { executeSpotifySearchSaga } from '../execute-search/execute-spotify-search';
+import { executeSearchRequest } from '../execute-search-request';
 import { checkIsRequestNeeded } from './check-request-need';
 
-export function* executeSearchPaginationRequest(pageIndex: number, pageSize: number) {
+export function* executePaginationSearchRequest(pageIndex: number, pageSize: number) {
   const isRequestNeeded: boolean = yield call(checkIsRequestNeeded, pageIndex, pageSize);
 
   if (!isRequestNeeded) return;
@@ -20,9 +17,11 @@ export function* executeSearchPaginationRequest(pageIndex: number, pageSize: num
     select(selectSearchQuery),
   ]);
 
-  if (searchSource === 'deezer') {
-    yield call(executeDeezerSearchSaga, searchOptions as DeezerSearchOptions, pageIndex, pageSize);
-  } else if (searchSource === 'spotify') {
-    yield call(executeSpotifySearchSaga, searchOptions as SpotifySearchOptions, pageIndex, pageSize);
-  }
+  yield call(
+    executeSearchRequest, 
+    searchSource, 
+    searchOptions, 
+    pageIndex, 
+    pageSize
+  );
 }

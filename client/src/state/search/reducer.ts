@@ -1,8 +1,6 @@
 import {SearchResult, SearchOptions, SearchSource} from './types';
 import {
-  SearchAction, 
-  ExecuteSearchSuccessAction, 
-  ExecuteSearchFailureAction
+  SearchAction,
 } from './actions';
 import { 
   EXECUTE_SEARCH_PENDING, 
@@ -42,6 +40,7 @@ export function searchReducer(
         ...state,
         searchQuery: action.payload.options,
         searchSource: action.payload.source,
+        result: undefined,
       };
     case EXECUTE_SEARCH_PENDING:
       return {
@@ -49,14 +48,17 @@ export function searchReducer(
         isPending: true,
         error: undefined,
         total: undefined,
-        result: undefined,
       };
     case EXECUTE_SEARCH_SUCCESS:
       return {
         ...state,
         isPending: false,
         pageIndex: 0,
-        result: action.payload.data,
+        result: action.payload.data.reduce<SearchResult[]>((results, item, index) => {
+          results[state.pageIndex * state.pageSize + index] = item;
+
+          return results;
+        }, [...(state.result || [])]),
         total: action.payload.total,
       };
     case EXECUTE_SEARCH_FAILURE:

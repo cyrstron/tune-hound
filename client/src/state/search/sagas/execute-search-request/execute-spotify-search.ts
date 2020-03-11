@@ -72,9 +72,6 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
         type: 'playlist',
         title: item.name,
         coverUrl: item.images[0].url,
-        // tracks: item.tracks.map(() => ({
-
-        // })),
         sources: {
           spotify: item,
         }
