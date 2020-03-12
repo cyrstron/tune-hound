@@ -9,23 +9,18 @@ import { SearchResult } from '../../types';
 export function* executeDeezerSearchSaga(options: DeezerSearchOptions, pageIndex: number, pageSize: number) {
   const deezerService: DeezerService = yield getContext(DEEZER_SERVICE_CTX_KEY);
 
-  const pendingAction = executeSearchPending();
-
-  yield put(pendingAction);
-
-  try {
     const {data, total}: DeezerSearchResult = yield deezerService.search({
       ...options,
       limit: pageSize,
       index: pageIndex * pageSize,
     });
 
-    let searchResults: SearchResult[] = [];
+    let results: SearchResult[] = [];
 
     const type = data[0]?.type;
 
     if (type === 'track') {
-      searchResults = data.map((item) => ({
+      results = data.map((item) => ({
         type: 'track',
         name: item.title,
         artists: [item.artist.name],
@@ -38,12 +33,8 @@ export function* executeDeezerSearchSaga(options: DeezerSearchOptions, pageIndex
       }));
     }
 
-    const successAction = executeSearchSuccess(searchResults, total);
-
-    yield put(successAction);
-  } catch (err) {
-    const failureAction = executeSearchFailure(err);
-
-    yield put(failureAction);
-  }
+    return {
+      results,
+      total,
+    }
 };
