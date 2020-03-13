@@ -40,7 +40,6 @@ export function searchReducer(
         ...state,
         searchQuery: action.payload.options,
         searchSource: action.payload.source,
-        result: undefined,
       };
     case EXECUTE_SEARCH_PENDING:
       return {
@@ -53,7 +52,6 @@ export function searchReducer(
       return {
         ...state,
         isPending: false,
-        pageIndex: 0,
         result: action.payload.data.reduce<SearchResult[]>((results, item, index) => {
           results[state.pageIndex * state.pageSize + index] = item;
 

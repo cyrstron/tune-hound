@@ -14,7 +14,7 @@ export function* checkIsRequestNeeded(pageIndex: number, pageSize: number) {
   if (totalItems < (pageIndex * pageSize)) return false;
 
   const requiredPageSize = Math.min(totalItems - pageIndex * pageSize, pageSize);
-  const resultsPageSize = results.slice(
+  const resultsPageSize = results?.slice(
     (pageIndex * pageSize), 
     (pageIndex + 1) * pageSize
   ).length;
