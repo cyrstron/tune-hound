@@ -92,17 +92,17 @@ export class SpotifyWebApi {
   async refreshAccessToken(refreshToken: string) {
     const {
       data: {
-        'access_token': accessToken, 
-        'expires_in': expiresIn
+        accessToken, 
+        expiresIn
       }
     } = await this.axios.get<{
-      'access_token': string,
-      'expires_in': number,
+      accessToken: string,
+      expiresIn: number,
     }>(`/refresh-token?refresh_token=${refreshToken}`);
 
     return {
       accessToken,
-      expiresIn,
+      expiresIn: new Date(expiresIn),
     }
   }
 }

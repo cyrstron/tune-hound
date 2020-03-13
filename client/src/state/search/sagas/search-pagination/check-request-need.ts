@@ -19,5 +19,5 @@ export function* checkIsRequestNeeded(pageIndex: number, pageSize: number) {
     (pageIndex + 1) * pageSize
   ).length;
 
-  return resultsPageSize === requiredPageSize;
+  return resultsPageSize !== requiredPageSize;
 }

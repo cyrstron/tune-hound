@@ -3,23 +3,55 @@ import classNames from 'classnames/bind';
 import {PageItem} from './components/page-item';
 
 import styles from './pagination.scss';
+import { computePages } from './services';
 
 const cx = classNames.bind(styles);
 
 export interface PaginationProps {
-  page: number;
+  pageIndex: number;
   totalPages: number;
+  pagesLength?: number;
   setPage: (page: number) => void;
 }
 
 const PaginationComponent: FC<PaginationProps> = ({
-  page,
+  pageIndex,
   totalPages,
+  pagesLength = 3,
   setPage,
 }) => {
+  const pagesIndexes = computePages(pageIndex, totalPages, pagesLength);
+
   return (
     <ul className={cx('pages-list')}>
-
+      {pagesIndexes[0] !== 0 && (
+        <>
+          <PageItem 
+            pageIndex={0} 
+            setPage={setPage} 
+            isActive={pageIndex === 0} 
+          />
+          {' ... '}
+        </>
+      )}
+      {pagesIndexes.map((index) => (
+        <PageItem 
+          key={index}
+          pageIndex={index} 
+          setPage={setPage} 
+          isActive={pageIndex === index} 
+        />
+      ))}
+      {pagesIndexes[pagesIndexes.length - 1] !== totalPages - 1 && (
+        <>
+          {' ... '}
+          <PageItem 
+            pageIndex={totalPages - 1} 
+            setPage={setPage} 
+            isActive={pageIndex === totalPages - 1} 
+          />
+        </>
+      )}
     </ul>
   );
 }

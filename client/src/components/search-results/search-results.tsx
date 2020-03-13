@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { SearchResult } from '@app/state/search/types';
 import { SearchedTrack } from './components/searched-track';
+import { Pagination } from '../pagination';
 
 export interface SearchResultsProps {
   totalPages?: number;
   pageIndex: number;
+  setPage: (pageIndex: number) => void;
   currentPage?: SearchResult[];
   isPending: boolean;
   error?: Error;
@@ -17,6 +19,7 @@ export class SearchResultsComponent extends Component<SearchResultsProps> {
       pageIndex, 
       totalPages,
       isPending,
+      setPage,
       error
     } = this.props;
 
@@ -46,7 +49,13 @@ export class SearchResultsComponent extends Component<SearchResultsProps> {
         })}
         </ul>
         <div>
-          Page {pageIndex + 1} of {totalPages}
+          {totalPages && (
+            <Pagination 
+              pageIndex={pageIndex} 
+              totalPages={totalPages} 
+              setPage={setPage} 
+            />
+          )}
         </div>
       </div>
     );

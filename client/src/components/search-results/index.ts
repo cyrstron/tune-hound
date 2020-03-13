@@ -7,6 +7,9 @@ import {
   selectSearchError,
   selectIsSearchPending
 } from '@app/state/search/selectors';
+import {
+  setSearchPageIndex
+} from '@app/state/search/actions';
 
 import {SearchResultsComponent} from './search-results';
 
@@ -18,4 +21,6 @@ const mapStateToProps = (state: AppState) => ({
   isPending: selectIsSearchPending(state),
 });
 
-export const SearchResults = connect(mapStateToProps)(SearchResultsComponent);
+export const SearchResults = connect(mapStateToProps, {
+  setPage: setSearchPageIndex,
+})(SearchResultsComponent);

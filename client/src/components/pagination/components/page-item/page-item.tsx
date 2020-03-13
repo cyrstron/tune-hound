@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useCallback} from 'react';
 import classNames from 'classnames/bind';
 
 import styles from './page-item.scss';
@@ -6,22 +6,27 @@ import styles from './page-item.scss';
 const cx = classNames.bind(styles);
 
 export interface PageItemProps {
-  page: number;
-  isSelected?: boolean;
+  pageIndex: number;
+  isActive?: boolean;
   setPage: (page: number) => void;
 }
 
 const PageItemComponent: FC<PageItemProps> = ({
-  page,
-  isSelected,
+  pageIndex,
+  isActive,
   setPage,
+  children,
 }) => {
+  const onClick = useCallback(() => {
+    setPage(pageIndex);
+  }, [setPage, pageIndex]);
+
   return (
     <li className={cx('page', {
-      'selected': isSelected,
+      'active': isActive,
     })}>
-      <button className={cx('page-button')}>
-        {page}
+      <button onClick={onClick} className={cx('page-button')}>
+        {children || pageIndex + 1}
       </button>
     </li>
   );

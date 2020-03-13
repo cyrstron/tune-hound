@@ -141,14 +141,22 @@ app.get('/deezer-callback', async (req, res) => {
 app.get('/refresh-token', async (req, res) => {
   const refreshToken = req.query.refresh_token;
 
+  const dateNow = Date.now();
+
   try {
     const authToken = `Basic ${
       Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64')
     }`;
     
     const {
-      data
-    } = await axios.post('https://accounts.spotify.com/api/token', qs.stringify({
+      data: {
+        'access_token': accessToken,
+        'expires_in': expiresIn,
+      }
+    } = await axios.post<{
+      'access_token': string,
+      'expires_in': string,
+    }>('https://accounts.spotify.com/api/token', qs.stringify({
       'grant_type': 'refresh_token',
       'refresh_token': refreshToken,
     }), {
@@ -158,7 +166,10 @@ app.get('/refresh-token', async (req, res) => {
       },
     });
 
-    res.send(data);
+    res.send({
+      accessToken, 
+      expiresIn: dateNow + +expiresIn * 1000,
+    });
   } catch (err) {
     res.sendStatus(401);
   }
