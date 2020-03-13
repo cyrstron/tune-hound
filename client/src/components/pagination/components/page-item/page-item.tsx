@@ -21,13 +21,22 @@ const PageItemComponent: FC<PageItemProps> = ({
     setPage(pageIndex);
   }, [setPage, pageIndex]);
 
+  const label = children || pageIndex + 1;
+
   return (
     <li className={cx('page', {
       'active': isActive,
     })}>
-      <button onClick={onClick} className={cx('page-button')}>
-        {children || pageIndex + 1}
-      </button>
+      {isActive && (
+        <span className={cx('page-button')}>
+          {label}
+        </span>
+      )}
+      {!isActive && (
+        <button onClick={onClick} className={cx('page-button')}>
+          {label}
+        </button>
+      )}
     </li>
   );
 }
