@@ -4,11 +4,11 @@ import classNames from 'classnames/bind';
 import styles from './header.scss';
 import { FlashPopup } from './components/flash-popup';
 import { ActivePlayerPopup } from './components/active-player-popup';
-import { Search } from '../search';
 
 const cx = classNames.bind(styles);
 
 interface HeaderProps {
+  className?: string;
   isDeezerConnected: boolean;
   wasDeezerConnected: boolean;
   isDeezerPending: boolean;
@@ -73,11 +73,12 @@ class HeaderComponent extends Component<Props> {
       isDeezerConnected,
       isSpotifyPending, 
       isSpotifyConnected,
+      className,
     } = this.props;
 
     return (
       <>
-        <div className={cx('header')}>
+        <div className={cx('header', className)}>
           App
         </div>
         <div>
@@ -112,7 +113,6 @@ class HeaderComponent extends Component<Props> {
             </button>
           )}
         </div>
-        <Search />
         <FlashPopup />
         <ActivePlayerPopup/>
       </>

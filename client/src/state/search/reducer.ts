@@ -6,8 +6,9 @@ import {
   EXECUTE_SEARCH_PENDING, 
   EXECUTE_SEARCH_SUCCESS, 
   EXECUTE_SEARCH_FAILURE, 
-  RESET_SEARCH_RESULT,
+  RESET_SEARCH,
   EXECUTE_SEARCH,
+  RESET_SEARCH_RESULTS,
   SET_SEARCH_PAGE_INDEX,
   SET_SEARCH_PAGE_SIZE,
 } from './consts';
@@ -46,7 +47,6 @@ export function searchReducer(
         ...state,
         isPending: true,
         error: undefined,
-        total: undefined,
       };
     case EXECUTE_SEARCH_SUCCESS:
       return {
@@ -65,9 +65,15 @@ export function searchReducer(
         isPending: false,
         error: action.payload.error,
       };
-    case RESET_SEARCH_RESULT:
+    case RESET_SEARCH:
       return {
         ...initialSearchState
+      };
+    case RESET_SEARCH_RESULTS:
+      return {
+        ...state,
+        result: undefined,
+        total: undefined,
       };
     case SET_SEARCH_PAGE_INDEX:
       return {

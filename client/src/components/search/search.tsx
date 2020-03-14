@@ -1,112 +1,41 @@
-import React, {Component, FormEvent, ChangeEvent} from 'react';
-import {SearchSource, SearchOptions} from '@app/state/search/types';
-import { DeezerSearchForm } from './components/deezer-search-form';
-import { SpotifySearchForm } from './components/spotify-search-form';
-import { DeezerSearchOptions } from '@app/state/deezer/types';
-import { SpotifySearchOptions } from '@app/state/spotify/types';
+import React, { Component } from 'react';
+import {SearchResults} from './components/search-results';
+import {SearchForm} from './components/search-form';
+import { Pagination } from '../pagination';
 
 export interface SearchProps {
-  executeSearch: (    
-    source: SearchSource,
-    options: SearchOptions,
-  ) => void;
+  totalPages?: number;
+  pageIndex: number;
+  setPage: (pageIndex: number) => void;
+  isPending: boolean;
+  error?: Error;
 }
 
-export type DeezerSearchParams = DeezerSearchOptions & {
-  source: 'deezer';
-};
-
-export type SpotifySearchParams = SpotifySearchOptions & {source: 'spotify'};
-
-export type SearchState = DeezerSearchParams | SpotifySearchParams & {
-  query: string;
-};
-
-const sources: Array<{
-  value: SearchSource;
-  label: string;
-}> = [
-  {value: 'deezer', label: 'Deezer'},
-  {value: 'spotify', label: 'Spotify'},
-];
-
-class SearchComponent extends Component<SearchProps, SearchState> {
-  state: SearchState = {
-    source: 'spotify' as 'spotify',
-    type: 'track',
-    query: '',
-  }
-
-  onSubmit = (e: FormEvent) => {
-    e.preventDefault();
-
-    const {executeSearch} = this.props;
-    const {source, ...options} = this.state;
-
-    executeSearch(source, options as DeezerSearchOptions);
-  }
-
-  onSourceChange = ({target}: ChangeEvent<HTMLInputElement>) => {
-    const {value} = target;
-
-    switch (value) {
-      case 'deezer':
-        this.setState({
-          source: 'deezer',
-          namespace: 'track',
-          query: '',
-        });
-        break;
-      case 'spotify':
-        this.setState({
-          source: 'spotify',
-          type: 'track',
-          query: '',
-        });
-        break;
-      default:
-        break;
-    }
-  }
-
-  onParamsChange = (params: SearchOptions) => {
-    this.setState(params as Omit<SearchState, 'source'>);
-  }
-
+export class SearchComponent extends Component<SearchProps> {
   render() {
     const {
-      source,
-      ...searchParams
-    } = this.state;
+      pageIndex, 
+      totalPages,
+      isPending,
+      setPage,
+      error
+    } = this.props;
 
     return (
-      <form onSubmit={this.onSubmit}>
-        {sources.map(({value, label}) => (
-          <label key={value}>
-            <input 
-              value={value} 
-              name='source' 
-              onChange={this.onSourceChange} 
-              checked={source === value}
-              type='radio'
-            /> {label}
-          </label>
-        ))}
-        {source === 'deezer' && (
-          <DeezerSearchForm 
-            searchParams={searchParams as DeezerSearchOptions}
-            onChange={this.onParamsChange}
-          />
-        )}
-        {source === 'spotify' && (
-          <SpotifySearchForm 
-            searchParams={searchParams as SpotifySearchOptions}
-            onChange={this.onParamsChange}
-          />
-        )}
-      </form>
+      <div>
+        <SearchForm />
+        <SearchResults />
+        <div>
+          {totalPages && (
+            <Pagination 
+              isDisabled={isPending || !!error}
+              pageIndex={pageIndex} 
+              totalPages={totalPages} 
+              setPage={setPage} 
+            />
+          )}
+        </div>
+      </div>
     );
   }
 }
-
-export {SearchComponent};

@@ -1,4 +1,5 @@
-import {put, call, select} from 'redux-saga/effects';
+import {call, select} from 'redux-saga/effects';
+import {v4 as uuid} from 'uuid';
 import { getContext } from "redux-saga/effects";
 import { SPOTIFY_SERVICE_CTX_KEY } from "@app/consts";
 import { checkSpotifyTokenSaga } from "@app/state/spotify/sagas/check-token";
@@ -32,6 +33,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
     const {items, total} = tracks;
 
     results = items.map((item) => ({
+      id: uuid(),
       type: 'track',
       name: item.name,
       artists: item.artists.map(({name}) => name),
@@ -48,6 +50,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
     const {items, total} = albums;
 
     results = items.map((item) => ({
+      id: uuid(),
       type: 'album',
       title: item.name,
       artists: item.artists.map(({name}) => name),
@@ -63,6 +66,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
     const {items, total} = playlists;
 
     results = items.map((item) => ({
+      id: uuid(),
       type: 'playlist',
       title: item.name,
       coverUrl: item.images[0].url,
@@ -76,6 +80,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
     const {items, total} = artists;
 
     results = items.map((item) => ({
+      id: uuid(),
       type: 'artist',
       name: item.name,
       coverUrl: item.images[0].url,

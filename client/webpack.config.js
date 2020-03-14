@@ -8,22 +8,26 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 module.exports = (_env, argv) => {
   const isDevelopment = argv.mode === 'development';
 
-  const cssLoaders = [{
-    loader: MiniCssExtractPlugin.loader,
-  }, {
-    loader: 'css-loader',
-    options: {
-      modules: {
-        localIdentName: '[name]__[local]___[hash:base64:5]',
+  const cssLoaders = [
+    'css-hot-loader', 
+    {
+      loader: MiniCssExtractPlugin.loader,
+    }, 
+    {
+      loader: 'css-loader',
+      options: {
+        modules: {
+          localIdentName: '[name]__[local]___[hash:base64:5]',
+        },
+        sourceMap: true,
       },
-      sourceMap: true,
-    },
-  }];
+    }
+  ];
 
   return {
     entry: './src/index.tsx',
     output: {
-      path: path.join(__dirname, '/.dist'),
+      path: path.join(__dirname, './.dist'),
       filename: 'bundle.min.js',
     },
     resolve: {
@@ -63,6 +67,7 @@ module.exports = (_env, argv) => {
       new MiniCssExtractPlugin({
         filename: isDevelopment ? 'style.css' : 'style.[hash].css',
         chunkFilename: isDevelopment ? '[name].css' : '[name].[hash].css',
+        hmr: isDevelopment,
       }),
       new Dotenv({
         path: '../.env',
@@ -74,6 +79,9 @@ module.exports = (_env, argv) => {
     devServer: {
       host: '127.0.0.1',
       port: 3000,
+      hot: true,
+      watchContentBase: true,
+      contentBase: path.resolve(__dirname, './.dist'),
       historyApiFallback: true,
       proxy: {
         '/spotify-callback': {

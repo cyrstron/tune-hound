@@ -11,6 +11,7 @@ export interface PaginationProps {
   pageIndex: number;
   totalPages: number;
   pagesLength?: number;
+  isDisabled?: boolean;
   setPage: (page: number) => void;
 }
 
@@ -19,6 +20,7 @@ const PaginationComponent: FC<PaginationProps> = ({
   totalPages,
   pagesLength = 3,
   setPage,
+  isDisabled,
 }) => {
   const pagesIndexes = computePages(pageIndex, totalPages, pagesLength);
 
@@ -30,6 +32,7 @@ const PaginationComponent: FC<PaginationProps> = ({
             pageIndex={0} 
             setPage={setPage} 
             isActive={pageIndex === 0} 
+            isDisabled={isDisabled}
           />
           {' ... '}
         </>
@@ -40,6 +43,7 @@ const PaginationComponent: FC<PaginationProps> = ({
           pageIndex={index} 
           setPage={setPage} 
           isActive={pageIndex === index} 
+          isDisabled={isDisabled}
         />
       ))}
       {pagesIndexes[pagesIndexes.length - 1] !== totalPages - 1 && (
@@ -49,6 +53,7 @@ const PaginationComponent: FC<PaginationProps> = ({
             pageIndex={totalPages - 1} 
             setPage={setPage} 
             isActive={pageIndex === totalPages - 1} 
+            isDisabled={isDisabled}
           />
         </>
       )}

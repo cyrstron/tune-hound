@@ -1,9 +1,8 @@
-import {put, all, select} from 'redux-saga/effects';
+import {v4 as uuid} from 'uuid';
 import { DeezerSearchOptions, DeezerSearchResult } from "@app/state/deezer/types";
 import { getContext } from "redux-saga/effects";
 import { DEEZER_SERVICE_CTX_KEY } from "@app/consts";
 import { DeezerService } from "@app/state/deezer";
-import { executeSearchPending, executeSearchSuccess, executeSearchFailure } from '../../actions';
 import { SearchResult } from '../../types';
 
 export function* executeDeezerSearchSaga(options: DeezerSearchOptions, pageIndex: number, pageSize: number) {
@@ -21,6 +20,7 @@ export function* executeDeezerSearchSaga(options: DeezerSearchOptions, pageIndex
 
     if (type === 'track') {
       results = data.map((item) => ({
+        id: uuid(),
         type: 'track',
         name: item.title,
         artists: [item.artist.name],

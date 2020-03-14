@@ -9,6 +9,7 @@ export interface PageItemProps {
   pageIndex: number;
   isActive?: boolean;
   setPage: (page: number) => void;
+  isDisabled?: boolean;
 }
 
 const PageItemComponent: FC<PageItemProps> = ({
@@ -16,6 +17,7 @@ const PageItemComponent: FC<PageItemProps> = ({
   isActive,
   setPage,
   children,
+  isDisabled,
 }) => {
   const onClick = useCallback(() => {
     setPage(pageIndex);
@@ -33,7 +35,7 @@ const PageItemComponent: FC<PageItemProps> = ({
         </span>
       )}
       {!isActive && (
-        <button onClick={onClick} className={cx('page-button')}>
+        <button onClick={onClick} className={cx('page-button')} disabled={isDisabled}>
           {label}
         </button>
       )}

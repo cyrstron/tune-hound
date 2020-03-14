@@ -4,7 +4,8 @@ import {Provider} from 'react-redux';
 
 import { createAppStore } from './state';
 import {App} from './app';
-import { PopupProvider } from './components/popup-provider';
+import { PopupProvider } from './components/popup';
+import { TooltipProvider } from './components/tooltip';
 
 import './index.scss';
 
@@ -13,7 +14,9 @@ const store = createAppStore();
 ReactDOM.render((
   <Provider store={store}>
     <PopupProvider>
-      <App />
+      <TooltipProvider>
+        <App />
+      </TooltipProvider>
     </PopupProvider>
   </Provider>
 ), document.getElementById('root'));

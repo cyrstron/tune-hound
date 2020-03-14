@@ -6,6 +6,7 @@ export type SearchOptions = DeezerSearchOptions | SpotifySearchOptions;
 export type SearchSource = 'deezer' | 'spotify';
 
 export interface SearchedTrack {
+  id: string;
   type: 'track';
   name: string;
   artists: string[];
@@ -19,6 +20,7 @@ export interface SearchedTrack {
 }
 
 export interface SearchedAlbum {
+  id: string;
   type: 'album';
   artists: string[];
   title: string;
@@ -35,6 +37,7 @@ export interface SearchedAlbum {
 }
 
 export interface SearchedArtist {
+  id: string;
   type: 'artist';
   name: string;
   // tracks: Array<{
@@ -54,6 +57,7 @@ export interface SearchedArtist {
 }
 
 export interface SearchedPlaylist {
+  id: string;
   type: 'playlist';
   title: string;
   // tracks: Array<{

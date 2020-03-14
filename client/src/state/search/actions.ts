@@ -1,9 +1,12 @@
 import {
   EXECUTE_SEARCH,
+  EXECUTE_SEARCH_BY_PAGE_INDEX,
+  EXECUTE_SEARCH_BY_PAGE_SIZE,
   EXECUTE_SEARCH_PENDING,
   EXECUTE_SEARCH_SUCCESS,
   EXECUTE_SEARCH_FAILURE,
-  RESET_SEARCH_RESULT,
+  RESET_SEARCH,
+  RESET_SEARCH_RESULTS,
   SET_SEARCH_PAGE_INDEX,
   SET_SEARCH_PAGE_SIZE,
 } from './consts';
@@ -34,6 +37,26 @@ export const executeSearch = (
     source: 'spotify',
     options: SpotifySearchOptions,
   },
+});
+
+export interface ExecuteSearchByPageIndexAction {
+  type: typeof EXECUTE_SEARCH_BY_PAGE_INDEX;
+  payload: {pageIndex: number};
+}
+
+export const executeSearchByPageIndex = (pageIndex: number): ExecuteSearchByPageIndexAction => ({
+  type: EXECUTE_SEARCH_BY_PAGE_INDEX,
+  payload: {pageIndex},
+});
+
+export interface ExecuteSearchByPageSizeAction {
+  type: typeof EXECUTE_SEARCH_BY_PAGE_SIZE;
+  payload: {pageSize: number};
+}
+
+export const executeSearchByPageSize = (pageSize: number): ExecuteSearchByPageSizeAction => ({
+  type: EXECUTE_SEARCH_BY_PAGE_SIZE,
+  payload: {pageSize},
 });
 
 export interface ExecuteSearchPendingAction {
@@ -72,12 +95,20 @@ export const executeSearchFailure = (error: Error): ExecuteSearchFailureAction =
   payload: {error},
 });
 
-export interface ResetSearchResultAction {
-  type: typeof RESET_SEARCH_RESULT;
+export interface ResetSearchAction {
+  type: typeof RESET_SEARCH;
 }
 
-export const resetSearchResult = (): ResetSearchResultAction => ({
-  type: RESET_SEARCH_RESULT,
+export const resetSearch = (): ResetSearchAction => ({
+  type: RESET_SEARCH,
+});
+
+export interface ResetSearchResultsAction {
+  type: typeof RESET_SEARCH_RESULTS;
+}
+
+export const resetSearchResults = (): ResetSearchResultsAction => ({
+  type: RESET_SEARCH_RESULTS,
 });
 
 export interface SetSearchPageIndexAction {
@@ -106,4 +137,5 @@ export type SearchAction = ExecuteSearchAction |
   ExecuteSearchFailureAction |
   SetSearchPageIndexAction |
   SetSearchPageSizeAction |
-  ResetSearchResultAction;
+  ResetSearchResultsAction |
+  ResetSearchAction;
