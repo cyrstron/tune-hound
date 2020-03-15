@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import classNames from 'classnames/bind';
 import {SearchResults} from './components/search-results';
 import {SearchForm} from './components/search-form';
 import { Pagination } from '../pagination';
 
+import styles from './search.scss';
+
+const cx = classNames.bind(styles);
+
 export interface SearchProps {
+  className?: string;
   totalPages?: number;
   pageIndex: number;
   setPage: (pageIndex: number) => void;
@@ -14,6 +20,7 @@ export interface SearchProps {
 export class SearchComponent extends Component<SearchProps> {
   render() {
     const {
+      className,
       pageIndex, 
       totalPages,
       isPending,
@@ -22,9 +29,9 @@ export class SearchComponent extends Component<SearchProps> {
     } = this.props;
 
     return (
-      <div>
+      <div className={cx('search', className)}>
         <SearchForm />
-        <SearchResults />
+        <SearchResults className={cx('results')} />
         <div>
           {totalPages && (
             <Pagination 

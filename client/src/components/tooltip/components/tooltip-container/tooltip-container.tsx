@@ -1,7 +1,8 @@
 import React, {Component, RefObject, createRef, CSSProperties} from 'react';
 import classNames from 'classnames/bind';
 import debounce from 'lodash/debounce';
-import {computePosition} from './services/compute-position';
+import {computePosition, Position} from './services/compute-position';
+import {observeScroll} from './services/observe-scroll';
 
 import styles from './tooltip-container.scss';
 
@@ -12,6 +13,7 @@ export interface TooltipState {
   isMouseOnTooltip: boolean,
   isShown: boolean,
   tooltipElem: HTMLDivElement | null,
+  parentPosition?: Position; 
   mousePosition?: {
     clientX: number;
     clientY: number;
@@ -37,17 +39,45 @@ class TooltipContainerComponent extends Component<TooltipProps, TooltipState> {
     tooltipElem: null,
   }
 
+  unobserveScroll?: () => void;
+
   hideTooltip = debounce(() => {
+    this.unobserveScroll && this.unobserveScroll();
+
     this.setState({
       isShown: false,
       mousePosition: undefined,
+      parentPosition: undefined,
       tooltipProps: undefined,
     });
   }, 20);
 
-  onParentMouseEnter = ({clientX, clientY}: MouseEvent) => {
+  recalcTooltipProps = () => {
+    const {
+      parentPosition, 
+      mousePosition,
+    } = this.state;
+    const {parent} = this.props;
+
+    if (!mousePosition || !parentPosition) return;
+
+    const {clientX, clientY} = mousePosition;
+    const {top, left} = parent.getBoundingClientRect();
+
+    this.setState({
+      tooltipProps: computePosition({
+        clientX: clientX - (left - parentPosition.left),
+        clientY: clientY - (top - parentPosition.top)
+      }, cx, this.props.parent, this.tooltipRef.current),
+    });
+  }
+
+  onParentMouseEnter = ({clientX, clientY, target}: MouseEvent) => {
+    const {top, left} = (target as HTMLElement).getBoundingClientRect();
+
     this.setState({
       isMouseOnParent: true,
+      parentPosition: {top, left},
       mousePosition: this.state.mousePosition || {
         clientX, 
         clientY,
@@ -91,11 +121,15 @@ class TooltipContainerComponent extends Component<TooltipProps, TooltipState> {
       mousePosition,
     } = this.state;
 
+    const {parent} = this.props;
+
     if (mousePosition && prevState.isShown !== isShown) {
       this.setState({
         tooltipElem: this.tooltipRef.current,
-        tooltipProps: computePosition(mousePosition, cx, this.props.parent, this.tooltipRef.current),
+        tooltipProps: computePosition(mousePosition, cx, parent, this.tooltipRef.current),
       });
+
+      this.unobserveScroll = observeScroll(parent, this.recalcTooltipProps);
     }
 
     if (isShown && (isMouseOnParent || isMouseOnTooltip)) {

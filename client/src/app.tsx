@@ -7,7 +7,6 @@ import { Search } from './components/search';
 
 const cx = classNames.bind(styles);
 
-
 interface AppState {
 }
 
@@ -17,7 +16,7 @@ class App extends Component<{}, AppState> {
       <div className={cx('app')}>
         <Header className={'header'} />
         <div className={cx('main')}>
-          <Search />
+          <Search className={cx('main-content')}/>
         </div>
       </div>
     );

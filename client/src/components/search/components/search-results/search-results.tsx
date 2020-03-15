@@ -8,6 +8,7 @@ import styles from './search-results.scss';
 const cx = classNames.bind(styles);
 
 export interface SearchResultsProps {
+  className?: string;
   currentPage?: SearchResult[];
   isPending: boolean;
   error?: Error;
@@ -16,13 +17,14 @@ export interface SearchResultsProps {
 export class SearchResultsComponent extends Component<SearchResultsProps> {
   render() {
     const {
+      className,
       currentPage,
       isPending,
       error
     } = this.props;
 
     return (
-      <div className={cx('results', {
+      <div className={cx('results', className, {
         pending: isPending,
       })}>
         {error && (
