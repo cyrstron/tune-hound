@@ -6,13 +6,21 @@ export interface Position {
   left: number;
 }
 
-export function computePosition(cx: ClassNamesFn, parent: HTMLElement, tooltip: HTMLDivElement | null): {
+export interface MousePosition {
+  clientX: number;
+  clientY: number;
+}
+
+export function computePosition(
+  mousePosition: MousePosition,
+  cx: ClassNamesFn, 
+  parent: HTMLElement, 
+  tooltip: HTMLDivElement | null
+): {
   style: CSSProperties;
-  className?: string;
-} {
-  if (!tooltip) return {
-    style: { visibility: 'hidden'}
-  };
+  className: string;
+} | undefined {
+  if (!tooltip) return;
 
   const parentRect = parent.getBoundingClientRect();
   const tooltipRect = tooltip.getBoundingClientRect();
@@ -20,67 +28,57 @@ export function computePosition(cx: ClassNamesFn, parent: HTMLElement, tooltip: 
   if (hasSpaceOnTop(parentRect, tooltipRect)) {
     return {
       className: cx('top'),
-      style: calcTopPosition(parentRect, tooltipRect),
+      style: calcTopPosition(mousePosition, parentRect, tooltipRect),
     }
   } else if (hasSpaceOnLeft(parentRect, tooltipRect)) {
     return {
       className: cx('left'),
-      style: calcLeftPosition(parentRect, tooltipRect),
+      style: calcLeftPosition(mousePosition, parentRect, tooltipRect),
     }
   } else if (hasSpaceOnRight(parentRect, tooltipRect)) {
     return {
       className: cx('right'),
-      style: calcRightPosition(parentRect, tooltipRect),
+      style: calcRightPosition(mousePosition, parentRect, tooltipRect),
     }
   } else if (hasSpaceOnBottom(parentRect, tooltipRect)) {
     return {
       className: cx('bottom'),
-      style: calcBottomPosition(parentRect, tooltipRect),
+      style: calcBottomPosition(mousePosition, parentRect, tooltipRect),
     }
-  } else {
-    return {
-      style: { visibility: 'hidden'}
-    };
   }
 }
 
 function hasSpaceOnTop(
-  {top, width, right, left}: DOMRect, 
-  {width: tooltipWidth, height: tooltipHeight}: DOMRect,
+  {top}: DOMRect, 
+  {height: tooltipHeight}: DOMRect,
 ) {
   return (
     tooltipHeight < top
-  ) && (
-    tooltipWidth / 2 < (width / 2) + (window.innerWidth - right)
-  ) && (
-    tooltipWidth / 2 < (width / 2) + left
   );
 }
 
 function calcTopPosition(
-  {top, width, left}: DOMRect, 
+  {clientX}: MousePosition,
+  {top}: DOMRect, 
   {width: tooltipWidth, height: tooltipHeight}: DOMRect,
 ): Position {
   return {
     top: top - tooltipHeight,
-    left: (left + width / 2) - tooltipWidth / 2,
+    left: Math.max((clientX - tooltipWidth / 2), 0),
   }
 }
 
 function hasSpaceOnBottom(
-  {bottom, width, right, left}: DOMRect, 
-  {width: tooltipWidth, height: tooltipHeight}: DOMRect,
+  {bottom}: DOMRect, 
+  {height: tooltipHeight}: DOMRect,
 ) {
   return (
     tooltipHeight < (window.innerHeight - bottom)
-  ) && (
-    tooltipWidth / 2 < (width / 2) + (window.innerWidth - right)
-  ) && (
-    tooltipWidth / 2 < (width / 2) + left
   );
 }
 
 function calcBottomPosition(
+  {}: MousePosition,
   {bottom, width, left}: DOMRect, 
   {width: tooltipWidth}: DOMRect,
 ): Position {
@@ -90,21 +88,17 @@ function calcBottomPosition(
   }
 }
 
-
 function hasSpaceOnLeft(
-  {top, height, left, bottom}: DOMRect, 
-  {width: tooltipWidth, height: tooltipHeight}: DOMRect,
+  {left}: DOMRect, 
+  {width: tooltipWidth}: DOMRect,
 ) {
   return (
     tooltipWidth < left
-  ) && (
-    tooltipHeight < (height / 2) + top
-  ) && (
-    tooltipHeight < (height / 2) + (window.innerHeight - bottom)
   );
 }
 
 function calcLeftPosition(
+  {}: MousePosition,
   {top, height, left}: DOMRect, 
   {width: tooltipWidth, height: tooltipHeight}: DOMRect,
 ): Position {
@@ -115,19 +109,16 @@ function calcLeftPosition(
 }
 
 function hasSpaceOnRight(
-  {top, height, right, bottom}: DOMRect, 
-  {width: tooltipWidth, height: tooltipHeight}: DOMRect,
+  {right}: DOMRect, 
+  {width: tooltipWidth}: DOMRect,
 ) {
   return (
     tooltipWidth < (window.innerWidth - right)
-  ) && (
-    tooltipHeight < (height / 2) + top
-  ) && (
-    tooltipHeight < (height / 2) + bottom
   );
 }
 
 function calcRightPosition(
+  {}: MousePosition,
   {top, height, right}: DOMRect, 
   {height: tooltipHeight}: DOMRect,
 ): Position {

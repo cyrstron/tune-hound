@@ -1,4 +1,4 @@
-import React, {Component, RefObject, createRef} from 'react';
+import React, {Component, RefObject, createRef, CSSProperties} from 'react';
 import classNames from 'classnames/bind';
 import debounce from 'lodash/debounce';
 import {computePosition} from './services/compute-position';
@@ -8,11 +8,18 @@ import styles from './tooltip-container.scss';
 const cx = classNames.bind(styles);
 
 export interface TooltipState {
-  isMouseOnParent: false,
-  isMouseOnTooltip: false,
-  isShown: false,
+  isMouseOnParent: boolean,
+  isMouseOnTooltip: boolean,
+  isShown: boolean,
   tooltipElem: HTMLDivElement | null,
-
+  mousePosition?: {
+    clientX: number;
+    clientY: number;
+  };
+  tooltipProps?: {
+    className: string;
+    style: CSSProperties
+  }
 }
 
 export interface TooltipProps {
@@ -20,7 +27,7 @@ export interface TooltipProps {
   parent: HTMLElement;
 }
 
-class TooltipContainerComponent extends Component<TooltipProps> {
+class TooltipContainerComponent extends Component<TooltipProps, TooltipState> {
   tooltipRef: RefObject<HTMLDivElement> = createRef();
 
   state: TooltipState = {
@@ -31,18 +38,30 @@ class TooltipContainerComponent extends Component<TooltipProps> {
   }
 
   hideTooltip = debounce(() => {
-    this.setState({isShown: false});
+    this.setState({
+      isShown: false,
+      mousePosition: undefined,
+      tooltipProps: undefined,
+    });
   }, 20);
 
-  onParentMouseEnter = () => {
-    this.setState({isMouseOnParent: true});
+  onParentMouseEnter = ({clientX, clientY}: MouseEvent) => {
+    this.setState({
+      isMouseOnParent: true,
+      mousePosition: this.state.mousePosition || {
+        clientX, 
+        clientY,
+      }
+    });
   }
 
   onParentMouseLeave = () => {
+    if (!this.state.isShown) return;
+
     this.setState({isMouseOnParent: false});
   }
 
-  onTooltipMouseEnter = () => {
+  onTooltipMouseEnter = () => {  
     this.setState({isMouseOnTooltip: true});
   }
 
@@ -69,10 +88,14 @@ class TooltipContainerComponent extends Component<TooltipProps> {
       isMouseOnParent,
       isMouseOnTooltip,
       isShown,
+      mousePosition,
     } = this.state;
 
-    if (prevState.isShown !== isShown) {
-      this.setState({tooltipElem: this.tooltipRef.current});
+    if (mousePosition && prevState.isShown !== isShown) {
+      this.setState({
+        tooltipElem: this.tooltipRef.current,
+        tooltipProps: computePosition(mousePosition, cx, this.props.parent, this.tooltipRef.current),
+      });
     }
 
     if (isShown && (isMouseOnParent || isMouseOnTooltip)) {
@@ -93,22 +116,23 @@ class TooltipContainerComponent extends Component<TooltipProps> {
 
     const {
       isShown,
+      tooltipProps,
     } = this.state;
 
     if (!isShown) return null;
 
-    const tooltipProps = computePosition(cx, parent, this.tooltipRef.current);
-
     return (
       <div 
         ref={this.tooltipRef}
-        className={cx('tooltip-container', tooltipProps.className)}
-        style={tooltipProps.style}
+        className={cx('tooltip-container', tooltipProps?.className)}
+        style={tooltipProps?.style || {
+          visibility: 'hidden'
+        }}
         onMouseEnter={this.onTooltipMouseEnter}
         onMouseLeave={this.onTooltipMouseLeave}
       >
         <div 
-          className={cx('tooltip')}
+          className={cx('tooltip', className)}
         >
           {children}
         </div>
