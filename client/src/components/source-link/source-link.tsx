@@ -1,5 +1,10 @@
 import React, {Component, createRef} from 'react';
+import classNames from 'classnames/bind';
 import { SourceTooltip } from '../tooltip';
+
+import styles from './source-link.scss';
+
+const cx = classNames.bind(styles);
 
 export interface SourceLinkState {
   parentElem: HTMLElement | null;
@@ -26,12 +31,12 @@ class SourceLinkComponent extends Component<SourceLinkProps, SourceLinkState> {
   }
 
   render() { 
-    const {children, externalUrls} = this.props;
+    const {children, externalUrls, className} = this.props;
     const {parentElem} = this.state;
 
     return (
       <>
-        <span ref={this.parentRef}>
+        <span ref={this.parentRef} className={cx('source-link', className)}>
           {children}
         </span>
         {parentElem && (
