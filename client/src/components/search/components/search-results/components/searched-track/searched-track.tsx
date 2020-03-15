@@ -58,7 +58,7 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
                   className={cx('artist-link')}
                   externalUrls={{
                     spotifyUrl: spotify?.artists.find(({name}) => name === artist)?.external_urls.spotify,
-                    deezerUrl: deezer?.artist.links[0],
+                    deezerUrl: deezer?.artist.link,
                   }}
                 >
                   {artist}
