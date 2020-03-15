@@ -29,3 +29,4 @@
 8. **Enable Flash support in your browser to stream Deezer audio files in the app**
 
 * **Deezer SDK works properly only on `127.0.0.1`. Do not use `localhost`!**
+* **Deezer SDK sometimes has problems with connection while devtools are open!**

@@ -57,7 +57,11 @@ module.exports = (_env, argv) => {
             ...cssLoaders,
             {loader: 'sass-loader', options: {sourceMap: isDevelopment}},
           ],
-        }
+        },
+        isDevelopment && {
+          test: /\.svg$/,
+          use: 'svg-url-loader',
+        },
       ].filter((rule) => !!rule),
     },
     plugins: [

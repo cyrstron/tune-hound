@@ -1,32 +1,23 @@
 import React, {FC} from 'react';
 import {createPortal} from 'react-dom';
-import classNames from 'classnames/bind';
 import {TooltipCtxConsumer} from './components/tooltip-provider';
-
-import styles from './tooltip.scss';
-
-const cx = classNames.bind(styles);
+import {TooltipContainer} from './components/tooltip-container';
 
 export interface TooltipProps {
   className?: string;
-  top: number;
-  left: number;
+  parent: HTMLElement;
 }
 
-const Tooltip: FC<TooltipProps> = ({children, className, top, left}) => (
-  <TooltipCtxConsumer>
-    {(container) => container && createPortal((
-      <div 
-        className={cx('tooltip', className)}
-        style={{
-          top,
-          left,
-        }}
-      >
-        {children}
-      </div>
-    ), container)}
-  </TooltipCtxConsumer>
-);
+const Tooltip: FC<TooltipProps> = ({children, className, parent}) => {
+  return (
+    <TooltipCtxConsumer>
+      {(container) => container && createPortal((
+        <TooltipContainer parent={parent} className={className}>
+          {children}
+        </TooltipContainer>
+      ), container)}
+    </TooltipCtxConsumer>
+  );
+};
 
 export {Tooltip}
