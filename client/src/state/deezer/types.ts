@@ -49,7 +49,7 @@ export interface DeezerTrack {
   artist: {
     id: number;
     name: string;
-    links: string;
+    link: string;
     picture: string;
     picture_small: string;
     picture_medium: string;
