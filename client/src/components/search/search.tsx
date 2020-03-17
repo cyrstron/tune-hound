@@ -14,6 +14,8 @@ export interface SearchProps {
   pageIndex: number;
   setPage: (pageIndex: number) => void;
   isPending: boolean;
+  isDeezerConnected: boolean;
+  isSpotifyConnected: boolean;
   error?: Error;
 }
 
@@ -25,8 +27,12 @@ export class SearchComponent extends Component<SearchProps> {
       totalPages,
       isPending,
       setPage,
-      error
+      error,
+      isDeezerConnected,
+      isSpotifyConnected,
     } = this.props;
+
+    if (!isDeezerConnected && !isSpotifyConnected) return null;
 
     return (
       <div className={cx('search', className)}>

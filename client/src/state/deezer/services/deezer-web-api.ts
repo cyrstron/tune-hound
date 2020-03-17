@@ -23,7 +23,13 @@ export class DeezerWebApi {
 
     return new Promise<DeezerSdk.SdkOptions>((resolve, reject) => {
       const timerId = setTimeout(() => {
-        reject(new Error('Connection timeout'));
+        const dzIframe = document.querySelector('#dzplayer');
+
+        if (!dzIframe) {
+          reject(new Error('Connection timeout'));
+        } else {
+          resolve();
+        }
       }, connectionTimeout);
 
       this.dz.ready((response) => {

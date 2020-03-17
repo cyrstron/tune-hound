@@ -10,6 +10,8 @@ export interface SearchFormProps {
     source: SearchSource,
     options: SearchOptions,
   ) => void;
+  isSpotifyConnected: boolean;
+  isDeezerConnected: boolean;
 }
 
 export type DeezerSearchParams = DeezerSearchOptions & {
@@ -22,20 +24,42 @@ export type SearchState = DeezerSearchParams | SpotifySearchParams & {
   query: string;
 };
 
-const sources: Array<{
-  value: SearchSource;
-  label: string;
-}> = [
-  {value: 'deezer', label: 'Deezer'},
-  {value: 'spotify', label: 'Spotify'},
-];
-
 class SearchFormComponent extends Component<SearchFormProps, SearchState> {
-  state: SearchState = {
-    source: 'spotify' as 'spotify',
-    type: 'track',
-    query: '',
+  constructor(props: SearchFormProps) {
+    super(props);
+
+    const {
+      isSpotifyConnected, 
+      isDeezerConnected
+    } = props;
+
+    if (isSpotifyConnected) {
+      this.state = {
+        source: 'spotify' as 'spotify',
+        type: 'track',
+        query: '',
+      }
+    } else if (isDeezerConnected) {
+      this.state = {
+        source: 'deezer' as 'deezer',
+        namespace: 'track',
+        query: '',
+      }
+    }
   }
+  
+  get sources() {
+    const {isDeezerConnected, isSpotifyConnected} = this.props;
+
+    return [
+      {value: 'deezer', label: 'Deezer', isDisabled: !isDeezerConnected},
+      {value: 'spotify', label: 'Spotify', isDisabled: !isSpotifyConnected},
+    ].filter((item) => !!item) as Array<{
+      value: SearchSource;
+      label: string;
+      isDisabled: boolean;
+    }>;
+  };
 
   onSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -81,7 +105,7 @@ class SearchFormComponent extends Component<SearchFormProps, SearchState> {
 
     return (
       <form onSubmit={this.onSubmit}>
-        {sources.map(({value, label}) => (
+        {this.sources.map(({value, label, isDisabled}) => (
           <label key={value}>
             <input 
               value={value} 
@@ -89,6 +113,7 @@ class SearchFormComponent extends Component<SearchFormProps, SearchState> {
               onChange={this.onSourceChange} 
               checked={source === value}
               type='radio'
+              disabled={isDisabled}
             /> {label}
           </label>
         ))}

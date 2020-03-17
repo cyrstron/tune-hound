@@ -11,12 +11,16 @@ import {
 } from '@app/state/search/actions';
 
 import {SearchComponent} from './search';
+import { selectIsSpotifyConnected } from '@app/state/spotify';
+import { selectDeezerIsConnected } from '@app/state/deezer';
 
 const mapStateToProps = (state: AppState) => ({
   totalPages: selectTotalPages(state),
   pageIndex: selectPageIndex(state),
   error: selectSearchError(state),
   isPending: selectIsSearchPending(state),
+  isSpotifyConnected: selectIsSpotifyConnected(state),
+  isDeezerConnected: selectDeezerIsConnected(state),
 });
 
 export const Search = connect(mapStateToProps, {
