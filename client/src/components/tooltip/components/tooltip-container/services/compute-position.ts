@@ -1,4 +1,3 @@
-import {CSSProperties} from 'react';
 import { ClassNamesFn } from 'classnames/types';
 
 export interface Position {
@@ -6,43 +5,46 @@ export interface Position {
   left: number;
 }
 
+export interface PositionStyle {
+  top: string;
+  left: string;
+}
+
 export interface MousePosition {
   clientX: number;
   clientY: number;
 }
 
+
 export function computePosition(
   mousePosition: MousePosition,
-  cx: ClassNamesFn, 
   parent: HTMLElement, 
-  tooltip: HTMLDivElement | null
+  tooltip: HTMLDivElement
 ): {
-  style: CSSProperties;
+  style: PositionStyle;
   className: string;
-} | undefined {
-  if (!tooltip) return;
-
+} {
   const parentRect = parent.getBoundingClientRect();
   const tooltipRect = tooltip.getBoundingClientRect();
 
   if (hasSpaceOnTop(parentRect, tooltipRect)) {
     return {
-      className: cx('top'),
+      className: 'top',
       style: calcTopPosition(mousePosition, parentRect, tooltipRect),
     }
   } else if (hasSpaceOnLeft(parentRect, tooltipRect)) {
     return {
-      className: cx('left'),
+      className: 'left',
       style: calcLeftPosition(mousePosition, parentRect, tooltipRect),
     }
   } else if (hasSpaceOnRight(parentRect, tooltipRect)) {
     return {
-      className: cx('right'),
+      className: 'right',
       style: calcRightPosition(mousePosition, parentRect, tooltipRect),
     }
-  } else if (hasSpaceOnBottom(parentRect, tooltipRect)) {
+  } else {
     return {
-      className: cx('bottom'),
+      className: 'bottom',
       style: calcBottomPosition(mousePosition, parentRect, tooltipRect),
     }
   }
@@ -61,30 +63,21 @@ function calcTopPosition(
   {clientX}: MousePosition,
   {top}: DOMRect, 
   {width: tooltipWidth, height: tooltipHeight}: DOMRect,
-): Position {
+): PositionStyle {
   return {
-    top: top - tooltipHeight,
-    left: Math.max((clientX - tooltipWidth / 2), 0),
+    top: `${top - tooltipHeight}px`,
+    left: `${Math.max((clientX - tooltipWidth / 2), 0)}px`,
   }
-}
-
-function hasSpaceOnBottom(
-  {bottom}: DOMRect, 
-  {height: tooltipHeight}: DOMRect,
-) {
-  return (
-    tooltipHeight < (window.innerHeight - bottom)
-  );
 }
 
 function calcBottomPosition(
   {}: MousePosition,
   {bottom, width, left}: DOMRect, 
   {width: tooltipWidth}: DOMRect,
-): Position {
+): PositionStyle {
   return {
-    top: bottom,
-    left: (left + width / 2) - tooltipWidth / 2,
+    top: `${bottom}px`,
+    left: `${(left + width / 2) - tooltipWidth / 2}px`,
   }
 }
 
@@ -101,10 +94,10 @@ function calcLeftPosition(
   {}: MousePosition,
   {top, height, left}: DOMRect, 
   {width: tooltipWidth, height: tooltipHeight}: DOMRect,
-): Position {
+): PositionStyle {
   return {
-    left: left - tooltipWidth,
-    top: (top + height / 2) - tooltipHeight / 2,
+    left: `${left - tooltipWidth}px`,
+    top: `${(top + height / 2) - tooltipHeight / 2}px`,
   }
 }
 
@@ -121,9 +114,9 @@ function calcRightPosition(
   {}: MousePosition,
   {top, height, right}: DOMRect, 
   {height: tooltipHeight}: DOMRect,
-): Position {
+): PositionStyle {
   return {
-    left: right,
-    top: (top + height / 2) - tooltipHeight / 2,
+    left: `${right}px`,
+    top: `${(top + height / 2) - tooltipHeight / 2}px`,
   }
 }

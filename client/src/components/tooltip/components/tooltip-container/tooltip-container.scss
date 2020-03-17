@@ -1,6 +1,7 @@
 .tooltip-container {
   position: fixed;
   padding-bottom: 5px;
+  transition: top 0.1s, left 0.1s;
 
   &.top {
     .tooltip::after {
