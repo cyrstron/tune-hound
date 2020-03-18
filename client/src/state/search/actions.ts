@@ -9,9 +9,13 @@ import {
   RESET_SEARCH_RESULTS,
   SET_SEARCH_PAGE_INDEX,
   SET_SEARCH_PAGE_SIZE,
+  EXTEND_SEARCH_RESULT,
+  EXTEND_SEARCH_RESULT_PENDING,
+  EXTEND_SEARCH_RESULT_SUCCESS,
+  EXTEND_SEARCH_RESULT_FAILURE,
 } from './consts';
 import { SearchSource, SearchResult, SearchOptions } from './types';
-import {DeezerSearchOptions} from '../deezer/types';
+import {DeezerSearchOptions, DeezerTrack} from '../deezer/types';
 import { SpotifySearchOptions } from '../spotify/types';
 
 export interface ExecuteSearchAction  {
@@ -131,6 +135,86 @@ export const setSearchPageSize = (pageSize: number): SetSearchPageSizeAction => 
   payload: {pageSize},
 });
 
+export interface ExtendSearchResultAction  {
+  type: typeof EXTEND_SEARCH_RESULT,
+  payload: {
+    itemId: string,
+    source: SearchSource,
+  }
+};
+
+export const extendSearchResult = (
+  itemId: string,
+  source: SearchSource,
+): ExtendSearchResultAction => ({
+  type: EXTEND_SEARCH_RESULT,
+  payload: {itemId, source}
+});
+
+export interface ExtendSearchResultPendingAction {
+  type: typeof EXTEND_SEARCH_RESULT_PENDING;
+  payload: {
+    itemId: string;
+    source: SearchSource;
+  }
+}
+
+export const extendSearchResultPending = (
+  itemId: string,
+  source: SearchSource,
+): ExtendSearchResultPendingAction => ({
+  type: EXTEND_SEARCH_RESULT_PENDING,
+  payload: {itemId, source}
+});
+
+export interface ExtendSearchResultSuccessAction {
+  type: typeof EXTEND_SEARCH_RESULT_SUCCESS;
+  payload: {
+    itemId: string;
+    source: SearchSource;
+    result: {
+      deezer?: DeezerTrack;
+      spotify?: SpotifyApi.TrackObjectFull | 
+        SpotifyApi.AlbumObjectSimplified | 
+        SpotifyApi.ArtistObjectFull | 
+        SpotifyApi.PlaylistObjectSimplified;
+    };
+  };
+}
+
+export const extendSearchResultSuccess = (
+  itemId: string,
+  source: SearchSource,
+  result: {
+    deezer?: DeezerTrack;
+    spotify?: SpotifyApi.TrackObjectFull | 
+      SpotifyApi.AlbumObjectSimplified | 
+      SpotifyApi.ArtistObjectFull | 
+      SpotifyApi.PlaylistObjectSimplified;
+  },
+): ExtendSearchResultSuccessAction => ({
+  type: EXTEND_SEARCH_RESULT_SUCCESS,
+  payload: {itemId, source, result},
+});
+
+export interface ExtendSearchResultFailureAction {
+  type: typeof EXTEND_SEARCH_RESULT_FAILURE;
+  payload: {
+    itemId: string;
+    source: SearchSource;
+    error: Error;
+  }
+}
+
+export const extendSearchResultFailure = (
+  itemId: string,
+  source: SearchSource,
+  error: Error,
+): ExtendSearchResultFailureAction => ({
+  type: EXTEND_SEARCH_RESULT_FAILURE,
+  payload: {itemId, source, error},
+});
+
 export type SearchAction = ExecuteSearchAction |
   ExecuteSearchPendingAction |
   ExecuteSearchSuccessAction |
@@ -138,4 +222,8 @@ export type SearchAction = ExecuteSearchAction |
   SetSearchPageIndexAction |
   SetSearchPageSizeAction |
   ResetSearchResultsAction |
+  ExtendSearchResultAction |
+  ExtendSearchResultPendingAction |
+  ExtendSearchResultSuccessAction |
+  ExtendSearchResultFailureAction |
   ResetSearchAction;

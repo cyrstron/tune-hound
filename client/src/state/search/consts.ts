@@ -12,3 +12,8 @@ export const RESET_SEARCH_RESULTS = '@app/search/RESET_SEARCH_RESULTS';
 
 export const SET_SEARCH_PAGE_INDEX = '@app/search/SET_SEARCH_PAGE_INDEX';
 export const SET_SEARCH_PAGE_SIZE = '@app/search/SET_SEARCH_PAGE_SIZE';
+
+export const EXTEND_SEARCH_RESULT = '@app/search/EXTEND_SEARCH_RESULT';
+export const EXTEND_SEARCH_RESULT_PENDING = '@app/search/EXTEND_SEARCH_RESULT:pending';
+export const EXTEND_SEARCH_RESULT_FAILURE = '@app/search/EXTEND_SEARCH_RESULT:failure';
+export const EXTEND_SEARCH_RESULT_SUCCESS = '@app/search/EXTEND_SEARCH_RESULT:success';
