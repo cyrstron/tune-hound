@@ -1,7 +1,6 @@
 import React, { FC, useState, useCallback } from 'react';
 import classNames from 'classnames/bind';
-import { DeezerTrack } from '@app/state/deezer/types';
-import { SearchSource } from '@app/state/search/types';
+import { SearchSource, SpotifySearchItem, DeezerSearchItem } from '@app/state/search/types';
 import {DeezerDetails} from './components/deezer-details';
 import {SpotifyDetails} from './components/spotify-details';
 import deezerLogo from '@app/resources/source-logos/deezer-logo.svg';
@@ -12,11 +11,8 @@ import styles from './source-details.scss';
 const cx = classNames.bind(styles);
 
 export interface SourceDetailsProps {
-  spotify?: SpotifyApi.TrackObjectFull | 
-    SpotifyApi.AlbumObjectSimplified | 
-    SpotifyApi.ArtistObjectFull | 
-    SpotifyApi.PlaylistObjectSimplified;
-  deezer?: DeezerTrack;
+  spotify?: SpotifySearchItem | null;
+  deezer?: DeezerSearchItem | null;
   className?: string;
 }
 

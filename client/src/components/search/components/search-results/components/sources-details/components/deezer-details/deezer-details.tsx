@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
 import { DeezerTrackDetails } from './components/deezer-track-details';
-import { DeezerTrack } from '@app/state/deezer/types';
+import { DeezerSearchItem } from '@app/state/search/types';
 
 export interface DeezerDetailsProps {
-  object: DeezerTrack;
+  object: DeezerSearchItem;
 }
 
 const DeezerDetailsComponent: FC<DeezerDetailsProps> = ({object}) => {

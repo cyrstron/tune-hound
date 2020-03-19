@@ -9,6 +9,10 @@ export const selectTotalItems = (state: AppState) => state.search.total;
 export const selectIsSearchPending = (state: AppState) => state.search.isPending;
 export const selectSearchError = (state: AppState) => state.search.error;
 
+export const selectSearchResultById = (state: AppState, id: string) => selectSearchResult(state)?.find(
+  (item) => !!item && item.id === id
+);
+
 export const selectResultsPage = (state: AppState) => {
   const result = selectSearchResult(state);
 

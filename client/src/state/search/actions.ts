@@ -14,7 +14,7 @@ import {
   EXTEND_SEARCH_RESULT_SUCCESS,
   EXTEND_SEARCH_RESULT_FAILURE,
 } from './consts';
-import { SearchSource, SearchResult, SearchOptions } from './types';
+import { SearchSource, SearchResult, SearchOptions, DeezerSearchItem, SpotifySearchItem } from './types';
 import {DeezerSearchOptions, DeezerTrack} from '../deezer/types';
 import { SpotifySearchOptions } from '../spotify/types';
 
@@ -173,11 +173,8 @@ export interface ExtendSearchResultSuccessAction {
     itemId: string;
     source: SearchSource;
     result: {
-      deezer?: DeezerTrack;
-      spotify?: SpotifyApi.TrackObjectFull | 
-        SpotifyApi.AlbumObjectSimplified | 
-        SpotifyApi.ArtistObjectFull | 
-        SpotifyApi.PlaylistObjectSimplified;
+      deezer?: DeezerSearchItem | null;
+      spotify?: SpotifySearchItem | null;
     };
   };
 }
@@ -186,11 +183,8 @@ export const extendSearchResultSuccess = (
   itemId: string,
   source: SearchSource,
   result: {
-    deezer?: DeezerTrack;
-    spotify?: SpotifyApi.TrackObjectFull | 
-      SpotifyApi.AlbumObjectSimplified | 
-      SpotifyApi.ArtistObjectFull | 
-      SpotifyApi.PlaylistObjectSimplified;
+    deezer?: DeezerSearchItem | null;
+    spotify?: SpotifySearchItem | null;
   },
 ): ExtendSearchResultSuccessAction => ({
   type: EXTEND_SEARCH_RESULT_SUCCESS,

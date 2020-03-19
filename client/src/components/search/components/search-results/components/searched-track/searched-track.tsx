@@ -4,8 +4,6 @@ import { SearchedTrack } from '@app/state/search/types';
 import {SourceLink} from '@app/components/source-link';
 
 import styles from './searched-track.scss';
-import { SpotifyTrackDetails } from '../sources-details/components/spotify-details/components/spotify-track-details';
-import { DeezerTrackDetailsComponent } from '../sources-details/components/deezer-details/components/deezer-track-details/deezer-track-details';
 import { SourceDetails } from '../sources-details';
 
 const cx = classNames.bind(styles);
@@ -47,7 +45,7 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
               className={cx('album-link')}
               externalUrls={{
                 spotifyUrl: spotify?.album.external_urls.spotify,
-                deezerUrl: deezer && `https://www.deezer.com/album/${deezer.album.id}`,
+                deezerUrl: deezer ? `https://www.deezer.com/album/${deezer.album.id}` : undefined,
               }}
             >
               {album}

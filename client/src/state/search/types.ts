@@ -14,8 +14,8 @@ export interface SearchedTrack {
   duration: number;
   coverUrl: string;
   sources: {
-    deezer?: DeezerTrack;
-    spotify?: SpotifyApi.TrackObjectFull;
+    deezer?: DeezerTrack | null;
+    spotify?: SpotifyApi.TrackObjectFull | null;
   }
 }
 
@@ -31,8 +31,8 @@ export interface SearchedAlbum {
   // }>;
   coverUrl: string;
   sources: {
-    deezer?: any;
-    spotify?: SpotifyApi.AlbumObjectSimplified;
+    deezer?: any | null;
+    spotify?: SpotifyApi.AlbumObjectSimplified | null;
   }
 }
 
@@ -51,8 +51,8 @@ export interface SearchedArtist {
   //   coverUrl: string;
   // }>;
   sources: {
-    deezer?: any;
-    spotify?: SpotifyApi.ArtistObjectFull;
+    deezer?: any | null;
+    spotify?: SpotifyApi.ArtistObjectFull | null;
   }
 }
 
@@ -68,9 +68,18 @@ export interface SearchedPlaylist {
   //   album: string;
   // }>;
   sources: {
-    deezer?: any;
-    spotify?: SpotifyApi.PlaylistObjectSimplified;
+    deezer?: any | null;
+    spotify?: SpotifyApi.PlaylistObjectSimplified | null;
   }
 }
+
+export type DeezerSearchItem = DeezerTrack;
+
+export type SpotifySearchItem = SpotifyApi.TrackObjectFull | 
+  SpotifyApi.AlbumObjectSimplified | 
+  SpotifyApi.ArtistObjectFull | 
+  SpotifyApi.PlaylistObjectSimplified;
+
+export type SearchItem = DeezerSearchItem | SpotifySearchItem;
 
 export type SearchResult = SearchedTrack | SearchedAlbum | SearchedArtist | SearchedPlaylist;

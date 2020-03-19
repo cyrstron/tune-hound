@@ -1,11 +1,9 @@
 import React, {FC} from 'react';
 import { SpotifyTrackDetails } from './components/spotify-track-details';
+import { SpotifySearchItem } from '@app/state/search/types';
 
 export interface SpotifyDetailsProps {
-  object: SpotifyApi.TrackObjectFull | 
-    SpotifyApi.AlbumObjectSimplified | 
-    SpotifyApi.ArtistObjectFull | 
-    SpotifyApi.PlaylistObjectSimplified;
+  object: SpotifySearchItem;
 }
 
 const SpotifyDetailsComponent: FC<SpotifyDetailsProps> = ({object}) => {
