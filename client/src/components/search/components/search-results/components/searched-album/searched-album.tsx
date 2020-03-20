@@ -1,57 +1,44 @@
 import React, {FC, Fragment} from 'react';
 import classNames from 'classnames/bind';
-import { SearchedTrack } from '@app/state/search/types';
+import { SearchedAlbum } from '@app/state/search/types';
 import {SourceLink} from '@app/components/source-link';
-
-import styles from './searched-track.scss';
 import { SourceDetails } from '../sources-details';
+
+import styles from './searched-album.scss';
 
 const cx = classNames.bind(styles);
 
-export interface SearchedTrackProps {
-  track: SearchedTrack;
+export interface SearchedAlbumProps {
+  album: SearchedAlbum;
   className?: string;
 }
 
-const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
+const SearchedAlbumComponent: FC<SearchedAlbumProps> = ({album, className}) => {
   const {
     id,
     coverUrl,
+    sources: {deezer, spotify},
+    title,
     artists,
-    album,
-    sources: {spotify, deezer}
-  } = track;
+  } = album;
 
   return (
-    <article className={cx('track', className)}>
+    <article className={cx('tralbumack', className)}>
       <div className={cx('content')}>
         <div className={cx('cover-wrapper')}>
           <img className={cx('cover')} src={coverUrl} />
         </div>
         <div className={cx('info-wrapper')}>
-          <h1 className={cx('track-title')}>
+          <h1 className={cx('album-title')}>
             <SourceLink
               externalUrls={{
                 spotifyUrl: spotify?.external_urls.spotify,
                 deezerUrl: deezer?.link,
               }}
             >
-              {track.name}
+              {title}
             </SourceLink>
           </h1>
-          <div>
-            Album:
-            {' '}
-            <SourceLink
-              className={cx('album-link')}
-              externalUrls={{
-                spotifyUrl: spotify?.album.external_urls.spotify,
-                deezerUrl: deezer ? `https://www.deezer.com/album/${deezer.album.id}` : undefined,
-              }}
-            >
-              {album}
-            </SourceLink>
-          </div>
           <div>
             {artists.length === 1 ? 'Artist' : 'Artists'}:
             {' '}
@@ -77,4 +64,4 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
   );
 }
 
-export {SearchedTrackComponent};
+export {SearchedAlbumComponent};

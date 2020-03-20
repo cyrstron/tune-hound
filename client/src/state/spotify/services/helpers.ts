@@ -104,7 +104,7 @@ export function getAdvancedSearchString({and, or, not, year, ...options}: Spotif
   }
 
   if ('artist' in options && options.artist) {
-    string += ` artist":${options.artist}"`;
+    string += ` artist:"${options.artist}"`;
   }
 
   if ('genre' in options && options.genre) {

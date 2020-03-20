@@ -1,7 +1,8 @@
 import React, {FC} from 'react';
 import classNames from 'classnames/bind';
 import { SearchResult } from '@app/state/search/types';
-import {SearchedTrack as SearchedTrackComponent} from '../searched-track';
+import {SearchedTrack} from '../searched-track';
+import {SearchedAlbum} from '../searched-album';
 
 import styles from './searched-item.scss';
 
@@ -15,7 +16,10 @@ const SearchedItemComponent: FC<SearchedTrackProps> = ({item}) => {
   return (
     <li className={cx('item-container')}>
         {item.type === 'track' && (
-          <SearchedTrackComponent track={item} className={cx('item')}/>
+          <SearchedTrack track={item} className={cx('item')}/>
+        )}
+        {item.type === 'album' && (
+          <SearchedAlbum album={item} className={cx('item')}/>
         )}
     </li>
   );

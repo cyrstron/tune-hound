@@ -72,12 +72,41 @@ export interface DeezerTrack {
   type: 'track';
 }
 
+export interface DeezerAlbum {
+  type: "album";
+  id: number;
+  title: string;
+  link: string;
+  cover: string;
+  cover_small: string;
+  cover_medium: string;
+  cover_big: string;
+  cover_xl: string;
+  genre_id: number;
+  nb_tracks: number;
+  record_type: "album" | string;
+  tracklist: string;
+  explicit_lyrics: boolean;
+  artist: {
+    id: 689
+    name: string;
+    link: string;
+    picture: string;
+    picture_small: string;
+    picture_medium: string;
+    picture_big: string;
+    picture_xl: string;
+    tracklist: string;
+    type: "artist";
+  };
+}
+
 export type DeezerResponseType = DeezerUser['type'] | DeezerTrack['type'];
 
 export type DeezerUserResponse = DeezerApiResponse<DeezerUser>;
 
 export interface DeezerTrackSearchResult {
-  data: DeezerTrack[],
+  data: Array<DeezerTrack | DeezerAlbum>,
   total: number;
   next: string;
 };

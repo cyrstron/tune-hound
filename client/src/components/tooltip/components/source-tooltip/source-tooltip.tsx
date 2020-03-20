@@ -25,15 +25,15 @@ const SourceTooltipComponent: FC<SourceTooltipProps> = ({
     <Tooltip
       parent={parent}
     >
-      <div>
+      <div className={cx('wrapper')}>
         {deezerUrl && (
-          <a href={deezerUrl} target="_blank" className={cx('link')}>
-            <img src={deezerLogo} className={cx('icon')} />
+          <a href={deezerUrl} target="_blank" className={cx('link')} title='Deezer'>
+            <img src={deezerLogo} className={cx('icon')} alt='Deezer' />
           </a>
         )}
         {spotifyUrl && (
-          <a href={spotifyUrl} target="_blank" className={cx('link')}>
-            <img src={spotifyLogo} className={cx('icon')} />
+          <a href={spotifyUrl} target="_blank" className={cx('link')} title='Spotify'>
+            <img src={spotifyLogo} className={cx('icon')} alt='Spotify' />
           </a>
         )}
       </div>

@@ -1,5 +1,11 @@
+.wrapper {
+  display: flex;
+  margin: -2px;
+}
+
 .icon {
   display: block;
+  margin: 2px;
   width: 16px;
   height: 16px;
 }

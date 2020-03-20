@@ -124,9 +124,10 @@ export class DeezerWebApi {
       return this.searchTrack(options as DeezerTrackSearchOptions);
     }
 
-    const {namespace, strict, order, limit, index} = options;
+    const {namespace, strict, order, limit, index, query} = options;
 
     const queryString = toQueryString({
+      q: query,
       strict: strict ? 'on' : undefined,
       order,
       limit,

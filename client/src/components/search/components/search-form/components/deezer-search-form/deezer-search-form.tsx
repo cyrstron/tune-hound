@@ -15,6 +15,7 @@ const namespaces: Array<{
   label: string,
 }> = [
   {value: 'track', label: 'Track'},
+  {value: 'album', label: 'Album'},
   {value: 'artist', label: 'Artist'},
   {value: 'history', label: 'History'},
   {value: 'playlist', label: 'Playlist'},

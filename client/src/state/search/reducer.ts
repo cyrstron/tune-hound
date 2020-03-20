@@ -161,7 +161,7 @@ function setExtendSearchResultSuccess(
     ...item,
     sources: {
       ...item.sources,
-      [source]: result,
+      ...result,
     }
   } as SearchResult;
 
