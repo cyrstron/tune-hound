@@ -88,7 +88,6 @@ class SpotifySearchFormComponent extends Component<DeezerSearchFormProps, Deezer
     });
   }
 
-
   render() {
     const {
       type,

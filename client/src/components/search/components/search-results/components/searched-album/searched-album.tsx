@@ -23,7 +23,7 @@ const SearchedAlbumComponent: FC<SearchedAlbumProps> = ({album, className}) => {
   } = album;
 
   return (
-    <article className={cx('tralbumack', className)}>
+    <article className={cx('album', className)}>
       <div className={cx('content')}>
         <div className={cx('cover-wrapper')}>
           <img className={cx('cover')} src={coverUrl} />

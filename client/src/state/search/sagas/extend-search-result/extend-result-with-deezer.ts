@@ -15,9 +15,12 @@ export function* extendResultWithDeezer(item: SearchResult) {
     for (let artist of artists) {
       const {data}: DeezerTrackSearchResult = yield deezerService.search({
         namespace: 'track',
-        query: name,
-        album,
-        artist
+        query: {
+          track: name,
+          album,
+          artist,
+        },
+        strict: true,
       });
   
       result = data[0] || null;
@@ -29,17 +32,24 @@ export function* extendResultWithDeezer(item: SearchResult) {
 
     const {data}: DeezerTrackSearchResult = yield deezerService.search({
       namespace: 'album',
-      query: title,
+      query: {album: title},
+      strict: true,
     });
 
     result = data[0] || null;
   } else if (item.type === 'artist') {
-    result = null;
+    const {name} = item;
+
+    const {data}: DeezerTrackSearchResult = yield deezerService.search({
+      namespace: 'artist',
+      query: {artist: name},
+      strict: true,
+    });
+
+    result = data[0] || null;
   } else {
     result = null;
   }
 
   return result;
-  
-  return null;
 }

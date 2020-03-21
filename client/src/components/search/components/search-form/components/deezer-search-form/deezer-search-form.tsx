@@ -1,5 +1,9 @@
 import React, {Component, ChangeEvent, MouseEvent} from 'react';
-import { DeezerSearchOptions, DeezerSearchNamespace, DeezerSearchOrder, DeezerAdvancedSearchOptions } from '@app/state/deezer/types';
+import { DeezerSearchOptions, DeezerSearchNamespace, DeezerSearchOrder, DeezerAdvancedSearchOptions, DeezerAdvancedQueryParams, DeezerNamespaceSearchOptions } from '@app/state/deezer/types';
+import { DeezerTrackSearchForm } from './components/deezer-track-search-form';
+import { DeezerAlbumSearchForm } from './components/deezer-album-search-form';
+import { DeezerArtistSearchForm } from './components/deezer-artist-search-form';
+import { DeezerBasicSearchForm } from './components/deezer-basic-search-form';
 
 export interface DeezerSearchFormProps {
   onChange: (params: DeezerSearchOptions) => void;
@@ -45,9 +49,7 @@ class DeezerSearchFormComponent extends Component<DeezerSearchFormProps, DeezerS
     isAdvancedOpen: false,
   }
 
-  onToggleAdvance = (e: MouseEvent) => {
-    e.preventDefault();
-
+  toggleAdvance = () => {
     this.setState({
       isAdvancedOpen: !this.state.isAdvancedOpen,
     });
@@ -57,19 +59,44 @@ class DeezerSearchFormComponent extends Component<DeezerSearchFormProps, DeezerS
     const {value} = target;
     const {searchParams, onChange} = this.props;
 
-    onChange({
-      namespace: value as DeezerSearchNamespace,
-      query: searchParams.query,
-    });
+    this.setState({
+      isAdvancedOpen: false,
+    })
+
+    if (value === 'track') {
+      onChange({
+        ...searchParams,
+        namespace: value as 'track',
+        query: {track: this.getQueryString()},
+      });
+    } else if (value === 'album') {
+      onChange({
+        ...searchParams,
+        namespace: value as 'album',
+        query: {album: this.getQueryString()},
+      });
+    } else if (value === 'artist') {
+      onChange({
+        ...searchParams,
+        namespace: value as 'artist',
+        query: {artist: this.getQueryString()},
+      });
+    } else {
+      onChange({
+        ...searchParams,
+        namespace: value as DeezerSearchNamespace,
+        query: this.getQueryString(),
+      } as DeezerNamespaceSearchOptions);
+    }
+
   }
 
-  onQueryChange = ({target}: ChangeEvent<HTMLInputElement>) => {
-    const {value} = target;
-    const {searchParams, onChange} = this.props;
+  onChange = (params: DeezerSearchOptions) => {
+    const {onChange, searchParams} = this.props;
 
     onChange({
       ...searchParams,
-      query: value,
+      ...params,
     });
   }
 
@@ -93,68 +120,37 @@ class DeezerSearchFormComponent extends Component<DeezerSearchFormProps, DeezerS
     });
   }
 
-  onAdvancedChange = ({target}: ChangeEvent<HTMLInputElement>) => {
-    const {name, value: inputValue} = target;
-    const {
-      searchParams: {namespace, query, strict, order, ...searchParams}, 
-      onChange
-    } = this.props;
-    const value = inputValue ? inputValue : undefined;
+  getQueryString(): string {
+    const {searchParams} = this.props;
 
-    let params: Partial<DeezerAdvancedSearchOptions>;
+    if (searchParams.namespace === 'track') {
+      const {track} = searchParams.query;
 
-    switch(name) {
-      case 'artist':
-        params = {artist: value};
-        break;
-      case 'album':
-        params = {album: value};
-        break;
-      case 'label':
-        params = {label: value};
-        break;
-      case 'dur-min':
-        params = {durMin: value === undefined ? value : +value};
-        break;
-      case 'dur-max':
-        params = {durMax: value === undefined ? value : +value};
-        break;
-      case 'bpm-min':
-        params = {bpmMin: value === undefined ? value : +value};
-        break;
-      case 'bpm-max':
-        params = {bpmMax: value === undefined ? value : +value};
-        break;
-      default:
-        params = {};
-        break;
+      return track ? `${track}` : '';
+    } else if (searchParams.namespace === 'album') {
+      const {album} = searchParams.query;
+
+      return album ? `${album}` : '';
+    } else if (searchParams.namespace === 'artist') {
+      const {artist} = searchParams.query;
+
+      return artist ? `${artist}` : '';
+    } else {
+      return searchParams.query;
     }
-
-    onChange({
-      ...this.props.searchParams,
-      ...params,
-    });
   }
 
   render() {
     const {
+      searchParams
+    } = this.props ;
+    const {isAdvancedOpen} = this.state;
+
+    const {
       namespace,
-      query,
       strict,
       order,
-      ...advancedParams
-    } = this.props.searchParams ;
-    const {
-      artist,
-      album,
-      track,
-      label,
-      durMin,
-      durMax,
-      bpmMin,
-      bpmMax,
-    } = advancedParams as DeezerAdvancedSearchOptions;
-    const {isAdvancedOpen} = this.state;
+    } = searchParams;
 
     return (
       <div>
@@ -163,96 +159,50 @@ class DeezerSearchFormComponent extends Component<DeezerSearchFormProps, DeezerS
             <option key={value} value={value}>{label}</option>
           ))}
         </select>
-        <input type="text" onChange={this.onQueryChange} value={query}/>
-        <button type='submit'>Search</button>
-        <button onClick={this.onToggleAdvance}>
-          Advanced {isAdvancedOpen ? '⇑' : '⇓'}
-        </button>
+        {searchParams.namespace === 'track' && (
+          <DeezerTrackSearchForm 
+            onChange={this.onChange}
+            searchParams={searchParams}
+            isAdvanced={isAdvancedOpen}
+            toggleAdvance={this.toggleAdvance}
+          />
+        )}
+        {searchParams.namespace === 'album' && (
+          <DeezerAlbumSearchForm
+            onChange={this.onChange}
+            searchParams={searchParams}
+            isAdvanced={isAdvancedOpen}
+            toggleAdvance={this.toggleAdvance}
+          />
+        )}
+        {searchParams.namespace === 'artist' && (
+          <DeezerArtistSearchForm
+            onChange={this.onChange}
+            searchParams={searchParams}
+            isAdvanced={isAdvancedOpen}
+            toggleAdvance={this.toggleAdvance}
+          />
+        )}
+        {!['artist', 'ablum', 'track'].includes(searchParams.namespace) && (
+          <DeezerBasicSearchForm
+            onChange={this.onChange}
+            searchParams={searchParams as DeezerNamespaceSearchOptions}
+            isAdvanced={isAdvancedOpen}
+            toggleAdvance={this.toggleAdvance}
+          />
+        )}
         {isAdvancedOpen && (
           <div>
             <label>
               <input type="checkbox" onChange={this.onStrictChange} checked={strict}/>
               Strict
             </label>
-            {' '}
+            <br/>
             <select name='namespace' onChange={this.onSortingChange} value={order}>
               {sortings.map(({label, value}) => (
                 <option key={value} value={value}>{label}</option>
               ))}
             </select>
-            {namespace === 'track' && (
-              <>
-                <label>
-                  Artist:
-                  <input 
-                    type="text" 
-                    onChange={this.onAdvancedChange} 
-                    value={artist}
-                    name='artist'
-                  />
-                </label>
-                <br/>
-                <label>
-                  Album:
-                  <input 
-                    type="text" 
-                    onChange={this.onAdvancedChange} 
-                    value={album}
-                    name='album'
-                  />
-                </label>
-                <br/>
-                <label>
-                  Label:
-                  <input 
-                    type="text" 
-                    onChange={this.onAdvancedChange} 
-                    value={label}
-                    name='label'
-                  />
-                </label>
-                <br/>
-                Duration{' '}
-                <label>
-                  Min:
-                  <input 
-                    type="number" 
-                    onChange={this.onAdvancedChange} 
-                    value={durMin}
-                    max={durMax}
-                    name='dur-min'
-                  />
-                  Max:                  
-                  <input 
-                    type="number" 
-                    onChange={this.onAdvancedChange} 
-                    value={durMax}
-                    min={durMin}
-                    name='dur-max'
-                  />
-                </label>
-                <br/>
-                BPM{' '}
-                <label>
-                  Min:
-                  <input 
-                    type="number" 
-                    onChange={this.onAdvancedChange} 
-                    value={bpmMin}
-                    max={bpmMax}
-                    name='bpm-min'
-                  />
-                  Max:                  
-                  <input 
-                    type="number" 
-                    onChange={this.onAdvancedChange} 
-                    value={bpmMax}
-                    min={bpmMin}
-                    name='bpm-max'
-                  />
-                </label>
-              </>
-            )}
           </div>
         )}
       </div>

@@ -35,7 +35,7 @@ export function* extendResultWithSpotify(item: SearchResult) {
     const {title, artists} = item;
 
     for (let artist of artists) {
-      const {tracks}: SpotifyApi.SearchResponse = yield spotifyService.search({
+      const {albums}: SpotifyApi.SearchResponse = yield spotifyService.search({
         type: 'album',
         query: {
           and: [title],
@@ -43,12 +43,21 @@ export function* extendResultWithSpotify(item: SearchResult) {
         }
       }, accessToken);
   
-      result = tracks?.items[0] || null;
+      result = albums?.items[0] || null;
 
       if (result) break;
     }    
   } else if (item.type === 'artist') {
-    result = null;
+    const {name} = item;
+
+      const {albums}: SpotifyApi.SearchResponse = yield spotifyService.search({
+        type: 'artist',
+        query: {
+          and: [name],
+        }
+      }, accessToken);
+  
+      result = albums?.items[0] || null;
   } else {
     result = null;
   }

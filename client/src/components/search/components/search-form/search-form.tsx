@@ -43,7 +43,7 @@ class SearchFormComponent extends Component<SearchFormProps, SearchState> {
       this.state = {
         source: 'deezer' as 'deezer',
         namespace: 'track',
-        query: '',
+        query: {track: ''},
       }
     }
   }
@@ -78,7 +78,7 @@ class SearchFormComponent extends Component<SearchFormProps, SearchState> {
         this.setState({
           source: 'deezer',
           namespace: 'track',
-          query: '',
+          query: {track: ''},
         });
         break;
       case 'spotify':

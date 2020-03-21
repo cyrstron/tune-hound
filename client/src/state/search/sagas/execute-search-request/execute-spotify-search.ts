@@ -38,7 +38,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
       name: item.name,
       artists: item.artists.map(({name}) => name),
       album: item.album.name,
-      coverUrl: item.album.images[0].url,
+      coverUrl: item.album.images[0]?.url,
       duration: item.duration_ms / 1000,
       sources: {
         spotify: item,
@@ -54,7 +54,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
       type: 'album',
       title: item.name,
       artists: item.artists.map(({name}) => name),
-      coverUrl: item.images[0].url,
+      coverUrl: item.images[0]?.url,
       year: item.release_date,
       sources: {
         spotify: item,
@@ -69,7 +69,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
       id: uuid(),
       type: 'playlist',
       title: item.name,
-      coverUrl: item.images[0].url,
+      coverUrl: item.images[0]?.url,
       sources: {
         spotify: item,
       }
@@ -83,7 +83,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
       id: uuid(),
       type: 'artist',
       name: item.name,
-      coverUrl: item.images[0].url,
+      coverUrl: item.images[0]?.url,
       sources: {
         spotify: item,
       }
