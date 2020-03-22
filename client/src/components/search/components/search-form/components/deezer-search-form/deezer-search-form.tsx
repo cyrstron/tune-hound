@@ -183,7 +183,7 @@ class DeezerSearchFormComponent extends Component<DeezerSearchFormProps, DeezerS
             toggleAdvance={this.toggleAdvance}
           />
         )}
-        {!['artist', 'ablum', 'track'].includes(searchParams.namespace) && (
+        {!['artist', 'album', 'track'].includes(searchParams.namespace) && (
           <DeezerBasicSearchForm
             onChange={this.onChange}
             searchParams={searchParams as DeezerNamespaceSearchOptions}

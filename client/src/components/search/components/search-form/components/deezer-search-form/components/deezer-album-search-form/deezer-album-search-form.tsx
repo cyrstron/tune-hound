@@ -78,14 +78,14 @@ class DeezerAlbumSearchFormComponent extends Component<DeezerAlbumSearchFormProp
   render() {
     const {
       searchParams: {
-        query: {track, artist, label, durMin, durMax, bpmMin, bpmMax},
+        query: {album, artist, label, durMin, durMax, bpmMin, bpmMax},
       },
       isAdvanced,
     } = this.props;
 
     return (
       <>
-        <input type="text" onChange={this.onQueryChange} value={track}/>
+        <input type="text" onChange={this.onQueryChange} value={album}/>
         <button type='submit'>Search</button>
         <button onClick={this.onToggleAdvance}>
           Advanced {isAdvanced ? '⇑' : '⇓'}

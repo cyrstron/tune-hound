@@ -50,14 +50,14 @@ export function* extendResultWithSpotify(item: SearchResult) {
   } else if (item.type === 'artist') {
     const {name} = item;
 
-      const {albums}: SpotifyApi.SearchResponse = yield spotifyService.search({
+      const {artists}: SpotifyApi.SearchResponse = yield spotifyService.search({
         type: 'artist',
         query: {
           and: [name],
         }
       }, accessToken);
   
-      result = albums?.items[0] || null;
+      result = artists?.items[0] || null;
   } else {
     result = null;
   }
