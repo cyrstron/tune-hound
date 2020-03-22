@@ -3,11 +3,12 @@ import {toQueryString} from 'services/helpers';
 import {
   DeezerUserResponse, 
   DeezerUser, 
-  DeezerTrackSearchResponse, 
   DeezerSearchOptions, 
-  DeezerTrackSearchOptions,
   DeezerTrackSearchResult,
-  DeezerSearchResult
+  DeezerSearchResult,
+  DeezerAdvancedSearchOptions,
+  DeezerSearchResponse,
+  DeezerAdvancedTrackSearchOptions
 } from '../types';
 import {getAdvancedSearchString } from './helpers';
 
@@ -23,7 +24,13 @@ export class DeezerWebApi {
 
     return new Promise<DeezerSdk.SdkOptions>((resolve, reject) => {
       const timerId = setTimeout(() => {
-        reject(new Error('Connection timeout'));
+        const dzIframe = document.querySelector('#dzplayer');
+
+        if (!dzIframe) {
+          reject(new Error('Connection timeout'));
+        } else {
+          resolve();
+        }
       }, connectionTimeout);
 
       this.dz.ready((response) => {
@@ -85,25 +92,24 @@ export class DeezerWebApi {
     })
   }
 
-  searchTrack({
-    query,
+  advancedSearch({
     strict,
     order,
-    namespace: _namespace,
+    namespace,
     limit,
     index,
-    ...advancedProps
-  }: DeezerTrackSearchOptions): Promise<DeezerTrackSearchResult> {
+    query,
+  }: DeezerAdvancedSearchOptions): Promise<DeezerSearchResult> {
     const queryString = toQueryString({
-      q: getAdvancedSearchString(query, advancedProps),
+      q: getAdvancedSearchString(query),
       strict: strict ? 'on' : undefined,
       order,
       limit,
       index,
     });
 
-    return new Promise<DeezerTrackSearchResult>((res, rej) => {
-      this.dz.api(`/search${queryString}`, (response: DeezerTrackSearchResponse) => {
+    return new Promise<DeezerSearchResult>((res, rej) => {
+      this.dz.api(`/search/${namespace}${queryString}`, (response: DeezerSearchResponse) => {
         if ('error' in response) {
           rej(response.error);
         } else {
@@ -114,13 +120,14 @@ export class DeezerWebApi {
   }
 
   search(options: DeezerSearchOptions): Promise<DeezerSearchResult> {
-    if (options.namespace === 'track') {
-      return this.searchTrack(options as DeezerTrackSearchOptions);
+    if (typeof options.query !== 'string') {
+      return this.advancedSearch(options as DeezerAdvancedTrackSearchOptions);
     }
 
-    const {namespace, strict, order, limit, index} = options;
+    const {namespace, strict, order, limit, index, query} = options;
 
     const queryString = toQueryString({
+      q: query,
       strict: strict ? 'on' : undefined,
       order,
       limit,
@@ -130,7 +137,7 @@ export class DeezerWebApi {
     return new Promise((res, rej) => {
       this.dz.api(
         `/search/${namespace}${queryString}`,
-        (response: DeezerTrackSearchResponse) => {
+        (response: DeezerSearchResponse) => {
           if ('error' in response) {
             rej(response.error);
           } else {

@@ -1,0 +1,16 @@
+.pending {
+  opacity: 0.5;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+}
+
+.results-list {
+  margin: 0;
+  padding: 10px;
+  list-style: 0;
+  height: 0;
+  flex-grow: 1;
+}

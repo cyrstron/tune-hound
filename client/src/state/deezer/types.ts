@@ -49,7 +49,7 @@ export interface DeezerTrack {
   artist: {
     id: number;
     name: string;
-    links: string;
+    link: string;
     picture: string;
     picture_small: string;
     picture_medium: string;
@@ -72,20 +72,84 @@ export interface DeezerTrack {
   type: 'track';
 }
 
+export interface DeezerAlbum {
+  type: "album";
+  id: number;
+  title: string;
+  link: string;
+  cover: string;
+  cover_small: string;
+  cover_medium: string;
+  cover_big: string;
+  cover_xl: string;
+  genre_id: number;
+  nb_tracks: number;
+  record_type: "album" | "single";
+  tracklist: string;
+  explicit_lyrics: boolean;
+  artist: {
+    id: 689
+    name: string;
+    link: string;
+    picture: string;
+    picture_small: string;
+    picture_medium: string;
+    picture_big: string;
+    picture_xl: string;
+    tracklist: string;
+    type: "artist";
+  };
+}
+
+export interface DeezerArtist {
+  id: number;
+  name: string;
+  link: string;
+  picture: string;
+  picture_small: string;
+  picture_medium: string;
+  picture_big: string;
+  picture_xl: string;
+  nb_album: number;
+  nb_fan: number;
+  radio: boolean;
+  tracklist: string;
+  type: "artist";
+}
+
 export type DeezerResponseType = DeezerUser['type'] | DeezerTrack['type'];
 
 export type DeezerUserResponse = DeezerApiResponse<DeezerUser>;
 
 export interface DeezerTrackSearchResult {
-  data: DeezerTrack[],
+  data: Array<DeezerTrack>,
   total: number;
   next: string;
 };
 
-export type DeezerSearchResult = DeezerTrackSearchResult;
+export interface DeezerAlbumSearchResult {
+  data: Array<DeezerAlbum>,
+  total: number;
+  next: string;
+};
+
+export interface DeezerArtistSearchResult {
+  data: Array<DeezerArtist>,
+  total: number;
+  next: string;
+};
+
+export type DeezerSearchResult = DeezerTrackSearchResult | DeezerAlbumSearchResult | DeezerArtistSearchResult;
 
 export type DeezerTrackResponse = DeezerApiResponse<DeezerTrack>;
+
 export type DeezerTrackSearchResponse = DeezerApiResponse<DeezerTrackSearchResult>;
+export type DeezerAlbumSearchResponse = DeezerApiResponse<DeezerAlbumSearchResult>;
+export type DeezerArtistSearchResponse = DeezerApiResponse<DeezerArtistSearchResult>;
+
+export type DeezerSearchResponse = DeezerTrackSearchResponse |
+  DeezerAlbumSearchResponse |
+  DeezerArtistSearchResponse;
 
 export type DeezerSearchNamespace = 'album' |
   'artist' |
@@ -109,14 +173,14 @@ export type DeezerSearchOrder =  'RANKING' |
 
 export interface DeezerBasicSearchOptions {
   namespace: DeezerSearchNamespace;
-  query: string;
   strict?: boolean;
   order?: DeezerSearchOrder;
   limit?: number;
   index?: number;
 }
 
-export interface DeezerAdvancedSearchOptions {
+export interface DeezerAdvancedQueryParams {
+  track?: string;
   artist?: string;
   album?: string;
   label?: string;
@@ -127,10 +191,30 @@ export interface DeezerAdvancedSearchOptions {
   [key: string]: string | number | undefined;
 }
 
-export type DeezerNamespaceSearchOptions = DeezerBasicSearchOptions;
+export type DeezerNamespaceSearchOptions = DeezerBasicSearchOptions & {query: string} & {
+  namespace: 'history' | 'playlist' | 'radio' | 'user';
+};
 
-export type DeezerTrackSearchOptions = DeezerBasicSearchOptions & 
-  DeezerAdvancedSearchOptions & 
+export type DeezerAdvancedTrackQueryParams = DeezerAdvancedQueryParams;
+
+export type DeezerAdvancedTrackSearchOptions = DeezerBasicSearchOptions & 
+  {query: DeezerAdvancedTrackQueryParams} & 
   {namespace: 'track'};
 
-export type DeezerSearchOptions = DeezerNamespaceSearchOptions | DeezerTrackSearchOptions;
+export type DeezerAdvancedAlbumQueryParams = Omit<DeezerAdvancedQueryParams, 'track'>;
+
+export type DeezerAdvancedAlbumSearchOptions = DeezerBasicSearchOptions & 
+  {query: DeezerAdvancedAlbumQueryParams} & 
+  {namespace: 'album'};
+
+export type DeezerAdvancedArtistQueryParams = {artist?: string};
+
+export type DeezerAdvancedArtistSearchOptions = DeezerBasicSearchOptions & 
+  {query: DeezerAdvancedArtistQueryParams} & 
+  {namespace: 'artist'};
+
+export type DeezerAdvancedSearchOptions = DeezerAdvancedTrackSearchOptions | 
+DeezerAdvancedAlbumSearchOptions | 
+DeezerAdvancedArtistSearchOptions;
+
+export type DeezerSearchOptions = DeezerNamespaceSearchOptions | DeezerAdvancedSearchOptions;

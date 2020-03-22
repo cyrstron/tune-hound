@@ -1,4 +1,6 @@
 import { AxiosInstance } from "axios";
+import { SpotifySearchOptions } from "../types";
+import { getAdvancedSearchString } from "./helpers";
 
 export interface SpotifyAuthPayload {
   accessToken: string;
@@ -33,6 +35,24 @@ export class SpotifyWebApi {
         'Authorization': `Bearer ${accessToken}`
       }
     });
+  }
+
+  async search(
+    {query, includeExternal, ...params}: SpotifySearchOptions, 
+    accessToken: string
+  ): Promise<SpotifyApi.SearchResponse> {
+    const {data} = await this.axios.get<SpotifyApi.SearchResponse>(`${this.spotifyUrl}/v1/search`, {
+      params: {
+        ...params,
+        'include_external': includeExternal,
+        q: typeof query === 'string' ? query : getAdvancedSearchString(query),
+      },
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+
+    return data;
   }
 
   async login() {
@@ -72,17 +92,17 @@ export class SpotifyWebApi {
   async refreshAccessToken(refreshToken: string) {
     const {
       data: {
-        'access_token': accessToken, 
-        'expires_in': expiresIn
+        accessToken, 
+        expiresIn
       }
     } = await this.axios.get<{
-      'access_token': string,
-      'expires_in': number,
+      accessToken: string,
+      expiresIn: number,
     }>(`/refresh-token?refresh_token=${refreshToken}`);
 
     return {
       accessToken,
-      expiresIn,
+      expiresIn: new Date(expiresIn),
     }
   }
 }

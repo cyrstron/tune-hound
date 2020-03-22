@@ -1,0 +1,10 @@
+.item-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  padding: 10px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
