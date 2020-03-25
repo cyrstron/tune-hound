@@ -19,7 +19,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
     tracks, 
     albums, 
     playlists, 
-    artists
+    artists,
   }: SpotifyApi.SearchResponse = yield spotifySearch.search({
     ...options,
     limit: pageSize,
@@ -70,6 +70,11 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
       type: 'playlist',
       title: item.name,
       coverUrl: item.images[0]?.url,
+      author: {
+        name: item.owner.display_name || item.owner.id,
+      },
+      tracksTotal: item.tracks.total,
+      tracksUrl: item.tracks.href,
       sources: {
         spotify: item,
       }

@@ -1,6 +1,11 @@
-import {SearchResult, SearchOptions, SearchSource} from './types';
+import {SearchResult, SearchOptions, SearchSource, SearchItem} from './types';
 import {
-  SearchAction, ExtendSearchResultSuccessAction, ExtendSearchResultPendingAction, ExtendSearchResultFailureAction,
+  SearchAction, 
+  ExtendSearchResultSuccessAction, 
+  ExtendSearchResultPendingAction, 
+  ExtendSearchResultFailureAction,
+  SetOptionsForExtendAction,
+  PickOptionForExtendAction,
 } from './actions';
 import { 
   EXECUTE_SEARCH_PENDING, 
@@ -14,6 +19,8 @@ import {
   EXTEND_SEARCH_RESULT_PENDING,
   EXTEND_SEARCH_RESULT_SUCCESS,
   EXTEND_SEARCH_RESULT_FAILURE,
+  SET_OPTIONS_FOR_EXTEND,
+  PICK_OPTION_FOR_EXTEND,
 } from './consts';
 
 export interface SearchState {
@@ -25,6 +32,11 @@ export interface SearchState {
   extendErrors: {
     [key in SearchSource]?: {
       [key in string]?: Error;
+    };
+  };
+  itemsForExtention: {
+    [key in SearchSource]?: {
+      [key in string]?: SearchItem[];
     };
   };
   searchQuery?: SearchOptions;
@@ -40,6 +52,7 @@ export interface SearchState {
 const initialSearchState: SearchState = {
   extendPendings: {},
   extendErrors: {},
+  itemsForExtention: {},
   isPending: false,
   pageIndex: 0,
   pageSize: 20,
@@ -89,6 +102,7 @@ export function searchReducer(
         ...state,
         extendPendings: {},
         extendErrors: {},
+        itemsForExtention: {},
         result: undefined,
         total: undefined,
       };
@@ -108,6 +122,10 @@ export function searchReducer(
       return setExtendSearchResultSuccess(state, action);
     case EXTEND_SEARCH_RESULT_FAILURE:
       return setExtendSearchResultFailure(state, action);
+    case SET_OPTIONS_FOR_EXTEND:
+      return setOptionsForExtend(state, action);
+    case PICK_OPTION_FOR_EXTEND:
+      return setPickOptionForExtend(state, action);
     default:
       return state;
   }
@@ -220,5 +238,50 @@ function setExtendSearchResultFailure(
     ...state,
     extendPendings: updatedPendings,
     extendErrors: updatedErrors,
+  };
+}
+
+function setOptionsForExtend(
+  state: SearchState, 
+  {payload: {itemId, source, items}}: SetOptionsForExtendAction, 
+): SearchState {
+  const {itemsForExtention} = state;
+
+  const newItemsForExtention = {
+    ...itemsForExtention,
+    [source]: {
+      ...itemsForExtention[source],
+      [itemId]: items,
+    },
+  };
+
+  return {
+    ...state,
+    itemsForExtention: newItemsForExtention,
+  };
+}
+
+function setPickOptionForExtend(
+  state: SearchState, 
+  {payload: {itemId, source}}: PickOptionForExtendAction, 
+): SearchState {
+  const {itemsForExtention} = state;
+
+  const newItemsForExtention = {
+    ...itemsForExtention,
+    [source]: {
+      ...itemsForExtention[source],
+    },
+  };
+
+  const items = newItemsForExtention[source];
+
+  if (items) {
+    delete items[itemId];
+  };
+
+  return {
+    ...state,
+    itemsForExtention: newItemsForExtention,
   };
 }

@@ -117,6 +117,29 @@ export interface DeezerArtist {
   type: "artist";
 }
 
+export interface DeezerPlaylist {
+  id: number;
+  title: string;
+  public: boolean;
+  nb_tracks: number;
+  link: string;
+  picture: string;
+  picture_small: string;
+  picture_medium: string;
+  picture_big: string;
+  picture_xl: string;
+  checksum: string;
+  tracklist: string;
+  creation_date: string;
+  user: {
+    id: 1535921546
+    name:  string;
+    tracklist: string;
+    type: "user"
+  };
+  type: "playlist";
+}
+
 export type DeezerResponseType = DeezerUser['type'] | DeezerTrack['type'];
 
 export type DeezerUserResponse = DeezerApiResponse<DeezerUser>;
@@ -139,17 +162,25 @@ export interface DeezerArtistSearchResult {
   next: string;
 };
 
-export type DeezerSearchResult = DeezerTrackSearchResult | DeezerAlbumSearchResult | DeezerArtistSearchResult;
+export interface DeezerPlaylistSearchResult {
+  data: Array<DeezerPlaylist>,
+  total: number;
+  next: string;
+};
+
+export type DeezerSearchResult = DeezerTrackSearchResult | DeezerAlbumSearchResult | DeezerArtistSearchResult | DeezerPlaylistSearchResult;
 
 export type DeezerTrackResponse = DeezerApiResponse<DeezerTrack>;
 
 export type DeezerTrackSearchResponse = DeezerApiResponse<DeezerTrackSearchResult>;
 export type DeezerAlbumSearchResponse = DeezerApiResponse<DeezerAlbumSearchResult>;
 export type DeezerArtistSearchResponse = DeezerApiResponse<DeezerArtistSearchResult>;
+export type DeezerPlaylistSearchResponse = DeezerApiResponse<DeezerPlaylistSearchResult>;
 
 export type DeezerSearchResponse = DeezerTrackSearchResponse |
   DeezerAlbumSearchResponse |
-  DeezerArtistSearchResponse;
+  DeezerArtistSearchResponse |
+  DeezerPlaylistSearchResponse;
 
 export type DeezerSearchNamespace = 'album' |
   'artist' |

@@ -1,5 +1,5 @@
 import {v4 as uuid} from 'uuid';
-import { DeezerSearchOptions, DeezerSearchResult, DeezerTrack, DeezerAlbum, DeezerArtist } from "@app/state/deezer/types";
+import { DeezerSearchOptions, DeezerSearchResult, DeezerTrack, DeezerAlbum, DeezerArtist, DeezerPlaylist } from "@app/state/deezer/types";
 import { getContext } from "redux-saga/effects";
 import { DEEZER_SERVICE_CTX_KEY } from "@app/consts";
 import { DeezerService } from "@app/state/deezer";
@@ -50,6 +50,21 @@ export function* executeDeezerSearchSaga(options: DeezerSearchOptions, pageIndex
           deezer: item,
         }
       }));
+    } else if (isPlaylistResponse(data)) {
+      results = data.map((item) => ({
+        id: uuid(),
+        type: 'playlist',
+        title: item.title,
+        coverUrl: item.picture,
+        author: {
+          name: item.user.name
+        },
+        tracksUrl: item.tracklist,
+        tracksTotal: item.nb_tracks,
+        sources: {
+          deezer: item,
+        }
+      }));
     }
 
     return {
@@ -68,4 +83,8 @@ function isAlbumResponse(data: DeezerSearchItem[]): data is DeezerAlbum[] {
 
 function isArtistResponse(data: DeezerSearchItem[]): data is DeezerArtist[] {
   return data[0]?.type === 'artist';
+}
+
+function isPlaylistResponse(data: DeezerSearchItem[]): data is DeezerPlaylist[] {
+  return data[0]?.type === 'playlist';
 }

@@ -13,8 +13,10 @@ import {
   EXTEND_SEARCH_RESULT_PENDING,
   EXTEND_SEARCH_RESULT_SUCCESS,
   EXTEND_SEARCH_RESULT_FAILURE,
+  SET_OPTIONS_FOR_EXTEND,
+  PICK_OPTION_FOR_EXTEND
 } from './consts';
-import { SearchSource, SearchResult, SearchOptions, DeezerSearchItem, SpotifySearchItem } from './types';
+import { SearchSource, SearchResult, SearchOptions, DeezerSearchItem, SpotifySearchItem, SearchItem } from './types';
 import {DeezerSearchOptions, DeezerTrack} from '../deezer/types';
 import { SpotifySearchOptions } from '../spotify/types';
 
@@ -209,6 +211,43 @@ export const extendSearchResultFailure = (
   payload: {itemId, source, error},
 });
 
+
+export interface SetOptionsForExtendAction {
+  type: typeof SET_OPTIONS_FOR_EXTEND;
+  payload: {
+    itemId: string;
+    source: SearchSource;
+    items: SearchItem[];
+  };
+}
+
+export const setOptionsForExtend = (
+  itemId: string,
+  source: SearchSource,
+  items: SearchItem[],
+): SetOptionsForExtendAction => ({
+  type: SET_OPTIONS_FOR_EXTEND,
+  payload: {itemId, source, items},
+});
+
+export interface PickOptionForExtendAction {
+  type: typeof PICK_OPTION_FOR_EXTEND;
+  payload: {
+    itemId: string;
+    source: SearchSource;
+    pickedItem: SearchItem | null;
+  }
+}
+
+export const pickOptionForExtend = (
+  itemId: string,
+  source: SearchSource,
+  pickedItem: SearchItem | null,
+): PickOptionForExtendAction => ({
+  type: PICK_OPTION_FOR_EXTEND,
+  payload: {itemId, source, pickedItem},
+});
+
 export type SearchAction = ExecuteSearchAction |
   ExecuteSearchPendingAction |
   ExecuteSearchSuccessAction |
@@ -220,4 +259,6 @@ export type SearchAction = ExecuteSearchAction |
   ExtendSearchResultPendingAction |
   ExtendSearchResultSuccessAction |
   ExtendSearchResultFailureAction |
+  SetOptionsForExtendAction |
+  PickOptionForExtendAction |
   ResetSearchAction;

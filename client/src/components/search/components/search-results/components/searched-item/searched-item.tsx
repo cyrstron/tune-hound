@@ -4,6 +4,7 @@ import { SearchResult } from '@app/state/search/types';
 import {SearchedTrack} from '../searched-track';
 import {SearchedAlbum} from '../searched-album';
 import {SearchedArtist} from '../searched-artist';
+import { SearchedPlaylist } from '../searched-playlist';
 
 import styles from './searched-item.scss';
 
@@ -24,6 +25,9 @@ const SearchedItemComponent: FC<SearchedTrackProps> = ({item}) => {
         )}
         {item.type === 'artist' && (
           <SearchedArtist artist={item} className={cx('item')}/>
+        )}
+        {item.type === 'playlist' && (
+          <SearchedPlaylist playlist={item} className={cx('item')}/>
         )}
     </li>
   );

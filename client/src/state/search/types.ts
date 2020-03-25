@@ -1,4 +1,4 @@
-import { DeezerTrack, DeezerSearchOptions, DeezerAlbum, DeezerArtist } from "../deezer/types";
+import { DeezerTrack, DeezerSearchOptions, DeezerAlbum, DeezerArtist, DeezerPlaylist } from "../deezer/types";
 import { SpotifySearchOptions } from "../spotify/types";
 
 export type SearchOptions = DeezerSearchOptions | SpotifySearchOptions;
@@ -24,10 +24,6 @@ export interface SearchedAlbum {
   type: 'album';
   artists: string[];
   title: string;
-  // tracks: Array<{
-  //   name: string;
-  //   duration: number;
-  // }>;
   coverUrl: string;
   sources: {
     deezer?: DeezerAlbum | null;
@@ -50,20 +46,19 @@ export interface SearchedPlaylist {
   id: string;
   type: 'playlist';
   title: string;
-  // tracks: Array<{
-  //   name: string;
-  //   duration: number;
-  //   artist: string;
-  //   coverUrl: string;
-  //   album: string;
-  // }>;
+  coverUrl: string;
+  author: {
+    name: string;
+  };
+  tracksUrl: string;
+  tracksTotal: number;
   sources: {
     deezer?: any | null;
     spotify?: SpotifyApi.PlaylistObjectSimplified | null;
   }
 }
 
-export type DeezerSearchItem = DeezerTrack | DeezerAlbum | DeezerArtist;
+export type DeezerSearchItem = DeezerTrack | DeezerAlbum | DeezerArtist | DeezerPlaylist;
 
 export type SpotifySearchItem = SpotifyApi.TrackObjectFull | 
   SpotifyApi.AlbumObjectSimplified | 
