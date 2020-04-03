@@ -8,7 +8,10 @@ import spotifyLogo from '@app/resources/source-logos/spotify-logo.svg';
 
 import styles from './source-details.scss';
 import { extendSearchResult } from '@app/state/search';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState } from '@app/state';
+import { selectItemsForExtensionById } from '@app/state/search/selectors';
+import { ExtensionPopup } from './components/extension-popup';
 
 const cx = classNames.bind(styles);
 
@@ -28,6 +31,10 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
   const [source, setSource] = useState<SearchSource | undefined>();
 
   const dispatch = useDispatch();
+  const {
+    spotify: spotifyExtensions, 
+    deezer: deezerExtensions,
+  } = useSelector((state: AppState) => selectItemsForExtensionById(state, id))
 
   const onDeezerClick = useCallback(() => {
     setSource(source !== 'deezer' ? 'deezer' : undefined);
@@ -50,39 +57,42 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
   }, [setSource, source, spotify, id, dispatch]);
 
   return (
-    <div className={cx('details', className)}>
-      <div className={cx('controls')}>
-        <button onClick={onDeezerClick}>
-          <img 
-            className={cx('control-icon')} 
-            src={deezerLogo} 
-            alt="Deezer" 
-          />
-        </button>
-        <button onClick={onSpotifyClick}>
-          <img           
-            className={cx('control-icon')} 
-            src={spotifyLogo} 
-            alt="Spotify" 
-          />
-        </button>
+    <>
+      <div className={cx('details', className)}>
+        <div className={cx('controls')}>
+          <button onClick={onDeezerClick}>
+            <img 
+              className={cx('control-icon')} 
+              src={deezerLogo} 
+              alt="Deezer" 
+            />
+          </button>
+          <button onClick={onSpotifyClick}>
+            <img           
+              className={cx('control-icon')} 
+              src={spotifyLogo} 
+              alt="Spotify" 
+            />
+          </button>
+        </div>
+        <div className={cx('content')}>
+          {source === 'deezer' && deezer && (
+            <DeezerDetails object={deezer}/>
+          )}
+          {source === 'spotify' && spotify && (
+            <SpotifyDetails object={spotify} />
+          )}
+          {(
+              source === 'deezer' && deezer === null
+            ) || (
+              source === 'spotify' && spotify === null 
+            ) && (
+              'Not found in this source :C'
+          )}
+        </div>
       </div>
-      <div className={cx('content')}>
-        {source === 'deezer' && deezer && (
-          <DeezerDetails object={deezer} />
-        )}
-        {source === 'spotify' && spotify && (
-          <SpotifyDetails object={spotify} />
-        )}
-        {(
-            source === 'deezer' && deezer === null
-          ) || (
-            source === 'spotify' && spotify === null 
-          ) && (
-            'Not found in this source :C'
-        )}
-      </div>
-    </div>
+      <ExtensionPopup spotify={spotifyExtensions} deezer={deezerExtensions} />
+    </>
   );
 }
 

@@ -16,11 +16,13 @@ const DeezerAlbumDetailsComponent: FC<DeezerAlbumDetailsProps> = ({
   className
 }) => {
   return (
+    <>
     <div className={cx('album-details', className)}>
       <div>Name: {title}</div>
       <div>Artist: {artist.name}</div>
       <div>{nb_tracks} tracks</div>
     </div>
+    </>
   )
 }
 

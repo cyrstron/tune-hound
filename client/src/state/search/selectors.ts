@@ -1,4 +1,5 @@
 import { AppState } from "..";
+import { SearchSource, SearchItem, DeezerSearchItem, SpotifySearchItem } from "./types";
 
 export const selectSearchResult = (state: AppState) => state.search.result;
 export const selectPageIndex = (state: AppState) => state.search.pageIndex;
@@ -32,3 +33,21 @@ export const selectTotalPages = (state: AppState) => {
     undefined :
     Math.ceil(totalItems / pageSize);
 }
+
+function selectItemsForExtension(state: AppState, id: string, source: 'deezer'): DeezerSearchItem[] | undefined;
+function selectItemsForExtension(state: AppState, id: string, source: 'spotify'): SpotifySearchItem[] | undefined;
+function selectItemsForExtension(state: AppState, id: string, source: SearchSource): SearchItem[] | undefined {
+  return state.search.itemsForExtention[source]?.[id];
+}
+
+export const selectItemsForExtensionById = (state: AppState, id: string): {
+  deezer?: DeezerSearchItem[],
+  spotify?: SpotifySearchItem[],
+} => {
+  return {
+    deezer: selectItemsForExtension(state, id, 'deezer'),
+    spotify: selectItemsForExtension(state, id, 'spotify'),
+  }
+}
+
+export {selectItemsForExtension};

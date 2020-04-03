@@ -1,8 +1,11 @@
 import React, {FC} from 'react';
-import { DeezerTrackDetails } from './components/deezer-track-details';
+import {useSelector} from 'react-redux';
 import { DeezerSearchItem } from '@app/state/search/types';
+import { selectItemsForExtension } from '@app/state/search/selectors';
+import { DeezerTrackDetails } from './components/deezer-track-details';
 import { DeezerAlbumDetails } from './components/deezer-album-details';
 import { DeezerArtistDetails } from './components/deezer-artist-details';
+import { AppState } from '@app/state';
 
 export interface DeezerDetailsProps {
   object: DeezerSearchItem;
