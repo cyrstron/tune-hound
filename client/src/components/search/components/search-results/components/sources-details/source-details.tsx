@@ -1,8 +1,7 @@
 import React, { FC, useState, useCallback } from 'react';
 import classNames from 'classnames/bind';
 import { SearchSource, SpotifySearchItem, DeezerSearchItem } from '@app/state/search/types';
-import {DeezerDetails} from './components/deezer-details';
-import {SpotifyDetails} from './components/spotify-details';
+import {DeezerItem, SpotifyItem} from '@app/components/source-items';
 import deezerLogo from '@app/resources/source-logos/deezer-logo.svg';
 import spotifyLogo from '@app/resources/source-logos/spotify-logo.svg';
 
@@ -77,10 +76,10 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
         </div>
         <div className={cx('content')}>
           {source === 'deezer' && deezer && (
-            <DeezerDetails object={deezer}/>
+            <DeezerItem object={deezer}/>
           )}
           {source === 'spotify' && spotify && (
-            <SpotifyDetails object={spotify} />
+            <SpotifyItem object={spotify} />
           )}
           {(
               source === 'deezer' && deezer === null

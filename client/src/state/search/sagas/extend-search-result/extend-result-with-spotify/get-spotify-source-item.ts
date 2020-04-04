@@ -5,7 +5,13 @@ import { setOptionsForExtend, PickOptionForExtendAction } from '@app/state/searc
 import { PICK_OPTION_FOR_EXTEND } from '@app/state/search/consts';
 
 export function* getSpotifySourceItem(item: SearchResult) {
-  const results = yield call(searchSimilarWithSpotify, item);
+  const {tracks, albums, artists}: SpotifyApi.SearchResponse = yield call(searchSimilarWithSpotify, item);
+
+  const results = tracks?.items || albums?.items || artists?.items;
+
+  if (!results) {
+    return null;
+  }
   
   if (results.length === 1) {
     return results[0];
