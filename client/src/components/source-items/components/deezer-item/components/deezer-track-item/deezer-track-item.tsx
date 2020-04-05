@@ -16,7 +16,7 @@ const DeezerTrackItemComponent: FC<DeezerTrackItemProps> = ({
   className
 }) => {
   return (
-    <div className={cx('track-details', className)}>
+    <div className={cx('track', className)}>
       <div>Name: {title}</div>
       <div>Album: {album.title}</div>
       <div>Artist: {artist.name}</div>

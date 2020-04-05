@@ -14,7 +14,8 @@ import {
   EXTEND_SEARCH_RESULT_SUCCESS,
   EXTEND_SEARCH_RESULT_FAILURE,
   SET_OPTIONS_FOR_EXTEND,
-  PICK_OPTION_FOR_EXTEND
+  PICK_OPTION_FOR_EXTEND,
+  RESET_OPTIONS_FOR_EXTEND
 } from './consts';
 import { SearchSource, SearchResult, SearchOptions, DeezerSearchItem, SpotifySearchItem, SearchItem } from './types';
 import {DeezerSearchOptions, DeezerTrack} from '../deezer/types';
@@ -248,6 +249,22 @@ export const pickOptionForExtend = (
   payload: {itemId, source, pickedItem},
 });
 
+export interface ResetOptionsForExtendAction {
+  type: typeof RESET_OPTIONS_FOR_EXTEND;
+  payload: {
+    itemId: string;
+    source: SearchSource;
+  }
+}
+
+export const resetOptionsForExtend = (
+  itemId: string,
+  source: SearchSource,
+): ResetOptionsForExtendAction => ({
+  type: RESET_OPTIONS_FOR_EXTEND,
+  payload: {itemId, source},
+});
+
 export type SearchAction = ExecuteSearchAction |
   ExecuteSearchPendingAction |
   ExecuteSearchSuccessAction |
@@ -261,4 +278,5 @@ export type SearchAction = ExecuteSearchAction |
   ExtendSearchResultFailureAction |
   SetOptionsForExtendAction |
   PickOptionForExtendAction |
-  ResetSearchAction;
+  ResetSearchAction |
+  ResetOptionsForExtendAction;

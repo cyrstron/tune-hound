@@ -29,7 +29,7 @@ export function* searchSimilarWithDeezer(item: SearchResult) {
     );
 
     return results.reduce<DeezerTrack[]>((tracks, {data}) => {
-      tracks.push(...data);
+      tracks.push(...data.filter(({id}) => !tracks.some((item) => item.id === id)));
 
       return tracks;
     }, []);
@@ -44,10 +44,10 @@ export function* searchSimilarWithDeezer(item: SearchResult) {
       }))
     );
 
-    return results.reduce<DeezerAlbum[]>((tracks, {data}) => {
-      tracks.push(...data);
+    return results.reduce<DeezerAlbum[]>((albums, {data}) => {
+      albums.push(...data.filter(({id}) => !albums.some((item) => item.id === id)));
 
-      return tracks;
+      return albums;
     }, []);
   } else if (item.type === 'artist') {
     const {name} = item;

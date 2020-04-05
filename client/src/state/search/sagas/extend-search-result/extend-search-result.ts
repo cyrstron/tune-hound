@@ -30,10 +30,6 @@ export function* extendSearchResult({
       result = yield call(extendResultWithDeezer, searchItem);
     }
 
-    if (result === undefined) {
-      result = null;
-    }
-
     const successAction = extendSearchResultSuccess(
       itemId, 
       source,

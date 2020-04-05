@@ -1,15 +1,13 @@
-import {call, put, take} from 'redux-saga/effects';
+import {call, put } from 'redux-saga/effects';
 import {searchSimilarWithSpotify} from './search-similar-with-spotify';
-import { SearchResult, SearchItem } from '@app/state/search/types';
-import { setOptionsForExtend, PickOptionForExtendAction } from '@app/state/search/actions';
-import { PICK_OPTION_FOR_EXTEND } from '@app/state/search/consts';
+import { SearchResult, SpotifySearchItem } from '@app/state/search/types';
+import { setOptionsForExtend } from '@app/state/search/actions';
+import { waitForItemPicked } from '../wait-for-item-picked';
 
 export function* getSpotifySourceItem(item: SearchResult) {
-  const {tracks, albums, artists}: SpotifyApi.SearchResponse = yield call(searchSimilarWithSpotify, item);
+  const results: SpotifySearchItem[] = yield call(searchSimilarWithSpotify, item);
 
-  const results = tracks?.items || albums?.items || artists?.items;
-
-  if (!results) {
+  if (results.length === 0) {
     return null;
   }
   
@@ -19,17 +17,7 @@ export function* getSpotifySourceItem(item: SearchResult) {
 
   yield put(setOptionsForExtend(item.id, 'spotify', results));
 
-  let result: SearchItem | null | undefined;
+  const picked = yield call(waitForItemPicked, item.id, 'spotify');
 
-  while(result === undefined) {
-    const {
-      payload: {itemId, pickedItem, source}
-    }: PickOptionForExtendAction = yield take(PICK_OPTION_FOR_EXTEND);
-
-    if (itemId === item.id && source === 'spotify') {
-      result = pickedItem;
-    }
-  }
-
-  return result;
+  return picked;
 }

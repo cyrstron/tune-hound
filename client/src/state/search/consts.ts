@@ -19,3 +19,4 @@ export const EXTEND_SEARCH_RESULT_SUCCESS = '@app/search/EXTEND_SEARCH_RESULT:su
 
 export const SET_OPTIONS_FOR_EXTEND = '@app/search/SET_OPTIONS_FOR_EXTEND';
 export const PICK_OPTION_FOR_EXTEND = '@app/search/PICK_OPTION_FOR_EXTEND';
+export const RESET_OPTIONS_FOR_EXTEND = '@app/search/RESET_OPTIONS_FOR_EXTEND';

@@ -6,6 +6,7 @@ import {
   ExtendSearchResultFailureAction,
   SetOptionsForExtendAction,
   PickOptionForExtendAction,
+  ResetOptionsForExtendAction,
 } from './actions';
 import { 
   EXECUTE_SEARCH_PENDING, 
@@ -21,6 +22,7 @@ import {
   EXTEND_SEARCH_RESULT_FAILURE,
   SET_OPTIONS_FOR_EXTEND,
   PICK_OPTION_FOR_EXTEND,
+  RESET_OPTIONS_FOR_EXTEND,
 } from './consts';
 
 export interface SearchState {
@@ -126,6 +128,8 @@ export function searchReducer(
       return setOptionsForExtend(state, action);
     case PICK_OPTION_FOR_EXTEND:
       return setPickOptionForExtend(state, action);
+    case RESET_OPTIONS_FOR_EXTEND:
+      return setPickOptionForExtend(state, action);
     default:
       return state;
   }
@@ -169,7 +173,7 @@ function setExtendSearchResultSuccess(
   state: SearchState, 
   {payload: {itemId, source, result}}: ExtendSearchResultSuccessAction, 
 ): SearchState {
-  const {result: results, extendPendings} = state;
+  const {result: results, extendPendings, itemsForExtention} = state;
   const itemIndex = results?.findIndex(({id}) => id === itemId);
 
   if (itemIndex === undefined || itemIndex === -1 || !results) return state;
@@ -263,7 +267,7 @@ function setOptionsForExtend(
 
 function setPickOptionForExtend(
   state: SearchState, 
-  {payload: {itemId, source}}: PickOptionForExtendAction, 
+  {payload: {itemId, source}}: PickOptionForExtendAction | ResetOptionsForExtendAction, 
 ): SearchState {
   const {itemsForExtention} = state;
 

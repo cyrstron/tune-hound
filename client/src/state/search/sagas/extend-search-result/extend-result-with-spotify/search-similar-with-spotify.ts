@@ -20,13 +20,13 @@ export function* searchSimilarWithSpotify(item: SearchResult) {
       query: {
         and: [name],
         album,
-        artist: artist,
+        artist,
       }
     }, accessToken)));
 
     return results.reduce<SpotifyApi.TrackObjectFull[]>((result, {tracks}) => {
       if (tracks) {
-        result.push(...tracks.items);
+        result.push(...tracks.items.filter(({id}) => !result.some((item) => item.id === id)));
       }
 
       return result;
@@ -38,13 +38,13 @@ export function* searchSimilarWithSpotify(item: SearchResult) {
       type: 'album',
       query: {
         and: [title],
-        artist: artist,
+        artist,
       }
     }, accessToken)));
 
     return results.reduce<SpotifyApi.AlbumObjectSimplified[]>((result, {albums}) => {
       if (albums) {
-        result.push(...albums.items);
+        result.push(...albums.items.filter(({id}) => !result.some((item) => item.id === id)));
       }
 
       return result;

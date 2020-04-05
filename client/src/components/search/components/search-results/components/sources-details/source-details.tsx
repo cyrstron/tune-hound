@@ -81,16 +81,16 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
           {source === 'spotify' && spotify && (
             <SpotifyItem object={spotify} />
           )}
-          {(
+          {((
               source === 'deezer' && deezer === null
             ) || (
               source === 'spotify' && spotify === null 
-            ) && (
+            )) && (
               'Not found in this source :C'
           )}
         </div>
       </div>
-      <ExtensionPopup spotify={spotifyExtensions} deezer={deezerExtensions} />
+      <ExtensionPopup spotify={spotifyExtensions} deezer={deezerExtensions} id={id}/>
     </>
   );
 }
