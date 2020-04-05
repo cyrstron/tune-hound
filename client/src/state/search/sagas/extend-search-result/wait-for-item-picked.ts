@@ -1,9 +1,11 @@
-import {take, race} from 'redux-saga/effects';
+import {take, race, put} from 'redux-saga/effects';
 import { SearchItem, SearchSource } from '@app/state/search/types';
-import { PickOptionForExtendAction, ResetOptionsForExtendAction } from '@app/state/search/actions';
+import { PickOptionForExtendAction, ResetOptionsForExtendAction, setOptionsForExtend } from '@app/state/search/actions';
 import { PICK_OPTION_FOR_EXTEND, RESET_OPTIONS_FOR_EXTEND } from '@app/state/search/consts';
 
-export function* waitForItemPicked(extendedId: string, extendedSource: SearchSource) {
+export function* waitForItemPicked(extendedId: string, extendedSource: SearchSource, results: SearchItem[]) {
+  yield put(setOptionsForExtend(extendedId, extendedSource, results));
+
   let picked: SearchItem | null | undefined | false;
 
   while(picked === undefined) {

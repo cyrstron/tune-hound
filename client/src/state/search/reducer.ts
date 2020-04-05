@@ -173,8 +173,8 @@ function setExtendSearchResultSuccess(
   state: SearchState, 
   {payload: {itemId, source, result}}: ExtendSearchResultSuccessAction, 
 ): SearchState {
-  const {result: results, extendPendings, itemsForExtention} = state;
-  const itemIndex = results?.findIndex(({id}) => id === itemId);
+  const {result: results, extendPendings} = state;
+  const itemIndex = results?.findIndex((item) => item?.id === itemId);
 
   if (itemIndex === undefined || itemIndex === -1 || !results) return state;
 

@@ -1,7 +1,6 @@
-import {call, put } from 'redux-saga/effects';
+import {call } from 'redux-saga/effects';
 import {searchSimilarWithSpotify} from './search-similar-with-spotify';
 import { SearchResult, SpotifySearchItem } from '@app/state/search/types';
-import { setOptionsForExtend } from '@app/state/search/actions';
 import { waitForItemPicked } from '../wait-for-item-picked';
 
 export function* getSpotifySourceItem(item: SearchResult) {
@@ -15,9 +14,7 @@ export function* getSpotifySourceItem(item: SearchResult) {
     return results[0];
   }
 
-  yield put(setOptionsForExtend(item.id, 'spotify', results));
-
-  const picked = yield call(waitForItemPicked, item.id, 'spotify');
+  const picked = yield call(waitForItemPicked, item.id, 'spotify', results);
 
   return picked;
 }

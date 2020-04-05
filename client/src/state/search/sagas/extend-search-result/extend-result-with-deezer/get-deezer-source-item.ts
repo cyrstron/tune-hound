@@ -1,7 +1,6 @@
-import {call, put } from 'redux-saga/effects';
+import {call } from 'redux-saga/effects';
 import {searchSimilarWithDeezer} from './search-similar-with-deezer';
 import { SearchResult } from '@app/state/search/types';
-import { setOptionsForExtend } from '@app/state/search/actions';
 import { waitForItemPicked } from '../wait-for-item-picked';
 
 export function* getDeezerSourceItem(item: SearchResult) {
@@ -15,9 +14,7 @@ export function* getDeezerSourceItem(item: SearchResult) {
     return results[0];
   }
 
-  yield put(setOptionsForExtend(item.id, 'deezer', results));
-
-  const picked = yield call(waitForItemPicked, item.id, 'deezer');
+  const picked = yield call(waitForItemPicked, item.id, 'deezer', results);
 
   return picked
 }
