@@ -19,8 +19,6 @@ import {
   EXTEND_SEARCH_RESULT_SUCCESS,
   EXTEND_SEARCH_RESULT_FAILURE,
   SET_OPTIONS_FOR_EXTEND,
-  PICK_OPTION_FOR_EXTEND,
-  RESET_OPTIONS_FOR_EXTEND,
 } from './consts';
 
 export type ExtensionSubState = {
@@ -31,6 +29,7 @@ export type ExtensionSubState = {
   isPending: boolean;
   isResultsPending: boolean;
   results?: SearchItem[];
+  hasItemsToLoad?: boolean;
 };
 
 export interface SearchState {
