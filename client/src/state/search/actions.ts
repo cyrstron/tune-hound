@@ -17,8 +17,15 @@ import {
   PICK_OPTION_FOR_EXTEND,
   RESET_OPTIONS_FOR_EXTEND
 } from './consts';
-import { SearchSource, SearchResult, SearchOptions, DeezerSearchItem, SpotifySearchItem, SearchItem } from './types';
-import {DeezerSearchOptions, DeezerTrack} from '../deezer/types';
+import { 
+  SearchSource, 
+  SearchResult, 
+  SearchOptions,
+  DeezerSearchItem, 
+  SpotifySearchItem, 
+  SearchItem 
+} from './types';
+import {DeezerSearchOptions} from '../deezer/types';
 import { SpotifySearchOptions } from '../spotify/types';
 
 export interface ExecuteSearchAction  {

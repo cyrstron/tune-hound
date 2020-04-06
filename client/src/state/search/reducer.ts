@@ -1,12 +1,10 @@
-import {SearchResult, SearchOptions, SearchSource, SearchItem} from './types';
+import {SearchResult, SearchOptions, SearchSource, SearchItem, SpotifySearchItem, DeezerSearchItem} from './types';
 import {
   SearchAction, 
   ExtendSearchResultSuccessAction, 
   ExtendSearchResultPendingAction, 
   ExtendSearchResultFailureAction,
   SetOptionsForExtendAction,
-  PickOptionForExtendAction,
-  ResetOptionsForExtendAction,
 } from './actions';
 import { 
   EXECUTE_SEARCH_PENDING, 
@@ -25,20 +23,20 @@ import {
   RESET_OPTIONS_FOR_EXTEND,
 } from './consts';
 
+export type ExtensionSubState = {
+  query?: SearchOptions;
+  limit: number;
+  offset: number;
+  error?: Error;
+  isPending: boolean;
+  isResultsPending: boolean;
+  results?: SearchItem[];
+};
+
 export interface SearchState {
-  extendPendings: {
+  extensions: {
     [key in SearchSource]?: {
-      [key in string]?: true;
-    };
-  };
-  extendErrors: {
-    [key in SearchSource]?: {
-      [key in string]?: Error;
-    };
-  };
-  itemsForExtention: {
-    [key in SearchSource]?: {
-      [key in string]?: SearchItem[];
+      [key: string]: ExtensionSubState | undefined;
     };
   };
   searchQuery?: SearchOptions;
@@ -52,9 +50,7 @@ export interface SearchState {
 }
 
 const initialSearchState: SearchState = {
-  extendPendings: {},
-  extendErrors: {},
-  itemsForExtention: {},
+  extensions: {},
   isPending: false,
   pageIndex: 0,
   pageSize: 20,
@@ -102,9 +98,7 @@ export function searchReducer(
     case RESET_SEARCH_RESULTS:
       return {
         ...state,
-        extendPendings: {},
-        extendErrors: {},
-        itemsForExtention: {},
+        extensions: {},
         result: undefined,
         total: undefined,
       };
@@ -126,10 +120,6 @@ export function searchReducer(
       return setExtendSearchResultFailure(state, action);
     case SET_OPTIONS_FOR_EXTEND:
       return setOptionsForExtend(state, action);
-    case PICK_OPTION_FOR_EXTEND:
-      return setPickOptionForExtend(state, action);
-    case RESET_OPTIONS_FOR_EXTEND:
-      return setPickOptionForExtend(state, action);
     default:
       return state;
   }
@@ -139,33 +129,26 @@ function setExtendSearchResultPending(
   state: SearchState, 
   {payload: {itemId, source}}: ExtendSearchResultPendingAction, 
 ): SearchState {
-  const {extendPendings, extendErrors} = state;
+  const {
+    extensions
+  } = state;
 
-  const updatedPendings = {
-    ...extendPendings,
+  const updatedExtensions = {
+    ...extensions,
     [source]: {
-      ...extendPendings[source],
-      [itemId]: true,
+      ...(extensions[source] || {}),
+      [itemId]: {
+        limit: 0,
+        offset: 20,
+        isPending: true,
+        isResultsPending: false,
+      },
     },
-  };
-
-  const updatedErrors = {
-    ...extendErrors,
-    [source]: {
-      ...extendErrors[source],
-    },
-  };
-
-  const errors = updatedErrors[source];
-
-  if (errors) {
-    delete errors[itemId];
   };
 
   return {
     ...state,
-    extendPendings: updatedPendings,
-    extendErrors: updatedErrors,
+    extensions: updatedExtensions,
   };
 }
 
@@ -173,12 +156,16 @@ function setExtendSearchResultSuccess(
   state: SearchState, 
   {payload: {itemId, source, result}}: ExtendSearchResultSuccessAction, 
 ): SearchState {
-  const {result: results, extendPendings} = state;
+  const {
+    result: results, 
+    extensions,
+  } = state;
   const itemIndex = results?.findIndex((item) => item?.id === itemId);
 
   if (itemIndex === undefined || itemIndex === -1 || !results) return state;
 
   const item = results[itemIndex];
+
   const extendedItem = {
     ...item,
     sources: {
@@ -187,18 +174,18 @@ function setExtendSearchResultSuccess(
     }
   } as SearchResult;
 
-  const updatedPendings = {
-    ...extendPendings,
+  const updatedExtensions = {
+    ...extensions,
     [source]: {
-      ...extendPendings[source],
-    },
+      ...(extensions[source] || {}),
+    }
   };
 
-  const pendings = updatedPendings[source];
+  const extensionsSubStates = updatedExtensions[source];
 
-  if (pendings) {
-    delete pendings[itemId];
-  };
+  if (extensionsSubStates) {
+    delete extensionsSubStates[itemId];
+  }
 
   return {
     ...state,
@@ -207,7 +194,7 @@ function setExtendSearchResultSuccess(
       extendedItem,
       ...results.slice(itemIndex + 1),
     ],
-    extendPendings: updatedPendings,
+    extensions: updatedExtensions,
   };
 }
 
@@ -215,33 +202,25 @@ function setExtendSearchResultFailure(
   state: SearchState, 
   {payload: {itemId, source, error}}: ExtendSearchResultFailureAction, 
 ): SearchState {
-  const {extendPendings, extendErrors} = state;
+  const {
+    extensions,
+  } = state;
 
-  const updatedErrors = {
-    ...extendErrors,
+  const updatedExtensions = {
+    ...extensions,
     [source]: {
-      ...(extendErrors[source] || {}),
-      [itemId]: error,
+      ...(extensions[source] || {}),
+      [itemId]: {
+        ...(extensions[source]?.[itemId] || {}),
+        error,
+        isPending: false,
+      }
     },
-  };
-
-  const updatedPendings = {
-    ...extendPendings,
-    [source]: {
-      ...extendPendings[source],
-    },
-  };
-
-  const pendings = extendPendings[source];
-
-  if (pendings) {
-    delete pendings[itemId];
   };
 
   return {
     ...state,
-    extendPendings: updatedPendings,
-    extendErrors: updatedErrors,
+    extensions: updatedExtensions,
   };
 }
 
@@ -249,43 +228,23 @@ function setOptionsForExtend(
   state: SearchState, 
   {payload: {itemId, source, items}}: SetOptionsForExtendAction, 
 ): SearchState {
-  const {itemsForExtention} = state;
+  const {
+    extensions,
+  } = state;
 
-  const newItemsForExtention = {
-    ...itemsForExtention,
+  const updatedExtensions = {
+    ...extensions,
     [source]: {
-      ...itemsForExtention[source],
-      [itemId]: items,
-    },
-  };
+      ...(extensions[source] || {}),
+      [itemId]: {
+        ...(extensions[source]?.[itemId] || {}),
+        results: items,
+      }
+    }
+  }
 
   return {
     ...state,
-    itemsForExtention: newItemsForExtention,
-  };
-}
-
-function setPickOptionForExtend(
-  state: SearchState, 
-  {payload: {itemId, source}}: PickOptionForExtendAction | ResetOptionsForExtendAction, 
-): SearchState {
-  const {itemsForExtention} = state;
-
-  const newItemsForExtention = {
-    ...itemsForExtention,
-    [source]: {
-      ...itemsForExtention[source],
-    },
-  };
-
-  const items = newItemsForExtention[source];
-
-  if (items) {
-    delete items[itemId];
-  };
-
-  return {
-    ...state,
-    itemsForExtention: newItemsForExtention,
+    extensions: updatedExtensions,
   };
 }

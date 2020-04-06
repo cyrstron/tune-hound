@@ -37,7 +37,7 @@ export const selectTotalPages = (state: AppState) => {
 function selectItemsForExtension(state: AppState, id: string, source: 'deezer'): DeezerSearchItem[] | undefined;
 function selectItemsForExtension(state: AppState, id: string, source: 'spotify'): SpotifySearchItem[] | undefined;
 function selectItemsForExtension(state: AppState, id: string, source: SearchSource): SearchItem[] | undefined {
-  return state.search.itemsForExtention[source]?.[id];
+  return state.search.extensions[source]?.[id]?.results;
 }
 
 export const selectItemsForExtensionById = (state: AppState, id: string): {
