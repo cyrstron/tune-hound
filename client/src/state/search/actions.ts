@@ -15,7 +15,15 @@ import {
   EXTEND_SEARCH_RESULT_FAILURE,
   SET_OPTIONS_FOR_EXTEND,
   PICK_OPTION_FOR_EXTEND,
-  RESET_OPTIONS_FOR_EXTEND
+  RESET_OPTIONS_FOR_EXTEND,
+  FETCH_OPTIONS_FOR_EXTEND,
+  FETCH_OPTIONS_FOR_EXTEND_PENDING,
+  FETCH_OPTIONS_FOR_EXTEND_FAILURE,
+  FETCH_OPTIONS_FOR_EXTEND_SUCCESS,  
+  SET_EXTENSION_OFFSET,
+  SET_EXTENSION_LIMIT,
+  SET_EXTENSION_TOTALS,
+  FETCH_NEXT_OPTIONS_FOR_EXTEND,
 } from './consts';
 import { 
   SearchSource, 
@@ -272,6 +280,144 @@ export const resetOptionsForExtend = (
   payload: {itemId, source},
 });
 
+export interface FetchOptionsForExtendAction {
+  type: typeof FETCH_OPTIONS_FOR_EXTEND;
+  payload: {
+    itemId: string;
+    source: SearchSource;
+  }
+}
+
+export const fetchOptionsForExtend = (
+  itemId: string,
+  source: SearchSource,
+): FetchOptionsForExtendAction => ({
+  type: FETCH_OPTIONS_FOR_EXTEND,
+  payload: {itemId, source},
+});
+
+export interface FetchOptionsForExtendPendingAction {
+  type: typeof FETCH_OPTIONS_FOR_EXTEND_PENDING;
+  payload: {
+    itemId: string;
+    source: SearchSource;
+  };
+}
+
+export const fetchOptionsForExtendPending = (
+  itemId: string,
+  source: SearchSource,
+): FetchOptionsForExtendPendingAction => ({
+  type: FETCH_OPTIONS_FOR_EXTEND_PENDING,
+  payload: {itemId, source},
+});
+
+export interface FetchOptionsForExtendFailureAction {
+  type: typeof FETCH_OPTIONS_FOR_EXTEND_FAILURE;
+  payload: {
+    itemId: string;
+    source: SearchSource;
+    error: Error;
+  }
+}
+
+export const fetchOptionsForExtendFailure = (
+  itemId: string,
+  source: SearchSource,
+  error: Error,
+): FetchOptionsForExtendFailureAction => ({
+  type: FETCH_OPTIONS_FOR_EXTEND_FAILURE,
+  payload: {itemId, source, error},
+});
+
+export interface FetchOptionsForExtendSuccessAction {
+  type: typeof FETCH_OPTIONS_FOR_EXTEND_SUCCESS;
+  payload: {
+    itemId: string;
+    source: SearchSource;
+    results: SearchItem[];
+  }
+}
+
+export const fetchOptionsForExtendSuccess = (
+  itemId: string,
+  source: SearchSource,
+  results: SearchItem[],
+): FetchOptionsForExtendSuccessAction => ({
+  type: FETCH_OPTIONS_FOR_EXTEND_SUCCESS,
+  payload: {itemId, source, results},
+});
+
+export interface SetExtensionOffsetAction {
+  type: typeof SET_EXTENSION_OFFSET;
+  payload: {
+    itemId: string;
+    source: SearchSource;
+    offset: number;
+  }
+}
+
+export const setExtensionOffset = (
+  itemId: string,
+  source: SearchSource,
+  offset: number,
+): SetExtensionOffsetAction => ({
+  type: SET_EXTENSION_OFFSET,
+  payload: {itemId, source, offset},
+});
+
+export interface SetExtensionLimitAction {
+  type: typeof SET_EXTENSION_LIMIT;
+  payload: {
+    itemId: string;
+    source: SearchSource;
+    limit: number;
+  }
+}
+
+export const setExtensionLimit = (
+  itemId: string,
+  source: SearchSource,
+  limit: number,
+): SetExtensionLimitAction => ({
+  type: SET_EXTENSION_LIMIT,
+  payload: {itemId, source, limit},
+});
+
+export interface SetExtensionTotalsAction {
+  type: typeof SET_EXTENSION_TOTALS;
+  payload: {
+    itemId: string;
+    source: SearchSource;
+    totals: Array<number | undefined>;
+  }
+}
+
+export const setExtensionTotals = (
+  itemId: string,
+  source: SearchSource,
+  totals: Array<number | undefined>,
+): SetExtensionTotalsAction => ({
+  type: SET_EXTENSION_TOTALS,
+  payload: {itemId, source, totals},
+});
+
+export interface FetchNextOptionsForExtendAction {
+  type: typeof FETCH_NEXT_OPTIONS_FOR_EXTEND;
+  payload: {
+    itemId: string;
+    source: SearchSource;
+  }
+}
+
+export const fetchNextOptionsForExtend = (
+  itemId: string,
+  source: SearchSource,
+): FetchNextOptionsForExtendAction => ({
+  type: FETCH_NEXT_OPTIONS_FOR_EXTEND,
+  payload: {itemId, source},
+});
+
 export type SearchAction = ExecuteSearchAction |
   ExecuteSearchPendingAction |
   ExecuteSearchSuccessAction |
@@ -286,4 +432,11 @@ export type SearchAction = ExecuteSearchAction |
   SetOptionsForExtendAction |
   PickOptionForExtendAction |
   ResetSearchAction |
-  ResetOptionsForExtendAction;
+  ResetOptionsForExtendAction |
+  FetchOptionsForExtendPendingAction |
+  FetchOptionsForExtendFailureAction |
+  FetchOptionsForExtendSuccessAction |
+  SetExtensionOffsetAction |
+  SetExtensionLimitAction |
+  FetchNextOptionsForExtendAction |
+  SetExtensionTotalsAction;

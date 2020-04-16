@@ -4,7 +4,9 @@ import {
   ExtendSearchResultSuccessAction, 
   ExtendSearchResultPendingAction, 
   ExtendSearchResultFailureAction,
-  SetOptionsForExtendAction,
+  SetExtensionTotalsAction,
+  FetchOptionsForExtendSuccessAction,
+  SetExtensionOffsetAction,
 } from './actions';
 import { 
   EXECUTE_SEARCH_PENDING, 
@@ -18,18 +20,20 @@ import {
   EXTEND_SEARCH_RESULT_PENDING,
   EXTEND_SEARCH_RESULT_SUCCESS,
   EXTEND_SEARCH_RESULT_FAILURE,
-  SET_OPTIONS_FOR_EXTEND,
+  SET_EXTENSION_TOTALS,
+  SET_EXTENSION_OFFSET,
+  FETCH_OPTIONS_FOR_EXTEND_SUCCESS,
 } from './consts';
 
 export type ExtensionSubState = {
-  query?: SearchOptions;
+  searchOptions?: SearchOptions[];
   limit: number;
   offset: number;
+  totals: Array<number | undefined>;
   error?: Error;
   isPending: boolean;
-  isResultsPending: boolean;
+  isFetchPending: boolean;
   results?: SearchItem[];
-  hasItemsToLoad?: boolean;
 };
 
 export interface SearchState {
@@ -117,8 +121,12 @@ export function searchReducer(
       return setExtendSearchResultSuccess(state, action);
     case EXTEND_SEARCH_RESULT_FAILURE:
       return setExtendSearchResultFailure(state, action);
-    case SET_OPTIONS_FOR_EXTEND:
+    case FETCH_OPTIONS_FOR_EXTEND_SUCCESS:
       return setOptionsForExtend(state, action);
+    case SET_EXTENSION_TOTALS:
+      return setExtensionTotals(state, action);
+    case SET_EXTENSION_OFFSET:
+      return setExtensionOffset(state, action);
     default:
       return state;
   }
@@ -137,8 +145,8 @@ function setExtendSearchResultPending(
     [source]: {
       ...(extensions[source] || {}),
       [itemId]: {
-        limit: 0,
-        offset: 20,
+        limit: 20,
+        offset: 0,
         isPending: true,
         isResultsPending: false,
       },
@@ -225,7 +233,7 @@ function setExtendSearchResultFailure(
 
 function setOptionsForExtend(
   state: SearchState, 
-  {payload: {itemId, source, items}}: SetOptionsForExtendAction, 
+  {payload: {itemId, source, results}}: FetchOptionsForExtendSuccessAction, 
 ): SearchState {
   const {
     extensions,
@@ -237,7 +245,57 @@ function setOptionsForExtend(
       ...(extensions[source] || {}),
       [itemId]: {
         ...(extensions[source]?.[itemId] || {}),
-        results: items,
+        results: [...(extensions[source]?.[itemId]?.results || []), ...results],
+      }
+    }
+  }
+
+  return {
+    ...state,
+    extensions: updatedExtensions,
+  };
+}
+
+function setExtensionTotals(
+  state: SearchState, 
+  {payload: {itemId, source, totals}}: SetExtensionTotalsAction, 
+): SearchState {
+  const {
+    extensions,
+  } = state;
+
+  const updatedExtensions = {
+    ...extensions,
+    [source]: {
+      ...(extensions[source] || {}),
+      [itemId]: {
+        ...(extensions[source]?.[itemId] || {}),
+        totals,
+      }
+    }
+  }
+
+  return {
+    ...state,
+    extensions: updatedExtensions,
+  };
+}
+
+function setExtensionOffset(
+  state: SearchState, 
+  {payload: {itemId, source, offset}}: SetExtensionOffsetAction, 
+): SearchState {
+  const {
+    extensions,
+  } = state;
+
+  const updatedExtensions = {
+    ...extensions,
+    [source]: {
+      ...(extensions[source] || {}),
+      [itemId]: {
+        ...(extensions[source]?.[itemId] || {}),
+        offset,
       }
     }
   }

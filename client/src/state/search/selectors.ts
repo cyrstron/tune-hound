@@ -1,5 +1,7 @@
 import { AppState } from "..";
 import { SearchSource, SearchItem, DeezerSearchItem, SpotifySearchItem } from "./types";
+import { ExtensionSubState } from "./reducer";
+import { getSearchOptions } from "./helpers";
 
 export const selectSearchResult = (state: AppState) => state.search.result;
 export const selectPageIndex = (state: AppState) => state.search.pageIndex;
@@ -34,10 +36,16 @@ export const selectTotalPages = (state: AppState) => {
     Math.ceil(totalItems / pageSize);
 }
 
-function selectItemsForExtension(state: AppState, id: string, source: 'deezer'): DeezerSearchItem[] | undefined;
-function selectItemsForExtension(state: AppState, id: string, source: 'spotify'): SpotifySearchItem[] | undefined;
-function selectItemsForExtension(state: AppState, id: string, source: SearchSource): SearchItem[] | undefined {
-  return state.search.extensions[source]?.[id]?.results;
+export function selectExtensionSubState(
+  state: AppState, 
+  id: string, 
+  source: SearchSource,
+): ExtensionSubState | undefined {
+  return state.search.extensions[source]?.[id];
+}
+
+export function selectItemsForExtension(state: AppState, id: string, source: SearchSource): SearchItem[] | undefined {
+  return selectExtensionSubState(state, id, source)?.results;
 }
 
 export const selectItemsForExtensionById = (state: AppState, id: string): {
@@ -45,9 +53,39 @@ export const selectItemsForExtensionById = (state: AppState, id: string): {
   spotify?: SpotifySearchItem[],
 } => {
   return {
-    deezer: selectItemsForExtension(state, id, 'deezer'),
-    spotify: selectItemsForExtension(state, id, 'spotify'),
+    deezer: selectItemsForExtension(state, id, 'deezer') as DeezerSearchItem[] | undefined,
+    spotify: selectItemsForExtension(state, id, 'spotify') as SpotifySearchItem[] | undefined,
   }
 }
 
-export {selectItemsForExtension};
+export const selectExtensionHasMoreItemsToFetch = (state: AppState, id: string, source: SearchSource) => {
+  const item = selectSearchResultById(state, id);
+
+  if (!item) return false;
+
+  const searchOptions = getSearchOptions(item, source);
+
+  const fullTotal = selectItemsForExtensionTotalsById(state, id, source)?.[searchOptions.length - 1];
+  const offset = selectItemsForExtensionOffsetById(state, id, source);
+
+  return (fullTotal !== undefined && offset !== undefined && fullTotal > offset);
+}
+
+export const selectItemsForExtensionLimitById = (
+  state: AppState, 
+  id: string, 
+  source: SearchSource,
+): number => selectExtensionSubState(state, id, source)?.limit || 20;
+
+export const selectItemsForExtensionOffsetById = (
+  state: AppState, 
+  id: string,
+  source: SearchSource,
+): number => selectExtensionSubState(state, id, source)?.offset || 0;
+
+export const selectItemsForExtensionTotalsById = (
+  state: AppState, 
+  id: string,
+  source: SearchSource,
+): Array<number | undefined> => selectExtensionSubState(state, id, source)?.totals || [];
+

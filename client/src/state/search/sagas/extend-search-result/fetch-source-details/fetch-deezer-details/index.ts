@@ -5,7 +5,7 @@ import {fetchAlbumDetails} from './fetch-album-details';
 import {fetchArtistDetails} from './fetch-artist-details';
 import {fetchPlaylistDetails} from './fetch-playlist-details';
 
-export function* fetchItemDetails(deezerItem: DeezerSearchItem) {
+export function* fetchDeezerDetails(deezerItem: DeezerSearchItem) {
   let result: any;
 
   switch(deezerItem.type) {

@@ -6,7 +6,7 @@ import {fetchAlbumDetails} from './fetch-album-details';
 import {fetchArtistDetails} from './fetch-artist-details';
 import {fetchPlaylistDetails} from './fetch-playlist-details';
 
-export function* fetchItemDetails(spotifyItem: SpotifySearchItem) {
+export function* fetchSpotifyDetails(spotifyItem: SpotifySearchItem) {
   let result: any;
 
   switch(spotifyItem.type) {

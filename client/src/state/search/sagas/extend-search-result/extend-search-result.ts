@@ -7,8 +7,8 @@ import {
 } from "../../actions";
 import { SearchItem, SearchResult } from '../../types';
 import { selectSearchResultById } from '../../selectors';
-import { extendResultWithSpotify } from './extend-result-with-spotify';
-import { extendResultWithDeezer } from './extend-result-with-deezer';
+import { findSourceItem } from './find-source-item';
+import { fetchSourceDetails } from './fetch-source-details';
 
 export function* extendSearchResult({
   payload: {itemId, source}
@@ -22,12 +22,14 @@ export function* extendSearchResult({
   yield put(pendingAction);
 
   try {
-    let result: SearchItem | null | undefined;
-    
-    if (source === 'spotify') {
-      result = yield call(extendResultWithSpotify, searchItem);
-    } else if (source === 'deezer') {
-      result = yield call(extendResultWithDeezer, searchItem);
+    let result: SearchItem | null | undefined = searchItem.sources[source];
+
+    if (result === undefined) {
+      result = yield call(findSourceItem, searchItem, source);
+    }
+
+    if (result) {
+      result = yield call(fetchSourceDetails, result, source);
     }
 
     const successAction = extendSearchResultSuccess(

@@ -10,23 +10,27 @@ export interface ClosingPopupProps {
   onClose: () => void;
   isBlocking?: boolean;
   title: ReactNode;
+  className?: string;
+  contentClassName?: string;
 }
 
 const ClosingPopupComponent: FC<ClosingPopupProps> = ({
   title, 
   onClose, 
   isBlocking, 
-  children
+  children,
+  className,
+  contentClassName,
 }) => {
   return (
       <Popup>
         <div className={cx('background', {'blocking': isBlocking})} onClick={!isBlocking ? onClose : undefined}>
-          <div className={cx('container')}>
+          <div className={cx('container', className)}>
             <div className={cx('header')}>
               {title}
               <button className={cx('close-btn')} onClick={onClose}>X</button>
             </div>
-            <div className={cx('content')}>
+            <div className={cx('content', contentClassName)}>
               {children}
             </div>
           </div>
