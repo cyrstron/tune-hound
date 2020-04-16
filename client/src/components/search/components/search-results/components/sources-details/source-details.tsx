@@ -48,7 +48,7 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
   const onSpotifyClick = useCallback(() => {
     setSource(source !== 'spotify' ? 'spotify' : undefined);
 
-    if (spotify !== undefined) return;
+    if (spotify === null || (spotify && 'isFull' in spotify)) return;
 
     const action = extendSearchResult(id, 'spotify');
 

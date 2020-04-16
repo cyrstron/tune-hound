@@ -38,7 +38,7 @@ export interface SearchedArtist {
   coverUrl: string;
   sources: {
     deezer?: DeezerArtist | null;
-    spotify?: SpotifyApi.ArtistObjectSimplified | null;
+    spotify?: SpotifyApi.ArtistObjectFull | null;
   }
 }
 

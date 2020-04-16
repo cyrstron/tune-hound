@@ -1,3 +1,6 @@
 export function* fetchTrackDetails(track: SpotifyApi.TrackObjectFull) {
-  return track;
+  return {
+    ...track, 
+    isFull: true
+  };
 }

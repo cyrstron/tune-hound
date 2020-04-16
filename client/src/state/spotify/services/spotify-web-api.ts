@@ -105,4 +105,81 @@ export class SpotifyWebApi {
       expiresIn: new Date(expiresIn),
     }
   }
+
+  async getAlbum(id: string, accessToken: string) {
+    const {data} = await this.axios.get<SpotifyApi.AlbumObjectFull>(
+      `${this.spotifyUrl}/v1/albums/${id}`,{      
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    return data;
+  }
+
+  async getAlbumTracks(id: string, accessToken: string) {
+    const {data} = await this.axios.get<SpotifyApi.AlbumTracksResponse>(
+      `${this.spotifyUrl}/v1/albums/${id}/tracks`, {      
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    return data;
+  }
+
+  async getTrack(id: string, accessToken: string) {
+    const {data} = await this.axios.get<SpotifyApi.TrackObjectFull>(
+      `${this.spotifyUrl}/v1/tracks/${id}`, {      
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    return data;
+  }
+
+  async getArtist(id: string, accessToken: string) {
+    const {data} = await this.axios.get<SpotifyApi.ArtistObjectFull>(
+      `${this.spotifyUrl}/v1/artists/${id}`, {      
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    return data;
+  }
+
+  async getArtistAlbums(id: string, accessToken: string) {
+    const {data} = await this.axios.get<SpotifyApi.ArtistsAlbumsResponse>(
+      `${this.spotifyUrl}/v1/artists/${id}/albums`, {      
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    return data;
+  }
+
+  async getArtistTopTracks(id: string, accessToken: string) {
+    const {data} = await this.axios.get<SpotifyApi.ArtistsTopTracksResponse>(
+      `${this.spotifyUrl}/v1/artists/${id}/top-tracks`, {      
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    return data;
+  }
+
+  async getArtistRelated(id: string, accessToken: string) {
+    const {data} = await this.axios.get<SpotifyApi.ArtistsRelatedArtistsResponse>(
+      `${this.spotifyUrl}/v1/artists/${id}/related-artists`, {      
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    return data;
+  }
 }
