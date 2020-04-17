@@ -19,7 +19,8 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
     coverUrl,
     artists,
     album,
-    sources: {spotify, deezer}
+    sources: {spotify, deezer},
+    type,
   } = track;
 
   return (
@@ -70,7 +71,7 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
               </Fragment>
             ))}
           </div>
-          <SourceDetails id={id} spotify={spotify} deezer={deezer} className={cx('details')} />
+          <SourceDetails id={id} type={type} spotify={spotify} deezer={deezer} className={cx('details')} />
         </div>
       </div>
     </article>

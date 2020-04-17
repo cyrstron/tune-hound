@@ -5,6 +5,7 @@ import { SpotifyPlaylistDetails } from './components/spotify-playlist-details';
 import { DeezerPlaylistDetails } from './components/deezer-playlist-details';
 
 import styles from './searched-playlist.scss';
+import { SourceDetails } from '../sources-details';
 
 const cx = classNames.bind(styles);
 
@@ -20,6 +21,7 @@ const SearchedPlaylistComponent: FC<SearchedPlaylistProps> = ({playlist, classNa
     coverUrl,
     author: {name},
     sources: {deezer, spotify},
+    type,
     tracksTotal,
   } = playlist;
 
@@ -34,15 +36,7 @@ const SearchedPlaylistComponent: FC<SearchedPlaylistProps> = ({playlist, classNa
             {title}
           </h1>
           <div>{tracksTotal} track by <b>{name}</b></div>
-          <div>
-            Details:
-            {spotify && (
-              <SpotifyPlaylistDetails playlist={spotify} />
-            )}
-            {deezer && (
-              <DeezerPlaylistDetails playlist={deezer} />
-            )}
-          </div>
+          <SourceDetails id={id} type={type} spotify={spotify} deezer={deezer} className={cx('details')} />
         </div>
       </div>
     </article>

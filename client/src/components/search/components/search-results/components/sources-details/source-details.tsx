@@ -1,6 +1,6 @@
 import React, { FC, useState, useCallback } from 'react';
 import classNames from 'classnames/bind';
-import { SearchSource, SpotifySearchItem, DeezerSearchItem } from '@app/state/search/types';
+import { SearchSource, SpotifySearchItem, DeezerSearchItem, SearchResultType } from '@app/state/search/types';
 import {DeezerItem, SpotifyItem} from '@app/components/source-items';
 import deezerLogo from '@app/resources/source-logos/deezer-logo.svg';
 import spotifyLogo from '@app/resources/source-logos/spotify-logo.svg';
@@ -16,16 +16,24 @@ const cx = classNames.bind(styles);
 
 export interface SourceDetailsProps {
   id: string;
+  type: SearchResultType;
   spotify?: SpotifySearchItem | null;
   deezer?: DeezerSearchItem | null;
   className?: string;
 }
+
+const crossSourceTypes: SearchResultType[] = [
+  'track',
+  'album',
+  'artist',
+];
 
 const SourceDetailsComponent: FC<SourceDetailsProps> = ({
   id,
   spotify, 
   deezer, 
   className,
+  type,
 }) => {
   const [source, setSource] = useState<SearchSource | undefined>();
 
@@ -33,7 +41,12 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
   const {
     spotify: spotifyExtensions, 
     deezer: deezerExtensions,
-  } = useSelector((state: AppState) => selectItemsForExtensionById(state, id))
+  } = useSelector((state: AppState) => selectItemsForExtensionById(state, id));
+
+  const isCrossSource = crossSourceTypes.includes(type);
+
+  const hasDeezerDetails = isCrossSource || !!deezer;
+  const hasSpotifyDetails = isCrossSource || !!spotify;
 
   const onDeezerClick = useCallback(() => {
     setSource(source !== 'deezer' ? 'deezer' : undefined);
@@ -59,20 +72,24 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
     <>
       <div className={cx('details', className)}>
         <div className={cx('controls')}>
-          <button onClick={onDeezerClick}>
-            <img 
-              className={cx('control-icon')} 
-              src={deezerLogo} 
-              alt="Deezer" 
-            />
-          </button>
-          <button onClick={onSpotifyClick}>
-            <img           
-              className={cx('control-icon')} 
-              src={spotifyLogo} 
-              alt="Spotify" 
-            />
-          </button>
+          {hasDeezerDetails && (
+            <button onClick={onDeezerClick}>
+              <img 
+                className={cx('control-icon')} 
+                src={deezerLogo} 
+                alt="Deezer" 
+              />
+            </button>
+          )}
+          {hasSpotifyDetails && (
+            <button onClick={onSpotifyClick}>
+              <img           
+                className={cx('control-icon')} 
+                src={spotifyLogo} 
+                alt="Spotify" 
+              />
+            </button>
+          )}
         </div>
         <div className={cx('content')}>
           {source === 'deezer' && deezer && (

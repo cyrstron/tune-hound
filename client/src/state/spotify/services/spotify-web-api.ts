@@ -161,9 +161,12 @@ export class SpotifyWebApi {
     return data;
   }
 
-  async getArtistTopTracks(id: string, accessToken: string) {
+  async getArtistTopTracks(id: string, accessToken: string, country: string = 'from_token') {
     const {data} = await this.axios.get<SpotifyApi.ArtistsTopTracksResponse>(
-      `${this.spotifyUrl}/v1/artists/${id}/top-tracks`, {      
+      `${this.spotifyUrl}/v1/artists/${id}/top-tracks`, {     
+        params: {
+          country,
+        },
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }
@@ -175,6 +178,39 @@ export class SpotifyWebApi {
   async getArtistRelated(id: string, accessToken: string) {
     const {data} = await this.axios.get<SpotifyApi.ArtistsRelatedArtistsResponse>(
       `${this.spotifyUrl}/v1/artists/${id}/related-artists`, {      
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    return data;
+  }
+
+  async getPlaylist(id: string, accessToken: string) {
+    const {data} = await this.axios.get<SpotifyApi.PlaylistObjectFull>(
+      `${this.spotifyUrl}/v1/playlists/${id}`, {      
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    return data;
+  }
+
+  async getPlaylistTracks(id: string, accessToken: string) {
+    const {data} = await this.axios.get<SpotifyApi.PlaylistTrackResponse>(
+      `${this.spotifyUrl}/v1/playlists/${id}/tracks`, {      
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+    });
+
+    return data;
+  }
+
+  async getPlaylistImages(id: string, accessToken: string) {
+    const {data} = await this.axios.get<SpotifyApi.ImageObject[]>(
+      `${this.spotifyUrl}/v1/playlists/${id}/images`, {      
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }

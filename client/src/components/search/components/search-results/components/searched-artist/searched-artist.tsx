@@ -19,6 +19,7 @@ const SearchedArtistComponent: FC<SearchedArtistProps> = ({artist, className}) =
     coverUrl,
     sources: {deezer, spotify},
     name,
+    type,
   } = artist;
 
   return (
@@ -38,7 +39,7 @@ const SearchedArtistComponent: FC<SearchedArtistProps> = ({artist, className}) =
               {name}
             </SourceLink>
           </h1>
-          <SourceDetails id={id} spotify={spotify} deezer={deezer} className={cx('details')} />
+          <SourceDetails id={id} type={type} spotify={spotify} deezer={deezer} className={cx('details')} />
         </div>
       </div>
     </article>

@@ -68,3 +68,5 @@ export type SpotifySearchItem = SpotifyApi.TrackObjectFull |
 export type SearchItem = DeezerSearchItem | SpotifySearchItem;
 
 export type SearchResult = SearchedTrack | SearchedAlbum | SearchedArtist | SearchedPlaylist;
+
+export type SearchResultType = SearchResult['type'];
