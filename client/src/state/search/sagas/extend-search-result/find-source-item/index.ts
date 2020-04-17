@@ -1,5 +1,5 @@
 import {take, call, race, select, all} from 'redux-saga/effects';
-import { SearchResult, SearchSource, SearchItem } from "@app/state/search/types";
+import { SearchResult, SearchSource, SourceItemShort } from "@app/state/search/types";
 import { fetchMoreItems } from './fetch-more-items';
 import { 
   PICK_OPTION_FOR_EXTEND, 
@@ -16,7 +16,7 @@ import {selectExtensionHasMoreItemsToFetch, selectItemsForExtension} from '@app/
 export function* findSourceItem(searchResultItem: SearchResult, source: SearchSource) {
   yield call(fetchMoreItems, searchResultItem, source);
 
-  const [results, hasLadMore]: [SearchItem[], boolean] = yield all([
+  const [results, hasLadMore]: [SourceItemShort[], boolean] = yield all([
     select(selectItemsForExtension, searchResultItem.id, source),
     select(selectExtensionHasMoreItemsToFetch, searchResultItem.id, source)
   ]);
@@ -27,7 +27,7 @@ export function* findSourceItem(searchResultItem: SearchResult, source: SearchSo
     return results[0];
   }
 
-  let picked: SearchItem | null | undefined | false;
+  let picked: SourceItemShort | null | undefined;
 
   while(picked === undefined) {
     const { pick, reset, fetchMore }: {

@@ -1,4 +1,9 @@
-import {SearchResult, SearchOptions, SearchSource, SearchItem, SpotifySearchItem, DeezerSearchItem} from './types';
+import {
+  SearchResult, 
+  SearchOptions, 
+  SearchSource,
+  SourceItemShort,
+} from './types';
 import {
   SearchAction, 
   ExtendSearchResultSuccessAction, 
@@ -33,7 +38,7 @@ export type ExtensionSubState = {
   error?: Error;
   isPending: boolean;
   isFetchPending: boolean;
-  results?: SearchItem[];
+  results?: SourceItemShort[];
 };
 
 export interface SearchState {

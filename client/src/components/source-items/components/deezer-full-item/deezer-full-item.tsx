@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
-import { DeezerSearchItem } from '@app/state/search/types';
+import { DeezerSourceItemFull } from '@app/state/search/types';
 import { DeezerFullTrackItem } from './components/deezer-full-track-item';
 import { DeezerFullAlbumItem } from './components/deezer-full-album-item';
 import { DeezerFullArtistItem } from './components/deezer-full-artist-item';
 
 export interface DeezerFullItemProps {
-  object: DeezerSearchItem;
+  object: DeezerSourceItemFull;
 }
 
 const DeezerFullItemComponent: FC<DeezerFullItemProps> = ({object}) => {

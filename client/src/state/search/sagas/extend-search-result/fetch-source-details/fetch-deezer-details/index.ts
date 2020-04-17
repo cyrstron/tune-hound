@@ -1,12 +1,12 @@
 import {call} from 'redux-saga/effects';
-import { DeezerSearchItem } from "@app/state/search/types";
+import { DeezerSourceItemShort, DeezerSourceItemFull } from "@app/state/search/types";
 import {fetchTrackDetails} from './fetch-track-details';
 import {fetchAlbumDetails} from './fetch-album-details';
 import {fetchArtistDetails} from './fetch-artist-details';
 import {fetchPlaylistDetails} from './fetch-playlist-details';
 
-export function* fetchDeezerDetails(deezerItem: DeezerSearchItem) {
-  let result: any;
+export function* fetchDeezerDetails(deezerItem: DeezerSourceItemShort) {
+  let result: DeezerSourceItemFull;
 
   switch(deezerItem.type) {
     case 'track':

@@ -14,9 +14,21 @@ export interface SearchedTrack {
   duration: number;
   coverUrl: string;
   sources: {
-    deezer?: DeezerTrack | null;
-    spotify?: SpotifyApi.TrackObjectFull | null;
+    deezer?: DeezerTrackSourceItemShort | DeezerTrackSourceItemFull | null;
+    spotify?: SpotifyTrackSourceItemShort | SpotifyTrackSourceItemFull | null;
   }
+}
+
+export type SpotifyTrackSourceItemShort = SpotifyApi.TrackObjectFull;
+
+export interface SpotifyTrackSourceItemFull extends SpotifyApi.TrackObjectFull {
+  isFull: true;
+};
+
+export type DeezerTrackSourceItemShort = DeezerTrack;
+
+export interface DeezerTrackSourceItemFull extends DeezerTrack {
+  isFull: true;
 }
 
 export interface SearchedAlbum {
@@ -26,9 +38,21 @@ export interface SearchedAlbum {
   title: string;
   coverUrl: string;
   sources: {
-    deezer?: DeezerAlbum | null;
-    spotify?: SpotifyApi.AlbumObjectSimplified | null;
+    deezer?: DeezerAlbumSourceItemShort | DeezerAlbumSourceItemFull | null;
+    spotify?: SpotifyAlbumSourceItemShort | SpotifyAlbumSourceItemFull | null;
   }
+}
+
+export type SpotifyAlbumSourceItemShort = SpotifyApi.AlbumObjectSimplified;
+
+export interface SpotifyAlbumSourceItemFull extends SpotifyApi.AlbumObjectFull {
+  isFull: true;
+};
+
+export type DeezerAlbumSourceItemShort = DeezerAlbum;
+
+export interface DeezerAlbumSourceItemFull extends DeezerAlbum {
+  isFull: true;
 }
 
 export interface SearchedArtist {
@@ -37,9 +61,23 @@ export interface SearchedArtist {
   name: string;
   coverUrl: string;
   sources: {
-    deezer?: DeezerArtist | null;
-    spotify?: SpotifyApi.ArtistObjectFull | null;
+    deezer?: DeezerArtistSourceItemShort | DeezerArtistSourceItemFull | null;
+    spotify?: SpotifyArtistSourceItemShort | SpotifyArtistSourceItemFull | null;
   }
+}
+
+export type SpotifyArtistSourceItemShort = SpotifyApi.ArtistObjectFull;
+
+export interface SpotifyArtistSourceItemFull extends SpotifyApi.ArtistObjectFull {
+  albums: SpotifyApi.AlbumObjectSimplified[];
+  topTracks: SpotifyApi.AlbumObjectSimplified[];
+  isFull: true;
+};
+
+export type DeezerArtistSourceItemShort = DeezerArtist;
+
+export interface DeezerArtistSourceItemFull extends DeezerArtist {
+  isFull: true;
 }
 
 export interface SearchedPlaylist {
@@ -53,19 +91,51 @@ export interface SearchedPlaylist {
   tracksUrl: string;
   tracksTotal: number;
   sources: {
-    deezer?: any | null;
-    spotify?: SpotifyApi.PlaylistObjectSimplified | null;
+    deezer?: DeezerPlaylistSourceItemShort | DeezerPlaylistSourceItemFull | null;
+    spotify?: SpotifyPlaylistSourceItemShort | SpotifyArtistSourceItemFull | null;
   }
 }
 
-export type DeezerSearchItem = DeezerTrack | DeezerAlbum | DeezerArtist | DeezerPlaylist;
 
-export type SpotifySearchItem = SpotifyApi.TrackObjectFull | 
-  SpotifyApi.AlbumObjectSimplified | 
-  SpotifyApi.ArtistObjectSimplified | 
-  SpotifyApi.PlaylistObjectSimplified;
+export type SpotifyPlaylistSourceItemShort = SpotifyApi.PlaylistObjectSimplified;
 
-export type SearchItem = DeezerSearchItem | SpotifySearchItem;
+export interface SpotifyPlaylistSourceItemFull extends SpotifyApi.PlaylistObjectFull {
+  isFull: true;
+};
+
+export type DeezerPlaylistSourceItemShort = DeezerPlaylist;
+
+export interface DeezerPlaylistSourceItemFull extends DeezerPlaylist {
+  isFull: true;
+}
+
+export type DeezerSourceItemShort = DeezerTrackSourceItemShort |
+  DeezerAlbumSourceItemShort |
+  DeezerArtistSourceItemShort |
+  DeezerPlaylistSourceItemShort;
+
+export type DeezerSourceItemFull = DeezerTrackSourceItemFull |
+  DeezerAlbumSourceItemFull |
+  DeezerArtistSourceItemFull |
+  DeezerPlaylistSourceItemFull;
+
+export type SpotifySourceItemShort = SpotifyTrackSourceItemShort |
+  SpotifyAlbumSourceItemShort |
+  SpotifyArtistSourceItemShort |
+  SpotifyPlaylistSourceItemShort;
+
+export type SpotifySourceItemFull = SpotifyTrackSourceItemFull |
+  SpotifyAlbumSourceItemFull |
+  SpotifyArtistSourceItemFull |
+  SpotifyPlaylistSourceItemFull;
+
+export type SourceItemShort = SpotifySourceItemShort | DeezerSourceItemShort;
+export type SourceItemFull = SpotifySourceItemFull | DeezerSourceItemFull;
+
+export type DeezerSourceItem = DeezerSourceItemShort | DeezerSourceItemFull;
+export type SpotifySourceItem = SpotifySourceItemShort | SpotifySourceItemFull;
+
+export type SourceItem = DeezerSourceItem | SpotifySourceItem;
 
 export type SearchResult = SearchedTrack | SearchedAlbum | SearchedArtist | SearchedPlaylist;
 

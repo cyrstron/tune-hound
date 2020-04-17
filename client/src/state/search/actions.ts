@@ -29,9 +29,12 @@ import {
   SearchSource, 
   SearchResult, 
   SearchOptions,
-  DeezerSearchItem, 
-  SpotifySearchItem, 
-  SearchItem 
+  DeezerSourceItemFull,
+  SpotifySourceItemFull,
+  SourceItemShort,
+  // DeezerSearchItem, 
+  // SpotifySearchItem, 
+  // SearchItem 
 } from './types';
 import {DeezerSearchOptions} from '../deezer/types';
 import { SpotifySearchOptions } from '../spotify/types';
@@ -191,8 +194,8 @@ export interface ExtendSearchResultSuccessAction {
     itemId: string;
     source: SearchSource;
     result: {
-      deezer?: DeezerSearchItem | null;
-      spotify?: SpotifySearchItem | null;
+      deezer?: DeezerSourceItemFull | null;
+      spotify?: SpotifySourceItemFull | null;
     };
   };
 }
@@ -201,8 +204,8 @@ export const extendSearchResultSuccess = (
   itemId: string,
   source: SearchSource,
   result: {
-    deezer?: DeezerSearchItem | null;
-    spotify?: SpotifySearchItem | null;
+    deezer?: DeezerSourceItemFull | null;
+    spotify?: SpotifySourceItemFull | null;
   },
 ): ExtendSearchResultSuccessAction => ({
   type: EXTEND_SEARCH_RESULT_SUCCESS,
@@ -228,37 +231,37 @@ export const extendSearchResultFailure = (
 });
 
 
-export interface SetOptionsForExtendAction {
-  type: typeof SET_OPTIONS_FOR_EXTEND;
-  payload: {
-    itemId: string;
-    source: SearchSource;
-    items: SearchItem[];
-  };
-}
+// export interface SetOptionsForExtendAction {
+//   type: typeof SET_OPTIONS_FOR_EXTEND;
+//   payload: {
+//     itemId: string;
+//     source: SearchSource;
+//     items: SourceItemShort[];
+//   };
+// }
 
-export const setOptionsForExtend = (
-  itemId: string,
-  source: SearchSource,
-  items: SearchItem[],
-): SetOptionsForExtendAction => ({
-  type: SET_OPTIONS_FOR_EXTEND,
-  payload: {itemId, source, items},
-});
+// export const setOptionsForExtend = (
+//   itemId: string,
+//   source: SearchSource,
+//   items: SourceItemShort[],
+// ): SetOptionsForExtendAction => ({
+//   type: SET_OPTIONS_FOR_EXTEND,
+//   payload: {itemId, source, items},
+// });
 
 export interface PickOptionForExtendAction {
   type: typeof PICK_OPTION_FOR_EXTEND;
   payload: {
     itemId: string;
     source: SearchSource;
-    pickedItem: SearchItem | null;
+    pickedItem: SourceItemShort | null;
   }
 }
 
 export const pickOptionForExtend = (
   itemId: string,
   source: SearchSource,
-  pickedItem: SearchItem | null,
+  pickedItem: SourceItemShort | null,
 ): PickOptionForExtendAction => ({
   type: PICK_OPTION_FOR_EXTEND,
   payload: {itemId, source, pickedItem},
@@ -335,14 +338,14 @@ export interface FetchOptionsForExtendSuccessAction {
   payload: {
     itemId: string;
     source: SearchSource;
-    results: SearchItem[];
+    results: SourceItemShort[];
   }
 }
 
 export const fetchOptionsForExtendSuccess = (
   itemId: string,
   source: SearchSource,
-  results: SearchItem[],
+  results: SourceItemShort[],
 ): FetchOptionsForExtendSuccessAction => ({
   type: FETCH_OPTIONS_FOR_EXTEND_SUCCESS,
   payload: {itemId, source, results},
@@ -429,7 +432,7 @@ export type SearchAction = ExecuteSearchAction |
   ExtendSearchResultPendingAction |
   ExtendSearchResultSuccessAction |
   ExtendSearchResultFailureAction |
-  SetOptionsForExtendAction |
+  // SetOptionsForExtendAction |
   PickOptionForExtendAction |
   ResetSearchAction |
   ResetOptionsForExtendAction |

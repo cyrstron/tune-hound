@@ -5,7 +5,7 @@ import {
   extendSearchResultFailure, 
   extendSearchResultSuccess
 } from "../../actions";
-import { SearchItem, SearchResult, SearchResultType } from '../../types';
+import { SourceItem, SearchResult, SearchResultType } from '../../types';
 import { selectSearchResultById } from '../../selectors';
 import { findSourceItem } from './find-source-item';
 import { fetchSourceDetails } from './fetch-source-details';
@@ -25,7 +25,7 @@ export function* extendSearchResult({
 
   if (!searchItem) return;
 
-  let result: SearchItem | null | undefined = searchItem.sources[source];
+  let result: SourceItem | null | undefined = searchItem.sources[source];
 
   if (result === undefined && !crossSourceItems.includes(searchItem.type)) return;
 
