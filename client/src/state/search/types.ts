@@ -1,4 +1,4 @@
-import { DeezerTrack, DeezerSearchOptions, DeezerAlbum, DeezerArtist, DeezerPlaylist } from "../deezer/types";
+import { DeezerTrack, DeezerSearchOptions, DeezerAlbum, DeezerArtist, DeezerPlaylist, DeezerTrackFull, DeezerAlbumFull, DeezerArtistFull, DeezerPlaylistFull } from "../deezer/types";
 import { SpotifySearchOptions } from "../spotify/types";
 
 export type SearchOptions = DeezerSearchOptions | SpotifySearchOptions;
@@ -27,7 +27,7 @@ export interface SpotifyTrackSourceItemFull extends SpotifyApi.TrackObjectFull {
 
 export type DeezerTrackSourceItemShort = DeezerTrack;
 
-export interface DeezerTrackSourceItemFull extends DeezerTrack {
+export interface DeezerTrackSourceItemFull extends DeezerTrackFull {
   isFull: true;
 }
 
@@ -51,7 +51,7 @@ export interface SpotifyAlbumSourceItemFull extends SpotifyApi.AlbumObjectFull {
 
 export type DeezerAlbumSourceItemShort = DeezerAlbum;
 
-export interface DeezerAlbumSourceItemFull extends DeezerAlbum {
+export interface DeezerAlbumSourceItemFull extends DeezerAlbumFull {
   isFull: true;
 }
 
@@ -76,7 +76,15 @@ export interface SpotifyArtistSourceItemFull extends SpotifyApi.ArtistObjectFull
 
 export type DeezerArtistSourceItemShort = DeezerArtist;
 
-export interface DeezerArtistSourceItemFull extends DeezerArtist {
+export interface DeezerArtistSourceItemFull extends DeezerArtistFull {
+  albums: {
+    data: DeezerAlbum[];
+    total: number;
+  };
+  topTracks: {
+    data: DeezerTrack[];
+    total: number;
+  };
   isFull: true;
 }
 
@@ -105,7 +113,7 @@ export interface SpotifyPlaylistSourceItemFull extends SpotifyApi.PlaylistObject
 
 export type DeezerPlaylistSourceItemShort = DeezerPlaylist;
 
-export interface DeezerPlaylistSourceItemFull extends DeezerPlaylist {
+export interface DeezerPlaylistSourceItemFull extends DeezerPlaylistFull {
   isFull: true;
 }
 

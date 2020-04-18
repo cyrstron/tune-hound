@@ -19,7 +19,6 @@ const SpotifyItemComponent: FC<SpotifyItemProps> = ({object}) => {
     default:
       return null;
   }
-
 }
 
 export {SpotifyItemComponent};

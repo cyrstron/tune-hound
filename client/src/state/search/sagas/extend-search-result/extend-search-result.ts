@@ -5,7 +5,7 @@ import {
   extendSearchResultFailure, 
   extendSearchResultSuccess
 } from "../../actions";
-import { SourceItem, SearchResult, SearchResultType } from '../../types';
+import { SourceItem, SourceItemShort, SearchResult, SearchResultType } from '../../types';
 import { selectSearchResultById } from '../../selectors';
 import { findSourceItem } from './find-source-item';
 import { fetchSourceDetails } from './fetch-source-details';
@@ -37,7 +37,7 @@ export function* extendSearchResult({
     }
 
     if (result) {
-      result = yield call(fetchSourceDetails, result, source);
+      result = yield call(fetchSourceDetails, result as SourceItemShort, source);
     }
 
     const successAction = extendSearchResultSuccess(

@@ -72,6 +72,57 @@ export interface DeezerTrack {
   type: 'track';
 }
 
+export interface DeezerTrackFull {
+  id: number;
+  readable: boolean;
+  title: string;
+  title_short: string;
+  title_version: string;
+  link: string;
+  duration: number;
+  rank: number;
+  explicit_lyrics: boolean;
+  explicit_content_lyrics: number;
+  explicit_content_cover: number;
+  preview: string;
+  available_countries: string[];
+  bmp: number;
+  artist: {
+    id: number;
+    name: string;
+    link: string;
+    picture: string;
+    picture_small: string;
+    picture_medium: string;
+    picture_big: string;
+    picture_xl: string;
+    tracklist: string;
+    type: 'artist';
+    radio: boolean;
+    share: string;
+  };
+  contributors: Array<DeezerTrackFull['artist'] & {role: string}>
+  album: {
+    id: number;
+    title: string;
+    cover: string;
+    cover_small: string;
+    cover_medium: string;
+    cover_big: string;
+    cover_xl: string;
+    tracklist: string;
+    type: 'album';
+    link: string;
+    release_date: string;
+  };
+  type: 'track';
+  gain: number;
+  isrc: string;
+  release_date: string;
+  share: string;
+  track_position: number;
+}
+
 export interface DeezerAlbum {
   type: "album";
   id: number;
@@ -88,7 +139,7 @@ export interface DeezerAlbum {
   tracklist: string;
   explicit_lyrics: boolean;
   artist: {
-    id: 689
+    id: number;
     name: string;
     link: string;
     picture: string;
@@ -99,6 +150,46 @@ export interface DeezerAlbum {
     tracklist: string;
     type: "artist";
   };
+}
+
+export interface DeezerAlbumFull {
+  id: number;
+  artist: DeezerTrackFull['artist'];
+  available: boolean;
+  contributors: Array<DeezerTrackFull['artist'] & {role: string}>;
+  cover: string;
+  cover_small: string;
+  cover_medium: string;
+  cover_big: string;
+  cover_xl: string;
+  duration: number;  
+  explicit_lyrics: boolean;
+  explicit_content_lyrics: number;
+  explicit_content_cover: number;
+  fans: number;
+  genre_id: number;
+  genres: {
+    data: Array<{
+      id: number;
+      name: string;
+      picture: string;
+      type: string;
+    }>
+  };
+  label: string;
+  link: string;
+  nb_tracks: number;
+  rating: number;
+  record_type: "album" | 'single';
+  release_date: string;
+  share: string;
+  title: string;
+  tracklist: string;
+  tracks: {
+    data: Array<Omit<DeezerTrack, 'album'>>;
+  };
+  type: "album"
+  upc: string;
 }
 
 export interface DeezerArtist {
@@ -116,6 +207,8 @@ export interface DeezerArtist {
   tracklist: string;
   type: "artist";
 }
+
+export type DeezerArtistFull = DeezerArtist;
 
 export interface DeezerPlaylist {
   id: number;
@@ -136,6 +229,39 @@ export interface DeezerPlaylist {
     name:  string;
     tracklist: string;
     type: "user"
+  };
+  type: "playlist";
+}
+
+export interface DeezerPlaylistFull {
+  checksum: string;
+  collaborative: boolean;
+  creation_date: string;
+  creator: {
+    id: number;
+    name: string;
+    tracklist: string;
+    type: "user";
+  };
+  description: string;
+  duration: number;
+  fans: number;
+  id: number;
+  is_loved_track: boolean;
+  link: string;
+  nb_tracks: number;
+  picture: string;
+  picture_small: string;
+  picture_medium: string;
+  picture_big: string;
+  picture_xl: string;
+  public: boolean;
+  share: string;
+  title: string;
+  tracklist: number;
+  tracks: {
+    checksum: string;
+    data: DeezerTrack[];
   };
   type: "playlist";
 }

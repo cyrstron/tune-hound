@@ -60,5 +60,47 @@ export class DeezerService {
     if (!this.api) throw new Error('Deezer API is not mounted');
 
     return this.api.search(options);
-  }  
+  }
+
+  getTrack(id: number) {
+    if (!this.api) throw new Error('Deezer API is not mounted');
+
+    return this.api.getTrack(id);
+  }
+
+  getAlbum(id: number) {
+    if (!this.api) throw new Error('Deezer API is not mounted');
+
+    return this.api.getAlbum(id);
+  }
+
+  getArtist(id: number) {
+    if (!this.api) throw new Error('Deezer API is not mounted');
+
+    return this.api.getArtist(id);
+  }
+
+  getArtistTopTracks(id: number) {
+    if (!this.api) throw new Error('Deezer API is not mounted');
+
+    return this.api.getArtistTopTracks(id);
+  }
+
+  getArtistAlbums(id: number) {
+    if (!this.api) throw new Error('Deezer API is not mounted');
+
+    return this.api.getArtistAlbums(id);
+  }
+
+  getArtistRelated(id: number) {
+    if (!this.api) throw new Error('Deezer API is not mounted');
+
+    return this.api.getArtistRelated(id);
+  }
+
+  getPlaylist(id: number) {
+    if (!this.api) throw new Error('Deezer API is not mounted');
+
+    return this.api.getPlaylist(id);
+  }
 }

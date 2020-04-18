@@ -4,11 +4,17 @@ import {
   DeezerUserResponse, 
   DeezerUser, 
   DeezerSearchOptions, 
-  DeezerTrackSearchResult,
   DeezerSearchResult,
   DeezerAdvancedSearchOptions,
   DeezerSearchResponse,
-  DeezerAdvancedTrackSearchOptions
+  DeezerAdvancedTrackSearchOptions,
+  DeezerTrackFull,
+  DeezerApiResponse,
+  DeezerAlbumFull,
+  DeezerArtist,
+  DeezerTrack,
+  DeezerAlbum,
+  DeezerPlaylistFull,
 } from '../types';
 import {getAdvancedSearchString } from './helpers';
 
@@ -138,6 +144,111 @@ export class DeezerWebApi {
       this.dz.api(
         `/search/${namespace}${queryString}`,
         (response: DeezerSearchResponse) => {
+          if ('error' in response) {
+            rej(response.error);
+          } else {
+            res(response);
+          }
+        },
+      );
+    });
+  }
+
+  getTrack(id: number): Promise<DeezerTrackFull> {
+    return new Promise((res, rej) => {
+      this.dz.api(
+        `/track/${id}`,
+        (response: DeezerApiResponse<DeezerTrackFull>) => {
+          if ('error' in response) {
+            rej(response.error);
+          } else {
+            res(response);
+          }
+        },
+      );
+    });
+  }
+
+  getAlbum(id: number): Promise<DeezerAlbumFull> {
+    return new Promise((res, rej) => {
+      this.dz.api(
+        `/album/${id}`,
+        (response: DeezerApiResponse<DeezerAlbumFull>) => {
+          if ('error' in response) {
+            rej(response.error);
+          } else {
+            res(response);
+          }
+        },
+      );
+    });
+  }
+
+  getArtist(id: number): Promise<DeezerArtist> {
+    return new Promise((res, rej) => {
+      this.dz.api(
+        `/artist/${id}`,
+        (response: DeezerApiResponse<DeezerArtist>) => {
+          if ('error' in response) {
+            rej(response.error);
+          } else {
+            res(response);
+          }
+        },
+      );
+    });
+  }
+
+  getArtistTopTracks(id: number): Promise<DeezerTrack[]> {
+    return new Promise((res, rej) => {
+      this.dz.api(
+        `/artist/${id}/top`,
+        (response: DeezerApiResponse<DeezerTrack[]>) => {
+          if ('error' in response) {
+            rej(response.error);
+          } else {
+            res(response);
+          }
+        },
+      );
+    });
+  }
+
+  getArtistAlbums(id: number): Promise<DeezerAlbum[]> {
+    return new Promise((res, rej) => {
+      this.dz.api(
+        `/artist/${id}/albums`,
+        (response: DeezerApiResponse<DeezerAlbum[]>) => {
+          if ('error' in response) {
+            rej(response.error);
+          } else {
+            res(response);
+          }
+        },
+      );
+    });
+  }
+
+  getArtistRelated(id: number): Promise<DeezerArtist[]> {
+    return new Promise((res, rej) => {
+      this.dz.api(
+        `/artist/${id}/related`,
+        (response: DeezerApiResponse<DeezerArtist[]>) => {
+          if ('error' in response) {
+            rej(response.error);
+          } else {
+            res(response);
+          }
+        },
+      );
+    });
+  }
+
+  getPlaylist(id: number): Promise<DeezerPlaylistFull> {
+    return new Promise((res, rej) => {
+      this.dz.api(
+        `/playlist/${id}`,
+        (response: DeezerApiResponse<DeezerPlaylistFull>) => {
           if ('error' in response) {
             rej(response.error);
           } else {
