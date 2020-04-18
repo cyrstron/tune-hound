@@ -1,15 +1,21 @@
 import {call} from 'redux-saga/effects';
-import { SearchSource, SearchItem, DeezerSearchItem, SpotifySearchItem } from "@app/state/search/types";
+import {
+   SearchSource, 
+   SourceItemShort, 
+   DeezerSourceItemShort, 
+   SpotifySourceItemShort, 
+   SourceItem
+} from "@app/state/search/types";
 import {fetchDeezerDetails} from './fetch-deezer-details';
 import {fetchSpotifyDetails} from './fetch-spotify-details';
 
-export function* fetchSourceDetails(searchItem: SearchItem, source: SearchSource) {
-  let result: SearchItem = searchItem;
+export function* fetchSourceDetails(searchItem: SourceItemShort, source: SearchSource) {
+  let result: SourceItem = searchItem;
 
   if (source === 'deezer') {
-    result = yield call(fetchDeezerDetails, result as DeezerSearchItem);
+    result = yield call(fetchDeezerDetails, result as DeezerSourceItemShort);
   } else if (source === 'spotify') {
-    result = yield call(fetchSpotifyDetails, result as SpotifySearchItem);
+    result = yield call(fetchSpotifyDetails, result as SpotifySourceItemShort);
   }
 
   return result;

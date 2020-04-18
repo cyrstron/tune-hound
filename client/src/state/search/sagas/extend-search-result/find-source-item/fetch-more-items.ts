@@ -1,5 +1,5 @@
 import {put, call, all, select} from 'redux-saga/effects';
-import { SearchResult, SearchSource, SearchItem } from "@app/state/search/types";
+import { SearchResult, SearchSource, SourceItemShort } from "@app/state/search/types";
 import {getSearchOptions} from '../../../helpers';
 import { 
   fetchOptionsForExtendPending,
@@ -23,7 +23,7 @@ export function* fetchMoreItems(searchResultItem: SearchResult, source: SearchSo
     number, 
     number, 
     Array<number | undefined>,
-    SearchItem[],
+    SourceItemShort[],
   ] = yield all([
     select(selectItemsForExtensionLimitById, searchResultItem.id, source),
     select(selectItemsForExtensionOffsetById, searchResultItem.id, source),
@@ -40,7 +40,7 @@ export function* fetchMoreItems(searchResultItem: SearchResult, source: SearchSo
   yield put(pendingAction);
 
   try { 
-    const results: SearchItem[] = [];
+    const results: SourceItemShort[] = [];
     const currentTotals: Array<number | undefined> = [...totals];
     
     let currentOffset = offset;
@@ -60,7 +60,7 @@ export function* fetchMoreItems(searchResultItem: SearchResult, source: SearchSo
     while (results.length < limit && (fullTotal === undefined || fullTotal > currentOffset)) {  
       let {results: items, total: totalItems}: {
         total: number, 
-        results: SearchItem[],
+        results: SourceItemShort[],
       } = yield call(
         fetchSearchItems, 
         source, 

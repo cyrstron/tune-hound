@@ -1,13 +1,13 @@
 import {call} from 'redux-saga/effects';
-import { SpotifySearchItem } from "@app/state/search/types";
+import { SpotifySourceItemShort, SpotifySourceItem } from "@app/state/search/types";
 
 import {fetchTrackDetails} from './fetch-track-details';
 import {fetchAlbumDetails} from './fetch-album-details';
 import {fetchArtistDetails} from './fetch-artist-details';
 import {fetchPlaylistDetails} from './fetch-playlist-details';
 
-export function* fetchSpotifyDetails(spotifyItem: SpotifySearchItem) {
-  let result: any;
+export function* fetchSpotifyDetails(spotifyItem: SpotifySourceItemShort) {
+  let result: SpotifySourceItem;
 
   switch(spotifyItem.type) {
     case 'track':

@@ -1,5 +1,10 @@
 import { AppState } from "..";
-import { SearchSource, SearchItem, DeezerSearchItem, SpotifySearchItem } from "./types";
+import { 
+  SearchSource, 
+  SourceItem, 
+  DeezerSourceItem, 
+  SpotifySourceItem 
+} from "./types";
 import { ExtensionSubState } from "./reducer";
 import { getSearchOptions } from "./helpers";
 
@@ -44,17 +49,17 @@ export function selectExtensionSubState(
   return state.search.extensions[source]?.[id];
 }
 
-export function selectItemsForExtension(state: AppState, id: string, source: SearchSource): SearchItem[] | undefined {
+export function selectItemsForExtension(state: AppState, id: string, source: SearchSource): SourceItem[] | undefined {
   return selectExtensionSubState(state, id, source)?.results;
 }
 
 export const selectItemsForExtensionById = (state: AppState, id: string): {
-  deezer?: DeezerSearchItem[],
-  spotify?: SpotifySearchItem[],
+  deezer?: DeezerSourceItem[],
+  spotify?: SpotifySourceItem[],
 } => {
   return {
-    deezer: selectItemsForExtension(state, id, 'deezer') as DeezerSearchItem[] | undefined,
-    spotify: selectItemsForExtension(state, id, 'spotify') as SpotifySearchItem[] | undefined,
+    deezer: selectItemsForExtension(state, id, 'deezer') as DeezerSourceItem[] | undefined,
+    spotify: selectItemsForExtension(state, id, 'spotify') as SpotifySourceItem[] | undefined,
   }
 }
 

@@ -70,7 +70,7 @@ export type SpotifyArtistSourceItemShort = SpotifyApi.ArtistObjectFull;
 
 export interface SpotifyArtistSourceItemFull extends SpotifyApi.ArtistObjectFull {
   albums: SpotifyApi.AlbumObjectSimplified[];
-  topTracks: SpotifyApi.AlbumObjectSimplified[];
+  topTracks: SpotifyApi.TrackObjectFull[];
   isFull: true;
 };
 

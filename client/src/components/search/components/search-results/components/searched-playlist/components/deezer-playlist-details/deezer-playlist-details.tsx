@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
-import { DeezerPlaylist } from '@app/state/deezer/types';
+import { DeezerPlaylistSourceItemFull } from '@app/state/search/types';
 
 export interface DeezerPlaylistDetailsProps {
-  playlist: DeezerPlaylist;
+  playlist: DeezerPlaylistSourceItemFull;
 }
 
 const DeezerPlaylistDetailsComponent: FC<DeezerPlaylistDetailsProps> = ({playlist}) => {

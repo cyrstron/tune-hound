@@ -1,12 +1,13 @@
 import React, {FC} from 'react';
 import classNames from 'classnames/bind';
+import { SpotifyTrackSourceItemShort } from '@app/state/search/types';
 
 import styles from './spotify-track-item.scss';
 
 const cx = classNames.bind(styles);
 
 export interface SpotifyTrackItemProps {
-  track: SpotifyApi.TrackObjectFull;
+  track: SpotifyTrackSourceItemShort;
   className?: string;
 }
 

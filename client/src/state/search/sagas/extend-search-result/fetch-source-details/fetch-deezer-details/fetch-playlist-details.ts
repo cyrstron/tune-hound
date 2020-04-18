@@ -1,5 +1,5 @@
-import { DeezerPlaylist } from "@app/state/deezer/types";
+import { DeezerPlaylistSourceItemShort } from "@app/state/search/types";
 
-export function* fetchPlaylistDetails(playlist: DeezerPlaylist) {
+export function* fetchPlaylistDetails(playlist: DeezerPlaylistSourceItemShort) {
   return playlist;
 }

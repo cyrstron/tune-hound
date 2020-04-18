@@ -1,7 +1,12 @@
 import React, {FC, useState, useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import classNames from 'classnames/bind';
-import { SpotifySearchItem, DeezerSearchItem, SearchItem, SearchSource } from '@app/state/search/types';
+import { 
+  SpotifySourceItemShort, 
+  DeezerSourceItemShort, 
+  SourceItemShort, 
+  SearchSource,
+} from '@app/state/search/types';
 import { pickOptionForExtend, resetOptionsForExtend, fetchNextOptionsForExtend } from '@app/state/search';
 import { selectExtensionHasMoreItemsToFetch } from '@app/state/search/selectors';
 import { ClosingPopup } from '@app/components/popup';
@@ -14,14 +19,14 @@ const cx = classNames.bind(styles);
 
 export interface ExtensionPopupProps {
   id: string;
-  spotify?: SpotifySearchItem[];
-  deezer?: DeezerSearchItem[];
+  spotify?: SpotifySourceItemShort[];
+  deezer?: DeezerSourceItemShort[];
 }
 
 const ExtensionPopupComponent: FC<ExtensionPopupProps> = ({spotify, deezer, id}) => {
   const dispatch = useDispatch();
 
-  const [selectedItem, setSelected] = useState<SearchItem | undefined>();
+  const [selectedItem, setSelected] = useState<SourceItemShort | undefined>();
 
   let source: SearchSource | undefined;
 
@@ -33,7 +38,7 @@ const ExtensionPopupComponent: FC<ExtensionPopupProps> = ({spotify, deezer, id})
 
   const hasToLoadMore = useSelector<AppState>((state) => !!source && selectExtensionHasMoreItemsToFetch(state, id, source))
 
-  const onClick = useCallback((item: SearchItem) => {
+  const onClick = useCallback((item: SourceItemShort) => {
     setSelected(item);
   }, [setSelected]);
 
@@ -70,8 +75,8 @@ const ExtensionPopupComponent: FC<ExtensionPopupProps> = ({spotify, deezer, id})
   }, [source, id, dispatch]);
 
   let propItems: Array<{
-    spotify?: SpotifySearchItem;
-    deezer?: DeezerSearchItem;
+    spotify?: SpotifySourceItemShort;
+    deezer?: DeezerSourceItemShort;
     isSelected: boolean;
   }> | undefined;
 

@@ -1,5 +1,5 @@
-import { DeezerTrack } from "@app/state/deezer/types";
+import { DeezerTrackSourceItemShort } from "@app/state/search/types";
 
-export function* fetchTrackDetails(track: DeezerTrack) {
+export function* fetchTrackDetails(track: DeezerTrackSourceItemShort) {
   return track;
 }

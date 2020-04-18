@@ -1,13 +1,13 @@
 import React, {FC} from 'react';
 import classNames from 'classnames/bind';
-import { DeezerArtist } from '@app/state/deezer/types';
+import { DeezerArtistSourceItemFull } from '@app/state/search/types';
 
 import styles from './deezer-full-artist-item.scss';
 
 const cx = classNames.bind(styles);
 
 export interface DeezerFullArtistItemProps {
-  artist: DeezerArtist;
+  artist: DeezerArtistSourceItemFull;
   className?: string;
 }
 

@@ -1,5 +1,5 @@
-import {call, put, all, getContext, select} from 'redux-saga/effects';
-import { SearchSource, SearchOptions, SearchResult, SearchItem } from '../../../types';
+import {call, all, getContext, select} from 'redux-saga/effects';
+import { SearchSource, SearchOptions, SourceItemShort } from '../../../types';
 import { DeezerSearchOptions, DeezerSearchResult } from '@app/state/deezer/types';
 import { SpotifySearchOptions } from '@app/state/spotify/types';
 import { DEEZER_SERVICE_CTX_KEY, SPOTIFY_SERVICE_CTX_KEY } from '@app/consts';
@@ -21,7 +21,7 @@ export function* fetchSearchItems(
 
   let response: {
     total: number,
-    results: SearchItem[],
+    results: SourceItemShort[],
   } = {total: 0, results: []};
 
   if (source === 'deezer') {

@@ -1,7 +1,8 @@
 import React, {FC} from 'react';
+import { SpotifyPlaylistSourceItemShort } from '@app/state/search/types';
 
 export interface SpotifyPlaylistDetailsProps {
-  playlist: SpotifyApi.PlaylistObjectSimplified;
+  playlist: SpotifyPlaylistSourceItemShort;
 }
 
 const SpotifyPlaylistDetailsComponent: FC<SpotifyPlaylistDetailsProps> = ({playlist}) => {

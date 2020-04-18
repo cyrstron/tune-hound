@@ -1,5 +1,5 @@
-import { DeezerAlbum } from "@app/state/deezer/types";
+import { DeezerAlbumSourceItemShort } from "@app/state/search/types";
 
-export function* fetchAlbumDetails(album: DeezerAlbum) {
+export function* fetchAlbumDetails(album: DeezerAlbumSourceItemShort) {
   return album;
 }

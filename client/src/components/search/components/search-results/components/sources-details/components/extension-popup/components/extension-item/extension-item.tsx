@@ -1,6 +1,6 @@
 import React, {FC, ReactNode, useCallback} from 'react';
 import classNames from 'classnames/bind';
-import { SpotifySearchItem, DeezerSearchItem, SearchItem } from '@app/state/search/types';
+import { SpotifySourceItemShort, DeezerSourceItemShort, SourceItemShort } from '@app/state/search/types';
 import { SpotifyItem, DeezerItem } from '@app/components/source-items';
 
 import styles from './extension-item.scss';
@@ -8,9 +8,9 @@ import styles from './extension-item.scss';
 const cx = classNames.bind(styles);
 
 export interface ExtensionItemProps {
-  spotify?: SpotifySearchItem;
-  deezer?: DeezerSearchItem;
-  onClick: (item: SearchItem) => void;
+  spotify?: SpotifySourceItemShort;
+  deezer?: DeezerSourceItemShort;
+  onClick: (item: SourceItemShort) => void;
   isSelected: boolean;
   className?: string;
 }

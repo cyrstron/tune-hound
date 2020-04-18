@@ -1,13 +1,13 @@
 import React, {FC} from 'react';
 import classNames from 'classnames/bind';
-import { DeezerTrack } from '@app/state/deezer/types';
 
 import styles from './deezer-track-item.scss';
+import { DeezerTrackSourceItemShort } from '@app/state/search/types';
 
 const cx = classNames.bind(styles);
 
 export interface DeezerTrackItemProps {
-  track: DeezerTrack;
+  track: DeezerTrackSourceItemShort;
   className?: string;
 }
 

@@ -1,6 +1,11 @@
 import React, { FC, useState, useCallback } from 'react';
 import classNames from 'classnames/bind';
-import { SearchSource, SpotifySearchItem, DeezerSearchItem, SearchResultType } from '@app/state/search/types';
+import {
+  SearchSource, 
+  SpotifySourceItem, 
+  DeezerSourceItem, 
+  SearchResultType 
+} from '@app/state/search/types';
 import {DeezerItem, SpotifyItem} from '@app/components/source-items';
 import deezerLogo from '@app/resources/source-logos/deezer-logo.svg';
 import spotifyLogo from '@app/resources/source-logos/spotify-logo.svg';
@@ -17,8 +22,8 @@ const cx = classNames.bind(styles);
 export interface SourceDetailsProps {
   id: string;
   type: SearchResultType;
-  spotify?: SpotifySearchItem | null;
-  deezer?: DeezerSearchItem | null;
+  spotify?: SpotifySourceItem | null;
+  deezer?: DeezerSourceItem | null;
   className?: string;
 }
 
@@ -51,7 +56,7 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
   const onDeezerClick = useCallback(() => {
     setSource(source !== 'deezer' ? 'deezer' : undefined);
 
-    if (deezer !== undefined) return;
+    if (deezer === null || (deezer && 'isFull' in deezer)) return;
 
     const action = extendSearchResult(id, 'deezer');
 
