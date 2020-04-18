@@ -19,13 +19,17 @@ export interface SearchedTrack {
   }
 }
 
-export type SpotifyTrackSourceItemShort = SpotifyApi.TrackObjectFull;
+export interface SpotifyTrackSourceItemShort extends SpotifyApi.TrackObjectFull {
+  isFull?: false;
+}
 
 export interface SpotifyTrackSourceItemFull extends SpotifyApi.TrackObjectFull {
   isFull: true;
 };
 
-export type DeezerTrackSourceItemShort = DeezerTrack;
+export interface DeezerTrackSourceItemShort extends DeezerTrack {
+  isFull?: false;
+};
 
 export interface DeezerTrackSourceItemFull extends DeezerTrackFull {
   isFull: true;
@@ -43,13 +47,17 @@ export interface SearchedAlbum {
   }
 }
 
-export type SpotifyAlbumSourceItemShort = SpotifyApi.AlbumObjectSimplified;
+export interface SpotifyAlbumSourceItemShort extends SpotifyApi.AlbumObjectSimplified {
+  isFull?: false;
+};
 
 export interface SpotifyAlbumSourceItemFull extends SpotifyApi.AlbumObjectFull {
   isFull: true;
 };
 
-export type DeezerAlbumSourceItemShort = DeezerAlbum;
+export interface DeezerAlbumSourceItemShort extends DeezerAlbum {
+  isFull?: false;
+};
 
 export interface DeezerAlbumSourceItemFull extends DeezerAlbumFull {
   isFull: true;
@@ -66,7 +74,9 @@ export interface SearchedArtist {
   }
 }
 
-export type SpotifyArtistSourceItemShort = SpotifyApi.ArtistObjectFull;
+export interface SpotifyArtistSourceItemShort extends SpotifyApi.ArtistObjectFull {
+  isFull?: false;
+};
 
 export interface SpotifyArtistSourceItemFull extends SpotifyApi.ArtistObjectFull {
   albums: SpotifyApi.AlbumObjectSimplified[];
@@ -74,7 +84,9 @@ export interface SpotifyArtistSourceItemFull extends SpotifyApi.ArtistObjectFull
   isFull: true;
 };
 
-export type DeezerArtistSourceItemShort = DeezerArtist;
+export interface DeezerArtistSourceItemShort extends DeezerArtist {
+  isFull?: false;
+};
 
 export interface DeezerArtistSourceItemFull extends DeezerArtistFull {
   albums: {
@@ -105,13 +117,17 @@ export interface SearchedPlaylist {
 }
 
 
-export type SpotifyPlaylistSourceItemShort = SpotifyApi.PlaylistObjectSimplified;
+export interface SpotifyPlaylistSourceItemShort extends SpotifyApi.PlaylistObjectSimplified {
+  isFull?: false;
+};
 
 export interface SpotifyPlaylistSourceItemFull extends SpotifyApi.PlaylistObjectFull {
   isFull: true;
 };
 
-export type DeezerPlaylistSourceItemShort = DeezerPlaylist;
+export interface DeezerPlaylistSourceItemShort extends DeezerPlaylist {
+  isFull?: false;
+};
 
 export interface DeezerPlaylistSourceItemFull extends DeezerPlaylistFull {
   isFull: true;

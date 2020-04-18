@@ -56,8 +56,8 @@ export function selectItemsForExtension(state: AppState, id: string, source: Sea
 }
 
 export const selectItemsForExtensionById = (state: AppState, id: string): {
-  deezer?: DeezerSourceItem[],
-  spotify?: SpotifySourceItem[],
+  deezer?: DeezerSourceItemShort[],
+  spotify?: SpotifySourceItemShort[],
 } => {
   return {
     deezer: selectItemsForExtension(state, id, 'deezer') as DeezerSourceItemShort[] | undefined,

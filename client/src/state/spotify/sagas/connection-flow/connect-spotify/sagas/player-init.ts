@@ -8,8 +8,7 @@ import {
   selectSpotifyAccessToken 
 } from "../../../../selectors";
 
-
-export function* initSpotifyPlayer(spotifyService: SpotifyService) {
+export function* initSpotifyPlayer(spotifyService: SpotifyService): any {
   const channel: EventChannel<(token: string) => void> = eventChannel(emitter => {
     spotifyService.initPlayer((getToken) => {
       emitter(getToken);

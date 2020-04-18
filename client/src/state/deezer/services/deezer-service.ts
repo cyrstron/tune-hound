@@ -6,30 +6,26 @@ export class DeezerService {
   script?: HTMLScriptElement;
   root?: HTMLDivElement;
 
-  api?: DeezerWebApi;
+  private webApi?: DeezerWebApi;
 
   onLogout?: () => void;
 
   async mount() {
     const {script, root, DZ} = await mountDeezerScript();
 
-    this.api = new DeezerWebApi(DZ);
+    this.webApi = new DeezerWebApi(DZ);
 
     this.script = script;
     this.root = root;
   }
 
   async init(options: DeezerSdk.InitOptions) {
-    if (!this.api) throw new Error('Deezer API is not mounted');
-
     const response = await this.api.init(options);
 
     return response;
   }
 
   async me() {
-    if (!this.api) throw new Error('Deezer API is not mounted');
-
     const response = await this.api.me();
 
     return response;
@@ -57,50 +53,40 @@ export class DeezerService {
   }
 
   search(options: DeezerSearchOptions) {
-    if (!this.api) throw new Error('Deezer API is not mounted');
-
     return this.api.search(options);
   }
 
   getTrack(id: number) {
-    if (!this.api) throw new Error('Deezer API is not mounted');
-
     return this.api.getTrack(id);
   }
 
   getAlbum(id: number) {
-    if (!this.api) throw new Error('Deezer API is not mounted');
-
     return this.api.getAlbum(id);
   }
 
   getArtist(id: number) {
-    if (!this.api) throw new Error('Deezer API is not mounted');
-
     return this.api.getArtist(id);
   }
 
   getArtistTopTracks(id: number) {
-    if (!this.api) throw new Error('Deezer API is not mounted');
-
     return this.api.getArtistTopTracks(id);
   }
 
   getArtistAlbums(id: number) {
-    if (!this.api) throw new Error('Deezer API is not mounted');
-
     return this.api.getArtistAlbums(id);
   }
 
   getArtistRelated(id: number) {
-    if (!this.api) throw new Error('Deezer API is not mounted');
-
     return this.api.getArtistRelated(id);
   }
 
   getPlaylist(id: number) {
-    if (!this.api) throw new Error('Deezer API is not mounted');
-
     return this.api.getPlaylist(id);
+  }
+
+  get api(): DeezerWebApi {
+    if (!this.webApi) throw new Error('Deezer API is not mounted');
+
+    return this.webApi;
   }
 }
