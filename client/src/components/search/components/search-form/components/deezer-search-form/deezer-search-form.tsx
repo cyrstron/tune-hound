@@ -21,10 +21,10 @@ const namespaces: Array<{
   {value: 'track', label: 'Track'},
   {value: 'album', label: 'Album'},
   {value: 'artist', label: 'Artist'},
-  {value: 'history', label: 'History'},
+  // {value: 'history', label: 'History'},
   {value: 'playlist', label: 'Playlist'},
-  {value: 'radio', label: 'Radio'},
-  {value: 'user', label: 'User'},
+  // {value: 'radio', label: 'Radio'},
+  // {value: 'user', label: 'User'},
 ];
 
 const sortings: Array<{

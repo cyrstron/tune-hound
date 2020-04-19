@@ -13,6 +13,8 @@ export interface SearchedTrack {
   album: string;
   duration: number;
   coverUrl: string;
+  isCrossExtendable: true;
+  isrc?: string;
   sources: {
     deezer?: DeezerTrackSourceItemShort | DeezerTrackSourceItemFull | null;
     spotify?: SpotifyTrackSourceItemShort | SpotifyTrackSourceItemFull | null;
@@ -41,6 +43,8 @@ export interface SearchedAlbum {
   artists: string[];
   title: string;
   coverUrl: string;
+  isCrossExtendable: true;
+  upc?: string;
   sources: {
     deezer?: DeezerAlbumSourceItemShort | DeezerAlbumSourceItemFull | null;
     spotify?: SpotifyAlbumSourceItemShort | SpotifyAlbumSourceItemFull | null;
@@ -68,6 +72,7 @@ export interface SearchedArtist {
   type: 'artist';
   name: string;
   coverUrl: string;
+  isCrossExtendable: true;
   sources: {
     deezer?: DeezerArtistSourceItemShort | DeezerArtistSourceItemFull | null;
     spotify?: SpotifyArtistSourceItemShort | SpotifyArtistSourceItemFull | null;
@@ -110,6 +115,7 @@ export interface SearchedPlaylist {
   };
   tracksUrl: string;
   tracksTotal: number;
+  isCrossExtendable: false;
   sources: {
     deezer?: DeezerPlaylistSourceItemShort | DeezerPlaylistSourceItemFull | null;
     spotify?: SpotifyPlaylistSourceItemShort | SpotifyArtistSourceItemFull | null;

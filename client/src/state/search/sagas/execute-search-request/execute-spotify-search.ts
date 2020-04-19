@@ -40,6 +40,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
       album: item.album.name,
       coverUrl: item.album.images[0]?.url,
       duration: item.duration_ms / 1000,
+      isCrossExtendable: true,
       sources: {
         spotify: item,
       }
@@ -56,6 +57,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
       artists: item.artists.map(({name}) => name),
       coverUrl: item.images[0]?.url,
       year: item.release_date,
+      isCrossExtendable: true,
       sources: {
         spotify: item,
       }
@@ -75,6 +77,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
       },
       tracksTotal: item.tracks.total,
       tracksUrl: item.tracks.href,
+      isCrossExtendable: false,
       sources: {
         spotify: item,
       }
@@ -89,6 +92,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
       type: 'artist',
       name: item.name,
       coverUrl: item.images[0]?.url,
+      isCrossExtendable: true,
       sources: {
         spotify: item,
       }

@@ -21,7 +21,7 @@ const SearchedPlaylistComponent: FC<SearchedPlaylistProps> = ({playlist, classNa
     coverUrl,
     author: {name},
     sources: {deezer, spotify},
-    type,
+    isCrossExtendable,
     tracksTotal,
   } = playlist;
 
@@ -36,7 +36,7 @@ const SearchedPlaylistComponent: FC<SearchedPlaylistProps> = ({playlist, classNa
             {title}
           </h1>
           <div>{tracksTotal} track by <b>{name}</b></div>
-          <SourceDetails id={id} type={type} spotify={spotify} deezer={deezer} className={cx('details')} />
+          <SourceDetails id={id} isCrossExtendable={isCrossExtendable} spotify={spotify} deezer={deezer} className={cx('details')} />
         </div>
       </div>
     </article>

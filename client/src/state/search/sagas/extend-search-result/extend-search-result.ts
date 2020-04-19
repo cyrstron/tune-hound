@@ -10,12 +10,6 @@ import { selectSearchResultById } from '../../selectors';
 import { findSourceItem } from './find-source-item';
 import { fetchSourceDetails } from './fetch-source-details';
 
-const crossSourceItems: SearchResultType[] = [
-  'track',
-  'album',
-  'artist',
-];
-
 export function* extendSearchResult({
   payload: {itemId, source}
 }: ExtendSearchResultAction) {
@@ -27,7 +21,7 @@ export function* extendSearchResult({
 
   let result: SourceItem | null | undefined = searchItem.sources[source];
 
-  if (result === undefined && !crossSourceItems.includes(searchItem.type)) return;
+  if (result === undefined && !searchItem.isCrossExtendable) return;
 
   yield put(pendingAction);
 

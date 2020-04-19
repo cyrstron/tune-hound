@@ -2,12 +2,12 @@ import React, {FC} from 'react';
 import classNames from 'classnames/bind';
 
 import styles from './spotify-album-item.scss';
-import { SpotifyAlbumSourceItemShort, SpotifyAlbumSourceItemFull } from '@app/state/search/types';
+import { SpotifyAlbumSourceItemShort } from '@app/state/search/types';
 
 const cx = classNames.bind(styles);
 
 export interface SpotifyAlbumItemProps {
-  album: SpotifyAlbumSourceItemShort | SpotifyAlbumSourceItemFull;
+  album: SpotifyAlbumSourceItemShort;
   className?: string;
 }
 

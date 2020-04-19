@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
-import { SpotifySourceItemShort, SpotifySourceItemFull } from '@app/state/search/types';
+import { SpotifySourceItemShort } from '@app/state/search/types';
 import { SpotifyTrackItem } from './components/spotify-track-item';
 import { SpotifyAlbumItem } from './components/spotify-album-item';
 import { SpotifyArtistItem } from './components/spotify-artist-item';
 
 export interface SpotifyItemProps {
-  object: SpotifySourceItemShort | SpotifySourceItemFull;
+  object: SpotifySourceItemShort;
 }
 
 const SpotifyItemComponent: FC<SpotifyItemProps> = ({object}) => {

@@ -6,6 +6,7 @@
   display: flex;
   justify-content: flex-start;
   margin: -5px;
+  align-items: flex-start;
 }
 
 .cover-wrapper {
@@ -21,6 +22,7 @@
 
 .info-wrapper {
   margin: 5px;
+  flex-grow: 1;
 }
 
 .playlist-title {

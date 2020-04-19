@@ -20,7 +20,7 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
     artists,
     album,
     sources: {spotify, deezer},
-    type,
+    isCrossExtendable,
   } = track;
 
   return (
@@ -71,7 +71,7 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
               </Fragment>
             ))}
           </div>
-          <SourceDetails id={id} type={type} spotify={spotify} deezer={deezer} className={cx('details')} />
+          <SourceDetails id={id} isCrossExtendable={isCrossExtendable} spotify={spotify} deezer={deezer} className={cx('details')} />
         </div>
       </div>
     </article>

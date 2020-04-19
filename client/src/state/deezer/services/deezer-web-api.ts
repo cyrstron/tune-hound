@@ -258,4 +258,34 @@ export class DeezerWebApi {
       );
     });
   }
+
+  getTrackByIsrc(isrc: string): Promise<DeezerTrackFull> {
+    return new Promise((res, rej) => {
+      this.dz.api(
+        `/track/isrc:${isrc}`,
+        (response: DeezerApiResponse<DeezerTrackFull>) => {
+          if ('error' in response) {
+            rej(response.error);
+          } else {
+            res(response);
+          }
+        },
+      );
+    });
+  }
+
+  getAlbumByUpc(upc: string): Promise<DeezerAlbumFull> {
+    return new Promise((res, rej) => {
+      this.dz.api(
+        `/album/upc:${upc}`,
+        (response: DeezerApiResponse<DeezerAlbumFull>) => {
+          if ('error' in response) {
+            rej(response.error);
+          } else {
+            res(response);
+          }
+        },
+      );
+    });
+  }
 }

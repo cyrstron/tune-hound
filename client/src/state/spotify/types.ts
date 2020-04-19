@@ -16,6 +16,7 @@ export interface SpotifyTrackAdvancedSearchQuery extends SpotifyBasicAdvancedSea
   album?: string;
   genre?: string;
   year?: SpotifyYearSearchTag;
+  isrc?: string;
 }
 
 export interface SpotifyArtistAdvancedSearchQuery extends SpotifyBasicAdvancedSearchQuery {
@@ -33,6 +34,7 @@ export interface SpotifyAlbumAdvancedSearchQuery extends SpotifyBasicAdvancedSea
   genre?: string;
   year?: SpotifyYearSearchTag;
   tag?: SpotifySearchTagType;
+  upc?: string;
 }
 
 export interface SpotifyPlaylistAdvancedSearchQuery extends SpotifyBasicAdvancedSearchQuery {

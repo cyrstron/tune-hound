@@ -3,42 +3,36 @@ import classNames from 'classnames/bind';
 import {
   SearchSource, 
   SpotifySourceItem, 
-  DeezerSourceItem, 
-  SearchResultType 
+  DeezerSourceItem,
 } from '@app/state/search/types';
-import {DeezerItem, SpotifyItem} from '@app/components/source-items';
 import deezerLogo from '@app/resources/source-logos/deezer-logo.svg';
 import spotifyLogo from '@app/resources/source-logos/spotify-logo.svg';
-
-import styles from './source-details.scss';
 import { extendSearchResult } from '@app/state/search';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '@app/state';
 import { selectItemsForExtensionById } from '@app/state/search/selectors';
 import { ExtensionPopup } from './components/extension-popup';
+import { SpotifyItemDetails } from './components/spotify-item-details';
+import { DeezerItemDetails } from './components/deezer-item-details';
+
+import styles from './source-details.scss';
 
 const cx = classNames.bind(styles);
 
 export interface SourceDetailsProps {
   id: string;
-  type: SearchResultType;
+  isCrossExtendable: boolean;
   spotify?: SpotifySourceItem | null;
   deezer?: DeezerSourceItem | null;
   className?: string;
 }
-
-const crossSourceTypes: SearchResultType[] = [
-  'track',
-  'album',
-  'artist',
-];
 
 const SourceDetailsComponent: FC<SourceDetailsProps> = ({
   id,
   spotify, 
   deezer, 
   className,
-  type,
+  isCrossExtendable,
 }) => {
   const [source, setSource] = useState<SearchSource | undefined>();
 
@@ -48,15 +42,13 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
     deezer: deezerExtensions,
   } = useSelector((state: AppState) => selectItemsForExtensionById(state, id));
 
-  const isCrossSource = crossSourceTypes.includes(type);
-
-  const hasDeezerDetails = isCrossSource || !!deezer;
-  const hasSpotifyDetails = isCrossSource || !!spotify;
+  const hasDeezerDetails = isCrossExtendable || !!deezer;
+  const hasSpotifyDetails = isCrossExtendable || !!spotify;
 
   const onDeezerClick = useCallback(() => {
     setSource(source !== 'deezer' ? 'deezer' : undefined);
 
-    if (deezer === null || (deezer && 'isFull' in deezer)) return;
+    if (deezer === null || (deezer && deezer.isFull)) return;
 
     const action = extendSearchResult(id, 'deezer');
 
@@ -66,7 +58,7 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
   const onSpotifyClick = useCallback(() => {
     setSource(source !== 'spotify' ? 'spotify' : undefined);
 
-    if (spotify === null || (spotify && 'isFull' in spotify)) return;
+    if (spotify === null || (spotify && spotify.isFull)) return;
 
     const action = extendSearchResult(id, 'spotify');
 
@@ -97,11 +89,11 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
           )}
         </div>
         <div className={cx('content')}>
-          {source === 'deezer' && deezer && (
-            <DeezerItem object={deezer}/>
+          {source === 'deezer' && deezer && deezer.isFull && (
+            <DeezerItemDetails item={deezer} className={cx('item-details')} />
           )}
-          {source === 'spotify' && spotify && (
-            <SpotifyItem object={spotify} />
+          {source === 'spotify' && spotify && spotify.isFull && (
+            <SpotifyItemDetails item={spotify} className={cx('item-details')} />
           )}
           {((
               source === 'deezer' && deezer === null
@@ -112,7 +104,7 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
           )}
         </div>
       </div>
-      <ExtensionPopup spotify={spotifyExtensions} deezer={deezerExtensions} id={id}/>
+      <ExtensionPopup spotify={spotifyExtensions} deezer={deezerExtensions} id={id} />
     </>
   );
 }

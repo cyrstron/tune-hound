@@ -1,0 +1,27 @@
+.tracks-list {
+  max-height: 200px;
+  overflow: auto;
+  list-style: none;
+  padding: 0; 
+  margin: 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.track-item {
+  display: flex;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.index {
+  margin-right: 10px;
+}
+
+.track-content {
+  flex-grow: 1;
+}

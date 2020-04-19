@@ -1,0 +1,1 @@
+export {TracksListComponent as TracksList} from './tracks-list';

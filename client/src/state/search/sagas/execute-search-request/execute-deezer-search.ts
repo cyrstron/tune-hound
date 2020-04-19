@@ -35,6 +35,7 @@ export function* executeDeezerSearchSaga(options: DeezerSearchOptions, pageIndex
         album: item.album.title,
         coverUrl: item.album.cover,
         duration: item.duration,
+        isCrossExtendable: true,
         sources: {
           deezer: item,
         }
@@ -46,6 +47,7 @@ export function* executeDeezerSearchSaga(options: DeezerSearchOptions, pageIndex
         title: item.title,
         artists: [item.artist.name],
         coverUrl: item.cover,
+        isCrossExtendable: true,
         sources: {
           deezer: item,
         }
@@ -56,6 +58,7 @@ export function* executeDeezerSearchSaga(options: DeezerSearchOptions, pageIndex
         type: 'artist',
         name: item.name,
         coverUrl: item.picture,
+        isCrossExtendable: true,
         sources: {
           deezer: item,
         }
@@ -71,6 +74,7 @@ export function* executeDeezerSearchSaga(options: DeezerSearchOptions, pageIndex
         },
         tracksUrl: item.tracklist,
         tracksTotal: item.nb_tracks,
+        isCrossExtendable: false,
         sources: {
           deezer: item,
         }
