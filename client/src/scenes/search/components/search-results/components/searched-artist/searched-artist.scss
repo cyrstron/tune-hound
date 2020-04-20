@@ -1,0 +1,39 @@
+.artist {
+  box-sizing: border-box;
+}
+
+.content {
+  display: flex;
+  justify-content: flex-start;
+  margin: -5px;
+  align-items: flex-start;
+}
+
+.cover-wrapper {
+  display: flex;
+  align-items: center;
+  margin: 5px;
+}
+
+.cover {
+  height: 100px;
+  width: 100px;
+}
+
+.info-wrapper {
+  margin: 5px;
+  flex-grow: 1;
+}
+
+.artist-title {
+  margin: 0;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.artist-link {
+  font-weight: bold;
+}
+
+.details {
+}

@@ -1,3 +1,10 @@
+.album {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
 .cover {
   width: 150px;
   height: 150px;
@@ -7,5 +14,6 @@
   max-width: 150px;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: bold;
   white-space: nowrap;
 }

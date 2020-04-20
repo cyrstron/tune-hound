@@ -17,7 +17,7 @@ const SpotifyShortAlbumComponent: FC<SpotifyShortAlbumProps> = ({
   return (
     <div className={cx('album', className)}>
       <img src={url} className={cx('cover')}/>
-      <div><b>{name}</b></div>
+      <div className={cx('title')} title={name}><b>{name}</b></div>
       <div>{release_date}</div>
     </div>
   );

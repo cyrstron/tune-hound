@@ -1,0 +1,16 @@
+.album-list {
+  display: flex;
+  list-style: none;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  padding: 0;
+  max-height: 440px;
+  overflow: auto;
+  border: 1px solid #ccc;
+  background-color: #ddd;
+}
+
+.album-item {
+  margin: 5px;
+}

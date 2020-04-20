@@ -18,7 +18,7 @@ const DeezerShortAlbumComponent: FC<DeezerShortAlbumProps> = ({
   return (
     <div className={cx('album', className)}>
       <img src={cover} className={cx('cover')}/>
-      <div><b>{title}</b></div>
+      <div className={cx('title')} title={name}><b>{name}</b></div>
     </div>
   );
 }

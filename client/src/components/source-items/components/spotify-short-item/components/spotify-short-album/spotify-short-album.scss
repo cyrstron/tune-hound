@@ -2,3 +2,9 @@
   width: 150px;
   height: 150px;
 }
+
+.title {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import { Header } from 'components/header';
 
 import styles from './app.scss';
-import { Search } from './components/search';
+import { Search } from './scenes/search';
 
 const cx = classNames.bind(styles);
 
