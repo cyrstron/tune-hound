@@ -1,9 +1,9 @@
 import {call, select} from 'redux-saga/effects';
-import { updateSpotifyTokenSaga } from '@app/state/spotify/sagas/update-token';
 import { selectSpotifyAccessToken } from '@app/state/spotify';
+import { checkSpotifyTokenSaga } from './check-token';
 
 export function* retrieveAccessToken() {
-  yield call(updateSpotifyTokenSaga);
+  yield call(checkSpotifyTokenSaga);
 
   const accessToken = yield select(selectSpotifyAccessToken);
 

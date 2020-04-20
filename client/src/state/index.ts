@@ -1,7 +1,11 @@
 import createSagaMiddleware from 'redux-saga';
+import { composeWithDevTools } from "redux-devtools-extension";
 import axios from 'axios';
 import {combineReducers, createStore, applyMiddleware} from 'redux';
 import {DEEZER_SERVICE_CTX_KEY, SPOTIFY_SERVICE_CTX_KEY, AXIOS_CTX_KEY} from 'consts';
+
+import { SpotifyService } from './spotify/services/spotify-service';
+import { SpotifyWebApi } from './spotify/services/spotify-web-api';
 
 import {authReducer, AuthState} from './auth';
 import { 
@@ -9,18 +13,17 @@ import {
   DeezerState,  
   DeezerService 
 } from './deezer';
-import { rootSaga } from './sagas';
-import { composeWithDevTools } from "redux-devtools-extension";
 import { SearchState, searchReducer } from './search';
-import { SpotifyService } from './spotify/services/spotify-service';
-import { SpotifyWebApi } from './spotify/services/spotify-web-api';
-import { SpotifyState, spotifyReducer } from './spotify/reducer';
+import { SpotifyState, spotifyReducer } from './spotify';
+import { PlayerState, playerReducer } from './player';
 
+import { rootSaga } from './sagas';
 export interface AppState {
   auth: AuthState;
   deezer: DeezerState;
   spotify: SpotifyState;
   search: SearchState;
+  player: PlayerState;
 }
 
 export const createAppStore = () => {
@@ -29,6 +32,7 @@ export const createAppStore = () => {
     deezer: deezerReducer,
     search: searchReducer,
     spotify: spotifyReducer,
+    player: playerReducer,
   });
 
   const axiosInstance = axios.create();
