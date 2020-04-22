@@ -34,10 +34,9 @@ app.get('/login-deezer', (_req, res) => {
   }`);
 });
 
-app.get('/deezer-channel', (_req, res) => {
+app.get('/deezer-channel', async (_req, res) => {
   res.setHeader("Pragma", "public");
   res.setHeader("Cache-Control", `maxage=${60 * 60 * 24 * 365}`);
-
   res.sendFile(path.resolve(__dirname, './views/deezer-channel.html'));
 });
 
