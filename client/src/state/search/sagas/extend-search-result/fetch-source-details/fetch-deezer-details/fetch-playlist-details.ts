@@ -7,7 +7,7 @@ import { getContext} from 'redux-saga/effects';
 export function* fetchPlaylistDetails(playlist: DeezerPlaylistSourceItemShort) {
   const deezerService: DeezerService = yield getContext(DEEZER_SERVICE_CTX_KEY);
 
-  const fullPlaylist: DeezerPlaylistFull = yield deezerService.getPlaylist(playlist.id);
+  const fullPlaylist: DeezerPlaylistFull = yield deezerService.api.getPlaylist(playlist.id);
 
   const result: DeezerPlaylistSourceItemFull = {
     ...fullPlaylist,

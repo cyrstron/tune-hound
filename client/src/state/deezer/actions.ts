@@ -10,6 +10,18 @@ import {
   DEEZER_MOUNTED,
   DEEZER_INITED,
   SET_DEEZER_CURRENT_USER,
+  DEEZER_PLAY,
+  SET_PLAYING_TRACK,
+  SET_IS_PLAYER_MUTED,
+  SET_PLAYER_BUFFERING,
+  SET_PLAYER_LOADED,
+  DEEZER_PAUSE,
+  SET_PLAYER_POSITION,
+  SET_REPEAT_MODE,
+  SET_PLAYER_SHUFFLE,
+  DEEZER_TRACK_END,
+  DEEZER_TRACK_LIST_CHANGED,
+  DEEZER_VOLUME_CHANGED,
 } from './consts';
 import { DeezerUser } from './types';
 
@@ -115,6 +127,152 @@ export const setDeezerCurrentUser = (user: DeezerUser): SetDeezerCurrentUserActi
   payload: {user}
 });
 
+export interface DeezerPlayAction {
+  type: typeof DEEZER_PLAY;
+}
+
+export const deezerPlay = (): DeezerPlayAction => ({
+  type: DEEZER_PLAY,
+});
+
+export interface DeezerPauseAction {
+  type: typeof DEEZER_PAUSE;
+}
+
+export const deezerPause = (): DeezerPauseAction => ({
+  type: DEEZER_PAUSE,
+});
+
+export interface SetPlayingTrackAction {
+  type: typeof SET_PLAYING_TRACK;
+  payload: {
+    index?: number;
+    track?: DeezerSdk.Track;
+  }
+}
+
+export const setPlayingTrack = (
+  index?: number,
+  track?: DeezerSdk.Track,
+): SetPlayingTrackAction => ({
+  type: SET_PLAYING_TRACK,
+  payload: {index, track}
+});
+
+export interface SetIsPlayerMutedAction {
+  type: typeof SET_IS_PLAYER_MUTED;
+  payload: {
+    isMuted: boolean;
+  }
+}
+
+export const setIsPlayerMuted = (
+  isMuted: boolean,
+): SetIsPlayerMutedAction => ({
+  type: SET_IS_PLAYER_MUTED,
+  payload: {isMuted}
+});
+
+export interface SetPlayerBufferingAction {
+  type: typeof SET_PLAYER_BUFFERING;
+  payload: {
+    buffered: number;
+  }
+}
+
+export const setPlayerBuffering = (
+  buffered: number,
+): SetPlayerBufferingAction => ({
+  type: SET_PLAYER_BUFFERING,
+  payload: {buffered}
+});
+
+export interface DeezerPlayerLoadedAction {
+  type: typeof SET_PLAYER_LOADED;
+}
+
+export const setDeezerPlayerLoaded = (): DeezerPlayerLoadedAction => ({
+  type: SET_PLAYER_LOADED,
+});
+
+export interface SetPlayerPositionAction {
+  type: typeof SET_PLAYER_POSITION;
+  payload: {
+    position: [number, number];
+  }
+}
+
+export const setPlayerPosition = (
+  position: [number, number],
+): SetPlayerPositionAction => ({
+  type: SET_PLAYER_POSITION,
+  payload: {position}
+});
+
+export interface SetPlayerRepeatModeAction {
+  type: typeof SET_REPEAT_MODE;
+  payload: {
+    repeatMode:  DeezerSdk.RepeatMode;
+  }
+}
+
+export const setPlayerRepeatMode = (
+  repeatMode: DeezerSdk.RepeatMode,
+): SetPlayerRepeatModeAction => ({
+  type: SET_REPEAT_MODE,
+  payload: {repeatMode}
+});
+
+export interface SetPlayerShuffleAction {
+  type: typeof SET_PLAYER_SHUFFLE;
+  payload: {
+    isShuffled: boolean;
+  }
+}
+
+export const setPlayerShuffle = (
+  isShuffled: boolean,
+): SetPlayerShuffleAction => ({
+  type: SET_PLAYER_SHUFFLE,
+  payload: {isShuffled}
+});
+
+export interface DeezerTrackEndAction {
+  type: typeof DEEZER_TRACK_END;
+  payload: {
+    index: number;
+  }
+}
+
+export const deezerTrackEnd = (
+  index: number,
+): DeezerTrackEndAction => ({
+  type: DEEZER_TRACK_END,
+  payload: {index}
+});
+
+export interface DeezerTrackListChangedAction {
+  type: typeof DEEZER_TRACK_LIST_CHANGED;
+}
+
+export const deezerTrackListChanged = (): DeezerTrackListChangedAction => ({
+  type: DEEZER_TRACK_LIST_CHANGED,
+});
+
+export interface DeezerPlayerVolumeAction {
+  type: typeof DEEZER_VOLUME_CHANGED;
+  payload: {
+    volume: number;
+  }
+}
+
+export const deezerVolumeChanged = (
+  volume: number,
+): DeezerPlayerVolumeAction => ({
+  type: DEEZER_VOLUME_CHANGED,
+  payload: {volume}
+});
+
 export type DeezerAction = SetDeezerIsConnectedAction
   | ConnectDeezerAction
   | ConnectDeezerPendingAction
@@ -125,4 +283,14 @@ export type DeezerAction = SetDeezerIsConnectedAction
   | SetDeezerDisabledAction
   | SetDeezerMountedAction
   | SetDeezerInitedAction
-  | SetDeezerCurrentUserAction;
+  | SetDeezerCurrentUserAction
+  | DeezerPlayAction
+  | SetPlayerBufferingAction
+  | SetIsPlayerMutedAction
+  | DeezerTrackEndAction
+  | DeezerPlayerLoadedAction
+  | DeezerPauseAction
+  | SetPlayerShuffleAction
+  | SetPlayerRepeatModeAction
+  | SetPlayerPositionAction
+  | SetPlayingTrackAction;

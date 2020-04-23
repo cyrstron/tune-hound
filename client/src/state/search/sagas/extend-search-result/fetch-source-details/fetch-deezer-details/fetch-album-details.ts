@@ -7,7 +7,7 @@ import {getContext} from 'redux-saga/effects'
 export function* fetchAlbumDetails(album: DeezerAlbumSourceItemShort) {
   const deezerService: DeezerService = yield getContext(DEEZER_SERVICE_CTX_KEY);
 
-  const fullAlbum: DeezerAlbumFull = yield deezerService.getAlbum(album.id);
+  const fullAlbum: DeezerAlbumFull = yield deezerService.api.getAlbum(album.id);
 
   const result: DeezerAlbumSourceItemFull = {
     ...fullAlbum,

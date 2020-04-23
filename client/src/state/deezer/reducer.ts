@@ -21,6 +21,7 @@ import {
   DEEZER_MOUNTED,
   DEEZER_INITED,
   SET_DEEZER_CURRENT_USER,
+  DEEZER_PLAY,
 } from './consts';
 import { DeezerUser } from "./types";
 
@@ -35,6 +36,9 @@ export interface DeezerState {
   error?: Error;
   isPending: boolean;
   currentUser?: DeezerUser;
+  isPlaying: boolean;
+  playingTrack?: DeezerSdk.Track;
+  playingTrackIndex?: number;
 }
 
 const initialDeezerState: DeezerState = {
@@ -46,6 +50,7 @@ const initialDeezerState: DeezerState = {
   isFlashMsgIgnored: getFlashIgnoredState(),
   isFlashEnabled: getIsFlashEnabled(),
   isPending: false,
+  isPlaying: false,
 };
 
 export function deezerReducer(
@@ -102,6 +107,11 @@ export function deezerReducer(
       return {
         ...state,
         isInited: true,
+      };
+    case DEEZER_PLAY:
+      return {
+        ...state,
+        isPlaying: true,
       };
     case SET_DEEZER_CURRENT_USER:
       return {

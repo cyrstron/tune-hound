@@ -19,7 +19,7 @@ const TrackListComponent: FC<TrackListProps> = ({
   return (
     <ul className={cx('tracks-list', className)}>
       {tracks.map((track, index) => (
-        <OrderedTrack className={cx('track-item')} index={index} {...track}/>
+        <OrderedTrack key={track.id} className={cx('track-item')} index={index} {...track}/>
       ))}
     </ul>
   )

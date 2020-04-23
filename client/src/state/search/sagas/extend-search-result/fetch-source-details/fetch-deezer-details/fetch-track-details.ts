@@ -7,7 +7,7 @@ import { DeezerTrackFull } from "@app/state/deezer/types";
 export function* fetchTrackDetails(track: DeezerTrackSourceItemShort) {
   const deezerService: DeezerService = yield getContext(DEEZER_SERVICE_CTX_KEY);
 
-  const fullTrack: DeezerTrackFull = yield deezerService.getTrack(track.id);
+  const fullTrack: DeezerTrackFull = yield deezerService.api.getTrack(track.id);
 
   const result: DeezerTrackSourceItemFull = {
     ...fullTrack,

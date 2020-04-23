@@ -26,6 +26,17 @@ export class SpotifyWebApi {
     return data;
   }
 
+  async playTrackById(deviceId: string, id: string, accessToken: string): Promise<void> {
+    await this.axios.put(
+      `${this.spotifyUrl}/v1/me/player/play?device_id=${deviceId}`,
+      { uris: [`spotify:track:${id}`] },  
+      {
+        headers: {
+        'Authorization': `Bearer ${accessToken}`,
+      }
+    });
+  }
+
   async setActiveDevice(deviceId: string, accessToken: string): Promise<void> {
     await this.axios.put<void>(`${this.spotifyUrl}/v1/me/player`, {
       device_ids: [deviceId],

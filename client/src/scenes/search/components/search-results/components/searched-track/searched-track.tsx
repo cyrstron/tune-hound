@@ -1,10 +1,13 @@
-import React, {FC, Fragment} from 'react';
+import React, {FC, Fragment, useCallback} from 'react';
 import classNames from 'classnames/bind';
 import { SearchedTrack } from '@app/state/search/types';
 import {SourceLink} from '@app/components/source-link';
 
 import styles from './searched-track.scss';
 import { SourceDetails } from '../sources-details';
+import { useDispatch } from 'react-redux';
+import { PlayerTrack } from '@app/state/player/types';
+import { playTrack } from '@app/state/player/actions';
 
 const cx = classNames.bind(styles);
 
@@ -23,6 +26,23 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
     isCrossExtendable,
   } = track;
 
+  const dispatch = useDispatch();
+
+  const onPlay = useCallback(() => {
+    let playerTrack: PlayerTrack = {
+      source: track.sources.spotify ? 'spotify' : 'deezer',
+      name: track.name,
+      artists: track.artists,
+      albumTitle: track.album,
+      duration: track.duration,
+      trackSource: {id: track.sources.spotify ? track.sources.spotify.id : track.sources.deezer!.id},
+    } as PlayerTrack;
+
+    const action = playTrack(playerTrack);
+
+    dispatch(action);
+  }, [track, dispatch]);
+
   return (
     <article className={cx('track', className)}>
       <div className={cx('content')}>
@@ -31,6 +51,7 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
         </div>
         <div className={cx('info-wrapper')}>
           <h1 className={cx('track-title')}>
+            <button onClick={onPlay}>Play</button>
             <SourceLink
               externalUrls={{
                 spotifyUrl: spotify?.external_urls.spotify,

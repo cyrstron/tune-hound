@@ -14,8 +14,8 @@ export function* fetchArtistDetails(artist: DeezerArtistSourceItemShort) {
     {data: DeezerTrack[]; total: number},
     {data: DeezerAlbum[]; total: number},
   ] = yield all([
-    deezerService.getArtistTopTracks(artist.id),
-    deezerService.getArtistAlbums(artist.id),
+    deezerService.api.getArtistTopTracks(artist.id),
+    deezerService.api.getArtistAlbums(artist.id),
   ]);
 
   const result: DeezerArtistSourceItemFull = {
