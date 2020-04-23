@@ -1,27 +1,27 @@
 import {eventChannel, EventChannel, END} from 'redux-saga';
 import {take, put} from 'redux-saga/effects';
 import { DeezerService } from '@app/state/deezer/services';
-import { deezerPause } from '@app/state/deezer/actions';
+import { deezerPlay } from '@app/state/deezer/actions';
 
 export function createPlayerPauseChannel(
   deezerService: DeezerService
-): EventChannel<void> {
+): EventChannel<false> {
   return eventChannel(emitter => {
     deezerService.events.subscribe('player_paused', () => {
-      emitter();
+      emitter(false);
     });
       
     return () => {};
   });
 }
 
-export function* watchPlayerPauseChange(channel: EventChannel<void>) {
+export function* watchPlayerPauseChange(channel: EventChannel<false>) {
   while (true) {
-    const event: undefined | END = yield take(channel);
+    const isPlaying: boolean | END = yield take(channel);
     
-    if (event) return;
+    if (typeof isPlaying === 'object') return;
 
-    const action = deezerPause();
+    const action = deezerPlay(isPlaying);
 
     yield put(action);
   }

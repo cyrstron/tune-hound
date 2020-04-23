@@ -5,23 +5,23 @@ import { deezerPlay } from '@app/state/deezer/actions';
 
 export function createPlayerPlayChannel(
   deezerService: DeezerService
-): EventChannel<void> {
+): EventChannel<true> {
   return eventChannel(emitter => {
     deezerService.events.subscribe('player_play', () => {
-      emitter();
+      emitter(true);
     });
       
     return () => {};
   });
 }
 
-export function* watchPlayerPlayChange(channel: EventChannel<void>) {
+export function* watchPlayerPlayChange(channel: EventChannel<true>) {
   while (true) {
-    const event: undefined | END = yield take(channel);
+    const isPlaying: true | END = yield take(channel);
     
-    if (event) return;
+    if (typeof isPlaying === 'object') return;
 
-    const action = deezerPlay();
+    const action = deezerPlay(isPlaying);
 
     yield put(action);
   }

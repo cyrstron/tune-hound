@@ -15,7 +15,6 @@ import {
   SET_IS_PLAYER_MUTED,
   SET_PLAYER_BUFFERING,
   SET_PLAYER_LOADED,
-  DEEZER_PAUSE,
   SET_PLAYER_POSITION,
   SET_REPEAT_MODE,
   SET_PLAYER_SHUFFLE,
@@ -129,18 +128,12 @@ export const setDeezerCurrentUser = (user: DeezerUser): SetDeezerCurrentUserActi
 
 export interface DeezerPlayAction {
   type: typeof DEEZER_PLAY;
+  payload: {isPlaying: boolean}
 }
 
-export const deezerPlay = (): DeezerPlayAction => ({
+export const deezerPlay = (isPlaying: boolean): DeezerPlayAction => ({
   type: DEEZER_PLAY,
-});
-
-export interface DeezerPauseAction {
-  type: typeof DEEZER_PAUSE;
-}
-
-export const deezerPause = (): DeezerPauseAction => ({
-  type: DEEZER_PAUSE,
+  payload: {isPlaying}
 });
 
 export interface SetPlayingTrackAction {
@@ -289,7 +282,6 @@ export type DeezerAction = SetDeezerIsConnectedAction
   | SetIsPlayerMutedAction
   | DeezerTrackEndAction
   | DeezerPlayerLoadedAction
-  | DeezerPauseAction
   | SetPlayerShuffleAction
   | SetPlayerRepeatModeAction
   | SetPlayerPositionAction

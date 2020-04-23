@@ -17,7 +17,6 @@ export const SET_DEEZER_DISABLED = '@app/deezer/SET_DEEZER_DISABLED';
 export const SET_DEEZER_CURRENT_USER = '@app/deezer/SET_DEEZER_CURRENT_USER';
 
 export const DEEZER_PLAY = '@app/deezer/DEEZER_PLAY';
-export const DEEZER_PAUSE = '@app/deezer/DEEZER_PAUSE';
 export const SET_PLAYING_TRACK = '@app/deezer/SET_PLAYING_TRACK';
 export const SET_IS_PLAYER_MUTED = '@app/deezer/SET_IS_PLAYER_MUTED';
 export const SET_PLAYER_BUFFERING = '@app/deezer/SET_PLAYER_BUFFERING';

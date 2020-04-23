@@ -16,4 +16,8 @@ export class DeezerPlayer {
       });
     });
   }
+
+  play() {
+    this.player.play();
+  }
 }

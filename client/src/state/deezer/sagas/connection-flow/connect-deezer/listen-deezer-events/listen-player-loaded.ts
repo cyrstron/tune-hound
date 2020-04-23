@@ -5,21 +5,21 @@ import { setDeezerPlayerLoaded } from '@app/state/deezer/actions';
 
 export function createPlayerLoadedChannel(
   deezerService: DeezerService
-): EventChannel<void> {
+): EventChannel<true> {
   return eventChannel(emitter => {
     deezerService.events.subscribe('player_loaded', () => {
-      emitter();
+      emitter(true);
     });
       
     return () => {};
   });
 }
 
-export function* watchPlayerLoadedChange(channel: EventChannel<void>) {
+export function* watchPlayerLoadedChange(channel: EventChannel<true>) {
   while (true) {
-    const event: boolean | END = yield take(channel);
+    const isLoaded: boolean | END = yield take(channel);
     
-    if (event) return;
+    if (typeof isLoaded === 'object') return;
 
     const action = setDeezerPlayerLoaded();
 
