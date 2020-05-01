@@ -88,6 +88,10 @@ module.exports = (_env, argv) => {
       contentBase: path.resolve(__dirname, './.dist'),
       historyApiFallback: true,
       proxy: {
+        '/deezer-test': {
+          target: 'http://localhost:3001',
+          secure: false,
+        },
         '/spotify-callback': {
           target: 'http://localhost:3001',
           secure: false,

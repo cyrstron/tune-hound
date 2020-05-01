@@ -40,6 +40,10 @@ app.get('/deezer-channel', async (_req, res) => {
   res.sendFile(path.resolve(__dirname, './views/deezer-channel.html'));
 });
 
+app.get('/deezer-test', async (_req, res) => {
+  res.sendFile(path.resolve(__dirname, './views/deezer-test.html'));
+});
+
 app.get('/spotify-callback', async (req, res) => {
   const code: string | null = req.query.code || null;
 

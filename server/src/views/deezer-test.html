@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deezer Test</title>
+</head>
+<body>
+  <button id='button'>Play</button>
+  <div id="player"></div>
+  <div id="dz-root"></div>
+  <script src="https://e-cdns-files.dzcdn.net/js/min/dz.js"></script>
+  <script>
+    DZ.init({
+      appId  : '305804',
+      channelUrl : 'http://127.0.0.1:3000/deezer-channel',
+      player: {
+        container: 'player',
+        width : 800,
+        height : 300,
+        onload : function(){
+        DZ.player.playTracks([3135556], () => {
+        });
+        }
+      }
+    });
+
+    function play() {
+      DZ.player.play();
+    }
+
+    document.querySelector('#button').addEventListener('click', play);
+  </script>
+</body>
+</html>

@@ -25,17 +25,9 @@ export function* playTrack({payload: {track}}: PlayTrackAction) {
   } else if (track.source === 'deezer') {
     const deezerService: DeezerService = yield getContext(DEEZER_SERVICE_CTX_KEY);
 
-    yield deezerService.player.playTracks([track.trackSource.id]);
+    yield deezerService.player.playTracks([track.trackSource.id], true);
 
-    let buffered: number | undefined;
-
-    while(buffered === undefined || buffered !== 100) {
-      const {payload}: SetPlayerBufferingAction = yield take(SET_PLAYER_BUFFERING);
-
-      buffered = payload.buffered;
-    }
-
-    deezerService.player.play();
+    // let buffered: number | undefined;
 
     // const [deviceId, accessToken]: [string, string] = yield all([
     //   select(selectSpotifyPlayerDeviceId),
