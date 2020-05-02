@@ -13,6 +13,14 @@ dotenv.config({
 const app = express();
 const port = process.env.PORT || 3001;
 
+app.get('/manifest.json', async (_req, res) => {
+  res.sendFile(path.resolve(__dirname, '../static/manifest.json'));
+});
+
+app.get('/service-worker.js', async (_req, res) => {
+  res.sendFile(path.resolve(__dirname, '../static/service-worker.js'));
+});
+
 app.get('/login-spotify', (_req, res) => {
   res.redirect(`https://accounts.spotify.com/authorize?${
     qs.stringify({
@@ -43,6 +51,7 @@ app.get('/deezer-channel', async (_req, res) => {
 app.get('/deezer-test', async (_req, res) => {
   res.sendFile(path.resolve(__dirname, './views/deezer-test.html'));
 });
+
 
 app.get('/spotify-callback', async (req, res) => {
   const code: string | null = req.query.code || null;
@@ -177,6 +186,8 @@ app.get('/refresh-token', async (req, res) => {
     res.sendStatus(401);
   }
 });
+
+app.use('/static', express.static(path.resolve(__dirname, '../static')));
 
 app.listen(port, () => {
   console.log(`Running on ${port}`)

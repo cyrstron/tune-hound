@@ -92,6 +92,14 @@ module.exports = (_env, argv) => {
           target: 'http://localhost:3001',
           secure: false,
         },
+        '/manifest.json': {
+          target: 'http://localhost:3001',
+          secure: false,
+        },
+        '/service-worker.js': {
+          target: 'http://localhost:3001',
+          secure: false,
+        },
         '/spotify-callback': {
           target: 'http://localhost:3001',
           secure: false,
@@ -113,6 +121,10 @@ module.exports = (_env, argv) => {
           secure: false,
         },
         '/refresh-token': {
+          target: 'http://localhost:3001',
+          secure: false,
+        },
+        '/static': {
           target: 'http://localhost:3001',
           secure: false,
         },
