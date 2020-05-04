@@ -15,7 +15,14 @@ export function createCurrentTrackChannel(
   });
 }
 
-export function* watchCurrentTrackChange(channel: EventChannel<{index: number, track: DeezerSdk.Track}>) {
+export function* watchCurrentTrackChange(deezerService: DeezerService, channel: EventChannel<{index: number, track: DeezerSdk.Track}>) {
+  const track = deezerService.player.getCurrentTrack();
+  const index = deezerService.player.getCurrentIndex();
+
+  const action = setPlayingTrack(index, track);
+
+  yield put(action);
+  
   while (true) {
     const event: {index: number, track: DeezerSdk.Track} | END = yield take(channel);
     

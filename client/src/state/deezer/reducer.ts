@@ -1,8 +1,5 @@
 import { 
-  DeezerAction, 
-  SetDeezerIsConnectedAction, 
-  ConnectDeezerFailureAction,
-  SetDeezerCurrentUserAction,
+  DeezerAction,
 } from "./actions";
 import {
   getDeezerConnectedState, 
@@ -21,7 +18,15 @@ import {
   DEEZER_MOUNTED,
   DEEZER_INITED,
   SET_DEEZER_CURRENT_USER,
-  DEEZER_PLAY,
+  SET_IS_PLAYING,
+  DEEZER_VOLUME_CHANGED,
+  SET_PLAYING_TRACK,
+  SET_IS_PLAYER_NOT_MUTED,
+  SET_PLAYER_BUFFERING,
+  SET_PLAYER_POSITION,
+  SET_REPEAT_MODE,
+  SET_PLAYER_SHUFFLE,
+  DEEZER_TRACK_LIST_CHANGED,
 } from './consts';
 import { DeezerUser } from "./types";
 
@@ -33,12 +38,19 @@ export interface DeezerState {
   isConnected: boolean;
   isFlashMsgIgnored: boolean;
   isFlashEnabled: boolean;
+  volume: number;
   error?: Error;
   isPending: boolean;
   currentUser?: DeezerUser;
   isPlaying: boolean;
-  playingTrack?: DeezerSdk.Track;
-  playingTrackIndex?: number;
+  playingTrack: DeezerSdk.Track | null;
+  playingTrackIndex: number | null;
+  trackList: DeezerSdk.Track [];
+  isNotMuted: boolean;
+  repeatMode: DeezerSdk.RepeatMode;
+  buffered?: number;
+  position?: [number, number];
+  isShuffled: boolean;
 }
 
 const initialDeezerState: DeezerState = {
@@ -51,17 +63,24 @@ const initialDeezerState: DeezerState = {
   isFlashEnabled: getIsFlashEnabled(),
   isPending: false,
   isPlaying: false,
+  volume: 0,
+  playingTrack: null,
+  playingTrackIndex: null,
+  trackList: [],
+  isNotMuted: true,
+  repeatMode: 0,
+  isShuffled: false,
 };
 
 export function deezerReducer(
   state: DeezerState = initialDeezerState,
   action: DeezerAction,
-) {
+): DeezerState {
   switch(action.type) {
     case SET_DEEZER_IS_CONNECTED:
       return {
         ...state,
-        isConnected: (action as SetDeezerIsConnectedAction).payload.isConnected,
+        isConnected: action.payload.isConnected,
       };
     case CONNECT_DEEZER_PENDING:
       return {
@@ -71,7 +90,7 @@ export function deezerReducer(
     case CONNECT_DEEZER_FAILURE:
       return {
         ...state,
-        error: (action as ConnectDeezerFailureAction).payload.error,
+        error: action.payload.error,
         isPending: false,
         isConnected: false,
       };
@@ -108,15 +127,56 @@ export function deezerReducer(
         ...state,
         isInited: true,
       };
-    case DEEZER_PLAY:
+    case SET_IS_PLAYING:
       return {
         ...state,
-        isPlaying: true,
+        isPlaying: action.payload.isPlaying,
       };
     case SET_DEEZER_CURRENT_USER:
       return {
         ...state,
-        currentUser: (action as SetDeezerCurrentUserAction).payload.user,
+        currentUser: action.payload.user,
+      };
+    case DEEZER_VOLUME_CHANGED:
+      return {
+        ...state,
+        volume: action.payload.volume,
+      };
+    case SET_PLAYING_TRACK:
+      return {
+        ...state,
+        playingTrack: action.payload.track,
+        playingTrackIndex: action.payload.index,
+      };
+    case SET_IS_PLAYER_NOT_MUTED:
+      return {
+        ...state,
+        isNotMuted: action.payload.isNotMuted,
+      };
+    case SET_PLAYER_BUFFERING:
+      return {
+        ...state,
+        buffered: action.payload.buffered,
+      };
+    case SET_PLAYER_POSITION:
+      return {
+        ...state,
+        position: action.payload.position,
+      };
+    case SET_REPEAT_MODE:
+      return {
+        ...state,
+        repeatMode: action.payload.repeatMode,
+      };
+    case SET_PLAYER_SHUFFLE:
+      return {
+        ...state,
+        isShuffled: action.payload.isShuffled,
+      };
+    case DEEZER_TRACK_LIST_CHANGED:
+      return {
+        ...state,
+        trackList: action.payload.tracks,
       };
     default:
       return state;

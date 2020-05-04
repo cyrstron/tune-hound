@@ -15,7 +15,13 @@ export function createShuffleModeChannel(
   });
 }
 
-export function* watchShuffleModeChange(channel: EventChannel<boolean>) {
+export function* watchShuffleModeChange(deezerService: DeezerService, channel: EventChannel<boolean>) {
+  const isShuffled = deezerService.player.getShuffle();
+
+  const action = setPlayerShuffle(isShuffled);
+
+  yield put(action);
+
   while (true) {
     const isShuffled: boolean | END = yield take(channel);
     

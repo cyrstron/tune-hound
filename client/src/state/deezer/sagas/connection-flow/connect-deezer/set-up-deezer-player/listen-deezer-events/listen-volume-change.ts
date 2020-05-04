@@ -15,7 +15,13 @@ export function createPlayerVolumeChannel(
   });
 }
 
-export function* watchPlayerVolumeChange(channel: EventChannel<number>) {
+export function* watchPlayerVolumeChange(deezerService: DeezerService, channel: EventChannel<number>) {
+  const volume = deezerService.player.getVolume();
+
+  const action = deezerVolumeChanged(volume);
+
+  yield put(action);
+
   while (true) {
     const volume: number | END = yield take(channel);
     

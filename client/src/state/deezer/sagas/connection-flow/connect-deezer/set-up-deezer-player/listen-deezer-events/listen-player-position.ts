@@ -1,4 +1,5 @@
 import {eventChannel, EventChannel, END} from 'redux-saga';
+import throttle from 'lodash/throttle';
 import {take, put} from 'redux-saga/effects';
 import { DeezerService } from '@app/state/deezer/services';
 import { setPlayerPosition } from '@app/state/deezer/actions';
@@ -7,9 +8,11 @@ export function createPlayerPositionChannel(
   deezerService: DeezerService
 ): EventChannel<[number, number]> {
   return eventChannel(emitter => {
-    deezerService.events.subscribe('player_position', (position) => {
+    const onPlayerPositionChange = throttle((position) => {
       emitter(position);
-    });
+    }, 1000);
+
+    deezerService.events.subscribe('player_position', onPlayerPositionChange);
       
     return () => {};
   });

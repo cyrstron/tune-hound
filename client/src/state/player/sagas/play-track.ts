@@ -5,8 +5,7 @@ import { SPOTIFY_SERVICE_CTX_KEY, DEEZER_SERVICE_CTX_KEY } from "@app/consts";
 import { retrieveAccessToken } from "@app/state/spotify/sagas/retrieve-access-token";
 import { selectSpotifyPlayerDeviceId } from "@app/state/spotify";
 import { SpotifyService } from "@app/state/spotify/services/spotify-service";
-import { DeezerService, SetPlayerBufferingAction } from "@app/state/deezer";
-import { SET_PLAYER_BUFFERING } from "@app/state/deezer/consts";
+import { DeezerService } from "@app/state/deezer";
 
 export function* playTrackFlow() {
   yield takeEvery(PLAY_TRACK, playTrack);
@@ -27,14 +26,7 @@ export function* playTrack({payload: {track}}: PlayTrackAction) {
 
     yield deezerService.player.playTracks([track.trackSource.id], true);
 
-    // let buffered: number | undefined;
-
-    // const [deviceId, accessToken]: [string, string] = yield all([
-    //   select(selectSpotifyPlayerDeviceId),
-    //   call(retrieveAccessToken),
-    // ]);
-
-    // yield deezerService.playTrackById(deviceId, track.trackSource.id, accessToken)
+    
   }
 
 }

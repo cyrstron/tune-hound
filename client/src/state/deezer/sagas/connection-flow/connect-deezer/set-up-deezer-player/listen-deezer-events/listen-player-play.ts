@@ -1,7 +1,7 @@
 import {eventChannel, EventChannel, END} from 'redux-saga';
 import {take, put} from 'redux-saga/effects';
 import { DeezerService } from '@app/state/deezer/services';
-import { deezerPlay } from '@app/state/deezer/actions';
+import { setDeezerIsPlaying } from '@app/state/deezer/actions';
 
 export function createPlayerPlayChannel(
   deezerService: DeezerService
@@ -21,7 +21,7 @@ export function* watchPlayerPlayChange(channel: EventChannel<true>) {
     
     if (typeof isPlaying === 'object') return;
 
-    const action = deezerPlay(isPlaying);
+    const action = setDeezerIsPlaying(isPlaying);
 
     yield put(action);
   }

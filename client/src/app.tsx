@@ -1,9 +1,10 @@
 import classNames from 'classnames/bind';
 import React, {Component} from 'react';
 import { Header } from 'components/header';
+import { Search } from './scenes/search';
+import { Footer } from './components/footer';
 
 import styles from './app.scss';
-import { Search } from './scenes/search';
 
 const cx = classNames.bind(styles);
 
@@ -18,6 +19,7 @@ class App extends Component<{}, AppState> {
         <div className={cx('main')}>
           <Search className={cx('main-content')}/>
         </div>
+        <Footer className={'footer'} />
       </div>
     );
   }

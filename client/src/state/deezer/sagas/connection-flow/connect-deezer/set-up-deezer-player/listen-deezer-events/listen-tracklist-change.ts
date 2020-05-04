@@ -15,13 +15,21 @@ export function createTrackListChannel(
   });
 }
 
-export function* watchTrackListChange(channel: EventChannel<true>) {
+export function* watchTrackListChange(deezerService: DeezerService, channel: EventChannel<true>) {
+  const trackList = deezerService.player.getTrackList();
+
+  const action = deezerTrackListChanged(trackList);
+
+  yield put(action);
+
   while (true) {
     const event: boolean | END = yield take(channel);
     
     if (typeof event === 'object') return;
 
-    const action = deezerTrackListChanged();
+    const trackList = deezerService.player.getTrackList();
+
+    const action = deezerTrackListChanged(trackList);
 
     yield put(action);
   }

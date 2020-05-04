@@ -12,7 +12,7 @@ import { DeezerService } from "../../../services";
 import { setDeezerConnectedState } from "../../../services/helpers";
 import { selectDeezerMounted, selectDeezerInited } from "../../../selectors";
 import {DeezerUser} from '../../../types';
-import { listenDeezerEvents } from "./listen-deezer-events";
+import { setUpDeezerPlayer } from "./set-up-deezer-player";
 
 const {initConfig} = deezerConfig;
 
@@ -42,7 +42,7 @@ export function* connectDeezerSaga() {
           player: {},
         });
 
-        yield call(listenDeezerEvents, deezerService);
+        yield call(setUpDeezerPlayer, deezerService);
 
         const initAction = setDeezerInited();
 

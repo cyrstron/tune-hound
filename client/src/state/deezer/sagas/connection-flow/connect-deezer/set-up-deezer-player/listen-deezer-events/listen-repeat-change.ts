@@ -15,7 +15,13 @@ export function createRepeatModeChangeChannel(
   });
 }
 
-export function* watchRepeatModeChange(channel: EventChannel<DeezerSdk.RepeatMode>) {
+export function* watchRepeatModeChange(deezerService: DeezerService, channel: EventChannel<DeezerSdk.RepeatMode>) {
+  const isRepeated = deezerService.player.getRepeat();
+
+  const action = setPlayerRepeatMode(isRepeated);
+
+  yield put(action);
+
   while (true) {
     const repeatMode: DeezerSdk.RepeatMode | END = yield take(channel);
     

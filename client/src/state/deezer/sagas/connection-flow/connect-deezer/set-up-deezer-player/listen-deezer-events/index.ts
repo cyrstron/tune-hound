@@ -29,17 +29,17 @@ export function* listenDeezerEvents(deezerService: DeezerService) {
 
   yield all([
     spawn(watchPlayerPlayChange, playChannel),
-    spawn(watchCurrentTrackChange, currentTrackChannel),
-    spawn(watchMuteChange, muteChannel),
+    spawn(watchCurrentTrackChange, deezerService, currentTrackChannel),
+    spawn(watchMuteChange, deezerService, muteChannel),
     spawn(watchPlayerBufferingChange, bufferingChannel),
     spawn(watchPlayerLoadedChange, loadedChannel),
     spawn(watchPlayerPauseChange, pauseChannel),
     spawn(watchPlayerPositionChange, positionChannel),
-    spawn(watchRepeatModeChange, repeatModeChannel),
-    spawn(watchShuffleModeChange, shuffleChannel),
+    spawn(watchRepeatModeChange, deezerService, repeatModeChannel),
+    spawn(watchShuffleModeChange, deezerService, shuffleChannel),
     spawn(watchTrackEnd, trackEndChannel),
-    spawn(watchTrackListChange, trackListChangeChannel),
-    spawn(watchPlayerVolumeChange, volumeChannel),
+    spawn(watchTrackListChange, deezerService, trackListChangeChannel),
+    spawn(watchPlayerVolumeChange, deezerService, volumeChannel),
   ]);
 
   return {

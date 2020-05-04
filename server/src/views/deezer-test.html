@@ -17,11 +17,10 @@
       appId  : '305804',
       channelUrl : 'http://127.0.0.1:3000/deezer-channel',
       player: {
-        // container: 'player',
-        // width : 800,
-        // height : 300,
+        container: 'player',
+        width : 800,
+        height : 300,
         onload : function(){
-          DZ.player.setMute(true);
           DZ.player.playTracks([3135556], () => {});
         }
       }
