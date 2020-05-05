@@ -1,4 +1,16 @@
-import { PLAY_TRACK, PAUSE, PLAY, SET_PLAYLIST, SET_IS_MUTED, SET_VOLUME, SET_IS_PLAYING } from "./consts";
+import { 
+  PLAY_TRACK, 
+  PAUSE, 
+  PLAY, 
+  SET_PLAYLIST, 
+  SET_IS_MUTED, 
+  SET_VOLUME, 
+  SET_IS_PLAYING, 
+  SET_CURRENT_TRACK,
+  RESET_CURRENT_TRACK,
+  SEEK,
+  SET_POSITION,
+} from "./consts";
 import { PlayerTrack } from "./types";
 
 export interface PlayTrackAction {
@@ -27,6 +39,16 @@ export interface PlayAction {
 
 export const play = (): PlayAction => ({
   type: PLAY,
+});
+
+export interface SeekAction {
+  type: typeof SEEK;
+  payload: {position: number}
+}
+
+export const seek = (position: number): SeekAction => ({
+  type: SEEK,
+  payload: {position},
 });
 
 export interface SetIsPlayingAction {
@@ -69,11 +91,43 @@ export const setVolume = (volume: number): SetVolumeAction => ({
   payload: {volume},
 });
 
+export interface SetPositionAction {
+  type: typeof SET_POSITION;
+  payload: {position: number;};
+}
+
+export const setPosition = (position: number): SetPositionAction => ({
+  type: SET_POSITION,
+  payload: {position},
+});
+
+export interface SetCurrentTrackAction {
+  type: typeof SET_CURRENT_TRACK;
+  payload: {track: PlayerTrack, index: number;};
+}
+
+export const setCurrentTrack = (track: PlayerTrack, index: number = 0): SetCurrentTrackAction => ({
+  type: SET_CURRENT_TRACK,
+  payload: {track, index},
+});
+
+export interface ResetCurrentTrackAction {
+  type: typeof RESET_CURRENT_TRACK;
+}
+
+export const resetCurrentTrack = (): ResetCurrentTrackAction => ({
+  type: RESET_CURRENT_TRACK,
+});
+
 export type PlayerAction = PlayTrackAction 
   | PauseAction 
   | PlayAction
+  | SeekAction
   | SetPlaylistAction 
   | SetIsMutedAction
   | SetIsPlayingAction 
+  | SetCurrentTrackAction
+  | ResetCurrentTrackAction
+  | SetPositionAction
   | SetVolumeAction;
 

@@ -34,7 +34,7 @@ export function* listenDeezerEvents(deezerService: DeezerService) {
     spawn(watchPlayerBufferingChange, bufferingChannel),
     spawn(watchPlayerLoadedChange, loadedChannel),
     spawn(watchPlayerPauseChange, pauseChannel),
-    spawn(watchPlayerPositionChange, positionChannel),
+    spawn(watchPlayerPositionChange, deezerService, positionChannel),
     spawn(watchRepeatModeChange, deezerService, repeatModeChannel),
     spawn(watchShuffleModeChange, deezerService, shuffleChannel),
     spawn(watchTrackEnd, trackEndChannel),

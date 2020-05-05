@@ -21,6 +21,10 @@ export class DeezerPlayer {
     this.player.play();
   }
 
+  seek(position: number) {
+    this.player.seek(position);
+  }
+
   pause() {
     this.player.pause();
   }

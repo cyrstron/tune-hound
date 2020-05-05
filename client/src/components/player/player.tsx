@@ -2,8 +2,9 @@ import React, {FC, useCallback, ChangeEvent} from 'react';
 import classNames from 'classnames/bind';
 import styles from './player.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectIsMuted, selectVolume, selectIsPlaying, selectCurrentTrack } from '@app/state/player/selectors';
-import { setIsMuted, setVolume, play, pause } from '@app/state/player/actions';
+import { selectIsMuted, selectVolume, selectIsPlaying, selectCurrentTrack, selectPosition } from '@app/state/player/selectors';
+import { setIsMuted, setVolume, play, pause, seek } from '@app/state/player/actions';
+import { SeekBar } from './components/seek-bar/seek-bar';
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +16,7 @@ const Player: FC<PlayerProps> = ({className}) => {
   const dispatch = useDispatch();
   const isPlaying = useSelector(selectIsPlaying);
   const currentTrack = useSelector(selectCurrentTrack);
+  const position = useSelector(selectPosition);
   const isMuted = useSelector(selectIsMuted);
   const volume = useSelector(selectVolume);
 
@@ -28,6 +30,12 @@ const Player: FC<PlayerProps> = ({className}) => {
     const volume = +e.target.value;
 
     const action = setVolume(volume);
+
+    dispatch(action);
+  }, [dispatch]);
+
+  const onSeek = useCallback((position: number) => {
+    const action = seek(position);
 
     dispatch(action);
   }, [dispatch]);
@@ -46,13 +54,19 @@ const Player: FC<PlayerProps> = ({className}) => {
 
   return (
     <div className={cx('player', className)}>
+      {currentTrack && (
+        <div>
+          <b>{currentTrack.name}</b> by <b>{currentTrack.artists.join(', ')}</b>
+        </div>
+      )}
       {!isPlaying && (
-        <button onClick={onPlay} disabled={!!currentTrack}>Play</button>
+        <button onClick={onPlay} disabled={!currentTrack}>Play</button>
       )}
       {isPlaying && (
         <button onClick={onPause}>Pause</button>
       )}
       <button onClick={onMute}>{isMuted ? 'Unmute' : 'Mute'}</button>
+      <SeekBar onSeek={onSeek} position={position} duration={currentTrack?.duration}/>
       <input type='range' onChange={onVolumeChange} value={volume} min='0' max='100' step='1'/>
     </div>
   );

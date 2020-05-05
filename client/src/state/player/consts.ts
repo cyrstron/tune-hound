@@ -11,7 +11,12 @@ export const SET_PLAYLIST = '@app/player/SET_PLAYLIST';
 
 export const PLAY = '@app/player/PLAY';
 export const PAUSE = '@app/player/PAUSE';
+export const SEEK = '@app/player/SEEK';
 
 export const SET_IS_MUTED = '@app/player/SET_IS_MUTED';
 export const SET_VOLUME = '@app/player/SET_VOLUME';
 export const SET_IS_PLAYING = '@app/player/SET_IS_PLAYING';
+export const SET_POSITION = '@app/player/SET_POSITION';
+
+export const SET_CURRENT_TRACK = '@app/player/SET_CURRENT_TRACK';
+export const RESET_CURRENT_TRACK = '@app/player/RESET_CURRENT_TRACK';

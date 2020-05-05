@@ -17,7 +17,14 @@ export const selectPlayingSource = (state: AppState): PlayerSource | undefined =
   return selectCurrentTrack(state)?.source;
 }
 
-
 export const selectIsPlaying = (state: AppState): boolean => {
   return state.player.isPlaying;
+}
+
+export const selectPlaylist = (state: AppState): PlayerTrack[] => {
+  return state.player.playlist;
+}
+
+export const selectPosition = (state: AppState): number | undefined => {
+  return state.player.position;
 }

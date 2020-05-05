@@ -2,7 +2,7 @@ import {eventChannel, EventChannel, END} from 'redux-saga';
 import {take, put, select, all} from 'redux-saga/effects';
 import { DeezerService } from '@app/state/deezer/services';
 import { setDeezerIsPlaying } from '@app/state/deezer/actions';
-import { selectPlayingSource } from '@app/state/player/selectors';
+import { selectPlayingSource, selectIsPlaying } from '@app/state/player/selectors';
 import { PlayerSource } from '@app/state/player/types';
 import { setIsPlaying } from '@app/state/player/actions';
 
@@ -30,6 +30,7 @@ export function* watchPlayerPlayChange(deezerService: DeezerService, channel: Ev
 
     const [playingSource, isPlayerPlaying]: [PlayerSource, boolean] = yield all([
       select(selectPlayingSource),
+      select(selectIsPlaying),
     ]);
 
     if (playingSource === 'deezer' && isPlayerPlaying) continue;

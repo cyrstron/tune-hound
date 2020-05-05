@@ -1,10 +1,20 @@
 import { PlayerAction } from "./actions";
 import { PlayerTrack } from "./types";
-import { SET_PLAYLIST, SET_IS_MUTED, SET_VOLUME, SET_IS_PLAYING } from "./consts";
+import { 
+  SET_PLAYLIST, 
+  SET_IS_MUTED, 
+  SET_VOLUME, 
+  SET_IS_PLAYING, 
+  SET_CURRENT_TRACK,
+  RESET_CURRENT_TRACK,
+  SET_POSITION,
+} from "./consts";
 
 export interface PlayerState {
   isPlaying: boolean;
   currentTrack?: PlayerTrack;
+  currentTrackIndex?: number;
+  position?: number;
   isPending: boolean;
   playlist: PlayerTrack[];
   volume: number;
@@ -39,6 +49,25 @@ export function playerReducer(
       return {
         ...state,
         volume: action.payload.volume,
+      };
+    case SET_POSITION:
+      return {
+        ...state,
+        position: action.payload.position,
+      };
+    case SET_CURRENT_TRACK:
+      return {
+        ...state,
+        currentTrack: action.payload.track,
+        currentTrackIndex: action.payload.index,
+        position: 0,
+      };
+    case RESET_CURRENT_TRACK:
+      return {
+        ...state,
+        currentTrack: undefined,
+        currentTrackIndex: undefined,
+        position: undefined,
       };
     case SET_IS_PLAYING:
       return {
