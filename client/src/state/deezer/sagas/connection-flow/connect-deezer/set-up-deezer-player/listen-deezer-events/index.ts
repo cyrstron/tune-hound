@@ -28,7 +28,7 @@ export function* listenDeezerEvents(deezerService: DeezerService) {
   const volumeChannel = createPlayerVolumeChannel(deezerService)
 
   yield all([
-    spawn(watchPlayerPlayChange, playChannel),
+    spawn(watchPlayerPlayChange, deezerService, playChannel),
     spawn(watchCurrentTrackChange, deezerService, currentTrackChannel),
     spawn(watchMuteChange, deezerService, muteChannel),
     spawn(watchPlayerBufferingChange, bufferingChannel),

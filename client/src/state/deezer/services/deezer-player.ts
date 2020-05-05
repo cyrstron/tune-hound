@@ -21,6 +21,10 @@ export class DeezerPlayer {
     this.player.play();
   }
 
+  pause() {
+    this.player.pause();
+  }
+
   getTrackList() {
     return this.player.getTrackList();
   }

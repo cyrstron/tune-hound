@@ -1,6 +1,6 @@
 import { PlayerAction } from "./actions";
 import { PlayerTrack } from "./types";
-import { SET_PLAYLIST, SET_IS_MUTED, SET_VOLUME } from "./consts";
+import { SET_PLAYLIST, SET_IS_MUTED, SET_VOLUME, SET_IS_PLAYING } from "./consts";
 
 export interface PlayerState {
   isPlaying: boolean;
@@ -39,6 +39,11 @@ export function playerReducer(
       return {
         ...state,
         volume: action.payload.volume,
+      };
+    case SET_IS_PLAYING:
+      return {
+        ...state,
+        isPlaying: action.payload.isPlaying,
       };
     default:
       return state;

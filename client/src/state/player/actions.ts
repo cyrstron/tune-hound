@@ -1,4 +1,4 @@
-import { PLAY_TRACK, PAUSE, SET_PLAYLIST, SET_IS_MUTED, SET_VOLUME } from "./consts";
+import { PLAY_TRACK, PAUSE, PLAY, SET_PLAYLIST, SET_IS_MUTED, SET_VOLUME, SET_IS_PLAYING } from "./consts";
 import { PlayerTrack } from "./types";
 
 export interface PlayTrackAction {
@@ -13,12 +13,30 @@ export const playTrack = (track: PlayerTrack): PlayTrackAction => ({
   payload: {track},
 });
 
-export interface PauseTrackAction {
+export interface PauseAction {
   type: typeof PAUSE;
 }
 
-export const pauseTrack = (): PauseTrackAction => ({
+export const pause = (): PauseAction => ({
   type: PAUSE,
+});
+
+export interface PlayAction {
+  type: typeof PLAY;
+}
+
+export const play = (): PlayAction => ({
+  type: PLAY,
+});
+
+export interface SetIsPlayingAction {
+  type: typeof SET_IS_PLAYING;
+  payload: {isPlaying: boolean};
+}
+
+export const setIsPlaying = (isPlaying: boolean): SetIsPlayingAction => ({
+  type: SET_IS_PLAYING,
+  payload: {isPlaying},
 });
 
 export interface SetPlaylistAction {
@@ -52,8 +70,10 @@ export const setVolume = (volume: number): SetVolumeAction => ({
 });
 
 export type PlayerAction = PlayTrackAction 
-  | PauseTrackAction 
+  | PauseAction 
+  | PlayAction
   | SetPlaylistAction 
-  | SetIsMutedAction 
+  | SetIsMutedAction
+  | SetIsPlayingAction 
   | SetVolumeAction;
 
