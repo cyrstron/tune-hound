@@ -1,0 +1,15 @@
+.seek-bar {
+  display: flex;
+  align-items: center;
+}
+
+.position,
+.duration {
+  width: 60px;
+  text-align: right;
+  padding: 5px 10px;
+}
+
+.seek-control {
+  flex-grow: 1;
+}

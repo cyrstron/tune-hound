@@ -66,7 +66,7 @@ const Player: FC<PlayerProps> = ({className}) => {
         <button onClick={onPause}>Pause</button>
       )}
       <button onClick={onMute}>{isMuted ? 'Unmute' : 'Mute'}</button>
-      <SeekBar onSeek={onSeek} position={position} duration={currentTrack?.duration}/>
+      <SeekBar onSeek={onSeek} position={position} duration={currentTrack?.duration} className={cx('seek-bar')}/>
       <input type='range' onChange={onVolumeChange} value={volume} min='0' max='100' step='1'/>
     </div>
   );

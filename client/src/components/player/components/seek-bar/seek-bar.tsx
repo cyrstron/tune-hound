@@ -27,9 +27,18 @@ const SeekBar: FC<SeekBarProps> = ({
 
   return (
     <div className={cx('seek-bar', className)}>
-      <span>{formatSeconds(position * duration / 100)}</span>
-      <input type='range' onChange={onChange} value={position.toFixed(1)} min='0' max='100' step='0.1' disabled={!duration}/>
-      <span>{formatSeconds(duration)}</span>
+      <span className={cx('position')}>{formatSeconds(position * duration / 100)}</span>
+      <input 
+        className={cx('seek-control')}
+        type='range' 
+        onChange={onChange} 
+        value={position.toFixed(1)} 
+        min='0' 
+        max='100' 
+        step='0.1' 
+        disabled={!duration}
+      />
+      <span className={cx('duration')}>{formatSeconds(duration)}</span>
     </div>
   );
 };
