@@ -2,7 +2,7 @@ import {eventChannel, EventChannel, END} from 'redux-saga';
 import {take, put, select} from 'redux-saga/effects';
 import { DeezerService } from '@app/state/deezer/services';
 import { setPlayingTrack } from '@app/state/deezer/actions';
-import { selectPlaylist } from '@app/state/player/selectors';
+import { selectPlaylist, selectCurrentTrack } from '@app/state/player/selectors';
 import { PlayerTrack } from '@app/state/player/types';
 import { setCurrentTrack } from '@app/state/player/actions';
 
@@ -37,16 +37,10 @@ export function* watchCurrentTrackChange(deezerService: DeezerService, channel: 
 
     yield put(action);
 
-    const playlist: PlayerTrack[] = yield select(selectPlaylist);
+    const currentTrack: PlayerTrack = yield select(selectCurrentTrack);
 
-    const currentTrackIndex = playlist.findIndex((playlistTrack) => playlistTrack.source === 'deezer' && playlistTrack.trackSource.id === +track.id);
+    if (currentTrack && currentTrack.source === 'deezer' && currentTrack.trackSource.id === +track.id) continue;
 
-    if (currentTrackIndex === -1) {
-      deezerService.player.pause();
-    } else {
-      const action = setCurrentTrack(playlist[currentTrackIndex], currentTrackIndex);
-
-      yield put(action);
-    }
+    deezerService.player.pause();
   }
 }

@@ -38,7 +38,7 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
       trackSource: {id: track.sources.spotify ? track.sources.spotify.id : track.sources.deezer!.id},
     } as PlayerTrack;
 
-    const action = playTrack(playerTrack);
+    const action = playTrack(id, playerTrack);
 
     dispatch(action);
   }, [track, dispatch]);

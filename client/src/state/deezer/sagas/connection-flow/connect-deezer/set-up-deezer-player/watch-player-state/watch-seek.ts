@@ -3,7 +3,7 @@ import { SEEK } from '@app/state/player/consts';
 import { DEEZER_SERVICE_CTX_KEY } from '@app/consts';
 import { DeezerService } from '@app/state/deezer/services';
 import { selectPlayingSource } from '@app/state/player/selectors';
-import { SeekAction, setPosition } from '@app/state/player/actions';
+import { SeekAction } from '@app/state/player/actions';
 
 export function* watchSeek() {
   yield takeEvery(SEEK, executeSeek);
@@ -17,8 +17,4 @@ export function* executeSeek({payload: {position}}: SeekAction) {
   if (playingSource !== 'deezer') return;
 
   deezerService.player.seek(position);
-
-  const positionAction = setPosition(position);
-
-  yield put(positionAction);
 }

@@ -35,3 +35,11 @@ export const selectDeezerInited = (
 export const selectDeezerIsPremium = (
   {deezer}: AppState,
 ): boolean => !!deezer.currentUser && deezer.currentUser['status'] > 0;
+
+export const selectDeezerCurrentTrack = (
+  {deezer}: AppState,
+) => deezer.playingTrack;
+
+export const selectDeezerIsPlaying = (
+  {deezer}: AppState,
+) => deezer.isPlaying;

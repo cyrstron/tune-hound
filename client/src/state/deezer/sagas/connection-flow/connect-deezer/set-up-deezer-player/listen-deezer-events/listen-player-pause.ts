@@ -2,9 +2,10 @@ import {eventChannel, EventChannel, END} from 'redux-saga';
 import {take, put, all, select} from 'redux-saga/effects';
 import { DeezerService } from '@app/state/deezer/services';
 import { setDeezerIsPlaying } from '@app/state/deezer/actions';
-import { PlayerSource } from '@app/state/player/types';
-import { selectPlayingSource, selectIsPlaying } from '@app/state/player/selectors';
+import { PlayerSource, PlayerTrack } from '@app/state/player/types';
+import { selectPlayingSource, selectIsPlaying, selectCurrentTrack } from '@app/state/player/selectors';
 import { setIsPlaying } from '@app/state/player/actions';
+import { selectDeezerCurrentTrack } from '@app/state/deezer/selectors';
 
 export function createPlayerPauseChannel(
   deezerService: DeezerService
@@ -28,12 +29,20 @@ export function* watchPlayerPauseChange(channel: EventChannel<false>) {
 
     yield put(action);
 
-    const [playingSource, isPlayerPlaying]: [PlayerSource, boolean] = yield all([
-      select(selectPlayingSource),
+    const [currentTrack, isPlayerPlaying, playingTrack]: [
+      PlayerTrack | undefined, 
+      boolean, 
+      DeezerSdk.Track | null
+    ] = yield all([
+      select(selectCurrentTrack),
       select(selectIsPlaying),
+      select(selectDeezerCurrentTrack)
     ]);
 
-    if (playingSource !== 'deezer' || !isPlayerPlaying) continue;
+    const isCurrentTrackSet = currentTrack?.source === 'deezer' && 
+      playingTrack && +playingTrack.id === currentTrack.trackSource.id;
+
+    if (!isCurrentTrackSet || !isPlayerPlaying) continue;
 
     const pauseAction = setIsPlaying(isPlaying);
 

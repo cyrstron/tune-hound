@@ -18,4 +18,3 @@ export function formatSeconds(seconds: number): string {
 
   return `${hours ? `${hours}:` : ''}${minutes > 9 ? minutes : `0${minutes}`}:${secondsRemained > 9 ? secondsRemained : `0${secondsRemained}`}`
 }
-

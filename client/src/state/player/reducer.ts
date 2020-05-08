@@ -1,5 +1,5 @@
 import { PlayerAction } from "./actions";
-import { PlayerTrack } from "./types";
+import { PlayerTrack, RepeatMode, noRepeatMode, PlaylistType } from "./types";
 import { 
   SET_PLAYLIST, 
   SET_IS_MUTED, 
@@ -8,6 +8,13 @@ import {
   SET_CURRENT_TRACK,
   RESET_CURRENT_TRACK,
   SET_POSITION,
+  SEEK,
+  SET_IS_SHUFFLED,
+  RESET_PLAY_HISTORY,
+  RESET_PLAYED_INDEXES,
+  PLAY,
+  SET_REPEAT_MODE,
+  SET_PLAYER_HISTORY,
 } from "./consts";
 
 export interface PlayerState {
@@ -17,9 +24,15 @@ export interface PlayerState {
   position?: number;
   isPending: boolean;
   playlist: PlayerTrack[];
+  playlistType?: PlaylistType;
+  playlistId?: string;
   volume: number;
   isMuted: boolean;
+  isShuffled: boolean;
   error?: Error;
+  repeatMode: RepeatMode;
+  history: number[];
+  playedIndexes: number[];
 }
 
 const initialPlayerState: PlayerState = {
@@ -27,7 +40,11 @@ const initialPlayerState: PlayerState = {
   isPending: false,
   volume: 50,
   isMuted: false,
+  isShuffled: false,
   playlist: [],
+  repeatMode: noRepeatMode,
+  history: [],
+  playedIndexes: [],
 };
 
 export function playerReducer(
@@ -39,6 +56,12 @@ export function playerReducer(
       return {
         ...state,
         playlist: action.payload.tracks,
+        playlistType: action.payload.type,
+        playlistId: action.payload.id,
+        repeatMode: noRepeatMode,
+        history: [],
+        playedIndexes: [],
+        isShuffled: false,
       };
     case SET_IS_MUTED:
       return {
@@ -50,6 +73,17 @@ export function playerReducer(
         ...state,
         volume: action.payload.volume,
       };
+    case SET_REPEAT_MODE:
+      return {
+        ...state,
+        repeatMode: action.payload.repeatMode,
+      };
+    case SET_IS_SHUFFLED:
+      return {
+        ...state,
+        isShuffled: action.payload.isShuffled,
+      };
+    case SEEK:
     case SET_POSITION:
       return {
         ...state,
@@ -61,6 +95,9 @@ export function playerReducer(
         currentTrack: action.payload.track,
         currentTrackIndex: action.payload.index,
         position: 0,
+        history: [...state.history, action.payload.index],
+        playedIndexes: [...state.playedIndexes, action.payload.index],
+        isPending: action.payload.isAutoplay,
       };
     case RESET_CURRENT_TRACK:
       return {
@@ -69,10 +106,31 @@ export function playerReducer(
         currentTrackIndex: undefined,
         position: undefined,
       };
+    case SET_PLAYER_HISTORY:
+      return {
+        ...state,
+        history: action.payload.history,
+      };
+    case RESET_PLAY_HISTORY:
+      return {
+        ...state,
+        history: [],
+      };
+    case RESET_PLAYED_INDEXES:
+      return {
+        ...state,
+        playedIndexes: [],
+      };
+    case PLAY:
+      return {
+        ...state,
+        isPending: !state.isPlaying,
+      };
     case SET_IS_PLAYING:
       return {
         ...state,
         isPlaying: action.payload.isPlaying,
+        isPending: false,
       };
     default:
       return state;

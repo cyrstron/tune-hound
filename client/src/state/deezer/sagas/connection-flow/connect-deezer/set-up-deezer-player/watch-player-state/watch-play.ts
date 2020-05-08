@@ -2,7 +2,9 @@ import {takeEvery, getContext, select} from 'redux-saga/effects';
 import { PLAY } from '@app/state/player/consts';
 import { DEEZER_SERVICE_CTX_KEY } from '@app/consts';
 import { DeezerService } from '@app/state/deezer/services';
-import { selectPlayingSource } from '@app/state/player/selectors';
+import { selectCurrentTrack } from '@app/state/player/selectors';
+import { PlayerTrack } from '@app/state/player/types';
+import { selectDeezerCurrentTrack } from '@app/state/deezer/selectors';
 
 export function* watchPlay() {
   yield takeEvery(PLAY, updatePlay)
@@ -11,9 +13,15 @@ export function* watchPlay() {
 export function* updatePlay() {
   const deezerService: DeezerService = yield getContext(DEEZER_SERVICE_CTX_KEY);
 
-  const playingSource = yield select(selectPlayingSource);
+  const currentTrack: PlayerTrack | undefined = yield select(selectCurrentTrack);
 
-  if (playingSource !== 'deezer') return;
+  if (currentTrack?.source !== 'deezer') return;
 
-  deezerService.player.play();
+  const playingTrack: DeezerSdk.Track | null  = yield select(selectDeezerCurrentTrack);
+
+  if (!playingTrack || +playingTrack.id !== currentTrack.trackSource.id) {
+    deezerService.player.playTracks([currentTrack.trackSource.id], true);
+  } else {
+    deezerService.player.play();
+  }
 }

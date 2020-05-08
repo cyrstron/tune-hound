@@ -3,7 +3,7 @@ import {take, put, select} from 'redux-saga/effects';
 import { DeezerService } from '@app/state/deezer/services';
 import { deezerTrackEnd } from '@app/state/deezer/actions';
 import { selectPlayingSource } from '@app/state/player/selectors';
-import { resetCurrentTrack } from '@app/state/player/actions';
+import { playNext } from '@app/state/player/actions';
 
 export function createTrackEndChannel(
   deezerService: DeezerService
@@ -17,7 +17,7 @@ export function createTrackEndChannel(
   });
 }
 
-export function* watchTrackEnd(channel: EventChannel<number>) {
+export function* watchTrackEnd(deezerService: DeezerService, channel: EventChannel<number>) {
   while (true) {
     const trackIndex: number | END = yield take(channel);
     
@@ -31,8 +31,10 @@ export function* watchTrackEnd(channel: EventChannel<number>) {
 
     if (playingSource !== 'deezer') continue;
 
-    const resetAction = resetCurrentTrack();
+    deezerService.player.pause();
 
-    yield put(resetAction);
+    const nextAction = playNext();
+
+    yield put(nextAction);
   }
 }
