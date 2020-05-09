@@ -5,9 +5,12 @@ import {SourceLink} from '@app/components/source-link';
 
 import styles from './searched-track.scss';
 import { SourceDetails } from '../sources-details';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PlayerTrack } from '@app/state/player/types';
-import { playTrack } from '@app/state/player/actions';
+import { playTrack, pause, play } from '@app/state/player/actions';
+import { CoverPlayBtn } from '@app/components/cover-play-btn';
+import { AppState } from '@app/state';
+import { selectIsTrackActive, selectIsPlaying, selectIsPlayerPending } from '@app/state/player/selectors';
 
 const cx = classNames.bind(styles);
 
@@ -28,7 +31,19 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
 
   const dispatch = useDispatch();
 
+  const isTrackActive = useSelector<AppState, boolean>((state) => selectIsTrackActive(state, id));
+  const isPlaying = useSelector(selectIsPlaying);
+  const isPending = useSelector(selectIsPlayerPending);
+
   const onPlay = useCallback(() => {
+    if (isTrackActive) {
+      const action = play();
+  
+      dispatch(action);
+
+      return;
+    }
+
     let playerTrack: PlayerTrack = {
       source: track.sources.spotify ? 'spotify' : 'deezer',
       name: track.name,
@@ -41,17 +56,29 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
     const action = playTrack(id, playerTrack);
 
     dispatch(action);
-  }, [track, dispatch]);
+  }, [isTrackActive, track, dispatch]);
+
+  const onPause = useCallback(() => {
+    const action = pause();
+
+    dispatch(action);
+  }, [dispatch]);
 
   return (
     <article className={cx('track', className)}>
       <div className={cx('content')}>
-        <div className={cx('cover-wrapper')}>
-          <img className={cx('cover')} src={coverUrl} />
-        </div>
+        <CoverPlayBtn 
+          src={coverUrl}
+          title={`"${track.name}" by ${artists.join(', ')}`}
+          className={cx('cover')}
+          onPlay={onPlay}
+          onPause={onPause}
+          isPaused={isTrackActive && !isPlaying}
+          isPlaying={isTrackActive && isPlaying}
+          isPending={isTrackActive && isPending}
+        />
         <div className={cx('info-wrapper')}>
           <h1 className={cx('track-title')}>
-            <button onClick={onPlay}>Play</button>
             <SourceLink
               externalUrls={{
                 spotifyUrl: spotify?.external_urls.spotify,

@@ -28,6 +28,7 @@ export interface PlayTrackAction {
 }
 
 export const playTrack = (id: string, track: PlayerTrack) => setPlaylist(id, 'track', [track]);
+export const playAlbum = (id: string, tracks: PlayerTrack[]) => setPlaylist(id, 'album', tracks);
 
 export interface PauseAction {
   type: typeof PAUSE;
@@ -184,7 +185,6 @@ export interface ResetPlayedIndexesAction {
 export const resetPlayedIndexes = (): ResetPlayedIndexesAction => ({
   type: RESET_PLAYED_INDEXES,
 });
-
 
 export type PlayerAction = 
   // | PlayTrackAction 
