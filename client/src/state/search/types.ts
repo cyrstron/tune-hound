@@ -118,7 +118,7 @@ export interface SearchedPlaylist {
   isCrossExtendable: false;
   sources: {
     deezer?: DeezerPlaylistSourceItemShort | DeezerPlaylistSourceItemFull | null;
-    spotify?: SpotifyPlaylistSourceItemShort | SpotifyArtistSourceItemFull | null;
+    spotify?: SpotifyPlaylistSourceItemShort | SpotifyPlaylistSourceItemFull | null;
   }
 }
 

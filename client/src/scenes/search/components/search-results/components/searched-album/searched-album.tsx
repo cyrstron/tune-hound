@@ -10,6 +10,8 @@ import { pause, play } from '@app/state/player/actions';
 import { CoverPlayBtn } from '@app/components/cover-play-btn';
 
 import styles from './searched-album.scss';
+import { playSearchResult } from '@app/state/search';
+import { selectOneOfExtensionsPending } from '@app/state/search/selectors';
 
 const cx = classNames.bind(styles);
 
@@ -34,35 +36,19 @@ const SearchedAlbumComponent: FC<SearchedAlbumProps> = ({album, className}) => {
   const isPlaying = useSelector(selectIsPlaying);
   const isPending = useSelector(selectIsPlayerPending);
 
+  const isExtending = useSelector<AppState, boolean>((state) => selectOneOfExtensionsPending(state, id));
+
   const onPlay = useCallback(() => {
-    if (isAlbumActive) {
-      const action = play();
-  
-      dispatch(action);
+    const action = playSearchResult(id);
 
-      return;
-    }
-    // if ()
-    // let playlist: PlayerTrack = {
-    //   source: track.sources.spotify ? 'spotify' : 'deezer',
-    //   name: track.name,
-    //   artists: track.artists,
-    //   albumTitle: track.album,
-    //   duration: track.duration,
-    //   trackSource: {id: track.sources.spotify ? track.sources.spotify.id : track.sources.deezer!.id},
-    // } as PlayerTrack;
-
-    // const action = playTrack(id, playerTrack);
-
-    // dispatch(action);
-  }, [album, dispatch]);
+    dispatch(action);
+  }, [id, dispatch]);
 
   const onPause = useCallback(() => {
     const action = pause();
 
     dispatch(action);
   }, [dispatch]);
-
 
   return (
     <article className={cx('album', className)}>
@@ -75,7 +61,7 @@ const SearchedAlbumComponent: FC<SearchedAlbumProps> = ({album, className}) => {
           onPause={onPause}
           isPaused={isAlbumActive && !isPlaying}
           isPlaying={isAlbumActive && isPlaying}
-          isPending={isAlbumActive && isPending}
+          isPending={isAlbumActive && (isPending || isExtending)}
         />
         <div className={cx('info-wrapper')}>
           <h1 className={cx('album-title')}>
@@ -106,7 +92,13 @@ const SearchedAlbumComponent: FC<SearchedAlbumProps> = ({album, className}) => {
               </Fragment>
             ))}
           </div>
-          <SourceDetails id={id} isCrossExtendable={isCrossExtendable} spotify={spotify} deezer={deezer} className={cx('details')} />
+          <SourceDetails
+            id={id} 
+            isCrossExtendable={isCrossExtendable} 
+            spotify={spotify} 
+            deezer={deezer} 
+            className={cx('details')} 
+          />
         </div>
       </div>
     </article>

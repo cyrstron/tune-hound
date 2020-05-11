@@ -17,6 +17,7 @@ import {
   RESET_PLAYED_INDEXES,
   SET_REPEAT_MODE,
   SET_PLAYER_HISTORY,
+  SET_IS_PENDING,
 } from "./consts";
 import { PlayerTrack, RepeatMode, PlaylistType } from "./types";
 
@@ -27,8 +28,24 @@ export interface PlayTrackAction {
   };
 }
 
-export const playTrack = (id: string, track: PlayerTrack) => setPlaylist(id, 'track', [track]);
-export const playAlbum = (id: string, tracks: PlayerTrack[]) => setPlaylist(id, 'album', tracks);
+export const playTrack = (
+  id: string, 
+  track: PlayerTrack, 
+  nativeId?: string | number,
+  index?: number,
+) => setPlaylist(id, 'track', [track], nativeId, index);
+export const playAlbum = (
+  id: string, 
+  tracks: PlayerTrack[], 
+  nativeId?: string | number,
+  index?: number,
+) => setPlaylist(id, 'album', tracks,  nativeId, index);
+export const playPlaylist = (
+  id: string, 
+  tracks: PlayerTrack[], 
+  nativeId?: string | number,
+  index?: number,
+) => setPlaylist(id, 'playlist', tracks,  nativeId, index);
 
 export interface PauseAction {
   type: typeof PAUSE;
@@ -72,6 +89,16 @@ export const seek = (position: number): SeekAction => ({
   payload: {position},
 });
 
+export interface SetIsPlayerPendingAction {
+  type: typeof SET_IS_PENDING;
+  payload: {isPending: boolean};
+}
+
+export const setIsPlayerPending = (isPending: boolean): SetIsPlayerPendingAction => ({
+  type: SET_IS_PENDING,
+  payload: {isPending},
+});
+
 export interface SetIsPlayingAction {
   type: typeof SET_IS_PLAYING;
   payload: {isPlaying: boolean};
@@ -84,12 +111,24 @@ export const setIsPlaying = (isPlaying: boolean): SetIsPlayingAction => ({
 
 export interface SetPlaylistAction {
   type: typeof SET_PLAYLIST;
-  payload: {tracks: PlayerTrack[]; type: PlaylistType, id: string};
+  payload: {
+    tracks: PlayerTrack[];
+    type: PlaylistType;
+    id: string;
+    nativeId?: string | number;
+    index?: number;
+  };
 }
 
-export const setPlaylist = ( id: string, type: PlaylistType, tracks: PlayerTrack[]): SetPlaylistAction => ({
+export const setPlaylist = (
+  id: string, 
+  type: PlaylistType, 
+  tracks: PlayerTrack[], 
+  nativeId?: string | number, 
+  index?: number,
+): SetPlaylistAction => ({
   type: SET_PLAYLIST,
-  payload: {id, type, tracks},
+  payload: {id, type, tracks, nativeId, index},
 });
 
 export interface SetIsMutedAction {
@@ -196,6 +235,7 @@ export type PlayerAction =
   | SetPlaylistAction 
   | SetIsMutedAction
   | SetIsPlayingAction 
+  | SetIsPlayerPendingAction
   | SetCurrentTrackAction
   | ResetCurrentTrackAction
   | SetPositionAction

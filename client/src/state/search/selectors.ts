@@ -55,6 +55,14 @@ export function selectItemsForExtension(state: AppState, id: string, source: Sea
   return selectExtensionSubState(state, id, source)?.results;
 }
 
+export function selectExtensionPending(state: AppState, id: string, source: SearchSource): boolean {
+  return !!selectExtensionSubState(state, id, source)?.isPending;
+}
+
+export function selectOneOfExtensionsPending(state: AppState, id: string): boolean {
+  return selectExtensionPending(state, id, 'deezer') || selectExtensionPending(state, id, 'spotify');
+}
+
 export const selectItemsForExtensionById = (state: AppState, id: string): {
   deezer?: DeezerSourceItemShort[],
   spotify?: SpotifySourceItemShort[],

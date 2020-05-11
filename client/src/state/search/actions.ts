@@ -13,7 +13,6 @@ import {
   EXTEND_SEARCH_RESULT_PENDING,
   EXTEND_SEARCH_RESULT_SUCCESS,
   EXTEND_SEARCH_RESULT_FAILURE,
-  SET_OPTIONS_FOR_EXTEND,
   PICK_OPTION_FOR_EXTEND,
   RESET_OPTIONS_FOR_EXTEND,
   FETCH_OPTIONS_FOR_EXTEND,
@@ -24,6 +23,7 @@ import {
   SET_EXTENSION_LIMIT,
   SET_EXTENSION_TOTALS,
   FETCH_NEXT_OPTIONS_FOR_EXTEND,
+  PLAY_SEARCH_RESULT,
 } from './consts';
 import { 
   SearchSource, 
@@ -32,9 +32,6 @@ import {
   DeezerSourceItemFull,
   SpotifySourceItemFull,
   SourceItemShort,
-  // DeezerSearchItem, 
-  // SpotifySearchItem, 
-  // SearchItem 
 } from './types';
 import {DeezerSearchOptions} from '../deezer/types';
 import { SpotifySearchOptions } from '../spotify/types';
@@ -172,6 +169,24 @@ export const extendSearchResult = (
   payload: {itemId, source}
 });
 
+export interface PlaySearchResultAction  {
+  type: typeof PLAY_SEARCH_RESULT,
+  payload: {
+    itemId: string;
+    source?: SearchSource;
+    index?: number;
+  }
+};
+
+export const playSearchResult = (
+  itemId: string,
+  source?: SearchSource,
+  index?: number,
+): PlaySearchResultAction => ({
+  type: PLAY_SEARCH_RESULT,
+  payload: {itemId, source, index}
+});
+
 export interface ExtendSearchResultPendingAction {
   type: typeof EXTEND_SEARCH_RESULT_PENDING;
   payload: {
@@ -229,25 +244,6 @@ export const extendSearchResultFailure = (
   type: EXTEND_SEARCH_RESULT_FAILURE,
   payload: {itemId, source, error},
 });
-
-
-// export interface SetOptionsForExtendAction {
-//   type: typeof SET_OPTIONS_FOR_EXTEND;
-//   payload: {
-//     itemId: string;
-//     source: SearchSource;
-//     items: SourceItemShort[];
-//   };
-// }
-
-// export const setOptionsForExtend = (
-//   itemId: string,
-//   source: SearchSource,
-//   items: SourceItemShort[],
-// ): SetOptionsForExtendAction => ({
-//   type: SET_OPTIONS_FOR_EXTEND,
-//   payload: {itemId, source, items},
-// });
 
 export interface PickOptionForExtendAction {
   type: typeof PICK_OPTION_FOR_EXTEND;
@@ -432,7 +428,7 @@ export type SearchAction = ExecuteSearchAction |
   ExtendSearchResultPendingAction |
   ExtendSearchResultSuccessAction |
   ExtendSearchResultFailureAction |
-  // SetOptionsForExtendAction |
+  PlaySearchResultAction |
   PickOptionForExtendAction |
   ResetSearchAction |
   ResetOptionsForExtendAction |

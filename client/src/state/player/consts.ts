@@ -21,6 +21,7 @@ export const EXECUTE_PLAY = '@app/player/EXECUTE_PLAY_TRACK';
 export const SET_IS_MUTED = '@app/player/SET_IS_MUTED';
 export const SET_VOLUME = '@app/player/SET_VOLUME';
 export const SET_IS_PLAYING = '@app/player/SET_IS_PLAYING';
+export const SET_IS_PENDING = '@app/player/SET_IS_PENDING';
 export const SET_POSITION = '@app/player/SET_POSITION';
 export const SET_REPEAT_MODE = '@app/player/SET_REPEAT_MODE';
 export const SET_IS_SHUFFLED = '@app/player/SET_IS_SHUFFLED';

@@ -5,18 +5,22 @@ import { mapSpotifyTracks } from '../../services/mapHelpers';
 import { TrackList } from '@app/components/tracks';
 
 import styles from './spotify-album-details.scss';
+import { usePlayerFromDetails } from '../../../../hooks/use-player-from-details';
 
 const cx = classNames.bind(styles);
 
 export interface SpotifyAlbumDetailsProps {
+  id: string;
   album: SpotifyAlbumSourceItemFull;
   className?: string;
 }
 
 const SpotifyAlbumDetailsComponent: FC<SpotifyAlbumDetailsProps> = ({
-  album: {genres, release_date, tracks: {items: tracks}}, 
+  id,
+  album: {id: nativeId, genres, release_date, tracks: {items: tracks}}, 
   className
 }) => {
+  const playerProps = usePlayerFromDetails(id, 'spotify', nativeId, 'album');
   const mappedTracks = mapSpotifyTracks(tracks);
 
   return (
@@ -27,7 +31,10 @@ const SpotifyAlbumDetailsComponent: FC<SpotifyAlbumDetailsProps> = ({
       {!!mappedTracks.length && (
         <div>
           Tracks:
-          <TrackList tracks={mappedTracks} />
+          <TrackList 
+            tracks={mappedTracks} 
+            {...playerProps}
+          />
         </div>
       )}
       <div>Released: {release_date}</div>

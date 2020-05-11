@@ -90,10 +90,10 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
         </div>
         <div className={cx('content')}>
           {source === 'deezer' && deezer && deezer.isFull && (
-            <DeezerItemDetails item={deezer} className={cx('item-details')} />
+            <DeezerItemDetails id={id} item={deezer} className={cx('item-details')} />
           )}
           {source === 'spotify' && spotify && spotify.isFull && (
-            <SpotifyItemDetails item={spotify} className={cx('item-details')} />
+            <SpotifyItemDetails id={id} item={spotify} className={cx('item-details')} />
           )}
           {((
               source === 'deezer' && deezer === null

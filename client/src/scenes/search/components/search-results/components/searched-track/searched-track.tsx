@@ -6,11 +6,12 @@ import {SourceLink} from '@app/components/source-link';
 import styles from './searched-track.scss';
 import { SourceDetails } from '../sources-details';
 import { useDispatch, useSelector } from 'react-redux';
-import { PlayerTrack } from '@app/state/player/types';
-import { playTrack, pause, play } from '@app/state/player/actions';
+import { playSearchResult } from '@app/state/search/actions';
+import { pause } from '@app/state/player/actions';
 import { CoverPlayBtn } from '@app/components/cover-play-btn';
 import { AppState } from '@app/state';
 import { selectIsTrackActive, selectIsPlaying, selectIsPlayerPending } from '@app/state/player/selectors';
+import { selectOneOfExtensionsPending } from '@app/state/search/selectors';
 
 const cx = classNames.bind(styles);
 
@@ -35,28 +36,13 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
   const isPlaying = useSelector(selectIsPlaying);
   const isPending = useSelector(selectIsPlayerPending);
 
+  const isExtending = useSelector<AppState, boolean>((state) => selectOneOfExtensionsPending(state, id));
+
   const onPlay = useCallback(() => {
-    if (isTrackActive) {
-      const action = play();
-  
-      dispatch(action);
-
-      return;
-    }
-
-    let playerTrack: PlayerTrack = {
-      source: track.sources.spotify ? 'spotify' : 'deezer',
-      name: track.name,
-      artists: track.artists,
-      albumTitle: track.album,
-      duration: track.duration,
-      trackSource: {id: track.sources.spotify ? track.sources.spotify.id : track.sources.deezer!.id},
-    } as PlayerTrack;
-
-    const action = playTrack(id, playerTrack);
+    const action = playSearchResult(id);
 
     dispatch(action);
-  }, [isTrackActive, track, dispatch]);
+  }, [id, dispatch]);
 
   const onPause = useCallback(() => {
     const action = pause();
@@ -75,7 +61,7 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
           onPause={onPause}
           isPaused={isTrackActive && !isPlaying}
           isPlaying={isTrackActive && isPlaying}
-          isPending={isTrackActive && isPending}
+          isPending={isTrackActive && (isPending || isExtending)}
         />
         <div className={cx('info-wrapper')}>
           <h1 className={cx('track-title')}>

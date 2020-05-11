@@ -7,6 +7,7 @@ import styles from './spotify-track-details.scss';
 const cx = classNames.bind(styles);
 
 export interface SpotifyTrackDetailsProps {
+  id: string;
   track: SpotifyTrackSourceItemFull;
   className?: string;
 }

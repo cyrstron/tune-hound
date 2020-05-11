@@ -9,27 +9,28 @@ import { DeezerArtistDetails } from './components/deezer-artist-details';
 const cx = classNames.bind({});
 
 export interface DeezerItemDetailsProps {
+  id: string;
   item: DeezerSourceItemFull;
   className?: string;
 }
 
-const DeezerItemDetailsComponent: FC<DeezerItemDetailsProps> = ({item, className}) => {
+const DeezerItemDetailsComponent: FC<DeezerItemDetailsProps> = ({id, item, className}) => {
   switch(item.type) {
     case 'track':
       return (
-        <DeezerTrackDetails track={item} className={cx(className)}/>
+        <DeezerTrackDetails id={id} track={item} className={cx(className)}/>
       );
     case 'album':
       return (
-        <DeezerAlbumDetails album={item} className={cx(className)}/>
+        <DeezerAlbumDetails id={id} album={item} className={cx(className)}/>
       );
     case 'playlist':
       return (
-        <DeezerPlaylistDetails playlist={item} className={cx(className)}/>
+        <DeezerPlaylistDetails id={id} playlist={item} className={cx(className)}/>
       );
     case 'artist':
       return (
-        <DeezerArtistDetails artist={item} className={cx(className)}/>
+        <DeezerArtistDetails id={id} artist={item} className={cx(className)}/>
       );
     default:
       return null;

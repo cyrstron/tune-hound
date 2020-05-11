@@ -6,18 +6,22 @@ import { TrackList } from '@app/components/tracks';
 import {mapDeezerAlbums, mapDeezerTracks} from '../../services/mapHelpers';
 
 import styles from './deezer-artist-details.scss';
+import { usePlayerFromDetails } from '../../../../hooks/use-player-from-details';
 
 const cx = classNames.bind(styles);
 
 export interface DeezerArtistDetailsProps {
+  id: string;
   artist: DeezerArtistSourceItemFull;
   className?: string;
 }
 
 const DeezerArtistDetailsComponent: FC<DeezerArtistDetailsProps> = ({
-  artist: {topTracks: {data: tracks}, albums: {data: albums}, nb_fan}, 
+  id,
+  artist: {id: nativeId, topTracks: {data: tracks}, albums: {data: albums}, nb_fan}, 
   className,
 }) => {
+  const playerProps = usePlayerFromDetails(id, 'deezer', nativeId);
   const mappedAlbums = mapDeezerAlbums(albums);
   const mappedTracks = mapDeezerTracks(tracks);
 
@@ -26,7 +30,10 @@ const DeezerArtistDetailsComponent: FC<DeezerArtistDetailsProps> = ({
       {!!mappedTracks.length && (
         <div>
           Top tracks:
-          <TrackList tracks={mappedTracks} />
+          <TrackList 
+            tracks={mappedTracks} 
+            {...playerProps}
+          />
         </div>
       )}
       {!!mappedAlbums.length && (

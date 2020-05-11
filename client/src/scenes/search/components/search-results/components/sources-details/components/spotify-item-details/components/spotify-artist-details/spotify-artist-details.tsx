@@ -6,18 +6,22 @@ import { AlbumTiles } from '@app/components/albums';
 import styles from './spotify-artist-details.scss';
 import { mapSpotifyAlbums, mapSpotifyTracks } from '../../services/mapHelpers';
 import { TrackList } from '@app/components/tracks';
+import { usePlayerFromDetails } from '../../../../hooks/use-player-from-details';
 
 const cx = classNames.bind(styles);
 
 export interface SpotifyArtistDetailsProps {
+  id: string;
   artist: SpotifyArtistSourceItemFull;
   className?: string;
 }
 
 const SpotifyArtistDetailsComponent: FC<SpotifyArtistDetailsProps> = ({
-  artist: {topTracks, albums, followers: {total}, genres}, 
+  id,
+  artist: {id: nativeId, topTracks, albums, followers: {total}, genres}, 
   className,
 }) => {
+  const playerProps = usePlayerFromDetails(id, 'spotify', nativeId);
   const mappedAlbums = mapSpotifyAlbums(albums);
   const mappedTracks = mapSpotifyTracks(topTracks);
 
@@ -29,7 +33,10 @@ const SpotifyArtistDetailsComponent: FC<SpotifyArtistDetailsProps> = ({
       {!!mappedTracks.length && (
         <div>
           Top tracks:
-          <TrackList tracks={mappedTracks} />
+          <TrackList 
+            tracks={mappedTracks} 
+            {...playerProps}
+          />
         </div>
       )}
       {!!mappedAlbums.length && (

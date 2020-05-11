@@ -18,16 +18,6 @@ export function* setCurrentTrack({payload: {track, isAutoplay}}: SetCurrentTrack
 
   if (!playingTrack || +playingTrack.id !== track.trackSource.id) {
     yield deezerService.player.playTracks([track.trackSource.id], isAutoplay);
-
-    yield delay(1000);
-
-    const isPlaying = yield select(selectDeezerIsPlaying);
-
-    if (!isPlaying && isAutoplay) {
-      deezerService.player.play();
-    } else if (isPlaying && !isAutoplay) {
-      deezerService.player.pause();
-    }
   } else if (isAutoplay) {
     deezerService.player.seek(0);
     deezerService.player.play();

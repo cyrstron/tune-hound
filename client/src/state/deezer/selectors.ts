@@ -43,3 +43,7 @@ export const selectDeezerCurrentTrack = (
 export const selectDeezerIsPlaying = (
   {deezer}: AppState,
 ) => deezer.isPlaying;
+
+export const selectCanDeezerPlay = (
+  state: AppState,
+) => selectDeezerIsPremium(state) && selectFlashEnabled(state);

@@ -15,6 +15,7 @@ import {
   PLAY,
   SET_REPEAT_MODE,
   SET_PLAYER_HISTORY,
+  SET_IS_PENDING,
 } from "./consts";
 
 export interface PlayerState {
@@ -26,6 +27,7 @@ export interface PlayerState {
   playlist: PlayerTrack[];
   playlistType?: PlaylistType;
   playlistId?: string;
+  nativePlaylistId?: string | number;
   volume: number;
   isMuted: boolean;
   isShuffled: boolean;
@@ -58,6 +60,7 @@ export function playerReducer(
         playlist: action.payload.tracks,
         playlistType: action.payload.type,
         playlistId: action.payload.id,
+        nativePlaylistId: action.payload.nativeId,
         repeatMode: noRepeatMode,
         history: [],
         playedIndexes: [],
@@ -131,6 +134,11 @@ export function playerReducer(
         ...state,
         isPlaying: action.payload.isPlaying,
         isPending: false,
+      };
+    case SET_IS_PENDING:
+      return {
+        ...state,
+        isPending: action.payload.isPending,
       };
     default:
       return state;

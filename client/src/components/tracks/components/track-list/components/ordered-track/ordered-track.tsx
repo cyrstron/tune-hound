@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useCallback} from 'react';
 import classNames from 'classnames/bind';
 import { TrackItem, TrackItemProps } from '../../../track-item';
 
@@ -10,16 +10,45 @@ export interface OrderedTrackProps extends TrackItemProps {
   id: string | number;
   index: number;
   className?: string;
+  isPlaying?: boolean;
+  isPaused?: boolean;
+  isPending?: boolean;
+  onPlay: (index: number) => void;
+  onPause: () => void;
 }
 
 const OrderedTrackComponent: FC<OrderedTrackProps> = ({
-  className,
   index,
+  className,
+  isPaused,
+  isPending,
+  isPlaying,
+  onPause,
+  onPlay,
   ...props
 }) => {
+  const onClick = useCallback(() => {
+    if (isPending) return;
+
+    if (isPlaying) {
+      onPause();
+    } else {
+      onPlay(index);
+    }
+  }, [index, onPause, onPlay, isPlaying, isPending, isPaused]);
+
   return (
     <li className={cx('track-item', className)}>
-      <div className={cx('index')}>{index + 1}</div>
+      <button
+        onClick={onClick}
+        className={cx('index-play-btn', {
+          'playing': isPlaying,
+          'paused': isPaused,
+          'pending': isPending,
+        })}
+      >
+        {index + 1}
+      </button>
       <TrackItem className={cx('track-content')} {...props}/>
     </li>
   );

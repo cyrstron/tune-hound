@@ -9,27 +9,28 @@ import { SpotifyArtistDetails } from './components/spotify-artist-details';
 const cx = classNames.bind({});
 
 export interface SpotifyItemDetailsProps {
+  id: string;
   item: SpotifySourceItemFull;
   className?: string;
 }
 
-const SpotifyItemDetailsComponent: FC<SpotifyItemDetailsProps> = ({item, className}) => {
+const SpotifyItemDetailsComponent: FC<SpotifyItemDetailsProps> = ({id, item, className}) => {
   switch(item.type) {
     case 'track':
       return (
-        <SpotifyTrackDetails track={item} className={cx(className)}/>
+        <SpotifyTrackDetails id={id} track={item} className={cx(className)} />
       );
     case 'album':
       return (
-        <SpotifyAlbumDetails album={item} className={cx(className)}/>
+        <SpotifyAlbumDetails id={id} album={item} className={cx(className)} />
       );
     case 'playlist':
       return (
-        <SpotifyPlaylistDetails playlist={item} className={cx(className)}/>
+        <SpotifyPlaylistDetails id={id} playlist={item} className={cx(className)} />
       );
     case 'artist':
       return (
-        <SpotifyArtistDetails artist={item} className={cx(className)}/>
+        <SpotifyArtistDetails id={id} artist={item} className={cx(className)} />
       );
     default:
       return null;

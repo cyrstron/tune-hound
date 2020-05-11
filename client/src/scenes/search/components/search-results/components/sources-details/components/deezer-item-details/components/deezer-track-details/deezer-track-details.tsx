@@ -7,6 +7,7 @@ import styles from './deezer-track-details.scss';
 const cx = classNames.bind(styles);
 
 export interface DeezerTrackDetailsProps {
+  id: string;
   track: DeezerTrackSourceItemFull;
   className?: string;
 }

@@ -98,19 +98,34 @@ export const selectPlaylistId = (state: AppState): string | undefined => (
   state.player.playlistId
 );
 
+export const selectNativePlaylistId = (state: AppState): string | number | undefined => (
+  state.player.nativePlaylistId
+);
+
 export const selectPlaylistType = (state: AppState): PlaylistType | undefined => (
   state.player.playlistType
 );
 
 export const selectIsPlaylistActive = (
   state: AppState, 
-  id: string, 
+  id: string,
   type: PlaylistType = 'playlist',
 ): boolean => {
   const playlistId = selectPlaylistId(state);
   const playlistType = selectPlaylistType(state);
 
   return id === playlistId && type === playlistType;
+}
+
+export const selectIsNativePlaylistActive = (
+  state: AppState, 
+  nativeId: string | number,
+  type: PlaylistType = 'playlist',
+): boolean => {
+  const playlistId = selectNativePlaylistId(state);
+  const playlistType = selectPlaylistType(state);
+
+  return nativeId === playlistId && type === playlistType;
 }
 
 export const selectIsAlbumActive = (state: AppState, id: string): boolean => (

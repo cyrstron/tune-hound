@@ -1,8 +1,8 @@
-import {takeEvery, all, select, put} from 'redux-saga/effects';
+import {takeEvery, all, select, put, delay} from 'redux-saga/effects';
 import { PLAY_NEXT } from '../consts';
-import { selectPlaylist, selectPlayedIndexes, selectNextIndex } from '../selectors';
+import { selectPlaylist, selectPlayedIndexes, selectNextIndex, selectIsPlaying, selectIsPlayerPending } from '../selectors';
 import { PlayerTrack } from '../types';
-import { resetPlayedIndexes, setCurrentTrack} from '../actions';
+import { resetPlayedIndexes, setCurrentTrack, setIsPlayerPending} from '../actions';
 
 export function* watchPlayNext() {
   yield takeEvery(PLAY_NEXT, playNextSaga);
@@ -35,4 +35,23 @@ export function* playNextSaga() {
   const action = setCurrentTrack(track, index, isAutoplayed);
 
   yield put(action);
+
+  yield delay(50);
+
+  const [
+    isPlaying,
+    isPending,
+  ]: [
+    boolean,
+    boolean,
+  ] = yield all([
+    select(selectIsPlaying),
+    select(selectIsPlayerPending),
+  ]);
+
+  if (isPlaying && isPending) {
+    const pendingAction = setIsPlayerPending(false);
+
+    yield(put(pendingAction));
+  }
 }

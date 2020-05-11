@@ -35,4 +35,8 @@ export const selectShouldShowSpotifyPlayerMessage = (state: AppState) => {
   return isConnected && !isActive && !isIgnored;
 }
 
+export const selectCanSpotifyPlay = (state: AppState) => {
+  return selectIsSpotifyPremium(state);
+}
+
 export const selectSpotifyPlayerDeviceId = ({spotify}: AppState) => spotify.playbackInstance?.['device_id'];
