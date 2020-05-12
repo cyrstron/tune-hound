@@ -1,6 +1,7 @@
 export const PLAY_TRACK_BY_URL = '@app/player/PLAY_TRACK_BY_URL';
-
 export const PLAY_SOURCE_TRACK = '@app/player/PLAY_SOURCE_TRACK';
+
+export const PLAY_BY_SOURCE_ID = '@app/player/PLAY_BY_SOURCE_ID';
 
 export const PLAY_TRACK = '@app/player/PLAY_TRACK';
 
@@ -22,6 +23,7 @@ export const SET_IS_MUTED = '@app/player/SET_IS_MUTED';
 export const SET_VOLUME = '@app/player/SET_VOLUME';
 export const SET_IS_PLAYING = '@app/player/SET_IS_PLAYING';
 export const SET_IS_PENDING = '@app/player/SET_IS_PENDING';
+export const SET_PLAYER_ERROR = '@app/player/SET_PLAYER_ERROR';
 export const SET_POSITION = '@app/player/SET_POSITION';
 export const SET_REPEAT_MODE = '@app/player/SET_REPEAT_MODE';
 export const SET_IS_SHUFFLED = '@app/player/SET_IS_SHUFFLED';

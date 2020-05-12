@@ -8,7 +8,7 @@ import { mapPlaylistFromDeezer, mapPlaylistFromSpotify } from "./services";
 export function* playSearchedPlaylistSaga(
   playlist: SearchedPlaylist, 
   source: SearchSource, 
-  index: number, 
+  index: number | undefined, 
   canPlay: boolean,
 ) {
   const [isPlaylistActive, playingSource, currentIndex]: [boolean, PlayerSource, number | undefined] = yield all([
@@ -18,7 +18,7 @@ export function* playSearchedPlaylistSaga(
   ]);
 
   const isActive = isPlaylistActive && (source === playingSource || (!canPlay && playingSource === 'url'));
-  const isTrackActive = isActive && index === currentIndex;
+  const isTrackActive = isActive && (index === currentIndex || index === undefined);
 
   if (isTrackActive) {
     yield put(play());
@@ -27,7 +27,7 @@ export function* playSearchedPlaylistSaga(
   } else if (isActive) {
     const tracks: PlayerTrack[] = yield select(selectPlaylist);
 
-    const action = setCurrentTrack(tracks[index], index, true);
+    const action = setCurrentTrack(tracks[index!], index, true);
 
     yield put(action);
 

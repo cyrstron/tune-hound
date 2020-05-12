@@ -10,7 +10,7 @@
     display: block;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-40%, -50%);
     border: $icon-height solid $bg-color;
     border-right-width: 0;
     border-left-width: $icon-width;
@@ -23,11 +23,9 @@
   $bg-color: rgba($color, $alpha);
 
   $element-width: $size * 1.5 / 5;
-  $elements-margin: $size * 0.5 / 5;
-  $icon-height: $size * 4 / 5;
+  $element-height: $size * 4 / 5;
 
-  $outer-offset: $size / 2 - $elements-margin * 2;
-  $inner-offset: $element-width / 2 - $elements-margin;
+  $shadow-offset: $element-width * 1.6;
 
   &::before {
     content: '';
@@ -35,15 +33,11 @@
     display: block;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    height: $icon-height;
+    transform: translate(-50%, -50%) translateX(-80%);
+    background-color: $bg-color;
+    height: $element-height;
     width: $element-width;
     border: none;
-    background-color: transparent;
-    box-shadow: 
-      $outer-offset 0 0 0 $bg-color,
-      $inner-offset 0 0 0 $bg-color inset,
-      -$outer-offset 0 0 0 $bg-color,
-      -$inner-offset 0 0 0 $bg-color inset;
+    box-shadow: $shadow-offset 0 0 0 $bg-color;
   }
 }

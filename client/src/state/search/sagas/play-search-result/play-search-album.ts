@@ -9,7 +9,7 @@ import { setCurrentTrack } from "@app/state/player/actions";
 export function* playSearchedAlbumSaga(
   album: SearchedAlbum, 
   source: SearchSource,
-  index: number, 
+  index: number | undefined, 
   canPlay: boolean,
 ) {
   const [isAlbumActive, playingSource, currentIndex]: [boolean, PlayerSource, number | undefined] = yield all([
@@ -19,7 +19,7 @@ export function* playSearchedAlbumSaga(
   ]);
 
   const isPlaylistActive = isAlbumActive && (source === playingSource || (!canPlay && playingSource === 'url'));
-  const isTrackActive = isPlaylistActive && index === currentIndex;
+  const isTrackActive = isPlaylistActive && (index === currentIndex || index === undefined);
 
   if (isTrackActive) {
     yield put(play());
@@ -28,7 +28,7 @@ export function* playSearchedAlbumSaga(
   } else if (isPlaylistActive) {
     const tracks: PlayerTrack[] = yield select(selectPlaylist);
 
-    const action = setCurrentTrack(tracks[index], index, true);
+    const action = setCurrentTrack(tracks[index!], index, true);
 
     yield put(action);
 

@@ -16,6 +16,7 @@ import {
   SET_REPEAT_MODE,
   SET_PLAYER_HISTORY,
   SET_IS_PENDING,
+  SET_PLAYER_ERROR,
 } from "./consts";
 
 export interface PlayerState {
@@ -100,7 +101,7 @@ export function playerReducer(
         position: 0,
         history: [...state.history, action.payload.index],
         playedIndexes: [...state.playedIndexes, action.payload.index],
-        isPending: action.payload.isAutoplay,
+        isPending: action.payload.isAutoplay && !state.isPlaying,
       };
     case RESET_CURRENT_TRACK:
       return {
@@ -139,6 +140,12 @@ export function playerReducer(
       return {
         ...state,
         isPending: action.payload.isPending,
+      };
+    case SET_PLAYER_ERROR:
+      return {
+        ...state,
+        isPending: false,
+        error: action.payload.error,
       };
     default:
       return state;

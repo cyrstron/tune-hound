@@ -47,7 +47,7 @@ const OrderedTrackComponent: FC<OrderedTrackProps> = ({
           'pending': isPending,
         })}
       >
-        {index + 1}
+        <span className={cx('index')}>{index + 1}</span>
       </button>
       <TrackItem className={cx('track-content')} {...props}/>
     </li>

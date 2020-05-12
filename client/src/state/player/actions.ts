@@ -18,8 +18,11 @@ import {
   SET_REPEAT_MODE,
   SET_PLAYER_HISTORY,
   SET_IS_PENDING,
+  PLAY_BY_SOURCE_ID,
+  SET_PLAYER_ERROR,
 } from "./consts";
 import { PlayerTrack, RepeatMode, PlaylistType } from "./types";
+import { SearchSource } from "../search/types";
 
 export interface PlayTrackAction {
   type: typeof PLAY_TRACK;
@@ -34,12 +37,14 @@ export const playTrack = (
   nativeId?: string | number,
   index?: number,
 ) => setPlaylist(id, 'track', [track], nativeId, index);
+
 export const playAlbum = (
   id: string, 
   tracks: PlayerTrack[], 
   nativeId?: string | number,
   index?: number,
 ) => setPlaylist(id, 'album', tracks,  nativeId, index);
+
 export const playPlaylist = (
   id: string, 
   tracks: PlayerTrack[], 
@@ -99,6 +104,16 @@ export const setIsPlayerPending = (isPending: boolean): SetIsPlayerPendingAction
   payload: {isPending},
 });
 
+export interface SetPlayerErrorAction {
+  type: typeof SET_PLAYER_ERROR;
+  payload: {error: Error};
+}
+
+export const setPlayerError = (error: Error): SetPlayerErrorAction => ({
+  type: SET_PLAYER_ERROR,
+  payload: {error},
+});
+
 export interface SetIsPlayingAction {
   type: typeof SET_IS_PLAYING;
   payload: {isPlaying: boolean};
@@ -129,6 +144,24 @@ export const setPlaylist = (
 ): SetPlaylistAction => ({
   type: SET_PLAYLIST,
   payload: {id, type, tracks, nativeId, index},
+});
+
+export interface PlayBySourceIdAction {
+  type: typeof PLAY_BY_SOURCE_ID;
+  payload: {
+    source: SearchSource;
+    type: PlaylistType;
+    id: string | number;
+  };
+}
+
+export const playBySourceId = (
+  id: string | number, 
+  type: PlaylistType, 
+  source: SearchSource,
+): PlayBySourceIdAction => ({
+  type: PLAY_BY_SOURCE_ID,
+  payload: {id, type, source},
 });
 
 export interface SetIsMutedAction {
@@ -226,7 +259,7 @@ export const resetPlayedIndexes = (): ResetPlayedIndexesAction => ({
 });
 
 export type PlayerAction = 
-  // | PlayTrackAction 
+  | SetPlayerErrorAction 
   | SetPlayerHistoryAction
   | PauseAction 
   | PlayAction

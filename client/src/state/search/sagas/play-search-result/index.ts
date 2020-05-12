@@ -15,7 +15,7 @@ export function* watchPlaySearchResult() {
   yield takeEvery(PLAY_SEARCH_RESULT, playSearchResultSaga);
 }
 
-export function* playSearchResultSaga({payload: {itemId, source, index = 0}}: PlaySearchResultAction) {
+export function* playSearchResultSaga({payload: {itemId, source, index}}: PlaySearchResultAction) {
   let searchItem: SearchResult = yield select(selectSearchResultById, itemId);
 
   let playSource: SearchSource = source || (yield call(pickDefaultSource, searchItem));

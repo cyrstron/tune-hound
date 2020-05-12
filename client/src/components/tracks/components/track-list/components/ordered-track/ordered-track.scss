@@ -5,6 +5,7 @@
 .track-item {
   display: flex;
   padding: 5px;
+  align-items: center;
 }
 
 .track-content {
@@ -13,20 +14,41 @@
 
 .index-play-btn {
   position: relative;
+  width: 26px;
+  height: 26px;
+  background: #000;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 50%;
+  margin-right: 5px;
 
-  &:not(.paused):not(.pending),
-  &.paused:not(.pending):hover {
-    @include play-icon();
+
+  &.playing,
+  &:not(.pending):not(.playing):hover {
+    .index {
+      display: none;
+    }
+
+    @include play-icon($size: 18px);
   }
 
   &.paused:not(:hover):not(.pending),
   &.playing:not(.pending):hover {
-    @include pause-icon();
+    .index {
+      display: none;
+    }
+
+    @include pause-icon($size: 18px);
   }
 
   &.pending,
   &.pending:hover {
-    @include pending-icon();
+    .index {
+      display: none;
+    }
+
+    @include pending-icon($size: 18px);
 
     opacity: 0.7;
   }

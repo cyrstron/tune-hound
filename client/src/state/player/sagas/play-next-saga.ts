@@ -35,23 +35,4 @@ export function* playNextSaga() {
   const action = setCurrentTrack(track, index, isAutoplayed);
 
   yield put(action);
-
-  yield delay(50);
-
-  const [
-    isPlaying,
-    isPending,
-  ]: [
-    boolean,
-    boolean,
-  ] = yield all([
-    select(selectIsPlaying),
-    select(selectIsPlayerPending),
-  ]);
-
-  if (isPlaying && isPending) {
-    const pendingAction = setIsPlayerPending(false);
-
-    yield(put(pendingAction));
-  }
 }
