@@ -19,5 +19,6 @@ export function mapDeezerAlbums(albums: DeezerAlbum[]): AlbumShort[] {
     id, 
     title,
     coverUrl: cover_medium,
+    source: 'deezer',
   }));
 }

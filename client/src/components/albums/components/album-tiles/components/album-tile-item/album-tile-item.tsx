@@ -13,11 +13,10 @@ export interface AlbumTileItemProps extends AlbumTileProps {
 
 const AlbumTileItemComponent: FC<AlbumTileItemProps> = ({
   className,
-  id,
   ...props
 }) => {
   return (
-    <li className={cx('album-item', className)} key={id}>
+    <li className={cx('album-item', className)}>
       <AlbumTile className={cx('tile')} {...props} />
     </li>
   );

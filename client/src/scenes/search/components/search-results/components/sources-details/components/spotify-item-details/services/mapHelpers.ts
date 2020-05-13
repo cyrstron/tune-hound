@@ -24,5 +24,6 @@ export function mapSpotifyAlbums(albums: SpotifyApi.AlbumObjectSimplified[]): Al
     coverUrl: url,
     title: name,
     year: new Date(Date.parse(release_date)).getFullYear(),
+    source: 'spotify',
   }));
 }
