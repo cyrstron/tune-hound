@@ -41,6 +41,7 @@ const AlbumTileComponent: FC<AlbumTileProps> = ({
   return (
     <div className={cx('album', className)}>
       <CoverPlayBtn 
+        className={cx('cover')}
         src={coverUrl}
         title={title}
         onPlay={handlePlay}
@@ -49,7 +50,8 @@ const AlbumTileComponent: FC<AlbumTileProps> = ({
         isPlaying={isPlaying}
         isPaused={isPaused}
       />
-      <div>Year: {year}</div>
+      <div>{title}</div>
+      {year && (<div>Year: {year}</div>)}
     </div>
   );
 }

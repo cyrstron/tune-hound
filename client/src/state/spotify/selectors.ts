@@ -40,3 +40,7 @@ export const selectCanSpotifyPlay = (state: AppState) => {
 }
 
 export const selectSpotifyPlayerDeviceId = ({spotify}: AppState) => spotify.playbackInstance?.['device_id'];
+
+export const selectSpotifyCurrentTrack = (
+  {spotify}: AppState,
+): Spotify.Track | undefined => spotify.playbackState?.track_window.current_track;

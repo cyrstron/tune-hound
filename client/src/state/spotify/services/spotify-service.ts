@@ -13,7 +13,7 @@ export class SpotifyService {
   script?: HTMLScriptElement;
   spotify?: typeof Spotify;
 
-  player?: Spotify.SpotifyPlayer;
+  spotifyPlayer?: Spotify.SpotifyPlayer;
 
   constructor(
     public api: SpotifyWebApi, 
@@ -33,7 +33,7 @@ export class SpotifyService {
       throw new Error('Spotify wasn\'t mounted');
     }
 
-    this.player = new window.Spotify.Player({
+    this.spotifyPlayer = new window.Spotify.Player({
       name: 'Tune Hound Preview Player',
       getOAuthToken: getToken,
     });
@@ -77,5 +77,11 @@ export class SpotifyService {
 
   search(options: SpotifySearchOptions, accessToken: string) {
     return this.api.search(options, accessToken);
+  }
+
+  get player(): Spotify.SpotifyPlayer {
+    if (!this.spotifyPlayer) throw new Error('Spotify Player wasn\'t initialized')
+
+    return this.spotifyPlayer;
   }
 }

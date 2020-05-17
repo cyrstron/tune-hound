@@ -1,6 +1,6 @@
 import {eventChannel, EventChannel, END} from 'redux-saga';
 import {take, put} from 'redux-saga/effects';
-import { SpotifyService } from '../../../../services/spotify-service';
+import { SpotifyService } from '../../../../../services/spotify-service';
 import { setSpotifyPlayerState } from '@app/state/spotify/actions';
 
 export function createPlayerStateChannel(

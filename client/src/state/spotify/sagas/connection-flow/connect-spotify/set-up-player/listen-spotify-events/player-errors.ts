@@ -1,6 +1,6 @@
 import {eventChannel, EventChannel, END} from 'redux-saga';
 import {take} from 'redux-saga/effects';
-import { SpotifyService } from '../../../../services/spotify-service';
+import { SpotifyService } from '../../../../../services/spotify-service';
 
 export function createPlayerErrorsChannel(
   spotifyService: SpotifyService

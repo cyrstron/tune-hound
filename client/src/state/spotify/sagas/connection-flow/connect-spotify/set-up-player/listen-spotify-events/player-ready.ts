@@ -1,6 +1,6 @@
 import {eventChannel, EventChannel, END} from 'redux-saga';
 import {take, put, select, all, getContext} from 'redux-saga/effects';
-import { SpotifyService } from '../../../../services/spotify-service';
+import { SpotifyService } from '../../../../../services/spotify-service';
 import { setSpotifyPlayerReady } from '@app/state/spotify/actions';
 import { selectIsSpotifyPremium, selectIsSpotifyPlayerActive, selectSpotifyAccessToken, selectSpotifyPlayerDeviceId } from '@app/state/spotify/selectors';
 import { SPOTIFY_SERVICE_CTX_KEY } from '@app/consts';

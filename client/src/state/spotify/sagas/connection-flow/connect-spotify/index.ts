@@ -21,10 +21,10 @@ import {
 } from "../../../selectors";
 import { SpotifyAuthData, setSpotifyAuthState } from "../../../services/helpers";
 import {updateSpotifyTokenSaga} from '../../update-token';
-import { createPlayerErrorsChannel, watchPlayerErrors } from "./sagas/player-errors";
-import { createPlayerReadyChannel, watchPlayerReady } from "./sagas/player-ready";
-import { createPlayerStateChannel, watchPlayerStateChange } from "./sagas/player-state";
-import { initSpotifyPlayer } from "./sagas/player-init";
+import { createPlayerErrorsChannel, watchPlayerErrors } from "./set-up-player/listen-spotify-events/player-errors";
+import { createPlayerReadyChannel, watchPlayerReady } from "./set-up-player/listen-spotify-events/player-ready";
+import { createPlayerStateChannel, watchPlayerStateChange } from "./set-up-player/listen-spotify-events/player-state";
+import { initSpotifyPlayer } from "./set-up-player/listen-spotify-events/player-init";
 
 export function* connectSpotifySaga() {
   const pendingAction = connectSpotifyPending();

@@ -7,10 +7,9 @@ export const mapPlayerTrackFromDeezer = (track: DeezerTrack, canPlay: boolean): 
     name: track.title,
     artists: [track.artist.name],
     albumTitle: track.album.title,
-    duration: track.duration,
+    duration: canPlay ? track.duration : 30,
     trackSource: canPlay ? {id: track.id} : {url: track.preview},
   } as PlayerTrack;
-
 };
 
 export const mapPlayerTrackFromSpotify = (
@@ -22,7 +21,7 @@ export const mapPlayerTrackFromSpotify = (
     name: track.name,
     artists: track.artists.map(({name}) => name),
     albumTitle: track.album.name,
-    duration: track.duration_ms / 1000,
+    duration: canPlay ? track.duration_ms / 1000 : 30,
     trackSource: canPlay ? {id: track.id} : {url: track.preview_url},
   } as PlayerTrack;
 };

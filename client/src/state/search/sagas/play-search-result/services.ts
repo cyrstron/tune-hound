@@ -20,7 +20,7 @@ export const mapPlayerTrackFromDeezer = (track: SearchedTrack, canPlay: boolean)
     name: track.name,
     artists: track.artists,
     albumTitle: track.album,
-    duration: track.duration,
+    duration: canPlay ? track.duration : 30,
     trackSource: canPlay ? {id: sourceObject.id} : {url: sourceObject.preview},
   } as PlayerTrack;
 
@@ -34,7 +34,7 @@ export const mapPlayerTrackFromSpotify = (track: SearchedTrack, canPlay: boolean
     name: track.name,
     artists: track.artists,
     albumTitle: track.album,
-    duration: track.duration,
+    duration: canPlay ? track.duration : 30,
     trackSource: canPlay ? {id: sourceObject.id} : {url: sourceObject.preview_url},
   } as PlayerTrack;
 };
@@ -47,7 +47,7 @@ export const mapPlayerAlbumFromDeezer = (album: SearchedAlbum, canPlay: boolean)
     name: track.title,
     artists: [track.artist.name],
     albumTitle: album.title,
-    duration: track.duration,
+    duration: canPlay ? track.duration : 30,
     trackSource: canPlay ? {id: track.id} : {url: track.preview},
   }) as PlayerTrack);
 };
@@ -60,7 +60,7 @@ export const mapPlayerAlbumFromSpotify = (album: SearchedAlbum, canPlay: boolean
     name: track.name,
     artists: track.artists.map(({name}) => name),
     albumTitle: album.title,
-    duration: track.duration_ms / 1000,
+    duration: canPlay ? track.duration_ms / 1000 : 30,
     trackSource: canPlay ? {id: track.id} : {url: track.preview_url},
   }) as PlayerTrack);
 };
@@ -73,7 +73,7 @@ export const mapPlaylistFromDeezerArtist = (artist: SearchedArtist, canPlay: boo
     name: track.title,
     artists: [track.artist.name],
     albumTitle: track.album.title,
-    duration: track.duration,
+    duration: canPlay ? track.duration : 30,
     trackSource: canPlay ? {id: track.id} : {url: track.preview},
   }) as PlayerTrack);
 };
@@ -86,7 +86,7 @@ export const mapPlaylistFromSpotifyArtist = (artist: SearchedArtist, canPlay: bo
     name: track.name,
     artists: track.artists.map(({name}) => name),
     albumTitle: track.album.name,
-    duration: track.duration_ms / 1000,
+    duration: canPlay ? track.duration_ms / 1000 : 30,
     trackSource: canPlay ? {id: track.id} : {url: track.preview_url},
   }) as PlayerTrack);
 };
@@ -98,7 +98,7 @@ export const mapPlaylistFromDeezer = (playlist: SearchedPlaylist, canPlay: boole
     name: track.title,
     artists: [track.artist.name],
     albumTitle: track.album.title,
-    duration: track.duration,
+    duration: canPlay ? track.duration : 30,
     trackSource: canPlay ? {id: track.id} : {url: track.preview},
   }) as PlayerTrack);
 };
@@ -111,7 +111,7 @@ export const mapPlaylistFromSpotify = (playlist: SearchedPlaylist, canPlay: bool
     name: track.name,
     artists: track.artists.map(({name}) => name),
     albumTitle: track.album.name,
-    duration: track.duration_ms / 1000,
+    duration: canPlay ? track.duration_ms / 1000 : 30,
     trackSource: canPlay ? {id: track.id} : {url: track.preview_url},
   }) as PlayerTrack);
 };

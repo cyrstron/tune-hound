@@ -1,12 +1,12 @@
-import { SpotifyService } from "../../../../services/spotify-service";
+import { SpotifyService } from "../../../../../services/spotify-service";
 import { EventChannel, eventChannel, END } from "redux-saga";
 import { take, all, select, call } from "redux-saga/effects";
-import { updateSpotifyTokenSaga } from "../../../update-token";
+import { updateSpotifyTokenSaga } from "../../../../update-token";
 import { 
   selectIsSpotifyLoggedIn, 
   selectIsSpotifyTokenExpired, 
   selectSpotifyAccessToken 
-} from "../../../../selectors";
+} from "../../../../../selectors";
 
 export function* initSpotifyPlayer(spotifyService: SpotifyService): any {
   const channel: EventChannel<(token: string) => void> = eventChannel(emitter => {
