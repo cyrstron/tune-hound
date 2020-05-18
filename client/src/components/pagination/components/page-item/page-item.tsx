@@ -26,9 +26,11 @@ const PageItemComponent: FC<PageItemProps> = ({
   const label = children || pageIndex + 1;
 
   return (
-    <li className={cx('page', {
-      'active': isActive,
-    })}>
+    <li
+      className={cx('page', {
+        'active': isActive,
+      })}
+    >
       {isActive && (
         <span className={cx('page-button')}>
           {label}
@@ -41,6 +43,6 @@ const PageItemComponent: FC<PageItemProps> = ({
       )}
     </li>
   );
-}
+};
 
-export {PageItemComponent}
+export {PageItemComponent};

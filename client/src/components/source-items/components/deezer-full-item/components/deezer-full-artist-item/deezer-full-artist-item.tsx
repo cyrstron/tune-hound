@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import classNames from 'classnames/bind';
-import { DeezerArtistSourceItemFull } from '@app/state/search/types';
+import {DeezerArtistSourceItemFull} from '@app/state/search/types';
 
 import styles from './deezer-full-artist-item.scss';
 
@@ -12,16 +12,16 @@ export interface DeezerFullArtistItemProps {
 }
 
 const DeezerFullArtistItemComponent: FC<DeezerFullArtistItemProps> = ({
-  artist: {name, nb_fan, nb_album}, 
-  className
+  artist: {name, 'nb_fan': fansNumber, 'nb_album': albumsNumber},
+  className,
 }) => {
   return (
     <div className={cx('artist-details', className)}>
       <div>Name: {name}</div>
-      <div>{nb_fan} fans</div>
-      <div>{nb_album} albums</div>
+      <div>{fansNumber} fans</div>
+      <div>{albumsNumber} albums</div>
     </div>
-  )
-}
+  );
+};
 
-export {DeezerFullArtistItemComponent}
+export {DeezerFullArtistItemComponent};

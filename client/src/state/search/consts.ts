@@ -31,3 +31,5 @@ export const FETCH_NEXT_OPTIONS_FOR_EXTEND = '@app/search/FETCH_NEXT_OPTIONS_FOR
 
 export const PICK_OPTION_FOR_EXTEND = '@app/search/PICK_OPTION_FOR_EXTEND';
 export const RESET_OPTIONS_FOR_EXTEND = '@app/search/RESET_OPTIONS_FOR_EXTEND';
+
+export const PLAY_SEARCH_RESULT = '@app/search/PLAY_SEARCH_RESULT';

@@ -1,1 +1,1 @@
-export {AdvancedQueryControlComponent as AdvancedQueryControl} from './advanced-query-control'
+export {AdvancedQueryControlComponent as AdvancedQueryControl} from './advanced-query-control';

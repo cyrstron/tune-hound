@@ -1,0 +1,43 @@
+@keyframes pending-rotation {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@mixin pending-icon($size: 50px, $color: #fff, $alpha: 0.8) {
+  $bg-color: rgba($color, $alpha);
+
+  $element-size: $size / 5;
+  $angular-offset: $size / 3.6;
+  $offset: $size / 2.5;
+
+  cursor: wait;
+
+  &::before {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: $element-size;
+    height: $element-size;
+    border-radius: 50%;
+    animation-name: pending-rotation;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    box-shadow:
+      $angular-offset $angular-offset 0 0 $bg-color,
+      -$angular-offset $angular-offset 0 0 $bg-color,
+      -$angular-offset (-$angular-offset) 0 0 $bg-color,
+      $angular-offset (-$angular-offset) 0 0 $bg-color,
+      0 $offset 0 0 $bg-color,
+      0 (-$offset) 0 0 $bg-color,
+      $offset 0 0 0 $bg-color,
+      -$offset 0 0 0 $bg-color;
+  }
+}

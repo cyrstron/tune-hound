@@ -1,20 +1,27 @@
-import { connect } from 'react-redux';
-import { AppState } from '@app/state';
+import {connect} from 'react-redux';
+import {AppState} from '@app/state';
 import {
   selectTotalPages,
-  selectPageIndex, 
+  selectPageIndex,
   selectSearchError,
-  selectIsSearchPending
+  selectIsSearchPending,
 } from '@app/state/search/selectors';
 import {
-  executeSearchByPageIndex
+  executeSearchByPageIndex,
 } from '@app/state/search/actions';
 
 import {SearchComponent} from './search';
-import { selectIsSpotifyConnected } from '@app/state/spotify';
-import { selectDeezerIsConnected } from '@app/state/deezer';
+import {selectIsSpotifyConnected} from '@app/state/spotify';
+import {selectDeezerIsConnected} from '@app/state/deezer';
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: AppState): {
+  totalPages: number | undefined;
+  pageIndex: number;
+  error: Error | undefined;
+  isPending: boolean;
+  isSpotifyConnected: boolean;
+  isDeezerConnected: boolean;
+} => ({
   totalPages: selectTotalPages(state),
   pageIndex: selectPageIndex(state),
   error: selectSearchError(state),

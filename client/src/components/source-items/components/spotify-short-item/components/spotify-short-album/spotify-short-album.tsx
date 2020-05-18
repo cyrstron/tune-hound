@@ -11,16 +11,16 @@ export interface SpotifyShortAlbumProps {
 }
 
 const SpotifyShortAlbumComponent: FC<SpotifyShortAlbumProps> = ({
-  album: {name, images: [{url}], release_date}, 
+  album: {name, images: [{url}], 'release_date': releaseDate},
   className,
 }) => {
   return (
     <div className={cx('album', className)}>
       <img src={url} className={cx('cover')}/>
       <div className={cx('title')} title={name}><b>{name}</b></div>
-      <div>{release_date}</div>
+      <div>{releaseDate}</div>
     </div>
   );
-}
+};
 
-export {SpotifyShortAlbumComponent}
+export {SpotifyShortAlbumComponent};

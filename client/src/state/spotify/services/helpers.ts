@@ -1,14 +1,14 @@
 import {
-  SPOTIFY_PLAYER_MSG_IGNORED_KEY, 
-  SPOTIFY_AUTH_KEY 
-} from "consts";
-import { SpotifyAdvancedSearchQuery } from "../types";
+  SPOTIFY_PLAYER_MSG_IGNORED_KEY,
+  SPOTIFY_AUTH_KEY,
+} from 'consts';
+import {SpotifyAdvancedSearchQuery} from '../types';
 
 export function getSpotifyPlayerMsgState(): boolean {
   return !!localStorage.getItem(SPOTIFY_PLAYER_MSG_IGNORED_KEY);
 }
 
-export function setSpotifyPlayerMsgState(isIgnored: boolean) {
+export function setSpotifyPlayerMsgState(isIgnored: boolean): void {
   if (isIgnored) {
     localStorage.setItem(SPOTIFY_PLAYER_MSG_IGNORED_KEY, `${isIgnored}`);
   } else {
@@ -23,26 +23,28 @@ export interface SpotifyAuthData {
   scope: string;
 }
 
-export function getSpotifyAuthState() {
+export function getSpotifyAuthState(): SpotifyAuthData | undefined {
   const spotifyAuthDataString = localStorage.getItem(SPOTIFY_AUTH_KEY);
 
   let spotifyAuthData: SpotifyAuthData | undefined;
 
   try {
-    const parsedAuthData: Omit<SpotifyAuthData, 'expiresIn'> & { 
-      expiresIn: number,
+    const parsedAuthData: Omit<SpotifyAuthData, 'expiresIn'> & {
+      expiresIn: number;
     } | undefined = spotifyAuthDataString ? JSON.parse(spotifyAuthDataString) : undefined;
 
     spotifyAuthData = parsedAuthData && {
       ...parsedAuthData,
       expiresIn: new Date(parsedAuthData.expiresIn),
     };
-  } catch {}
+  } catch {
+    spotifyAuthData = undefined;
+  }
 
-  return spotifyAuthData
+  return spotifyAuthData;
 }
 
-export function setSpotifyAuthState(authData: SpotifyAuthData) {
+export function setSpotifyAuthState(authData: SpotifyAuthData): void {
   const authDataString = JSON.stringify({
     ...authData,
     expiresIn: +authData.expiresIn,
@@ -51,14 +53,14 @@ export function setSpotifyAuthState(authData: SpotifyAuthData) {
   localStorage.setItem(SPOTIFY_AUTH_KEY, authDataString);
 }
 
-export function resetSpotifyAuthState() {
+export function resetSpotifyAuthState(): void {
   localStorage.removeItem(SPOTIFY_AUTH_KEY);
 }
 
 
 export async function mountSpotifyScript(): Promise<{
-  script: HTMLScriptElement,
-  spotify: typeof Spotify,
+  script: HTMLScriptElement;
+  spotify: typeof Spotify;
 }> {
   const script = document.createElement('script');
 
@@ -68,23 +70,25 @@ export async function mountSpotifyScript(): Promise<{
   const spotify = await new Promise<typeof Spotify>((resolve, reject) => {
     document.body.append(script);
 
-    script.onerror = (e) => {
+    script.onerror = (e): void => {
       delete script.onerror;
 
       script.remove();
       reject(e);
     };
-    window.onSpotifyWebPlaybackSDKReady = () => {
+    window.onSpotifyWebPlaybackSDKReady = (): void => {
       delete window.onSpotifyWebPlaybackSDKReady;
 
       resolve(window.Spotify);
-    }
+    };
   });
 
   return {script, spotify};
 }
 
-export function getAdvancedSearchString({and, or, not, year, ...options}: SpotifyAdvancedSearchQuery): string {
+export function getAdvancedSearchString(
+  {and, or, not, year, ...options}: SpotifyAdvancedSearchQuery,
+): string {
   let string = and.map((item) => `"${item}"`).join(' ');
 
   if (or && or.length) {
@@ -124,5 +128,4 @@ export function getAdvancedSearchString({and, or, not, year, ...options}: Spotif
   }
 
   return string;
-
 }

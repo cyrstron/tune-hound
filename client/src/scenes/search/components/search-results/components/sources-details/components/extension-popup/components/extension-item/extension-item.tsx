@@ -1,7 +1,7 @@
 import React, {FC, ReactNode, useCallback} from 'react';
 import classNames from 'classnames/bind';
-import { SpotifySourceItemShort, DeezerSourceItemShort, SourceItemShort } from '@app/state/search/types';
-import { SpotifyItem, DeezerItem } from '@app/components/source-items';
+import {SpotifySourceItemShort, DeezerSourceItemShort, SourceItemShort} from '@app/state/search/types';
+import {SpotifyItem, DeezerItem} from '@app/components/source-items';
 
 import styles from './extension-item.scss';
 
@@ -16,11 +16,11 @@ export interface ExtensionItemProps {
 }
 
 const ExtensionItemComponent: FC<ExtensionItemProps> = ({
-  spotify, 
-  deezer, 
-  onClick, 
-  className, 
-  isSelected
+  spotify,
+  deezer,
+  onClick,
+  className,
+  isSelected,
 }) => {
   let item: ReactNode;
 
@@ -30,7 +30,7 @@ const ExtensionItemComponent: FC<ExtensionItemProps> = ({
     if (!item) return;
 
     onClick(item);
-  }, [onClick, spotify, deezer])
+  }, [onClick, spotify, deezer]);
 
   if (spotify) {
     item = (
@@ -49,6 +49,6 @@ const ExtensionItemComponent: FC<ExtensionItemProps> = ({
       {item}
     </li>
   );
-}
+};
 
-export {ExtensionItemComponent}
+export {ExtensionItemComponent};

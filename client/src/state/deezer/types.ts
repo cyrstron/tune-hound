@@ -16,45 +16,45 @@ export interface DeezerUser {
   email: string;
   status: 0 | 1 | 2;
   birthday: string;
-  inscription_date: string;
-  gender: "F" | "M" | "";
+  'inscription_date': string;
+  gender: 'F' | 'M' | '';
   link: string;
   picture: string;
-  picture_small: string;
-  picture_medium: string;
-  picture_big: string;  
-  picture_xl: string;
+  'picture_small': string;
+  'picture_medium': string;
+  'picture_big': string;
+  'picture_xl': string;
   country: string;
   lang: string;
-  is_kid: boolean;
-  explicit_content_level: DeezerExplicitLevel;
-  explicit_content_levels_available: DeezerExplicitLevel[];
+  'is_kid': boolean;
+  'explicit_content_level': DeezerExplicitLevel;
+  'explicit_content_levels_available': DeezerExplicitLevel[];
   tracklist: string;
-  type: "user";
+  type: 'user';
 }
 
 export interface DeezerTrack {
   id: number;
   readable: boolean;
   title: string;
-  title_short: string;
-  title_version: string;
+  'title_short': string;
+  'title_version': string;
   link: string;
   duration: number;
   rank: number;
-  explicit_lyrics: boolean;
-  explicit_content_lyrics: number;
-  explicit_content_cover: number;
+  'explicit_lyrics': boolean;
+  'explicit_content_lyrics': number;
+  'explicit_content_cover': number;
   preview: string;
   artist: {
     id: number;
     name: string;
     link: string;
     picture: string;
-    picture_small: string;
-    picture_medium: string;
-    picture_big: string;
-    picture_xl: string;
+    'picture_small': string;
+    'picture_medium': string;
+    'picture_big': string;
+    'picture_xl': string;
     tracklist: string;
     type: 'artist';
   };
@@ -62,10 +62,10 @@ export interface DeezerTrack {
     id: number;
     title: string;
     cover: string;
-    cover_small: string;
-    cover_medium: string;
-    cover_big: string;
-    cover_xl: string;
+    'cover_small': string;
+    'cover_medium': string;
+    'cover_big': string;
+    'cover_xl': string;
     tracklist: string;
     type: 'album';
   };
@@ -76,79 +76,79 @@ export interface DeezerTrackFull {
   id: number;
   readable: boolean;
   title: string;
-  title_short: string;
-  title_version: string;
+  'title_short': string;
+  'title_version': string;
   link: string;
   duration: number;
   rank: number;
-  explicit_lyrics: boolean;
-  explicit_content_lyrics: number;
-  explicit_content_cover: number;
+  'explicit_lyrics': boolean;
+  'explicit_content_lyrics': number;
+  'explicit_content_cover': number;
   preview: string;
-  available_countries: string[];
+  'available_countries': string[];
   bmp: number;
   artist: {
     id: number;
     name: string;
     link: string;
     picture: string;
-    picture_small: string;
-    picture_medium: string;
-    picture_big: string;
-    picture_xl: string;
+    'picture_small': string;
+    'picture_medium': string;
+    'picture_big': string;
+    'picture_xl': string;
     tracklist: string;
     type: 'artist';
     radio: boolean;
     share: string;
   };
-  contributors: Array<DeezerTrackFull['artist'] & {role: string}>
+  contributors: Array<DeezerTrackFull['artist'] & {role: string}>;
   album: {
     id: number;
     title: string;
     cover: string;
-    cover_small: string;
-    cover_medium: string;
-    cover_big: string;
-    cover_xl: string;
+    'cover_small': string;
+    'cover_medium': string;
+    'cover_big': string;
+    'cover_xl': string;
     tracklist: string;
     type: 'album';
     link: string;
-    release_date: string;
+    'release_date': string;
   };
   type: 'track';
   gain: number;
   isrc: string;
-  release_date: string;
+  'release_date': string;
   share: string;
-  track_position: number;
+  'track_position': number;
 }
 
 export interface DeezerAlbum {
-  type: "album";
+  type: 'album';
   id: number;
   title: string;
   link: string;
   cover: string;
-  cover_small: string;
-  cover_medium: string;
-  cover_big: string;
-  cover_xl: string;
-  genre_id: number;
-  nb_tracks: number;
-  record_type: "album" | "single";
+  'cover_small': string;
+  'cover_medium': string;
+  'cover_big': string;
+  'cover_xl': string;
+  'genre_id': number;
+  'nb_tracks': number;
+  'record_type': 'album' | 'single';
   tracklist: string;
-  explicit_lyrics: boolean;
+  'explicit_lyrics': boolean;
   artist: {
     id: number;
     name: string;
     link: string;
     picture: string;
-    picture_small: string;
-    picture_medium: string;
-    picture_big: string;
-    picture_xl: string;
+    'picture_small': string;
+    'picture_medium': string;
+    'picture_big': string;
+    'picture_xl': string;
     tracklist: string;
-    type: "artist";
+    type: 'artist';
   };
 }
 
@@ -158,37 +158,37 @@ export interface DeezerAlbumFull {
   available: boolean;
   contributors: Array<DeezerTrackFull['artist'] & {role: string}>;
   cover: string;
-  cover_small: string;
-  cover_medium: string;
-  cover_big: string;
-  cover_xl: string;
-  duration: number;  
-  explicit_lyrics: boolean;
-  explicit_content_lyrics: number;
-  explicit_content_cover: number;
+  'cover_small': string;
+  'cover_medium': string;
+  'cover_big': string;
+  'cover_xl': string;
+  duration: number;
+  'explicit_lyrics': boolean;
+  'explicit_content_lyrics': number;
+  'explicit_content_cover': number;
   fans: number;
-  genre_id: number;
+  'genre_id': number;
   genres: {
     data: Array<{
       id: number;
       name: string;
       picture: string;
       type: string;
-    }>
+    }>;
   };
   label: string;
   link: string;
-  nb_tracks: number;
+  'nb_tracks': number;
   rating: number;
-  record_type: "album" | 'single';
-  release_date: string;
+  'record_type': 'album' | 'single';
+  'release_date': string;
   share: string;
   title: string;
   tracklist: string;
   tracks: {
     data: Array<Omit<DeezerTrack, 'album'>>;
   };
-  type: "album"
+  type: 'album';
   upc: string;
 }
 
@@ -197,15 +197,15 @@ export interface DeezerArtist {
   name: string;
   link: string;
   picture: string;
-  picture_small: string;
-  picture_medium: string;
-  picture_big: string;
-  picture_xl: string;
-  nb_album: number;
-  nb_fan: number;
+  'picture_small': string;
+  'picture_medium': string;
+  'picture_big': string;
+  'picture_xl': string;
+  'nb_album': number;
+  'nb_fan': number;
   radio: boolean;
   tracklist: string;
-  type: "artist";
+  type: 'artist';
 }
 
 export type DeezerArtistFull = DeezerArtist;
@@ -214,47 +214,47 @@ export interface DeezerPlaylist {
   id: number;
   title: string;
   public: boolean;
-  nb_tracks: number;
+  'nb_tracks': number;
   link: string;
   picture: string;
-  picture_small: string;
-  picture_medium: string;
-  picture_big: string;
-  picture_xl: string;
+  'picture_small': string;
+  'picture_medium': string;
+  'picture_big': string;
+  'picture_xl': string;
   checksum: string;
   tracklist: string;
-  creation_date: string;
+  'creation_date': string;
   user: {
-    id: 1535921546
-    name:  string;
+    id: 1535921546;
+    name: string;
     tracklist: string;
-    type: "user"
+    type: 'user';
   };
-  type: "playlist";
+  type: 'playlist';
 }
 
 export interface DeezerPlaylistFull {
   checksum: string;
   collaborative: boolean;
-  creation_date: string;
+  'creation_date': string;
   creator: {
     id: number;
     name: string;
     tracklist: string;
-    type: "user";
+    type: 'user';
   };
   description: string;
   duration: number;
   fans: number;
   id: number;
-  is_loved_track: boolean;
+  'is_loved_track': boolean;
   link: string;
-  nb_tracks: number;
+  'nb_tracks': number;
   picture: string;
-  picture_small: string;
-  picture_medium: string;
-  picture_big: string;
-  picture_xl: string;
+  'picture_small': string;
+  'picture_medium': string;
+  'picture_big': string;
+  'picture_xl': string;
   public: boolean;
   share: string;
   title: string;
@@ -263,7 +263,7 @@ export interface DeezerPlaylistFull {
     checksum: string;
     data: DeezerTrack[];
   };
-  type: "playlist";
+  type: 'playlist';
 }
 
 export type DeezerResponseType = DeezerUser['type'] | DeezerTrack['type'];
@@ -271,30 +271,33 @@ export type DeezerResponseType = DeezerUser['type'] | DeezerTrack['type'];
 export type DeezerUserResponse = DeezerApiResponse<DeezerUser>;
 
 export interface DeezerTrackSearchResult {
-  data: Array<DeezerTrack>,
+  data: Array<DeezerTrack>;
   total: number;
   next: string;
-};
+}
 
 export interface DeezerAlbumSearchResult {
-  data: Array<DeezerAlbum>,
+  data: Array<DeezerAlbum>;
   total: number;
   next: string;
-};
+}
 
 export interface DeezerArtistSearchResult {
-  data: Array<DeezerArtist>,
+  data: Array<DeezerArtist>;
   total: number;
   next: string;
-};
+}
 
 export interface DeezerPlaylistSearchResult {
-  data: Array<DeezerPlaylist>,
+  data: Array<DeezerPlaylist>;
   total: number;
   next: string;
-};
+}
 
-export type DeezerSearchResult = DeezerTrackSearchResult | DeezerAlbumSearchResult | DeezerArtistSearchResult | DeezerPlaylistSearchResult;
+export type DeezerSearchResult = DeezerTrackSearchResult |
+  DeezerAlbumSearchResult |
+  DeezerArtistSearchResult |
+  DeezerPlaylistSearchResult;
 
 export type DeezerTrackResponse = DeezerApiResponse<DeezerTrack>;
 
@@ -316,16 +319,16 @@ export type DeezerSearchNamespace = 'album' |
   'track' |
   'user';
 
-export type DeezerSearchOrder =  'RANKING' |
+export type DeezerSearchOrder = 'RANKING' |
   'TRACK_ASC' |
-  'TRACK_DESC' | 
-  'ARTIST_ASC' | 
-  'ARTIST_DESC' | 
-  'ALBUM_ASC' | 
-  'ALBUM_DESC' | 
-  'RATING_ASC' | 
-  'RATING_DESC' | 
-  'DURATION_ASC' | 
+  'TRACK_DESC' |
+  'ARTIST_ASC' |
+  'ARTIST_DESC' |
+  'ALBUM_ASC' |
+  'ALBUM_DESC' |
+  'RATING_ASC' |
+  'RATING_DESC' |
+  'DURATION_ASC' |
   'DURATION_DESC';
 
 export interface DeezerBasicSearchOptions {
@@ -354,24 +357,24 @@ export type DeezerNamespaceSearchOptions = DeezerBasicSearchOptions & {query: st
 
 export type DeezerAdvancedTrackQueryParams = DeezerAdvancedQueryParams;
 
-export type DeezerAdvancedTrackSearchOptions = DeezerBasicSearchOptions & 
-  {query: DeezerAdvancedTrackQueryParams} & 
+export type DeezerAdvancedTrackSearchOptions = DeezerBasicSearchOptions &
+  {query: DeezerAdvancedTrackQueryParams} &
   {namespace: 'track'};
 
 export type DeezerAdvancedAlbumQueryParams = Omit<DeezerAdvancedQueryParams, 'track'>;
 
-export type DeezerAdvancedAlbumSearchOptions = DeezerBasicSearchOptions & 
-  {query: DeezerAdvancedAlbumQueryParams} & 
+export type DeezerAdvancedAlbumSearchOptions = DeezerBasicSearchOptions &
+  {query: DeezerAdvancedAlbumQueryParams} &
   {namespace: 'album'};
 
 export type DeezerAdvancedArtistQueryParams = {artist?: string};
 
-export type DeezerAdvancedArtistSearchOptions = DeezerBasicSearchOptions & 
-  {query: DeezerAdvancedArtistQueryParams} & 
+export type DeezerAdvancedArtistSearchOptions = DeezerBasicSearchOptions &
+  {query: DeezerAdvancedArtistQueryParams} &
   {namespace: 'artist'};
 
-export type DeezerAdvancedSearchOptions = DeezerAdvancedTrackSearchOptions | 
-DeezerAdvancedAlbumSearchOptions | 
+export type DeezerAdvancedSearchOptions = DeezerAdvancedTrackSearchOptions |
+DeezerAdvancedAlbumSearchOptions |
 DeezerAdvancedArtistSearchOptions;
 
 export type DeezerSearchOptions = DeezerNamespaceSearchOptions | DeezerAdvancedSearchOptions;

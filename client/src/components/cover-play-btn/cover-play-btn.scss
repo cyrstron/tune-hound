@@ -1,0 +1,56 @@
+@import '@app/styles/mixins/pending-icon.scss';
+@import '@app/styles/mixins/player-icons.scss';
+
+.cover-wrapper {
+  position: relative;
+
+  &.playing,
+  &.paused {
+    .btn {
+      opacity: 0.7;
+    }
+  }
+
+  &:hover .btn {
+    opacity: 1;
+  }
+
+  &:not(.paused):not(.pending) .btn,
+  &.paused:not(.pending):hover .btn {
+    @include play-icon();
+  }
+
+  &.paused:not(:hover):not(.pending) .btn,
+  &.playing:not(.pending):hover .btn {
+    @include pause-icon();
+  }
+
+  &.pending .btn,
+  &.pending:hover .btn {
+    @include pending-icon();
+
+    opacity: 0.7;
+  }
+}
+
+.btn {
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  text-indent: 100%;
+}
+
+.cover {
+  display: block;
+  height: 100%;
+  width: 100%;
+}

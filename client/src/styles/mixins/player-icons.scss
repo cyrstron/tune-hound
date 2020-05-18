@@ -1,0 +1,43 @@
+@mixin play-icon($size: 50px, $color: #fff, $alpha: 0.8) {
+  $bg-color: rgba($color, $alpha);
+
+  $icon-width: $size * 3 / 5;
+  $icon-height: $size * 2 / 5;
+
+  &::before {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-40%, -50%);
+    border: $icon-height solid $bg-color;
+    border-right-width: 0;
+    border-left-width: $icon-width;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+  }
+}
+
+@mixin pause-icon($size: 50px, $color: #fff, $alpha: 0.8) {
+  $bg-color: rgba($color, $alpha);
+
+  $element-width: $size * 1.5 / 5;
+  $element-height: $size * 4 / 5;
+
+  $shadow-offset: $element-width * 1.6;
+
+  &::before {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateX(-80%);
+    background-color: $bg-color;
+    height: $element-height;
+    width: $element-width;
+    border: none;
+    box-shadow: $shadow-offset 0 0 0 $bg-color;
+  }
+}

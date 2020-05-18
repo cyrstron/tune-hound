@@ -1,5 +1,5 @@
 import {
-  SET_DEEZER_IS_CONNECTED, 
+  SET_DEEZER_IS_CONNECTED,
   CONNECT_DEEZER,
   DISCONNECT_DEEZER,
   CONNECT_DEEZER_PENDING,
@@ -10,14 +10,25 @@ import {
   DEEZER_MOUNTED,
   DEEZER_INITED,
   SET_DEEZER_CURRENT_USER,
+  SET_IS_PLAYING,
+  SET_PLAYING_TRACK,
+  SET_IS_PLAYER_NOT_MUTED,
+  SET_PLAYER_BUFFERING,
+  SET_PLAYER_LOADED,
+  SET_PLAYER_POSITION,
+  SET_REPEAT_MODE,
+  SET_PLAYER_SHUFFLE,
+  DEEZER_TRACK_END,
+  DEEZER_TRACK_LIST_CHANGED,
+  DEEZER_VOLUME_CHANGED,
 } from './consts';
-import { DeezerUser } from './types';
+import {DeezerUser} from './types';
 
 export interface SetDeezerIsConnectedAction {
   type: typeof SET_DEEZER_IS_CONNECTED;
   payload: {
     isConnected: boolean;
-  }
+  };
 }
 
 export const setDeezerIsConnected = (isConnected: boolean): SetDeezerIsConnectedAction => ({
@@ -107,12 +118,156 @@ export const setDeezerInited = (): SetDeezerInitedAction => ({
 
 export interface SetDeezerCurrentUserAction {
   type: typeof SET_DEEZER_CURRENT_USER;
-  payload: {user: DeezerUser}
+  payload: {user: DeezerUser};
 }
 
 export const setDeezerCurrentUser = (user: DeezerUser): SetDeezerCurrentUserAction => ({
   type: SET_DEEZER_CURRENT_USER,
-  payload: {user}
+  payload: {user},
+});
+
+export interface SetDeezerIsPlayingAction {
+  type: typeof SET_IS_PLAYING;
+  payload: {isPlaying: boolean};
+}
+
+export const setDeezerIsPlaying = (isPlaying: boolean): SetDeezerIsPlayingAction => ({
+  type: SET_IS_PLAYING,
+  payload: {isPlaying},
+});
+
+export interface SetPlayingTrackAction {
+  type: typeof SET_PLAYING_TRACK;
+  payload: {
+    index: number | null;
+    track: DeezerSdk.Track | null;
+  };
+}
+
+export const setPlayingTrack = (
+  index: number | null,
+  track: DeezerSdk.Track | null,
+): SetPlayingTrackAction => ({
+  type: SET_PLAYING_TRACK,
+  payload: {index, track},
+});
+
+export interface SetIsPlayerNotMutedAction {
+  type: typeof SET_IS_PLAYER_NOT_MUTED;
+  payload: {
+    isNotMuted: boolean;
+  };
+}
+
+export const setIsPlayerNotMuted = (
+  isNotMuted: boolean,
+): SetIsPlayerNotMutedAction => ({
+  type: SET_IS_PLAYER_NOT_MUTED,
+  payload: {isNotMuted},
+});
+
+export interface SetPlayerBufferingAction {
+  type: typeof SET_PLAYER_BUFFERING;
+  payload: {
+    buffered: number;
+  };
+}
+
+export const setPlayerBuffering = (
+  buffered: number,
+): SetPlayerBufferingAction => ({
+  type: SET_PLAYER_BUFFERING,
+  payload: {buffered},
+});
+
+export interface DeezerPlayerLoadedAction {
+  type: typeof SET_PLAYER_LOADED;
+}
+
+export const setDeezerPlayerLoaded = (): DeezerPlayerLoadedAction => ({
+  type: SET_PLAYER_LOADED,
+});
+
+export interface SetPlayerPositionAction {
+  type: typeof SET_PLAYER_POSITION;
+  payload: {
+    position: [number, number];
+  };
+}
+
+export const setPlayerPosition = (
+  position: [number, number],
+): SetPlayerPositionAction => ({
+  type: SET_PLAYER_POSITION,
+  payload: {position},
+});
+
+export interface SetPlayerRepeatModeAction {
+  type: typeof SET_REPEAT_MODE;
+  payload: {
+    repeatMode: DeezerSdk.RepeatMode;
+  };
+}
+
+export const setPlayerRepeatMode = (
+  repeatMode: DeezerSdk.RepeatMode,
+): SetPlayerRepeatModeAction => ({
+  type: SET_REPEAT_MODE,
+  payload: {repeatMode},
+});
+
+export interface SetPlayerShuffleAction {
+  type: typeof SET_PLAYER_SHUFFLE;
+  payload: {
+    isShuffled: boolean;
+  };
+}
+
+export const setPlayerShuffle = (
+  isShuffled: boolean,
+): SetPlayerShuffleAction => ({
+  type: SET_PLAYER_SHUFFLE,
+  payload: {isShuffled},
+});
+
+export interface DeezerTrackEndAction {
+  type: typeof DEEZER_TRACK_END;
+  payload: {
+    index: number;
+  };
+}
+
+export const deezerTrackEnd = (
+  index: number,
+): DeezerTrackEndAction => ({
+  type: DEEZER_TRACK_END,
+  payload: {index},
+});
+
+export interface DeezerTrackListChangedAction {
+  type: typeof DEEZER_TRACK_LIST_CHANGED;
+  payload: {tracks: DeezerSdk.Track[]};
+}
+
+export const deezerTrackListChanged = (
+  tracks: DeezerSdk.Track[],
+): DeezerTrackListChangedAction => ({
+  type: DEEZER_TRACK_LIST_CHANGED,
+  payload: {tracks},
+});
+
+export interface DeezerPlayerVolumeAction {
+  type: typeof DEEZER_VOLUME_CHANGED;
+  payload: {
+    volume: number;
+  };
+}
+
+export const deezerVolumeChanged = (
+  volume: number,
+): DeezerPlayerVolumeAction => ({
+  type: DEEZER_VOLUME_CHANGED,
+  payload: {volume},
 });
 
 export type DeezerAction = SetDeezerIsConnectedAction
@@ -125,4 +280,15 @@ export type DeezerAction = SetDeezerIsConnectedAction
   | SetDeezerDisabledAction
   | SetDeezerMountedAction
   | SetDeezerInitedAction
-  | SetDeezerCurrentUserAction;
+  | SetDeezerCurrentUserAction
+  | SetDeezerIsPlayingAction
+  | SetPlayerBufferingAction
+  | SetIsPlayerNotMutedAction
+  | DeezerTrackEndAction
+  | DeezerPlayerLoadedAction
+  | SetPlayerShuffleAction
+  | SetPlayerRepeatModeAction
+  | SetPlayerPositionAction
+  | DeezerPlayerVolumeAction
+  | DeezerTrackListChangedAction
+  | SetPlayingTrackAction;

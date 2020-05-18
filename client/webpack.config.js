@@ -9,10 +9,10 @@ module.exports = (_env, argv) => {
   const isDevelopment = argv.mode === 'development';
 
   const cssLoaders = [
-    'css-hot-loader', 
+    'css-hot-loader',
     {
       loader: MiniCssExtractPlugin.loader,
-    }, 
+    },
     {
       loader: 'css-loader',
       options: {
@@ -21,7 +21,7 @@ module.exports = (_env, argv) => {
         },
         sourceMap: true,
       },
-    }
+    },
   ];
 
   return {
@@ -88,6 +88,18 @@ module.exports = (_env, argv) => {
       contentBase: path.resolve(__dirname, './.dist'),
       historyApiFallback: true,
       proxy: {
+        '/deezer-test': {
+          target: 'http://localhost:3001',
+          secure: false,
+        },
+        '/manifest.json': {
+          target: 'http://localhost:3001',
+          secure: false,
+        },
+        '/service-worker.js': {
+          target: 'http://localhost:3001',
+          secure: false,
+        },
         '/spotify-callback': {
           target: 'http://localhost:3001',
           secure: false,
@@ -109,6 +121,10 @@ module.exports = (_env, argv) => {
           secure: false,
         },
         '/refresh-token': {
+          target: 'http://localhost:3001',
+          secure: false,
+        },
+        '/static': {
           target: 'http://localhost:3001',
           secure: false,
         },

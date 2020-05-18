@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import classNames from 'classnames/bind';
 import {SearchResults} from './components/search-results';
 import {SearchForm} from './components/search-form';
-import { Pagination } from '../../components/pagination';
+import {Pagination} from '../../components/pagination';
 
 import styles from './search.scss';
 
@@ -23,7 +23,7 @@ export class SearchComponent extends Component<SearchProps> {
   render() {
     const {
       className,
-      pageIndex, 
+      pageIndex,
       totalPages,
       isPending,
       setPage,
@@ -40,11 +40,11 @@ export class SearchComponent extends Component<SearchProps> {
         <SearchResults className={cx('results')} />
         <div>
           {totalPages && (
-            <Pagination 
+            <Pagination
               isDisabled={isPending || !!error}
-              pageIndex={pageIndex} 
-              totalPages={totalPages} 
-              setPage={setPage} 
+              pageIndex={pageIndex}
+              totalPages={totalPages}
+              setPage={setPage}
             />
           )}
         </div>

@@ -1,5 +1,5 @@
-import { DeezerTrack, DeezerSearchOptions, DeezerAlbum, DeezerArtist, DeezerPlaylist, DeezerTrackFull, DeezerAlbumFull, DeezerArtistFull, DeezerPlaylistFull } from "../deezer/types";
-import { SpotifySearchOptions } from "../spotify/types";
+import {DeezerTrack, DeezerSearchOptions, DeezerAlbum, DeezerArtist, DeezerPlaylist, DeezerTrackFull, DeezerAlbumFull, DeezerArtistFull, DeezerPlaylistFull} from '../deezer/types';
+import {SpotifySearchOptions} from '../spotify/types';
 
 export type SearchOptions = DeezerSearchOptions | SpotifySearchOptions;
 
@@ -18,7 +18,7 @@ export interface SearchedTrack {
   sources: {
     deezer?: DeezerTrackSourceItemShort | DeezerTrackSourceItemFull | null;
     spotify?: SpotifyTrackSourceItemShort | SpotifyTrackSourceItemFull | null;
-  }
+  };
 }
 
 export interface SpotifyTrackSourceItemShort extends SpotifyApi.TrackObjectFull {
@@ -27,11 +27,11 @@ export interface SpotifyTrackSourceItemShort extends SpotifyApi.TrackObjectFull 
 
 export interface SpotifyTrackSourceItemFull extends SpotifyApi.TrackObjectFull {
   isFull: true;
-};
+}
 
 export interface DeezerTrackSourceItemShort extends DeezerTrack {
   isFull?: false;
-};
+}
 
 export interface DeezerTrackSourceItemFull extends DeezerTrackFull {
   isFull: true;
@@ -48,20 +48,20 @@ export interface SearchedAlbum {
   sources: {
     deezer?: DeezerAlbumSourceItemShort | DeezerAlbumSourceItemFull | null;
     spotify?: SpotifyAlbumSourceItemShort | SpotifyAlbumSourceItemFull | null;
-  }
+  };
 }
 
 export interface SpotifyAlbumSourceItemShort extends SpotifyApi.AlbumObjectSimplified {
   isFull?: false;
-};
+}
 
 export interface SpotifyAlbumSourceItemFull extends SpotifyApi.AlbumObjectFull {
   isFull: true;
-};
+}
 
 export interface DeezerAlbumSourceItemShort extends DeezerAlbum {
   isFull?: false;
-};
+}
 
 export interface DeezerAlbumSourceItemFull extends DeezerAlbumFull {
   isFull: true;
@@ -76,22 +76,22 @@ export interface SearchedArtist {
   sources: {
     deezer?: DeezerArtistSourceItemShort | DeezerArtistSourceItemFull | null;
     spotify?: SpotifyArtistSourceItemShort | SpotifyArtistSourceItemFull | null;
-  }
+  };
 }
 
 export interface SpotifyArtistSourceItemShort extends SpotifyApi.ArtistObjectFull {
   isFull?: false;
-};
+}
 
 export interface SpotifyArtistSourceItemFull extends SpotifyApi.ArtistObjectFull {
   albums: SpotifyApi.AlbumObjectSimplified[];
   topTracks: SpotifyApi.TrackObjectFull[];
   isFull: true;
-};
+}
 
 export interface DeezerArtistSourceItemShort extends DeezerArtist {
   isFull?: false;
-};
+}
 
 export interface DeezerArtistSourceItemFull extends DeezerArtistFull {
   albums: {
@@ -118,22 +118,22 @@ export interface SearchedPlaylist {
   isCrossExtendable: false;
   sources: {
     deezer?: DeezerPlaylistSourceItemShort | DeezerPlaylistSourceItemFull | null;
-    spotify?: SpotifyPlaylistSourceItemShort | SpotifyArtistSourceItemFull | null;
-  }
+    spotify?: SpotifyPlaylistSourceItemShort | SpotifyPlaylistSourceItemFull | null;
+  };
 }
 
 
 export interface SpotifyPlaylistSourceItemShort extends SpotifyApi.PlaylistObjectSimplified {
   isFull?: false;
-};
+}
 
 export interface SpotifyPlaylistSourceItemFull extends SpotifyApi.PlaylistObjectFull {
   isFull: true;
-};
+}
 
 export interface DeezerPlaylistSourceItemShort extends DeezerPlaylist {
   isFull?: false;
-};
+}
 
 export interface DeezerPlaylistSourceItemFull extends DeezerPlaylistFull {
   isFull: true;

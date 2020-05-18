@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import classNames from 'classnames/bind';
 import {Popup} from 'components/popup';
 
@@ -45,9 +45,8 @@ class FlashPopupComponent extends Component<FlashPopupProps, {}> {
           </div>
         </div>
       </Popup>
-    )
+    );
   }
-
 }
 
 export {FlashPopupComponent};

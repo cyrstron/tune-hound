@@ -8,4 +8,4 @@ export const deezerConfig = {
 
 export const spotifyConfig = {
 
-}
+};

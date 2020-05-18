@@ -1,12 +1,22 @@
-import { SearchSource } from "../search/types";
+import {SearchSource} from '../search/types';
 
 export type PlayerSource = SearchSource | 'url';
 
-export interface PlayerTrack {
-  source: PlayerSource,
+export type PlayerTrack = {
   name: string;
   artists: string[];
-  albumTitle: string[];
+  albumTitle: string;
   duration: number;
-  trackSource: {id: string | number} | {url: string};
-}
+} & (
+  {source: 'url'; trackSource: {url: string}} |
+  {source: 'deezer'; trackSource: {id: number}} |
+  {source: 'spotify'; trackSource: {id: string}}
+);
+
+export const noRepeatMode = 'NO_REPEAT';
+export const repeatAllMode = 'REPEAT_ALL';
+export const repeatOneMode = 'REPEAT_ONE';
+
+export type RepeatMode = typeof noRepeatMode | typeof repeatAllMode | typeof repeatOneMode;
+
+export type PlaylistType = 'track' | 'album' | 'playlist';

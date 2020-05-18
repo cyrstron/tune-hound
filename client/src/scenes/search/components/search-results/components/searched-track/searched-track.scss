@@ -9,15 +9,10 @@
   align-items: flex-start;
 }
 
-.cover-wrapper {
-  display: flex;
-  align-items: center;
-  margin: 5px;
-}
-
 .cover {
   height: 100px;
   width: 100px;
+  margin: 5px;
 }
 
 .info-wrapper {
@@ -33,7 +28,4 @@
 .album-link,
 .artist-link {
   font-weight: bold;
-}
-
-.details {
 }

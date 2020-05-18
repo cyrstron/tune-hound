@@ -7,19 +7,27 @@ import ejs from 'ejs';
 import dotenv from 'dotenv';
 
 dotenv.config({
-  path: path.resolve(__dirname, '../../.env')
+  path: path.resolve(__dirname, '../../.env'),
 });
 
 const app = express();
 const port = process.env.PORT || 3001;
 
+app.get('/manifest.json', async (_req, res) => {
+  res.sendFile(path.resolve(__dirname, '../static/manifest.json'));
+});
+
+app.get('/service-worker.js', async (_req, res) => {
+  res.sendFile(path.resolve(__dirname, '../static/service-worker.js'));
+});
+
 app.get('/login-spotify', (_req, res) => {
   res.redirect(`https://accounts.spotify.com/authorize?${
     qs.stringify({
-      response_type: 'code',
-      client_id: process.env.SPOTIFY_CLIENT_ID,
-      scope: 'user-read-private user-read-email streaming user-read-playback-state user-modify-playback-state user-read-currently-playing',
-      redirect_uri: `${process.env.HOST}/spotify-callback`,
+      'response_type': 'code',
+      'client_id': process.env.SPOTIFY_CLIENT_ID,
+      'scope': 'user-read-private user-read-email streaming user-read-playback-state user-modify-playback-state user-read-currently-playing',
+      'redirect_uri': `${process.env.HOST}/spotify-callback`,
     })
   }`);
 });
@@ -27,18 +35,23 @@ app.get('/login-spotify', (_req, res) => {
 app.get('/login-deezer', (_req, res) => {
   res.redirect(`https://connect.deezer.com/oauth/auth.php?${
     qs.stringify({
-      app_id: process.env.DEEZER_CLIENT_ID,
-      perms: 'basic_access,email,listening_history,offline_access,manage_library,manage_community,delete_library',
-      redirect_uri: `${process.env.HOST}/deezer-callback`,
+      'app_id': process.env.DEEZER_CLIENT_ID,
+      'perms': 'basic_access,email,listening_history,offline_access,manage_library,manage_community,delete_library',
+      'redirect_uri': `${process.env.HOST}/deezer-callback`,
     })
   }`);
 });
 
 app.get('/deezer-channel', async (_req, res) => {
-  res.setHeader("Pragma", "public");
-  res.setHeader("Cache-Control", `maxage=${60 * 60 * 24 * 365}`);
+  res.setHeader('Pragma', 'public');
+  res.setHeader('Cache-Control', `maxage=${60 * 60 * 24 * 365}`);
   res.sendFile(path.resolve(__dirname, './views/deezer-channel.html'));
 });
+
+app.get('/deezer-test', async (_req, res) => {
+  res.sendFile(path.resolve(__dirname, './views/deezer-test.html'));
+});
+
 
 app.get('/spotify-callback', async (req, res) => {
   const code: string | null = req.query.code || null;
@@ -53,26 +66,26 @@ app.get('/spotify-callback', async (req, res) => {
         'expires_in': expiresIn,
         'scope': spotifyScope,
         'error': error,
-      }
+      },
     } = await axios.post<{
-      'access_token'?: string,
-      'refresh_token'?: string,
-      'expires_in'?: string,
-      'scope'?: string,
-      'token_type'?: 'Bearer',
-      'error'?: string,
-      'state'?: string,
-    }>('https://accounts.spotify.com/api/token', 
+      'access_token'?: string;
+      'refresh_token'?: string;
+      'expires_in'?: string;
+      'scope'?: string;
+      'token_type'?: 'Bearer';
+      'error'?: string;
+      'state'?: string;
+    }>('https://accounts.spotify.com/api/token',
       qs.stringify({
         code,
-        redirect_uri: `${process.env.HOST}/spotify-callback`,
-        grant_type: 'authorization_code'
+        'redirect_uri': `${process.env.HOST}/spotify-callback`,
+        'grant_type': 'authorization_code',
       }), {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + (Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString('base64'))
-      },
-    });
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Basic ' + (Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString('base64')),
+        },
+      });
 
     const htmlString = await new Promise((res, rej) => {
       ejs.renderFile(
@@ -82,16 +95,16 @@ app.get('/spotify-callback', async (req, res) => {
           refreshToken,
           error,
           spotifyScope,
-        }, 
+        },
         (err, html) => {
           if (err) {
             rej(err);
           } else {
             res(html);
           }
-        }
+        },
       );
-    }); 
+    });
 
     res.send(htmlString);
   } catch (err) {
@@ -104,32 +117,32 @@ app.get('/deezer-callback', async (req, res) => {
 
   try {
     const {
-      data: {access_token}
+      data: {access_token: accessToken},
     } = await axios.get<{
-      access_token: string,
+      'access_token': string;
     }>('https://connect.deezer.com/oauth/access_token.php?', {
       params: {
-        app_id: process.env.DEEZER_CLIENT_ID,
-        secret: process.env.DEEZER_CLIENT_SECRET,
+        'app_id': process.env.DEEZER_CLIENT_ID,
+        'secret': process.env.DEEZER_CLIENT_SECRET,
         code,
-        output: 'json'
-      }
+        'output': 'json',
+      },
     });
 
     const htmlString = await new Promise((res, rej) => {
       ejs.renderFile(
         path.resolve(__dirname, './views/deezer-redirect.ejs'), {
-          accessToken: access_token,
-        }, 
+          accessToken,
+        },
         (err, html) => {
           if (err) {
             rej(err);
           } else {
             res(html);
           }
-        }
+        },
       );
-    }); 
+    });
 
     res.send(htmlString);
   } catch (err) {
@@ -146,27 +159,27 @@ app.get('/refresh-token', async (req, res) => {
     const authToken = `Basic ${
       Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64')
     }`;
-    
+
     const {
       data: {
         'access_token': accessToken,
         'expires_in': expiresIn,
-      }
+      },
     } = await axios.post<{
-      'access_token': string,
-      'expires_in': string,
+      'access_token': string;
+      'expires_in': string;
     }>('https://accounts.spotify.com/api/token', qs.stringify({
       'grant_type': 'refresh_token',
       'refresh_token': refreshToken,
     }), {
-      headers: { 
+      headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': authToken,
       },
     });
 
     res.send({
-      accessToken, 
+      accessToken,
       expiresIn: dateNow + +expiresIn * 1000,
     });
   } catch (err) {
@@ -174,6 +187,8 @@ app.get('/refresh-token', async (req, res) => {
   }
 });
 
+app.use('/static', express.static(path.resolve(__dirname, '../static')));
+
 app.listen(port, () => {
-  console.log(`Running on ${port}`)
+  console.log(`Running on ${port}`);
 });

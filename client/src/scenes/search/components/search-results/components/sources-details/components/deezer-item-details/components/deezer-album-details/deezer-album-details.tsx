@@ -1,22 +1,26 @@
 import React, {FC} from 'react';
 import classNames from 'classnames/bind';
-import { DeezerAlbumSourceItemFull } from '@app/state/search/types';
-import { TrackList } from '@app/components/tracks';
-import { mapDeezerTracks } from '../../services/mapHelpers';
+import {DeezerAlbumSourceItemFull} from '@app/state/search/types';
+import {TrackList} from '@app/components/tracks';
+import {mapDeezerTracks} from '../../services/mapHelpers';
 
 import styles from './deezer-album-details.scss';
+import {usePlayerFromDetails} from '../../../../hooks/use-player-from-details';
 
 const cx = classNames.bind(styles);
 
 export interface DeezerAlbumDetailsProps {
+  id: string;
   album: DeezerAlbumSourceItemFull;
   className?: string;
 }
 
 const DeezerAlbumDetailsComponent: FC<DeezerAlbumDetailsProps> = ({
-  album: {genres, release_date, tracks: {data: tracks}}, 
-  className
+  id,
+  album: {id: nativeId, genres, 'release_date': releaseDate, tracks: {data: tracks}},
+  className,
 }) => {
+  const playerProps = usePlayerFromDetails(id, 'deezer', nativeId, 'album');
   const mappedTracks = mapDeezerTracks(tracks);
 
   return (
@@ -27,12 +31,15 @@ const DeezerAlbumDetailsComponent: FC<DeezerAlbumDetailsProps> = ({
       {!!mappedTracks.length && (
         <div>
           Tracks:
-          <TrackList tracks={mappedTracks} />
+          <TrackList
+            tracks={mappedTracks}
+            {...playerProps}
+          />
         </div>
       )}
-      <div>Released: {release_date}</div>
+      <div>Released: {releaseDate}</div>
     </div>
   );
-}
+};
 
-export {DeezerAlbumDetailsComponent}
+export {DeezerAlbumDetailsComponent};

@@ -1,9 +1,9 @@
 import {deezerConfig} from 'consts';
 import {toQueryString} from 'services/helpers';
 import {
-  DeezerUserResponse, 
-  DeezerUser, 
-  DeezerSearchOptions, 
+  DeezerUserResponse,
+  DeezerUser,
+  DeezerSearchOptions,
   DeezerSearchResult,
   DeezerAdvancedSearchOptions,
   DeezerSearchResponse,
@@ -16,7 +16,7 @@ import {
   DeezerAlbum,
   DeezerPlaylistFull,
 } from '../types';
-import {getAdvancedSearchString } from './helpers';
+import {getAdvancedSearchString} from './helpers';
 
 const {connectionTimeout} = deezerConfig;
 
@@ -25,7 +25,7 @@ export class DeezerWebApi {
     public dz: DeezerSdk.DZ,
   ) {}
 
-  init(options: DeezerSdk.InitOptions) {    
+  init(options: DeezerSdk.InitOptions): Promise<DeezerSdk.SdkOptions> {
     this.dz.init(options);
 
     return new Promise<DeezerSdk.SdkOptions>((resolve, reject) => {
@@ -79,7 +79,7 @@ export class DeezerWebApi {
         clearTimeout(timerId);
         resolve(!!authResponse && !!authResponse.accessToken);
       });
-    })
+    });
   }
 
   logout(): void {
@@ -95,7 +95,7 @@ export class DeezerWebApi {
           res(response);
         }
       });
-    })
+    });
   }
 
   advancedSearch({
@@ -122,7 +122,7 @@ export class DeezerWebApi {
           res(response);
         }
       });
-    })
+    });
   }
 
   search(options: DeezerSearchOptions): Promise<DeezerSearchResult> {

@@ -1,23 +1,29 @@
 import React, {FC} from 'react';
 import classNames from 'classnames/bind';
-import { SpotifyArtistSourceItemFull } from '@app/state/search/types';
-import { AlbumTiles } from '@app/components/albums';
+import {SpotifyArtistSourceItemFull} from '@app/state/search/types';
+import {AlbumTiles} from '@app/components/albums';
+import {mapSpotifyAlbums, mapSpotifyTracks} from '../../services/mapHelpers';
+import {TrackList} from '@app/components/tracks';
+import {usePlayerFromDetails} from '../../../../hooks/use-player-from-details';
+import {usePlayerById} from '../../../../hooks/use-player-by-id';
 
 import styles from './spotify-artist-details.scss';
-import { mapSpotifyAlbums, mapSpotifyTracks } from '../../services/mapHelpers';
-import { TrackList } from '@app/components/tracks';
 
 const cx = classNames.bind(styles);
 
 export interface SpotifyArtistDetailsProps {
+  id: string;
   artist: SpotifyArtistSourceItemFull;
   className?: string;
 }
 
 const SpotifyArtistDetailsComponent: FC<SpotifyArtistDetailsProps> = ({
-  artist: {topTracks, albums, followers: {total}, genres}, 
+  id,
+  artist: {id: nativeId, topTracks, albums, followers: {total}, genres},
   className,
 }) => {
+  const playerProps = usePlayerFromDetails(id, 'spotify', nativeId);
+  const albumsProps = usePlayerById('album');
   const mappedAlbums = mapSpotifyAlbums(albums);
   const mappedTracks = mapSpotifyTracks(topTracks);
 
@@ -29,18 +35,21 @@ const SpotifyArtistDetailsComponent: FC<SpotifyArtistDetailsProps> = ({
       {!!mappedTracks.length && (
         <div>
           Top tracks:
-          <TrackList tracks={mappedTracks} />
+          <TrackList
+            tracks={mappedTracks}
+            {...playerProps}
+          />
         </div>
       )}
       {!!mappedAlbums.length && (
         <div>
           Albums:
-          <AlbumTiles albums={mappedAlbums} />
+          <AlbumTiles albums={mappedAlbums} {...albumsProps}/>
         </div>
       )}
       <div>{total} followers</div>
     </div>
   );
-}
+};
 
-export {SpotifyArtistDetailsComponent}
+export {SpotifyArtistDetailsComponent};

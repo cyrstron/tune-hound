@@ -15,3 +15,15 @@ export const SET_FLASH_IGNORED = '@app/deezer/SET_FLASH_IGNORED';
 export const SET_DEEZER_DISABLED = '@app/deezer/SET_DEEZER_DISABLED';
 
 export const SET_DEEZER_CURRENT_USER = '@app/deezer/SET_DEEZER_CURRENT_USER';
+
+export const SET_IS_PLAYING = '@app/deezer/SET_IS_PLAYING';
+export const SET_PLAYING_TRACK = '@app/deezer/SET_PLAYING_TRACK';
+export const SET_IS_PLAYER_NOT_MUTED = '@app/deezer/SET_IS_PLAYER_NOT_MUTED';
+export const SET_PLAYER_BUFFERING = '@app/deezer/SET_PLAYER_BUFFERING';
+export const SET_PLAYER_LOADED = '@app/deezer/SET_PLAYER_LOADED';
+export const SET_PLAYER_POSITION = '@app/deezer/SET_PLAYER_POSITION';
+export const SET_REPEAT_MODE = '@app/deezer/SET_REPEAT_MODE';
+export const SET_PLAYER_SHUFFLE = '@app/deezer/SET_PLAYER_SHUFFLE';
+export const DEEZER_TRACK_END = '@app/deezer/DEEZER_TRACK_END';
+export const DEEZER_TRACK_LIST_CHANGED = '@app/deezer/DEEZER_TRACK_LIST_CHANGED';
+export const DEEZER_VOLUME_CHANGED = '@app/deezer/DEEZER_VOLUME_CHANGED';

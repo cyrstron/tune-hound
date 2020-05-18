@@ -1,5 +1,5 @@
 import React, {Component, ChangeEvent, MouseEvent} from 'react';
-import { 
+import {
   DeezerSearchOptions,
   DeezerNamespaceSearchOptions,
 } from '@app/state/deezer/types';
@@ -15,7 +15,7 @@ class DeezerBasicSearchFormComponent extends Component<DeezerBasicSearchFormProp
   onToggleAdvance = (e: MouseEvent) => {
     e.preventDefault();
 
-    this.props.toggleAdvance();    
+    this.props.toggleAdvance();
   }
 
   onQueryChange = ({target}: ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +42,7 @@ class DeezerBasicSearchFormComponent extends Component<DeezerBasicSearchFormProp
           Advanced {isAdvanced ? '⇑' : '⇓'}
         </button>
       </>
-    )
+    );
   }
 }
 

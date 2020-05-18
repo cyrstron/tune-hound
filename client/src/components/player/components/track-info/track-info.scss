@@ -1,0 +1,9 @@
+.track-info {
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  border-radius: 5px;
+
+  &.empty {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}

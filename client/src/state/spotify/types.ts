@@ -6,9 +6,9 @@ export type SpotifyYearSearchTag = number | {
 };
 
 export interface SpotifyBasicAdvancedSearchQuery {
-  and: string[],
-  or?: string[],
-  not?: string[],
+  and: string[];
+  or?: string[];
+  not?: string[];
 }
 
 export interface SpotifyTrackAdvancedSearchQuery extends SpotifyBasicAdvancedSearchQuery {

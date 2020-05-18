@@ -13,42 +13,39 @@ import {
   EXTEND_SEARCH_RESULT_PENDING,
   EXTEND_SEARCH_RESULT_SUCCESS,
   EXTEND_SEARCH_RESULT_FAILURE,
-  SET_OPTIONS_FOR_EXTEND,
   PICK_OPTION_FOR_EXTEND,
   RESET_OPTIONS_FOR_EXTEND,
   FETCH_OPTIONS_FOR_EXTEND,
   FETCH_OPTIONS_FOR_EXTEND_PENDING,
   FETCH_OPTIONS_FOR_EXTEND_FAILURE,
-  FETCH_OPTIONS_FOR_EXTEND_SUCCESS,  
+  FETCH_OPTIONS_FOR_EXTEND_SUCCESS,
   SET_EXTENSION_OFFSET,
   SET_EXTENSION_LIMIT,
   SET_EXTENSION_TOTALS,
   FETCH_NEXT_OPTIONS_FOR_EXTEND,
+  PLAY_SEARCH_RESULT,
 } from './consts';
-import { 
-  SearchSource, 
-  SearchResult, 
+import {
+  SearchSource,
+  SearchResult,
   SearchOptions,
   DeezerSourceItemFull,
   SpotifySourceItemFull,
   SourceItemShort,
-  // DeezerSearchItem, 
-  // SpotifySearchItem, 
-  // SearchItem 
 } from './types';
 import {DeezerSearchOptions} from '../deezer/types';
-import { SpotifySearchOptions } from '../spotify/types';
+import {SpotifySearchOptions} from '../spotify/types';
 
-export interface ExecuteSearchAction  {
-  type: typeof EXECUTE_SEARCH,
+export interface ExecuteSearchAction {
+  type: typeof EXECUTE_SEARCH;
   payload: {
-    source: 'deezer',
-    options: DeezerSearchOptions,
+    source: 'deezer';
+    options: DeezerSearchOptions;
   } | {
-    source: 'spotify',
-    options: SpotifySearchOptions,
-  }
-};
+    source: 'spotify';
+    options: SpotifySearchOptions;
+  };
+}
 
 export const executeSearch = (
   source: SearchSource,
@@ -56,11 +53,11 @@ export const executeSearch = (
 ): ExecuteSearchAction => ({
   type: EXECUTE_SEARCH,
   payload: {source, options} as {
-    source: 'deezer',
-    options: DeezerSearchOptions,
+    source: 'deezer';
+    options: DeezerSearchOptions;
   } | {
-    source: 'spotify',
-    options: SpotifySearchOptions,
+    source: 'spotify';
+    options: SpotifySearchOptions;
   },
 });
 
@@ -97,12 +94,12 @@ export interface ExecuteSearchSuccessAction {
   payload: {
     data: SearchResult[];
     total: number;
-  }
+  };
 }
 
 export const executeSearchSuccess = (
-  data: SearchResult[], 
-  total: number
+  data: SearchResult[],
+  total: number,
 ): ExecuteSearchSuccessAction => ({
   type: EXECUTE_SEARCH_SUCCESS,
   payload: {data, total},
@@ -112,7 +109,7 @@ export interface ExecuteSearchFailureAction {
   type: typeof EXECUTE_SEARCH_FAILURE;
   payload: {
     error: Error;
-  }
+  };
 }
 
 export const executeSearchFailure = (error: Error): ExecuteSearchFailureAction => ({
@@ -156,20 +153,38 @@ export const setSearchPageSize = (pageSize: number): SetSearchPageSizeAction => 
   payload: {pageSize},
 });
 
-export interface ExtendSearchResultAction  {
-  type: typeof EXTEND_SEARCH_RESULT,
+export interface ExtendSearchResultAction {
+  type: typeof EXTEND_SEARCH_RESULT;
   payload: {
-    itemId: string,
-    source: SearchSource,
-  }
-};
+    itemId: string;
+    source: SearchSource;
+  };
+}
 
 export const extendSearchResult = (
   itemId: string,
   source: SearchSource,
 ): ExtendSearchResultAction => ({
   type: EXTEND_SEARCH_RESULT,
-  payload: {itemId, source}
+  payload: {itemId, source},
+});
+
+export interface PlaySearchResultAction {
+  type: typeof PLAY_SEARCH_RESULT;
+  payload: {
+    itemId: string;
+    source?: SearchSource;
+    index?: number;
+  };
+}
+
+export const playSearchResult = (
+  itemId: string,
+  source?: SearchSource,
+  index?: number,
+): PlaySearchResultAction => ({
+  type: PLAY_SEARCH_RESULT,
+  payload: {itemId, source, index},
 });
 
 export interface ExtendSearchResultPendingAction {
@@ -177,7 +192,7 @@ export interface ExtendSearchResultPendingAction {
   payload: {
     itemId: string;
     source: SearchSource;
-  }
+  };
 }
 
 export const extendSearchResultPending = (
@@ -185,7 +200,7 @@ export const extendSearchResultPending = (
   source: SearchSource,
 ): ExtendSearchResultPendingAction => ({
   type: EXTEND_SEARCH_RESULT_PENDING,
-  payload: {itemId, source}
+  payload: {itemId, source},
 });
 
 export interface ExtendSearchResultSuccessAction {
@@ -218,7 +233,7 @@ export interface ExtendSearchResultFailureAction {
     itemId: string;
     source: SearchSource;
     error: Error;
-  }
+  };
 }
 
 export const extendSearchResultFailure = (
@@ -230,32 +245,13 @@ export const extendSearchResultFailure = (
   payload: {itemId, source, error},
 });
 
-
-// export interface SetOptionsForExtendAction {
-//   type: typeof SET_OPTIONS_FOR_EXTEND;
-//   payload: {
-//     itemId: string;
-//     source: SearchSource;
-//     items: SourceItemShort[];
-//   };
-// }
-
-// export const setOptionsForExtend = (
-//   itemId: string,
-//   source: SearchSource,
-//   items: SourceItemShort[],
-// ): SetOptionsForExtendAction => ({
-//   type: SET_OPTIONS_FOR_EXTEND,
-//   payload: {itemId, source, items},
-// });
-
 export interface PickOptionForExtendAction {
   type: typeof PICK_OPTION_FOR_EXTEND;
   payload: {
     itemId: string;
     source: SearchSource;
     pickedItem: SourceItemShort | null;
-  }
+  };
 }
 
 export const pickOptionForExtend = (
@@ -272,7 +268,7 @@ export interface ResetOptionsForExtendAction {
   payload: {
     itemId: string;
     source: SearchSource;
-  }
+  };
 }
 
 export const resetOptionsForExtend = (
@@ -288,7 +284,7 @@ export interface FetchOptionsForExtendAction {
   payload: {
     itemId: string;
     source: SearchSource;
-  }
+  };
 }
 
 export const fetchOptionsForExtend = (
@@ -321,7 +317,7 @@ export interface FetchOptionsForExtendFailureAction {
     itemId: string;
     source: SearchSource;
     error: Error;
-  }
+  };
 }
 
 export const fetchOptionsForExtendFailure = (
@@ -339,7 +335,7 @@ export interface FetchOptionsForExtendSuccessAction {
     itemId: string;
     source: SearchSource;
     results: SourceItemShort[];
-  }
+  };
 }
 
 export const fetchOptionsForExtendSuccess = (
@@ -357,7 +353,7 @@ export interface SetExtensionOffsetAction {
     itemId: string;
     source: SearchSource;
     offset: number;
-  }
+  };
 }
 
 export const setExtensionOffset = (
@@ -375,7 +371,7 @@ export interface SetExtensionLimitAction {
     itemId: string;
     source: SearchSource;
     limit: number;
-  }
+  };
 }
 
 export const setExtensionLimit = (
@@ -393,7 +389,7 @@ export interface SetExtensionTotalsAction {
     itemId: string;
     source: SearchSource;
     totals: Array<number | undefined>;
-  }
+  };
 }
 
 export const setExtensionTotals = (
@@ -410,7 +406,7 @@ export interface FetchNextOptionsForExtendAction {
   payload: {
     itemId: string;
     source: SearchSource;
-  }
+  };
 }
 
 export const fetchNextOptionsForExtend = (
@@ -432,7 +428,7 @@ export type SearchAction = ExecuteSearchAction |
   ExtendSearchResultPendingAction |
   ExtendSearchResultSuccessAction |
   ExtendSearchResultFailureAction |
-  // SetOptionsForExtendAction |
+  PlaySearchResultAction |
   PickOptionForExtendAction |
   ResetSearchAction |
   ResetOptionsForExtendAction |

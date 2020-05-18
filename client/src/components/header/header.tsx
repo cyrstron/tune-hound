@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import classNames from 'classnames/bind';
 
 import styles from './header.scss';
-import { FlashPopup } from './components/flash-popup';
-import { ActivePlayerPopup } from './components/active-player-popup';
+import {FlashPopup} from './components/flash-popup';
+import {ActivePlayerPopup} from './components/active-player-popup';
 
 const cx = classNames.bind(styles);
 
@@ -28,9 +28,9 @@ type Props = HeaderProps;
 class HeaderComponent extends Component<Props> {
   componentDidMount() {
     const {
-      wasDeezerConnected, 
+      wasDeezerConnected,
       connectDeezer,
-      wasSpotifyConnected, 
+      wasSpotifyConnected,
       connectSpotify,
     } = this.props;
 
@@ -57,7 +57,7 @@ class HeaderComponent extends Component<Props> {
 
   connectSpotify = async () => {
     const {connectSpotify} = this.props;
-    
+
     connectSpotify();
   }
 
@@ -69,9 +69,9 @@ class HeaderComponent extends Component<Props> {
 
   render() {
     const {
-      isDeezerPending, 
+      isDeezerPending,
       isDeezerConnected,
-      isSpotifyPending, 
+      isSpotifyPending,
       isSpotifyConnected,
       className,
     } = this.props;
@@ -120,4 +120,4 @@ class HeaderComponent extends Component<Props> {
   }
 }
 
-export {HeaderComponent}
+export {HeaderComponent};
