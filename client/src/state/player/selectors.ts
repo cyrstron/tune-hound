@@ -1,38 +1,38 @@
-import { AppState } from "..";
+import {AppState} from '..';
 import {PlayerSource, PlayerTrack, RepeatMode, repeatOneMode, repeatAllMode, noRepeatMode, PlaylistType} from './types';
-import { calcNextRandomIndex } from "./services";
+import {calcNextRandomIndex} from './services';
 
-export const selectIsMuted = (state: AppState) => {
+export const selectIsMuted = (state: AppState): boolean => {
   return state.player.isMuted;
-}
+};
 
-export const selectVolume = (state: AppState) => {
+export const selectVolume = (state: AppState): number => {
   return state.player.volume;
-}
+};
 
 export const selectCurrentTrack = (state: AppState): PlayerTrack | undefined => {
   return state.player.currentTrack;
-}
+};
 
 export const selectCurrentIndex = (state: AppState): number | undefined => {
   return state.player.currentTrackIndex;
-}
+};
 
 export const selectPlayingSource = (state: AppState): PlayerSource | undefined => {
   return selectCurrentTrack(state)?.source;
-}
+};
 
 export const selectIsPlaying = (state: AppState): boolean => {
   return state.player.isPlaying;
-}
+};
 
 export const selectPlaylist = (state: AppState): PlayerTrack[] => {
   return state.player.playlist;
-}
+};
 
 export const selectPosition = (state: AppState): number | undefined => {
   return state.player.position;
-}
+};
 
 export const selectRepeatMode = (state: AppState): RepeatMode => {
   return state.player.repeatMode;
@@ -53,14 +53,6 @@ export const selectPlayerHistory = (state: AppState): number[] => {
 export const selectIsPlayerPending = (state: AppState): boolean => {
   return state.player.isPending;
 };
-
-export const selectHasNextTrack = (state: AppState): boolean => {
-  return selectPlaylist(state).length > 1 && selectNextIndex(state) !== undefined;
-}
-
-export const selectHasPrevTrack = (state: AppState): boolean => {
-  return selectPlaylist(state).length > 1 && selectPrevIndex(state) !== undefined;
-}
 
 export const selectNextIndex = (state: AppState): number | undefined => {
   const currentIndex = selectCurrentIndex(state);
@@ -84,15 +76,23 @@ export const selectNextIndex = (state: AppState): number | undefined => {
   } else if (playedIndexes.length === tracks.length) {
     return calcNextRandomIndex(tracks.length, []);
   }
-  
+
   return calcNextRandomIndex(tracks.length, playedIndexes);
-}
+};
 
 export const selectPrevIndex = (state: AppState): number | undefined => {
   const history = selectPlayerHistory(state);
 
   return history[history.length - 2];
-}
+};
+
+export const selectHasNextTrack = (state: AppState): boolean => {
+  return selectPlaylist(state).length > 1 && selectNextIndex(state) !== undefined;
+};
+
+export const selectHasPrevTrack = (state: AppState): boolean => {
+  return selectPlaylist(state).length > 1 && selectPrevIndex(state) !== undefined;
+};
 
 export const selectPlaylistId = (state: AppState): string | undefined => (
   state.player.playlistId
@@ -107,7 +107,7 @@ export const selectPlaylistType = (state: AppState): PlaylistType | undefined =>
 );
 
 export const selectIsPlaylistActive = (
-  state: AppState, 
+  state: AppState,
   id: string,
   type: PlaylistType = 'playlist',
 ): boolean => {
@@ -115,10 +115,10 @@ export const selectIsPlaylistActive = (
   const playlistType = selectPlaylistType(state);
 
   return id === playlistId && type === playlistType;
-}
+};
 
 export const selectIsNativePlaylistActive = (
-  state: AppState, 
+  state: AppState,
   nativeId: string | number,
   type: PlaylistType = 'playlist',
 ): boolean => {
@@ -126,7 +126,7 @@ export const selectIsNativePlaylistActive = (
   const playlistType = selectPlaylistType(state);
 
   return nativeId === playlistId && type === playlistType;
-}
+};
 
 export const selectIsAlbumActive = (state: AppState, id: string): boolean => (
   selectIsPlaylistActive(state, id, 'album')

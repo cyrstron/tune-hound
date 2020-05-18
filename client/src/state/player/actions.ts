@@ -1,11 +1,11 @@
-import { 
-  PLAY_TRACK, 
-  PAUSE, 
-  PLAY, 
-  SET_PLAYLIST, 
-  SET_IS_MUTED, 
-  SET_VOLUME, 
-  SET_IS_PLAYING, 
+import {
+  PLAY_TRACK,
+  PAUSE,
+  PLAY,
+  SET_PLAYLIST,
+  SET_IS_MUTED,
+  SET_VOLUME,
+  SET_IS_PLAYING,
   SET_CURRENT_TRACK,
   RESET_CURRENT_TRACK,
   SEEK,
@@ -20,9 +20,32 @@ import {
   SET_IS_PENDING,
   PLAY_BY_SOURCE_ID,
   SET_PLAYER_ERROR,
-} from "./consts";
-import { PlayerTrack, RepeatMode, PlaylistType } from "./types";
-import { SearchSource } from "../search/types";
+} from './consts';
+import {PlayerTrack, RepeatMode, PlaylistType} from './types';
+import {SearchSource} from '../search/types';
+
+
+export interface SetPlaylistAction {
+  type: typeof SET_PLAYLIST;
+  payload: {
+    tracks: PlayerTrack[];
+    type: PlaylistType;
+    id: string;
+    nativeId?: string | number;
+    index?: number;
+  };
+}
+
+export const setPlaylist = (
+  id: string,
+  type: PlaylistType,
+  tracks: PlayerTrack[],
+  nativeId?: string | number,
+  index?: number,
+): SetPlaylistAction => ({
+  type: SET_PLAYLIST,
+  payload: {id, type, tracks, nativeId, index},
+});
 
 export interface PlayTrackAction {
   type: typeof PLAY_TRACK;
@@ -32,25 +55,25 @@ export interface PlayTrackAction {
 }
 
 export const playTrack = (
-  id: string, 
-  track: PlayerTrack, 
+  id: string,
+  track: PlayerTrack,
   nativeId?: string | number,
   index?: number,
-) => setPlaylist(id, 'track', [track], nativeId, index);
+): SetPlaylistAction => setPlaylist(id, 'track', [track], nativeId, index);
 
 export const playAlbum = (
-  id: string, 
-  tracks: PlayerTrack[], 
+  id: string,
+  tracks: PlayerTrack[],
   nativeId?: string | number,
   index?: number,
-) => setPlaylist(id, 'album', tracks,  nativeId, index);
+): SetPlaylistAction => setPlaylist(id, 'album', tracks, nativeId, index);
 
 export const playPlaylist = (
-  id: string, 
-  tracks: PlayerTrack[], 
+  id: string,
+  tracks: PlayerTrack[],
   nativeId?: string | number,
   index?: number,
-) => setPlaylist(id, 'playlist', tracks,  nativeId, index);
+): SetPlaylistAction => setPlaylist(id, 'playlist', tracks, nativeId, index);
 
 export interface PauseAction {
   type: typeof PAUSE;
@@ -86,7 +109,7 @@ export const playPrev = (): PlayPrevAction => ({
 
 export interface SeekAction {
   type: typeof SEEK;
-  payload: {position: number}
+  payload: {position: number};
 }
 
 export const seek = (position: number): SeekAction => ({
@@ -124,28 +147,6 @@ export const setIsPlaying = (isPlaying: boolean): SetIsPlayingAction => ({
   payload: {isPlaying},
 });
 
-export interface SetPlaylistAction {
-  type: typeof SET_PLAYLIST;
-  payload: {
-    tracks: PlayerTrack[];
-    type: PlaylistType;
-    id: string;
-    nativeId?: string | number;
-    index?: number;
-  };
-}
-
-export const setPlaylist = (
-  id: string, 
-  type: PlaylistType, 
-  tracks: PlayerTrack[], 
-  nativeId?: string | number, 
-  index?: number,
-): SetPlaylistAction => ({
-  type: SET_PLAYLIST,
-  payload: {id, type, tracks, nativeId, index},
-});
-
 export interface PlayBySourceIdAction {
   type: typeof PLAY_BY_SOURCE_ID;
   payload: {
@@ -156,8 +157,8 @@ export interface PlayBySourceIdAction {
 }
 
 export const playBySourceId = (
-  id: string | number, 
-  type: PlaylistType, 
+  id: string | number,
+  type: PlaylistType,
   source: SearchSource,
 ): PlayBySourceIdAction => ({
   type: PLAY_BY_SOURCE_ID,
@@ -166,7 +167,7 @@ export const playBySourceId = (
 
 export interface SetIsMutedAction {
   type: typeof SET_IS_MUTED;
-  payload: {isMuted: boolean;};
+  payload: {isMuted: boolean};
 }
 
 export const setIsMuted = (isMuted: boolean): SetIsMutedAction => ({
@@ -176,7 +177,7 @@ export const setIsMuted = (isMuted: boolean): SetIsMutedAction => ({
 
 export interface SetVolumeAction {
   type: typeof SET_VOLUME;
-  payload: {volume: number;};
+  payload: {volume: number};
 }
 
 export const setVolume = (volume: number): SetVolumeAction => ({
@@ -186,7 +187,7 @@ export const setVolume = (volume: number): SetVolumeAction => ({
 
 export interface SetRepeatModeAction {
   type: typeof SET_REPEAT_MODE;
-  payload: {repeatMode: RepeatMode;};
+  payload: {repeatMode: RepeatMode};
 }
 
 export const setRepeatMode = (repeatMode: RepeatMode): SetRepeatModeAction => ({
@@ -196,7 +197,7 @@ export const setRepeatMode = (repeatMode: RepeatMode): SetRepeatModeAction => ({
 
 export interface SetIsShuffledAction {
   type: typeof SET_IS_SHUFFLED;
-  payload: {isShuffled: boolean;};
+  payload: {isShuffled: boolean};
 }
 
 export const setIsShuffled = (isShuffled: boolean): SetIsShuffledAction => ({
@@ -206,7 +207,7 @@ export const setIsShuffled = (isShuffled: boolean): SetIsShuffledAction => ({
 
 export interface SetPositionAction {
   type: typeof SET_POSITION;
-  payload: {position: number;};
+  payload: {position: number};
 }
 
 export const setPosition = (position: number): SetPositionAction => ({
@@ -216,7 +217,7 @@ export const setPosition = (position: number): SetPositionAction => ({
 
 export interface SetPlayerHistoryAction {
   type: typeof SET_PLAYER_HISTORY;
-  payload: {history: number[];};
+  payload: {history: number[]};
 }
 
 export const setPlayerHistory = (history: number[]): SetPlayerHistoryAction => ({
@@ -226,10 +227,14 @@ export const setPlayerHistory = (history: number[]): SetPlayerHistoryAction => (
 
 export interface SetCurrentTrackAction {
   type: typeof SET_CURRENT_TRACK;
-  payload: {track: PlayerTrack, index: number; isAutoplay: boolean};
+  payload: {track: PlayerTrack; index: number; isAutoplay: boolean};
 }
 
-export const setCurrentTrack = (track: PlayerTrack, index: number = 0, isAutoplay: boolean = false): SetCurrentTrackAction => ({
+export const setCurrentTrack = (
+  track: PlayerTrack,
+  index = 0,
+  isAutoplay = false,
+): SetCurrentTrackAction => ({
   type: SET_CURRENT_TRACK,
   payload: {track, index, isAutoplay},
 });
@@ -258,16 +263,16 @@ export const resetPlayedIndexes = (): ResetPlayedIndexesAction => ({
   type: RESET_PLAYED_INDEXES,
 });
 
-export type PlayerAction = 
-  | SetPlayerErrorAction 
+export type PlayerAction =
+  | SetPlayerErrorAction
   | SetPlayerHistoryAction
-  | PauseAction 
+  | PauseAction
   | PlayAction
   | SeekAction
   | PlayPrevAction
-  | SetPlaylistAction 
+  | SetPlaylistAction
   | SetIsMutedAction
-  | SetIsPlayingAction 
+  | SetIsPlayingAction
   | SetIsPlayerPendingAction
   | SetCurrentTrackAction
   | ResetCurrentTrackAction

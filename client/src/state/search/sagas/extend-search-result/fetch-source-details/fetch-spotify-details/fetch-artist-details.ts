@@ -1,10 +1,10 @@
-import { SpotifyService } from "@app/state/spotify/services/spotify-service";
-import { SPOTIFY_SERVICE_CTX_KEY } from "@app/consts";
-import {call, getContext, all} from 'redux-saga/effects'
-import { retrieveAccessToken } from "@app/state/spotify/sagas/retrieve-access-token";
-import { SpotifyArtistSourceItemShort, SpotifyArtistSourceItemFull } from "@app/state/search/types";
+import {SpotifyService} from '@app/state/spotify/services/spotify-service';
+import {SPOTIFY_SERVICE_CTX_KEY} from '@app/consts';
+import {call, getContext, all} from 'redux-saga/effects';
+import {retrieveAccessToken} from '@app/state/spotify/sagas/retrieve-access-token';
+import {SpotifyArtistSourceItemShort, SpotifyArtistSourceItemFull} from '@app/state/search/types';
 
-export function* fetchArtistDetails(artist: SpotifyArtistSourceItemShort) {
+export function* fetchArtistDetails(artist: SpotifyArtistSourceItemShort): any {
   const spotifyService: SpotifyService = yield getContext(SPOTIFY_SERVICE_CTX_KEY);
 
   const accessToken: string = yield call(retrieveAccessToken);
@@ -17,7 +17,7 @@ export function* fetchArtistDetails(artist: SpotifyArtistSourceItemShort) {
     spotifyService.api.getArtistTopTracks(artist.id, accessToken),
   ]);
 
-  const result: SpotifyArtistSourceItemFull =  {
+  const result: SpotifyArtistSourceItemFull = {
     ...artist,
     albums,
     topTracks,

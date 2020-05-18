@@ -1,24 +1,22 @@
-import {takeEvery, getContext, put, select, call, all } from 'redux-saga/effects';
-import { SET_CURRENT_TRACK } from '@app/state/player/consts';
-import { SPOTIFY_SERVICE_CTX_KEY } from '@app/consts';
-import { SetCurrentTrackAction } from '@app/state/player/actions';
-import { SpotifyService } from '@app/state/spotify/services/spotify-service';
-import { selectSpotifyCurrentTrack, selectSpotifyPlayerDeviceId } from '@app/state/spotify/selectors';
-import { retrieveAccessToken } from '@app/state/spotify/sagas/retrieve-access-token';
-import { setSpotifyPlayerError } from '@app/state/spotify/actions';
+import {takeEvery, getContext, put, select, call, all} from 'redux-saga/effects';
+import {SET_CURRENT_TRACK} from '@app/state/player/consts';
+import {SPOTIFY_SERVICE_CTX_KEY} from '@app/consts';
+import {SetCurrentTrackAction} from '@app/state/player/actions';
+import {SpotifyService} from '@app/state/spotify/services/spotify-service';
+import {selectSpotifyCurrentTrack, selectSpotifyPlayerDeviceId} from '@app/state/spotify/selectors';
+import {retrieveAccessToken} from '@app/state/spotify/sagas/retrieve-access-token';
+import {setSpotifyPlayerError} from '@app/state/spotify/actions';
 
-export function* watchCurrentTrack() {
-  yield takeEvery(SET_CURRENT_TRACK, setCurrentTrack);
-}
-
-export function* setCurrentTrack({payload: {track, isAutoplay}}: SetCurrentTrackAction) {
+export function* setCurrentTrack({
+  payload: {track, isAutoplay},
+}: SetCurrentTrackAction): any {
   const spotifyService: SpotifyService = yield getContext(SPOTIFY_SERVICE_CTX_KEY);
 
   if (track.source !== 'spotify') return;
 
   const [
-    currentTrack, 
-    deviceId, 
+    currentTrack,
+    deviceId,
   ]: [Spotify.Track | undefined, string] = yield all([
     select(selectSpotifyCurrentTrack),
     select(selectSpotifyPlayerDeviceId),
@@ -41,4 +39,8 @@ export function* setCurrentTrack({payload: {track, isAutoplay}}: SetCurrentTrack
 
     yield put(errorAction);
   }
+}
+
+export function* watchCurrentTrack(): any {
+  yield takeEvery(SET_CURRENT_TRACK, setCurrentTrack);
 }

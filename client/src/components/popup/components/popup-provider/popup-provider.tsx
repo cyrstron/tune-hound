@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { PopupCtxProvider } from '.';
+import {PopupCtxProvider} from '.';
 
 export interface PopupProviderState {
   container?: HTMLDivElement;

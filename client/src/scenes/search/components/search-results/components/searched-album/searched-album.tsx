@@ -1,17 +1,17 @@
 import React, {FC, Fragment, useCallback} from 'react';
 import classNames from 'classnames/bind';
-import { SearchedAlbum } from '@app/state/search/types';
+import {SearchedAlbum} from '@app/state/search/types';
 import {SourceLink} from '@app/components/source-link';
-import { SourceDetails } from '../sources-details';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '@app/state';
-import { selectIsAlbumActive, selectIsPlaying, selectIsPlayerPending } from '@app/state/player/selectors';
-import { pause, play } from '@app/state/player/actions';
-import { CoverPlayBtn } from '@app/components/cover-play-btn';
+import {SourceDetails} from '../sources-details';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppState} from '@app/state';
+import {selectIsAlbumActive, selectIsPlaying, selectIsPlayerPending} from '@app/state/player/selectors';
+import {pause} from '@app/state/player/actions';
+import {CoverPlayBtn} from '@app/components/cover-play-btn';
 
 import styles from './searched-album.scss';
-import { playSearchResult } from '@app/state/search';
-import { selectOneOfExtensionsPending } from '@app/state/search/selectors';
+import {playSearchResult} from '@app/state/search';
+import {selectOneOfExtensionsPending} from '@app/state/search/selectors';
 
 const cx = classNames.bind(styles);
 
@@ -36,7 +36,9 @@ const SearchedAlbumComponent: FC<SearchedAlbumProps> = ({album, className}) => {
   const isPlaying = useSelector(selectIsPlaying);
   const isPending = useSelector(selectIsPlayerPending);
 
-  const isExtending = useSelector<AppState, boolean>((state) => selectOneOfExtensionsPending(state, id));
+  const isExtending = useSelector<AppState, boolean>(
+    (state) => selectOneOfExtensionsPending(state, id),
+  );
 
   const onPlay = useCallback(() => {
     const action = playSearchResult(id);
@@ -53,7 +55,7 @@ const SearchedAlbumComponent: FC<SearchedAlbumProps> = ({album, className}) => {
   return (
     <article className={cx('album', className)}>
       <div className={cx('content')}>
-        <CoverPlayBtn 
+        <CoverPlayBtn
           src={coverUrl}
           title={`"${album.title}" by ${artists.join(', ')}`}
           className={cx('cover')}
@@ -67,7 +69,7 @@ const SearchedAlbumComponent: FC<SearchedAlbumProps> = ({album, className}) => {
           <h1 className={cx('album-title')}>
             <SourceLink
               externalUrls={{
-                spotifyUrl: spotify?.external_urls.spotify,
+                spotifyUrl: spotify?.['external_urls'].spotify,
                 deezerUrl: deezer?.link,
               }}
             >
@@ -82,7 +84,7 @@ const SearchedAlbumComponent: FC<SearchedAlbumProps> = ({album, className}) => {
                 <SourceLink
                   className={cx('artist-link')}
                   externalUrls={{
-                    spotifyUrl: spotify?.artists.find(({name}) => name === artist)?.external_urls.spotify,
+                    spotifyUrl: spotify?.artists.find(({name}) => name === artist)?.['external_urls'].spotify,
                     deezerUrl: deezer?.artist.link,
                   }}
                 >
@@ -93,16 +95,16 @@ const SearchedAlbumComponent: FC<SearchedAlbumProps> = ({album, className}) => {
             ))}
           </div>
           <SourceDetails
-            id={id} 
-            isCrossExtendable={isCrossExtendable} 
-            spotify={spotify} 
-            deezer={deezer} 
-            className={cx('details')} 
+            id={id}
+            isCrossExtendable={isCrossExtendable}
+            spotify={spotify}
+            deezer={deezer}
+            className={cx('details')}
           />
         </div>
       </div>
     </article>
   );
-}
+};
 
 export {SearchedAlbumComponent};

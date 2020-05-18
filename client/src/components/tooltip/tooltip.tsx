@@ -20,4 +20,4 @@ const Tooltip: FC<TooltipProps> = ({children, className, parent}) => {
   );
 };
 
-export {Tooltip}
+export {Tooltip};

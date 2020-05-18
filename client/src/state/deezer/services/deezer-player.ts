@@ -4,61 +4,61 @@ export class DeezerPlayer {
   ) {}
 
   playTracks(
-    tracksIds: number[], 
-    isAutoPlay: boolean = true, 
-    index: number = 0, 
-    trackOffset: number = 0,
-  ) {
-    return new Promise((res) => {
+    tracksIds: number[],
+    isAutoPlay = true,
+    index = 0,
+    trackOffset = 0,
+  ): Promise<DeezerSdk.PlayQueue> {
+    return new Promise<DeezerSdk.PlayQueue>((res) => {
       this.player.playTracks(tracksIds as any[] as string[], isAutoPlay, index, trackOffset, res);
     });
   }
 
-  play() {
+  play(): void {
     this.player.play();
   }
 
-  seek(position: number) {
+  seek(position: number): void {
     this.player.seek(position);
   }
 
-  pause() {
+  pause(): void {
     this.player.pause();
   }
 
-  getTrackList() {
+  getTrackList(): DeezerSdk.Track[] {
     return this.player.getTrackList();
   }
 
-  getVolume() {
+  getVolume(): number {
     return this.player.getVolume();
   }
 
-  setVolume(volume: number) {
+  setVolume(volume: number): void {
     this.player.setVolume(volume);
   }
 
-  getShuffle() {
+  getShuffle(): boolean {
     return this.player.getShuffle();
   }
 
-  getRepeat() {
+  getRepeat(): DeezerSdk.RepeatMode {
     return this.player.getRepeat();
   }
 
-  getMute() {
+  getMute(): boolean {
     return this.player.getMute();
   }
 
-  setMute(isMuted: boolean) {
+  setMute(isMuted: boolean): void {
     this.player.setMute(isMuted);
   }
 
-  getCurrentTrack() {
+  getCurrentTrack(): DeezerSdk.Track | null {
     return this.player.getCurrentTrack() as DeezerSdk.Track | null;
   }
 
-  getCurrentIndex() {
+  getCurrentIndex(): number | null {
     return this.player.getCurrentIndex() as number | null;
   }
 }

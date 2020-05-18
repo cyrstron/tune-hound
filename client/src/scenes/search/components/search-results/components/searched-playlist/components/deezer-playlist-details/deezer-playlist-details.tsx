@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import { DeezerPlaylistSourceItemFull } from '@app/state/search/types';
+import {DeezerPlaylistSourceItemFull} from '@app/state/search/types';
 
 export interface DeezerPlaylistDetailsProps {
   playlist: DeezerPlaylistSourceItemFull;
@@ -10,7 +10,7 @@ const DeezerPlaylistDetailsComponent: FC<DeezerPlaylistDetailsProps> = ({playlis
     <div>
       {playlist.title}
     </div>
-  )
-}
+  );
+};
 
-export {DeezerPlaylistDetailsComponent}
+export {DeezerPlaylistDetailsComponent};

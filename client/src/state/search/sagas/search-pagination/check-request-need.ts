@@ -1,11 +1,11 @@
 import {all, select} from 'redux-saga/effects';
-import { SearchResult } from "../../types";
-import { selectTotalItems, selectSearchResult } from "../../selectors";
+import {SearchResult} from '../../types';
+import {selectTotalItems, selectSearchResult} from '../../selectors';
 
-export function* checkIsRequestNeeded(pageIndex: number, pageSize: number) {
+export function* checkIsRequestNeeded(pageIndex: number, pageSize: number): any {
   const [
     totalItems,
-    results
+    results,
   ]: [number, SearchResult[]] = yield all([
     select(selectTotalItems),
     select(selectSearchResult),
@@ -15,7 +15,7 @@ export function* checkIsRequestNeeded(pageIndex: number, pageSize: number) {
 
   const requiredPageSize = Math.min(totalItems - pageIndex * pageSize, pageSize);
   const resultsPageSize = results?.slice(
-    (pageIndex * pageSize), 
+    (pageIndex * pageSize),
     (pageIndex + 1) * pageSize
   )
     .filter((item) => !!item)

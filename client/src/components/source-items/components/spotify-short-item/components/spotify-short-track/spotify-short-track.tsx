@@ -11,14 +11,14 @@ export interface SpotifyShortTrackProps {
 }
 
 const SpotifyShortTrackComponent: FC<SpotifyShortTrackProps> = ({
-  track: {name, artists}, 
+  track: {name, artists},
   className,
 }) => {
   return (
     <div className={cx('track', className)}>
       <div><b>{name}</b> by <b>{artists.map(({name}) => name).join(', ')}</b></div>
     </div>
-  )
-}
+  );
+};
 
-export {SpotifyShortTrackComponent}
+export {SpotifyShortTrackComponent};

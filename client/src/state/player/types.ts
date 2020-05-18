@@ -1,4 +1,4 @@
-import { SearchSource } from "../search/types";
+import {SearchSource} from '../search/types';
 
 export type PlayerSource = SearchSource | 'url';
 
@@ -8,9 +8,9 @@ export type PlayerTrack = {
   albumTitle: string;
   duration: number;
 } & (
-  {source: 'url', trackSource: {url: string}} |
-  {source: 'deezer', trackSource: {id: number}} |
-  {source: 'spotify', trackSource: {id: string}}
+  {source: 'url'; trackSource: {url: string}} |
+  {source: 'deezer'; trackSource: {id: number}} |
+  {source: 'spotify'; trackSource: {id: string}}
 );
 
 export const noRepeatMode = 'NO_REPEAT';

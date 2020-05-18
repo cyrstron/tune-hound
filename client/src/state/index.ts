@@ -1,25 +1,26 @@
 import createSagaMiddleware from 'redux-saga';
-import { composeWithDevTools } from "redux-devtools-extension";
+import {composeWithDevTools} from 'redux-devtools-extension';
 import axios from 'axios';
-import {combineReducers, createStore, applyMiddleware} from 'redux';
+import {combineReducers, createStore, applyMiddleware, Store, CombinedState} from 'redux';
 import {DEEZER_SERVICE_CTX_KEY, SPOTIFY_SERVICE_CTX_KEY, AXIOS_CTX_KEY, AUDIO_SERVICE_CTX_KEY} from 'consts';
 
-import { SpotifyService } from './spotify/services/spotify-service';
-import { SpotifyWebApi } from './spotify/services/spotify-web-api';
+import {SpotifyService} from './spotify/services/spotify-service';
+import {SpotifyWebApi} from './spotify/services/spotify-web-api';
 
 import {authReducer, AuthState} from './auth';
-import { 
-  deezerReducer, 
-  DeezerState,  
-  DeezerService 
+import {
+  deezerReducer,
+  DeezerState,
+  DeezerService,
 } from './deezer';
-import { SearchState, searchReducer } from './search';
-import { SpotifyState, spotifyReducer } from './spotify';
-import { PlayerState, playerReducer } from './player';
+import {SearchState, searchReducer} from './search';
+import {SpotifyState, spotifyReducer} from './spotify';
+import {PlayerState, playerReducer} from './player';
 
-import { rootSaga } from './sagas';
-import { AudioService } from './audio-player/services/audio-service';
-import { audioReducer, AudioState } from './audio-player';
+import {rootSaga} from './sagas';
+import {AudioService} from './audio-player/services/audio-service';
+import {audioReducer, AudioState} from './audio-player';
+import {AppAction} from './actions';
 export interface AppState {
   auth: AuthState;
   deezer: DeezerState;
@@ -29,7 +30,7 @@ export interface AppState {
   audio: AudioState;
 }
 
-export const createAppStore = () => {
+export const createAppStore = (): Store<CombinedState<AppState>, AppAction> => {
   const rootReducer = combineReducers<AppState>({
     auth: authReducer,
     audio: audioReducer,
@@ -49,7 +50,7 @@ export const createAppStore = () => {
       [SPOTIFY_SERVICE_CTX_KEY]: new SpotifyService(spotifyWebApi),
       [AXIOS_CTX_KEY]: axiosInstance,
       [AUDIO_SERVICE_CTX_KEY]: new AudioService(),
-    }
+    },
   });
 
   const store = createStore(
@@ -60,4 +61,4 @@ export const createAppStore = () => {
   sagaMiddleware.run(rootSaga);
 
   return store;
-}
+};

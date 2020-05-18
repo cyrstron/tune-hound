@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
 import classNames from 'classnames/bind';
-import { DeezerArtistSourceItemFull } from '@app/state/search/types';
-import { AlbumTiles } from '@app/components/albums';
-import { TrackList } from '@app/components/tracks';
+import {DeezerArtistSourceItemFull} from '@app/state/search/types';
+import {AlbumTiles} from '@app/components/albums';
+import {TrackList} from '@app/components/tracks';
 import {mapDeezerAlbums, mapDeezerTracks} from '../../services/mapHelpers';
-import { usePlayerFromDetails } from '../../../../hooks/use-player-from-details';
-import { usePlayerById } from '../../../../hooks/use-player-by-id';
+import {usePlayerFromDetails} from '../../../../hooks/use-player-from-details';
+import {usePlayerById} from '../../../../hooks/use-player-by-id';
 
 import styles from './deezer-artist-details.scss';
 
@@ -19,7 +19,7 @@ export interface DeezerArtistDetailsProps {
 
 const DeezerArtistDetailsComponent: FC<DeezerArtistDetailsProps> = ({
   id,
-  artist: {id: nativeId, topTracks: {data: tracks}, albums: {data: albums}, nb_fan}, 
+  artist: {id: nativeId, topTracks: {data: tracks}, albums: {data: albums}, 'nb_fan': fansNumber},
   className,
 }) => {
   const playerProps = usePlayerFromDetails(id, 'deezer', nativeId);
@@ -32,8 +32,8 @@ const DeezerArtistDetailsComponent: FC<DeezerArtistDetailsProps> = ({
       {!!mappedTracks.length && (
         <div>
           Top tracks:
-          <TrackList 
-            tracks={mappedTracks} 
+          <TrackList
+            tracks={mappedTracks}
             {...playerProps}
           />
         </div>
@@ -44,9 +44,9 @@ const DeezerArtistDetailsComponent: FC<DeezerArtistDetailsProps> = ({
           <AlbumTiles albums={mappedAlbums} {...albumProps} />
         </div>
       )}
-      <div>{nb_fan} fans</div>
+      <div>{fansNumber} fans</div>
     </div>
   );
-}
+};
 
-export {DeezerArtistDetailsComponent}
+export {DeezerArtistDetailsComponent};

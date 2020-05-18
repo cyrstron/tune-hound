@@ -21,5 +21,14 @@
   "homepage": "https://github.com/cyrstron/tune-hound#readme",
   "dependencies": {
     "concurrently": "^5.1.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
+    "eslint": "^7.0.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.2",
+    "typescript": "^3.9.2"
   }
 }

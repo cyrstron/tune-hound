@@ -1,14 +1,18 @@
 import {call, select} from 'redux-saga/effects';
 import {v4 as uuid} from 'uuid';
-import { getContext } from "redux-saga/effects";
-import { SPOTIFY_SERVICE_CTX_KEY } from "@app/consts";
-import { checkSpotifyTokenSaga } from "@app/state/spotify/sagas/check-token";
-import { SpotifySearchOptions } from '@app/state/spotify/types';
-import { SpotifyService } from '@app/state/spotify/services/spotify-service';
-import { selectSpotifyAccessToken } from '@app/state/spotify';
-import { SearchResult } from '../../types';
+import {getContext} from 'redux-saga/effects';
+import {SPOTIFY_SERVICE_CTX_KEY} from '@app/consts';
+import {checkSpotifyTokenSaga} from '@app/state/spotify/sagas/check-token';
+import {SpotifySearchOptions} from '@app/state/spotify/types';
+import {SpotifyService} from '@app/state/spotify/services/spotify-service';
+import {selectSpotifyAccessToken} from '@app/state/spotify';
+import {SearchResult} from '../../types';
 
-export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageIndex: number, pageSize: number) {
+export function* executeSpotifySearchSaga(
+  options: SpotifySearchOptions,
+  pageIndex: number,
+  pageSize: number,
+): any {
   const spotifySearch: SpotifyService = yield getContext(SPOTIFY_SERVICE_CTX_KEY);
 
   yield call(checkSpotifyTokenSaga);
@@ -16,9 +20,9 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
   const accessToken: string = yield select(selectSpotifyAccessToken);
 
   const {
-    tracks, 
-    albums, 
-    playlists, 
+    tracks,
+    albums,
+    playlists,
     artists,
   }: SpotifyApi.SearchResponse = yield spotifySearch.search({
     ...options,
@@ -43,7 +47,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
       isCrossExtendable: true,
       sources: {
         spotify: item,
-      }
+      },
     }));
 
     totalNumber = total;
@@ -60,7 +64,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
       isCrossExtendable: true,
       sources: {
         spotify: item,
-      }
+      },
     }));
 
     totalNumber = total;
@@ -80,7 +84,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
       isCrossExtendable: false,
       sources: {
         spotify: item,
-      }
+      },
     }));
 
     totalNumber = total;
@@ -95,7 +99,7 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
       isCrossExtendable: true,
       sources: {
         spotify: item,
-      }
+      },
     }));
 
     totalNumber = total;
@@ -104,5 +108,5 @@ export function* executeSpotifySearchSaga(options: SpotifySearchOptions, pageInd
   return {
     results,
     total: totalNumber,
-  }
-};
+  };
+}

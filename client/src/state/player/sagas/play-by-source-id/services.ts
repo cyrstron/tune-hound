@@ -1,5 +1,5 @@
-import { PlayerTrack } from "@app/state/player/types";
-import { DeezerPlaylistFull, DeezerTrack, DeezerAlbumFull } from "@app/state/deezer/types";
+import {PlayerTrack} from '@app/state/player/types';
+import {DeezerPlaylistFull, DeezerTrack, DeezerAlbumFull} from '@app/state/deezer/types';
 
 export const mapPlayerTrackFromDeezer = (track: DeezerTrack, canPlay: boolean): PlayerTrack => {
   return {
@@ -13,8 +13,8 @@ export const mapPlayerTrackFromDeezer = (track: DeezerTrack, canPlay: boolean): 
 };
 
 export const mapPlayerTrackFromSpotify = (
-  track: SpotifyApi.TrackObjectSimplified & {album: SpotifyApi.AlbumObjectSimplified}, 
-  canPlay: boolean
+  track: SpotifyApi.TrackObjectSimplified & {album: SpotifyApi.AlbumObjectSimplified},
+  canPlay: boolean,
 ): PlayerTrack => {
   return {
     source: canPlay ? 'spotify' : 'url',
@@ -26,20 +26,31 @@ export const mapPlayerTrackFromSpotify = (
   } as PlayerTrack;
 };
 
-export const mapPlayerAlbumFromDeezer = (album: DeezerAlbumFull, canPlay: boolean): PlayerTrack[] => {
+export const mapPlayerAlbumFromDeezer = (
+  album: DeezerAlbumFull,
+  canPlay: boolean,
+): PlayerTrack[] => {
   return album.tracks.data.map((track) => mapPlayerTrackFromDeezer({...track, album}, canPlay));
 };
 
-export const mapPlayerAlbumFromSpotify = (album: SpotifyApi.AlbumObjectFull, canPlay: boolean): PlayerTrack[] => {
+export const mapPlayerAlbumFromSpotify = (
+  album: SpotifyApi.AlbumObjectFull,
+  canPlay: boolean,
+): PlayerTrack[] => {
   return album.tracks.items.map((track) => mapPlayerTrackFromSpotify({...track, album}, canPlay));
-
 };
 
-export const mapPlaylistFromDeezer = (playlist: DeezerPlaylistFull, canPlay: boolean): PlayerTrack[] => {
+export const mapPlaylistFromDeezer = (
+  playlist: DeezerPlaylistFull,
+  canPlay: boolean,
+): PlayerTrack[] => {
   return playlist.tracks.data.map((track) => mapPlayerTrackFromDeezer(track, canPlay));
 };
 
-export const mapPlaylistFromSpotify = (tracks: SpotifyApi.PlaylistTrackResponse, canPlay: boolean): PlayerTrack[] => {
+export const mapPlaylistFromSpotify = (
+  tracks: SpotifyApi.PlaylistTrackResponse,
+  canPlay: boolean,
+): PlayerTrack[] => {
   return tracks.items.map(({track}) => mapPlayerTrackFromSpotify(track, canPlay));
 };
 

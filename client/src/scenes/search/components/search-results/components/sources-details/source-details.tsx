@@ -1,21 +1,23 @@
-import React, { FC, useState, useCallback } from 'react';
+import React, {FC, useState, useCallback} from 'react';
 import classNames from 'classnames/bind';
 import {
-  SearchSource, 
-  SpotifySourceItem, 
+  SearchSource,
+  SpotifySourceItem,
   DeezerSourceItem,
 } from '@app/state/search/types';
 import deezerLogo from '@app/resources/source-logos/deezer-logo.svg';
 import spotifyLogo from '@app/resources/source-logos/spotify-logo.svg';
-import { extendSearchResult } from '@app/state/search';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '@app/state';
-import { selectItemsForExtensionById } from '@app/state/search/selectors';
-import { ExtensionPopup } from './components/extension-popup';
-import { SpotifyItemDetails } from './components/spotify-item-details';
-import { DeezerItemDetails } from './components/deezer-item-details';
+import {extendSearchResult} from '@app/state/search';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppState} from '@app/state';
+import {selectItemsForExtensionById} from '@app/state/search/selectors';
+import {ExtensionPopup} from './components/extension-popup';
+import {SpotifyItemDetails} from './components/spotify-item-details';
+import {DeezerItemDetails} from './components/deezer-item-details';
 
 import styles from './source-details.scss';
+import {selectDeezerIsConnected} from '@app/state/deezer';
+import {selectIsSpotifyConnected} from '@app/state/spotify';
 
 const cx = classNames.bind(styles);
 
@@ -29,8 +31,8 @@ export interface SourceDetailsProps {
 
 const SourceDetailsComponent: FC<SourceDetailsProps> = ({
   id,
-  spotify, 
-  deezer, 
+  spotify,
+  deezer,
   className,
   isCrossExtendable,
 }) => {
@@ -38,12 +40,14 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
 
   const dispatch = useDispatch();
   const {
-    spotify: spotifyExtensions, 
+    spotify: spotifyExtensions,
     deezer: deezerExtensions,
   } = useSelector((state: AppState) => selectItemsForExtensionById(state, id));
+  const isDeezerConnected = useSelector(selectDeezerIsConnected);
+  const isSpotifyConnected = useSelector(selectIsSpotifyConnected);
 
-  const hasDeezerDetails = isCrossExtendable || !!deezer;
-  const hasSpotifyDetails = isCrossExtendable || !!spotify;
+  const hasDeezerDetails = isDeezerConnected && (isCrossExtendable || !!deezer);
+  const hasSpotifyDetails = isSpotifyConnected && (isCrossExtendable || !!spotify);
 
   const onDeezerClick = useCallback(() => {
     setSource(source !== 'deezer' ? 'deezer' : undefined);
@@ -71,19 +75,19 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
         <div className={cx('controls')}>
           {hasDeezerDetails && (
             <button onClick={onDeezerClick}>
-              <img 
-                className={cx('control-icon')} 
-                src={deezerLogo} 
-                alt="Deezer" 
+              <img
+                className={cx('control-icon')}
+                src={deezerLogo}
+                alt="Deezer"
               />
             </button>
           )}
           {hasSpotifyDetails && (
             <button onClick={onSpotifyClick}>
-              <img           
-                className={cx('control-icon')} 
-                src={spotifyLogo} 
-                alt="Spotify" 
+              <img
+                className={cx('control-icon')}
+                src={spotifyLogo}
+                alt="Spotify"
               />
             </button>
           )}
@@ -96,17 +100,17 @@ const SourceDetailsComponent: FC<SourceDetailsProps> = ({
             <SpotifyItemDetails id={id} item={spotify} className={cx('item-details')} />
           )}
           {((
-              source === 'deezer' && deezer === null
-            ) || (
-              source === 'spotify' && spotify === null 
-            )) && (
-              'Not found in this source :C'
+            source === 'deezer' && deezer === null
+          ) || (
+            source === 'spotify' && spotify === null
+          )) && (
+            'Not found in this source :C'
           )}
         </div>
       </div>
       <ExtensionPopup spotify={spotifyExtensions} deezer={deezerExtensions} id={id} />
     </>
   );
-}
+};
 
 export {SourceDetailsComponent};

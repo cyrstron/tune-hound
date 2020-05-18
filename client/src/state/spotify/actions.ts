@@ -17,7 +17,7 @@ import {
   SET_SPOTIFY_ACTIVE_PLAYER_IGNORED,
   SET_SPOTIFY_CURRENT_USER,
 } from './consts';
-import { SpotifyAuthData } from './services/helpers';
+import {SpotifyAuthData} from './services/helpers';
 
 export interface ConnectSpotifyAction {
   type: typeof CONNECT_SPOTIFY;
@@ -75,7 +75,7 @@ export interface SetSpotifyAuthDataAction {
   type: typeof SET_SPOTIFY_AUTH_DATA;
   payload: {
     authData: SpotifyAuthData;
-  }
+  };
 }
 
 export const setSpotifyAuthData = (authData: SpotifyAuthData): SetSpotifyAuthDataAction => ({
@@ -105,7 +105,7 @@ export interface UpdateSpotifyAccessTokenSuccessAction {
   payload: {
     accessToken: string;
     expiresIn: Date;
-  }
+  };
 }
 
 export const updateSpotifyAccessTokenSuccess = (
@@ -119,11 +119,13 @@ export const updateSpotifyAccessTokenSuccess = (
 export interface UpdateSpotifyAccessTokenFailureAction {
   type: typeof UPDATE_SPOTIFY_ACCESS_TOKEN_FAILURE;
   payload: {
-    error: Error,
-  }
+    error: Error;
+  };
 }
 
-export const updateSpotifyAccessTokenFailure = (error: Error): UpdateSpotifyAccessTokenFailureAction => ({
+export const updateSpotifyAccessTokenFailure = (
+  error: Error,
+): UpdateSpotifyAccessTokenFailureAction => ({
   type: UPDATE_SPOTIFY_ACCESS_TOKEN_FAILURE,
   payload: {error},
 });
@@ -133,7 +135,7 @@ export interface SetSpotifyPlayerReadyAction {
   payload: {
     instance: Spotify.WebPlaybackInstance;
     isReady: boolean;
-  }
+  };
 }
 
 export const setSpotifyPlayerReady = (
@@ -148,7 +150,7 @@ export interface SetSpotifyPlayerStateAction {
   type: typeof SET_SPOTIFY_PLAYER_STATE;
   payload: {
     state: Spotify.PlaybackState | null;
-  }
+  };
 }
 
 export const setSpotifyPlayerState = (
@@ -162,7 +164,7 @@ export interface SetSpotifyPlayerErrorAction {
   type: typeof SET_SPOTIFY_PLAYER_ERROR;
   payload: {
     error: Spotify.Error;
-  }
+  };
 }
 
 export const setSpotifyPlayerError = (
@@ -176,7 +178,7 @@ export interface SetSpotifyCurrentUserAction {
   type: typeof SET_SPOTIFY_CURRENT_USER;
   payload: {
     user: SpotifyApi.CurrentUsersProfileResponse;
-  }
+  };
 }
 
 export const setSpotifyCurrentUser = (
@@ -190,14 +192,14 @@ export interface SetSpotifyPlayerInitedAction {
   type: typeof SET_SPOTIFY_PLAYER_INITED;
   payload: {
     isInited: boolean;
-  }
+  };
 }
 
 export const setSpotifyPlayerInited = (
-  isInited: boolean
+  isInited: boolean,
 ): SetSpotifyPlayerInitedAction => ({
   type: SET_SPOTIFY_PLAYER_INITED,
-  payload: {isInited}
+  payload: {isInited},
 });
 
 
@@ -205,8 +207,8 @@ export interface SetSpotifyActivePlayerIgnoredAction {
   type: typeof SET_SPOTIFY_ACTIVE_PLAYER_IGNORED;
   payload: {
     isIgnored: boolean;
-  }
-};
+  };
+}
 
 export const setSpotifyActivePlayerIgnored = (
   isIgnored: boolean,

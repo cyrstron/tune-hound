@@ -1,6 +1,6 @@
 import React, {Component, ChangeEvent, MouseEvent} from 'react';
 import {
-  SpotifySearchItemType, 
+  SpotifySearchItemType,
   SpotifySearchOptions,
   SpotifyBasicAdvancedSearchQuery,
 } from '@app/state/spotify/types';
@@ -16,8 +16,8 @@ export type DeezerSearchFormState = {
 };
 
 const namespaces: Array<{
-  value: SpotifySearchItemType,
-  label: string,
+  value: SpotifySearchItemType;
+  label: string;
 }> = [
   {value: 'track', label: 'Track'},
   {value: 'album', label: 'Album'},
@@ -115,8 +115,8 @@ class SpotifySearchFormComponent extends Component<DeezerSearchFormProps, Deezer
         </button>
         {isAdvancedOpen && (
           <>
-            <AdvancedQueryControl 
-              query={typeof query !== 'string' ? query : undefined} 
+            <AdvancedQueryControl
+              query={typeof query !== 'string' ? query : undefined}
               onChange={this.onAdvancedQueryChange}
               type={type}
             />
@@ -124,7 +124,7 @@ class SpotifySearchFormComponent extends Component<DeezerSearchFormProps, Deezer
               <label>
                 Market:
                 {' '}
-                <input 
+                <input
                   value={market || ''}
                   onChange={this.onMarketChange}
                   disabled={!query}
@@ -133,7 +133,7 @@ class SpotifySearchFormComponent extends Component<DeezerSearchFormProps, Deezer
             </div>
             <div>
               <label>
-                <input 
+                <input
                   type='checkbox'
                   onChange={this.onIncludeExternalChange}
                   checked={!!includeExternal}
@@ -147,7 +147,7 @@ class SpotifySearchFormComponent extends Component<DeezerSearchFormProps, Deezer
           </>
         )}
       </div>
-    )
+    );
   }
 }
 

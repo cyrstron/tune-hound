@@ -1,13 +1,13 @@
-import { take } from "redux-saga/effects";
+import {take} from 'redux-saga/effects';
 import {
   SetSpotifyActivePlayerIgnoredAction,
-} from "../actions";
+} from '../actions';
 import {
   SET_SPOTIFY_ACTIVE_PLAYER_IGNORED,
 } from '../consts';
-import { setSpotifyPlayerMsgState } from "../services/helpers";
+import {setSpotifyPlayerMsgState} from '../services/helpers';
 
-export function* ignoreSpotifyActivePlayerMsg() {
+export function* ignoreSpotifyActivePlayerMsg(): any {
   const {
     payload: {isIgnored},
   }: SetSpotifyActivePlayerIgnoredAction = yield take(SET_SPOTIFY_ACTIVE_PLAYER_IGNORED);

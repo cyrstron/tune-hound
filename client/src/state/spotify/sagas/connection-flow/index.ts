@@ -1,10 +1,10 @@
-import { take, call } from "redux-saga/effects";
-import { CONNECT_SPOTIFY, DISCONNECT_SPOTIFY } from "../../consts";
+import {take, call} from 'redux-saga/effects';
+import {CONNECT_SPOTIFY, DISCONNECT_SPOTIFY} from '../../consts';
 import {disconnectSpotifySaga} from './disconnect-spotify';
 import {connectSpotifySaga} from './connect-spotify';
-import { EventChannel } from "redux-saga";
+import {EventChannel} from 'redux-saga';
 
-export function* spotifyConnectionFlow() {
+export function* spotifyConnectionFlow(): any {
   while (true) {
     yield take(CONNECT_SPOTIFY);
 

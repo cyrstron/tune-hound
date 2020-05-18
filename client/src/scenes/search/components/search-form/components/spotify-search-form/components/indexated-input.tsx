@@ -17,8 +17,8 @@ class IndexatedInput extends Component<IndexatedInputProps> {
     const {index, onChange, ...props} = this.props;
     return (
       <input {...props} onChange={this.onChange} />
-    )
+    );
   }
 }
 
-export {IndexatedInput}
+export {IndexatedInput};

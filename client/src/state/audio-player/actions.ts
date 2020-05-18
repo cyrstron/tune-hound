@@ -8,7 +8,7 @@ import {
   SET_AUDIO_VOLUME,
   SET_AUDIO_ERROR,
   SET_AUDIO_MOUNTED,
-  SET_AUDIO_PROGRESS
+  SET_AUDIO_PROGRESS,
 } from './consts';
 
 export interface InitAudioAction {
@@ -27,7 +27,7 @@ export interface SetAudioUrlAction {
 }
 
 export const setAudioUrl = (
-  url: string | null
+  url: string | null,
 ): SetAudioUrlAction => ({
   type: SET_CURRENT_AUDIO_URL,
   payload: {url},

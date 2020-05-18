@@ -1,24 +1,26 @@
 import {eventChannel, EventChannel, END} from 'redux-saga';
 import {take, put} from 'redux-saga/effects';
-import { DeezerService } from '@app/state/deezer/services';
-import { setPlayerBuffering } from '@app/state/deezer/actions';
+import {DeezerService} from '@app/state/deezer/services';
+import {setPlayerBuffering} from '@app/state/deezer/actions';
 
 export function createPlayerBufferingChannel(
-  deezerService: DeezerService
+  deezerService: DeezerService,
 ): EventChannel<number> {
-  return eventChannel(emitter => {
+  return eventChannel((emitter) => {
     deezerService.events.subscribe('player_buffering', (buffered) => {
       emitter(buffered);
     });
-      
-    return () => {};
+
+    return (): void => {
+      return;
+    };
   });
 }
 
-export function* watchPlayerBufferingChange(channel: EventChannel<number>) {
+export function* watchPlayerBufferingChange(channel: EventChannel<number>): any {
   while (true) {
     const buffered: boolean | END = yield take(channel);
-    
+
     if (typeof buffered !== 'number') return;
 
     const action = setPlayerBuffering(buffered);

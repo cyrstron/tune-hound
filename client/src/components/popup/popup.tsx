@@ -8,4 +8,4 @@ const Popup: FC<{}> = ({children}) => (
   </PopupCtxConsumer>
 );
 
-export {Popup}
+export {Popup};

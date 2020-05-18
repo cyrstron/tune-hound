@@ -1,28 +1,26 @@
-import { PlaySearchResultAction, extendSearchResult, ExtendSearchResultSuccessAction, ExtendSearchResultFailureAction } from "../../actions";
-import { takeEvery, select, call, put, take, race } from "redux-saga/effects";
-import { PLAY_SEARCH_RESULT, EXTEND_SEARCH_RESULT_SUCCESS, EXTEND_SEARCH_RESULT_FAILURE } from "../../consts";
-import { selectSearchResultById } from "../../selectors";
-import { pickDefaultSource } from "./pick-default-source";
-import { SearchResult, SearchSource } from "../../types";
-import { playSearchedTrackSaga } from "./play-searched-track";
-import { playSearchedAlbumSaga } from "./play-search-album";
-import { playSearchedArtistSaga } from "./play-searched-artist";
-import { playSearchedPlaylistSaga } from "./play-searched-playlist";
-import { selectCanDeezerPlay } from "@app/state/deezer";
-import { selectCanSpotifyPlay } from "@app/state/spotify";
+import {PlaySearchResultAction, extendSearchResult, ExtendSearchResultSuccessAction, ExtendSearchResultFailureAction} from '../../actions';
+import {takeEvery, select, call, put, take, race} from 'redux-saga/effects';
+import {PLAY_SEARCH_RESULT, EXTEND_SEARCH_RESULT_SUCCESS, EXTEND_SEARCH_RESULT_FAILURE} from '../../consts';
+import {selectSearchResultById} from '../../selectors';
+import {pickDefaultSource} from './pick-default-source';
+import {SearchResult, SearchSource} from '../../types';
+import {playSearchedTrackSaga} from './play-searched-track';
+import {playSearchedAlbumSaga} from './play-search-album';
+import {playSearchedArtistSaga} from './play-searched-artist';
+import {playSearchedPlaylistSaga} from './play-searched-playlist';
+import {selectCanDeezerPlay} from '@app/state/deezer';
+import {selectCanSpotifyPlay} from '@app/state/spotify';
 
-export function* watchPlaySearchResult() {
-  yield takeEvery(PLAY_SEARCH_RESULT, playSearchResultSaga);
-}
-
-export function* playSearchResultSaga({payload: {itemId, source, index}}: PlaySearchResultAction) {
+export function* playSearchResultSaga(
+  {payload: {itemId, source, index}}: PlaySearchResultAction,
+): any {
   let searchItem: SearchResult = yield select(selectSearchResultById, itemId);
 
-  let playSource: SearchSource = source || (yield call(pickDefaultSource, searchItem));
+  const playSource: SearchSource = source || (yield call(pickDefaultSource, searchItem));
 
   if (!playSource || !searchItem.sources[playSource]) throw new Error('Play source is not defined');
 
-  let canSourcePlay: boolean = false;
+  let canSourcePlay = false;
 
   if (playSource === 'deezer') {
     canSourcePlay = yield select(selectCanDeezerPlay);
@@ -39,10 +37,10 @@ export function* playSearchResultSaga({payload: {itemId, source, index}}: PlaySe
 
     let isExtended: boolean | undefined;
 
-    while(isExtended === undefined) {
-      const { success, error }: {
-        success?: ExtendSearchResultSuccessAction,
-        error?: ExtendSearchResultFailureAction,
+    while (isExtended === undefined) {
+      const {success, error}: {
+        success?: ExtendSearchResultSuccessAction;
+        error?: ExtendSearchResultFailureAction;
       } = yield race({
         success: take(EXTEND_SEARCH_RESULT_SUCCESS),
         error: take(EXTEND_SEARCH_RESULT_FAILURE),
@@ -61,8 +59,8 @@ export function* playSearchResultSaga({payload: {itemId, source, index}}: PlaySe
 
     if (!isExtended) return;
 
-    searchItem = yield select(selectSearchResultById, itemId)
-  };
+    searchItem = yield select(selectSearchResultById, itemId);
+  }
 
   if (searchItem.type === 'track') {
     yield call(playSearchedTrackSaga, searchItem, playSource, canSourcePlay);
@@ -73,4 +71,8 @@ export function* playSearchResultSaga({payload: {itemId, source, index}}: PlaySe
   } else if (searchItem.type === 'playlist') {
     yield call(playSearchedPlaylistSaga, searchItem, playSource, index, canSourcePlay);
   }
+}
+
+export function* watchPlaySearchResult(): any {
+  yield takeEvery(PLAY_SEARCH_RESULT, playSearchResultSaga);
 }

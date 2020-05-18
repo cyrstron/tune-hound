@@ -1,18 +1,27 @@
-import { SearchSource, SearchedAlbum } from "../../types";
-import { selectIsAlbumActive, selectPlayingSource, selectCurrentIndex, selectPlaylist } from "@app/state/player/selectors";
-import { select, all, put } from "redux-saga/effects";
-import { PlayerSource, PlayerTrack } from "@app/state/player/types";
-import { play, playAlbum } from "@app/state/player/actions";
-import { mapPlayerAlbumFromDeezer, mapPlayerAlbumFromSpotify } from "./services";
-import { setCurrentTrack } from "@app/state/player/actions";
+import {SearchSource, SearchedAlbum} from '../../types';
+import {
+  selectIsAlbumActive,
+  selectPlayingSource,
+  selectCurrentIndex,
+  selectPlaylist,
+} from '@app/state/player/selectors';
+import {select, all, put} from 'redux-saga/effects';
+import {PlayerSource, PlayerTrack} from '@app/state/player/types';
+import {play, playAlbum} from '@app/state/player/actions';
+import {mapPlayerAlbumFromDeezer, mapPlayerAlbumFromSpotify} from './services';
+import {setCurrentTrack} from '@app/state/player/actions';
 
 export function* playSearchedAlbumSaga(
-  album: SearchedAlbum, 
+  album: SearchedAlbum,
   source: SearchSource,
-  index: number | undefined, 
+  index: number | undefined,
   canPlay: boolean,
-) {
-  const [isAlbumActive, playingSource, currentIndex]: [boolean, PlayerSource, number | undefined] = yield all([
+): any {
+  const [
+    isAlbumActive,
+    playingSource,
+    currentIndex,
+  ]: [boolean, PlayerSource, number | undefined] = yield all([
     select(selectIsAlbumActive, album.id),
     select(selectPlayingSource),
     select(selectCurrentIndex),
@@ -36,14 +45,14 @@ export function* playSearchedAlbumSaga(
   }
 
   let tracks: PlayerTrack[];
-  
+
   if (source === 'spotify') {
-    tracks = mapPlayerAlbumFromSpotify(album, canPlay)
+    tracks = mapPlayerAlbumFromSpotify(album, canPlay);
   } else if (source === 'deezer') {
-    tracks = mapPlayerAlbumFromDeezer(album, canPlay)
+    tracks = mapPlayerAlbumFromDeezer(album, canPlay);
   } else {
     throw new Error('Source is not supported');
-  };
+  }
 
   const action = playAlbum(album.id, tracks, album.sources[source]!.id, index);
 

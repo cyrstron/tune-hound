@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
 import classNames from 'classnames/bind';
-import { SpotifyArtistSourceItemFull } from '@app/state/search/types';
-import { AlbumTiles } from '@app/components/albums';
-import { mapSpotifyAlbums, mapSpotifyTracks } from '../../services/mapHelpers';
-import { TrackList } from '@app/components/tracks';
-import { usePlayerFromDetails } from '../../../../hooks/use-player-from-details';
-import { usePlayerById } from '../../../../hooks/use-player-by-id';
+import {SpotifyArtistSourceItemFull} from '@app/state/search/types';
+import {AlbumTiles} from '@app/components/albums';
+import {mapSpotifyAlbums, mapSpotifyTracks} from '../../services/mapHelpers';
+import {TrackList} from '@app/components/tracks';
+import {usePlayerFromDetails} from '../../../../hooks/use-player-from-details';
+import {usePlayerById} from '../../../../hooks/use-player-by-id';
 
 import styles from './spotify-artist-details.scss';
 
@@ -19,7 +19,7 @@ export interface SpotifyArtistDetailsProps {
 
 const SpotifyArtistDetailsComponent: FC<SpotifyArtistDetailsProps> = ({
   id,
-  artist: {id: nativeId, topTracks, albums, followers: {total}, genres}, 
+  artist: {id: nativeId, topTracks, albums, followers: {total}, genres},
   className,
 }) => {
   const playerProps = usePlayerFromDetails(id, 'spotify', nativeId);
@@ -35,8 +35,8 @@ const SpotifyArtistDetailsComponent: FC<SpotifyArtistDetailsProps> = ({
       {!!mappedTracks.length && (
         <div>
           Top tracks:
-          <TrackList 
-            tracks={mappedTracks} 
+          <TrackList
+            tracks={mappedTracks}
             {...playerProps}
           />
         </div>
@@ -50,6 +50,6 @@ const SpotifyArtistDetailsComponent: FC<SpotifyArtistDetailsProps> = ({
       <div>{total} followers</div>
     </div>
   );
-}
+};
 
-export {SpotifyArtistDetailsComponent}
+export {SpotifyArtistDetailsComponent};

@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import classNames from 'classnames/bind';
-import { Player } from '../player/player';
+import {Player} from '../player/player';
 
 import styles from './footer.scss';
 

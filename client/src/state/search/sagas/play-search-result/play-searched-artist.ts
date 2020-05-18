@@ -1,17 +1,21 @@
-import { SearchSource, SearchedArtist } from "../../types";
-import { select, all, put } from "redux-saga/effects";
-import { selectIsPlaylistActive, selectPlayingSource, selectCurrentIndex, selectPlaylist } from "@app/state/player/selectors";
-import { PlayerSource, PlayerTrack } from "@app/state/player/types";
-import { play, playPlaylist, setCurrentTrack } from "@app/state/player/actions";
-import { mapPlaylistFromSpotifyArtist, mapPlaylistFromDeezerArtist } from "./services";
+import {SearchSource, SearchedArtist} from '../../types';
+import {select, all, put} from 'redux-saga/effects';
+import {selectIsPlaylistActive, selectPlayingSource, selectCurrentIndex, selectPlaylist} from '@app/state/player/selectors';
+import {PlayerSource, PlayerTrack} from '@app/state/player/types';
+import {play, playPlaylist, setCurrentTrack} from '@app/state/player/actions';
+import {mapPlaylistFromSpotifyArtist, mapPlaylistFromDeezerArtist} from './services';
 
 export function* playSearchedArtistSaga(
-  artist: SearchedArtist, 
-  source: SearchSource, 
+  artist: SearchedArtist,
+  source: SearchSource,
   index: number | undefined,
   canPlay: boolean,
-) {
-  const [isPlaylistActive, playingSource, currentIndex]: [boolean, PlayerSource, number | undefined] = yield all([
+): any {
+  const [
+    isPlaylistActive,
+    playingSource,
+    currentIndex,
+  ]: [boolean, PlayerSource, number | undefined] = yield all([
     select(selectIsPlaylistActive, artist.id),
     select(selectPlayingSource),
     select(selectCurrentIndex),
@@ -35,14 +39,14 @@ export function* playSearchedArtistSaga(
   }
 
   let tracks: PlayerTrack[];
-  
+
   if (source === 'spotify') {
-    tracks = mapPlaylistFromSpotifyArtist(artist, canPlay)
+    tracks = mapPlaylistFromSpotifyArtist(artist, canPlay);
   } else if (source === 'deezer') {
-    tracks = mapPlaylistFromDeezerArtist(artist, canPlay)
+    tracks = mapPlaylistFromDeezerArtist(artist, canPlay);
   } else {
     throw new Error('Source is not supported');
-  };
+  }
 
   const action = playPlaylist(artist.id, tracks, artist.sources[source]!.id, index);
 

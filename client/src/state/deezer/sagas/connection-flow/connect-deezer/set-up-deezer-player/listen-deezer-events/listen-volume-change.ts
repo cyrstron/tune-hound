@@ -1,21 +1,26 @@
 import {eventChannel, EventChannel, END} from 'redux-saga';
 import {take, put} from 'redux-saga/effects';
-import { DeezerService } from '@app/state/deezer/services';
-import { deezerVolumeChanged } from '@app/state/deezer/actions';
+import {DeezerService} from '@app/state/deezer/services';
+import {deezerVolumeChanged} from '@app/state/deezer/actions';
 
 export function createPlayerVolumeChannel(
-  deezerService: DeezerService
+  deezerService: DeezerService,
 ): EventChannel<number> {
-  return eventChannel(emitter => {
+  return eventChannel((emitter) => {
     deezerService.events.subscribe('volume_changed', (volume) => {
       emitter(volume);
     });
-      
-    return () => {};
+
+    return (): void => {
+      return;
+    };
   });
 }
 
-export function* watchPlayerVolumeChange(deezerService: DeezerService, channel: EventChannel<number>) {
+export function* watchPlayerVolumeChange(
+  deezerService: DeezerService,
+  channel: EventChannel<number>,
+): any {
   const volume = deezerService.player.getVolume();
 
   const action = deezerVolumeChanged(volume);
@@ -24,7 +29,7 @@ export function* watchPlayerVolumeChange(deezerService: DeezerService, channel: 
 
   while (true) {
     const volume: number | END = yield take(channel);
-    
+
     if (typeof volume !== 'number') return;
 
     const action = deezerVolumeChanged(volume);

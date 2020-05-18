@@ -1,8 +1,8 @@
 import React, {Component, ChangeEvent, MouseEvent} from 'react';
-import { 
+import {
   DeezerSearchOptions,
   DeezerAdvancedAlbumSearchOptions,
-  DeezerAdvancedAlbumQueryParams
+  DeezerAdvancedAlbumQueryParams,
 } from '@app/state/deezer/types';
 
 export interface DeezerAlbumSearchFormProps {
@@ -16,7 +16,7 @@ class DeezerAlbumSearchFormComponent extends Component<DeezerAlbumSearchFormProp
   onToggleAdvance = (e: MouseEvent) => {
     e.preventDefault();
 
-    this.props.toggleAdvance();    
+    this.props.toggleAdvance();
   }
 
   onQueryChange = ({target}: ChangeEvent<HTMLInputElement>) => {
@@ -35,35 +35,35 @@ class DeezerAlbumSearchFormComponent extends Component<DeezerAlbumSearchFormProp
   onAdvancedChange = ({target}: ChangeEvent<HTMLInputElement>) => {
     const {name, value: inputValue} = target;
     const {
-      searchParams: {query, ...searchParams}, 
-      onChange
+      searchParams: {query, ...searchParams},
+      onChange,
     } = this.props;
     const value = inputValue ? inputValue : undefined;
 
     let params: Partial<DeezerAdvancedAlbumQueryParams>;
 
-    switch(name) {
-      case 'artist':
-        params = {artist: value};
-        break;
-      case 'label':
-        params = {label: value};
-        break;
-      case 'dur-min':
-        params = {durMin: value === undefined ? value : +value};
-        break;
-      case 'dur-max':
-        params = {durMax: value === undefined ? value : +value};
-        break;
-      case 'bpm-min':
-        params = {bpmMin: value === undefined ? value : +value};
-        break;
-      case 'bpm-max':
-        params = {bpmMax: value === undefined ? value : +value};
-        break;
-      default:
-        params = {};
-        break;
+    switch (name) {
+    case 'artist':
+      params = {artist: value};
+      break;
+    case 'label':
+      params = {label: value};
+      break;
+    case 'dur-min':
+      params = {durMin: value === undefined ? value : +value};
+      break;
+    case 'dur-max':
+      params = {durMax: value === undefined ? value : +value};
+      break;
+    case 'bpm-min':
+      params = {bpmMin: value === undefined ? value : +value};
+      break;
+    case 'bpm-max':
+      params = {bpmMax: value === undefined ? value : +value};
+      break;
+    default:
+      params = {};
+      break;
     }
 
     onChange({
@@ -71,7 +71,7 @@ class DeezerAlbumSearchFormComponent extends Component<DeezerAlbumSearchFormProp
       query: {
         ...query,
         ...params,
-      }
+      },
     });
   }
 
@@ -94,9 +94,9 @@ class DeezerAlbumSearchFormComponent extends Component<DeezerAlbumSearchFormProp
           <div>
             <label>
               Artist:
-              <input 
-                type="text" 
-                onChange={this.onAdvancedChange} 
+              <input
+                type="text"
+                onChange={this.onAdvancedChange}
                 value={artist}
                 name='artist'
               />
@@ -104,9 +104,9 @@ class DeezerAlbumSearchFormComponent extends Component<DeezerAlbumSearchFormProp
             <br/>
             <label>
               Label:
-              <input 
-                type="text" 
-                onChange={this.onAdvancedChange} 
+              <input
+                type="text"
+                onChange={this.onAdvancedChange}
                 value={label}
                 name='label'
               />
@@ -115,17 +115,17 @@ class DeezerAlbumSearchFormComponent extends Component<DeezerAlbumSearchFormProp
             Duration{' '}
             <label>
               Min:
-              <input 
-                type="number" 
-                onChange={this.onAdvancedChange} 
+              <input
+                type="number"
+                onChange={this.onAdvancedChange}
                 value={durMin}
                 max={durMax}
                 name='dur-min'
               />
-              Max:                  
-              <input 
-                type="number" 
-                onChange={this.onAdvancedChange} 
+              Max:
+              <input
+                type="number"
+                onChange={this.onAdvancedChange}
                 value={durMax}
                 min={durMin}
                 name='dur-max'
@@ -135,17 +135,17 @@ class DeezerAlbumSearchFormComponent extends Component<DeezerAlbumSearchFormProp
             BPM{' '}
             <label>
               Min:
-              <input 
-                type="number" 
-                onChange={this.onAdvancedChange} 
+              <input
+                type="number"
+                onChange={this.onAdvancedChange}
                 value={bpmMin}
                 max={bpmMax}
                 name='bpm-min'
               />
-              Max:                  
-              <input 
-                type="number" 
-                onChange={this.onAdvancedChange} 
+              Max:
+              <input
+                type="number"
+                onChange={this.onAdvancedChange}
                 value={bpmMax}
                 min={bpmMin}
                 name='bpm-max'
@@ -154,7 +154,7 @@ class DeezerAlbumSearchFormComponent extends Component<DeezerAlbumSearchFormProp
           </div>
         )}
       </>
-    )
+    );
   }
 }
 

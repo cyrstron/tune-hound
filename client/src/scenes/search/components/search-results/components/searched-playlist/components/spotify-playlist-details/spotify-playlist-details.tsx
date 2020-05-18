@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import { SpotifyPlaylistSourceItemShort } from '@app/state/search/types';
+import {SpotifyPlaylistSourceItemShort} from '@app/state/search/types';
 
 export interface SpotifyPlaylistDetailsProps {
   playlist: SpotifyPlaylistSourceItemShort;
@@ -11,6 +11,6 @@ const SpotifyPlaylistDetailsComponent: FC<SpotifyPlaylistDetailsProps> = ({playl
       {playlist.name}
     </div>
   );
-}
+};
 
-export {SpotifyPlaylistDetailsComponent}
+export {SpotifyPlaylistDetailsComponent};

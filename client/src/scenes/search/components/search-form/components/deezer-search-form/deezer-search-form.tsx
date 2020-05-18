@@ -1,9 +1,14 @@
-import React, {Component, ChangeEvent, MouseEvent} from 'react';
-import { DeezerSearchOptions, DeezerSearchNamespace, DeezerSearchOrder, DeezerAdvancedSearchOptions, DeezerAdvancedQueryParams, DeezerNamespaceSearchOptions } from '@app/state/deezer/types';
-import { DeezerTrackSearchForm } from './components/deezer-track-search-form';
-import { DeezerAlbumSearchForm } from './components/deezer-album-search-form';
-import { DeezerArtistSearchForm } from './components/deezer-artist-search-form';
-import { DeezerBasicSearchForm } from './components/deezer-basic-search-form';
+import React, {Component, ChangeEvent} from 'react';
+import {
+  DeezerSearchOptions,
+  DeezerSearchNamespace,
+  DeezerSearchOrder,
+  DeezerNamespaceSearchOptions,
+} from '@app/state/deezer/types';
+import {DeezerTrackSearchForm} from './components/deezer-track-search-form';
+import {DeezerAlbumSearchForm} from './components/deezer-album-search-form';
+import {DeezerArtistSearchForm} from './components/deezer-artist-search-form';
+import {DeezerBasicSearchForm} from './components/deezer-basic-search-form';
 
 export interface DeezerSearchFormProps {
   onChange: (params: DeezerSearchOptions) => void;
@@ -15,21 +20,18 @@ export type DeezerSearchFormState = {
 };
 
 const namespaces: Array<{
-  value: DeezerSearchNamespace,
-  label: string,
+  value: DeezerSearchNamespace;
+  label: string;
 }> = [
   {value: 'track', label: 'Track'},
   {value: 'album', label: 'Album'},
   {value: 'artist', label: 'Artist'},
-  // {value: 'history', label: 'History'},
   {value: 'playlist', label: 'Playlist'},
-  // {value: 'radio', label: 'Radio'},
-  // {value: 'user', label: 'User'},
 ];
 
 const sortings: Array<{
-  value: DeezerSearchOrder,
-  label: string,
+  value: DeezerSearchOrder;
+  label: string;
 }> = [
   {value: 'RANKING', label: 'By ranking'},
   {value: 'TRACK_ASC', label: 'By track ⇑'},
@@ -61,7 +63,7 @@ class DeezerSearchFormComponent extends Component<DeezerSearchFormProps, DeezerS
 
     this.setState({
       isAdvancedOpen: false,
-    })
+    });
 
     if (value === 'track') {
       onChange({
@@ -88,7 +90,6 @@ class DeezerSearchFormComponent extends Component<DeezerSearchFormProps, DeezerS
         query: this.getQueryString(),
       } as DeezerNamespaceSearchOptions);
     }
-
   }
 
   onChange = (params: DeezerSearchOptions) => {
@@ -142,8 +143,8 @@ class DeezerSearchFormComponent extends Component<DeezerSearchFormProps, DeezerS
 
   render() {
     const {
-      searchParams
-    } = this.props ;
+      searchParams,
+    } = this.props;
     const {isAdvancedOpen} = this.state;
 
     const {
@@ -160,7 +161,7 @@ class DeezerSearchFormComponent extends Component<DeezerSearchFormProps, DeezerS
           ))}
         </select>
         {searchParams.namespace === 'track' && (
-          <DeezerTrackSearchForm 
+          <DeezerTrackSearchForm
             onChange={this.onChange}
             searchParams={searchParams}
             isAdvanced={isAdvancedOpen}
@@ -206,7 +207,7 @@ class DeezerSearchFormComponent extends Component<DeezerSearchFormProps, DeezerS
           </div>
         )}
       </div>
-    )
+    );
   }
 }
 

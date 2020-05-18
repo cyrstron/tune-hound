@@ -1,9 +1,9 @@
-import { 
-  IS_DEEZER_CONNECTED_KEY, 
+import {
+  IS_DEEZER_CONNECTED_KEY,
   FLASH_MSG_IGNORED_KEY,
   IS_DEEZER_DISABLED_KEY,
-} from "consts";
-import { DeezerAdvancedQueryParams } from "../types";
+} from 'consts';
+import {DeezerAdvancedQueryParams} from '../types';
 
 export function getDeezerConnectedState(): boolean {
   return !!localStorage.getItem(IS_DEEZER_CONNECTED_KEY) || false;
@@ -42,13 +42,13 @@ export function setFlashIgnored(isIgnored: boolean): void {
 }
 
 
-export function getIsFlashEnabled() {
+export function getIsFlashEnabled(): boolean {
   let isFlashEnabled;
 
   try {
     isFlashEnabled = !!(new ActiveXObject('ShockwaveFlash.ShockwaveFlash'));
-  } catch(exception) {
-    isFlashEnabled = 'application/x-shockwave-flash' in navigator.mimeTypes && 
+  } catch (exception) {
+    isFlashEnabled = 'application/x-shockwave-flash' in navigator.mimeTypes &&
       typeof navigator.mimeTypes['application/x-shockwave-flash'] !== 'undefined';
   }
 
@@ -63,9 +63,9 @@ declare global {
 }
 
 export async function mountDeezerScript(): Promise<{
-  DZ: DeezerSdk.DZ,
-  script: HTMLScriptElement,
-  root: HTMLDivElement,
+  DZ: DeezerSdk.DZ;
+  script: HTMLScriptElement;
+  root: HTMLDivElement;
 }> {
   const script = document.createElement('script');
   const root = document.createElement('div');
@@ -79,14 +79,14 @@ export async function mountDeezerScript(): Promise<{
     document.body.append(script);
     document.body.append(root);
 
-    window.dzAsyncInit = () => {
+    window.dzAsyncInit = (): void => {
       delete window.dzAsyncInit;
       script.onerror = null;
 
       res(window.DZ);
-    }
+    };
 
-    script.onerror = (e) => {
+    script.onerror = (e): void => {
       delete window.dzAsyncInit;
 
       script.remove();
@@ -104,7 +104,7 @@ export async function mountDeezerScript(): Promise<{
 }
 
 export const deezerSearchOptionsKeys: {
-  [key: string]: string
+  [key: string]: string;
 } = {
   track: 'track',
   artist: 'artist',
@@ -117,7 +117,7 @@ export const deezerSearchOptionsKeys: {
 };
 
 export function getAdvancedSearchString(
-  props: DeezerAdvancedQueryParams = {}
+  props: DeezerAdvancedQueryParams = {},
 ): string {
   return Object.keys(props)
     .reduce<string>((queryString, propKey) => {

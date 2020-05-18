@@ -1,9 +1,9 @@
 export function observeScroll(
-  elem: HTMLElement, 
-  callback: () => void
+  elem: HTMLElement,
+  callback: () => void,
 ): () => void {
   let observedElem: HTMLElement = elem;
-  
+
   while (observedElem.parentElement) {
     observedElem.parentElement.addEventListener('scroll', callback);
 
@@ -12,7 +12,7 @@ export function observeScroll(
 
   window.addEventListener('scroll', callback);
 
-  return () => {
+  return (): void => {
     let observedElem: HTMLElement = elem;
 
     while (observedElem.parentElement) {
@@ -22,5 +22,5 @@ export function observeScroll(
     }
 
     window.removeEventListener('scroll', callback);
-  }
+  };
 }

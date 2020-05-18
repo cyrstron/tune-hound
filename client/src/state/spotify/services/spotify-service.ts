@@ -1,12 +1,12 @@
 import {SpotifyWebApi} from './spotify-web-api';
 import {mountSpotifyScript} from './helpers';
-import { SpotifySearchOptions } from '../types';
+import {SpotifySearchOptions} from '../types';
 
 export interface SpotifyServiceHandlets {
-  onError: Spotify.ErrorListener,
-  onStateChange: Spotify.PlaybackStateListener,
-  onReady: (instance: Spotify.WebPlaybackInstance) => void,
-  onNotReady: (instance: Spotify.WebPlaybackInstance) => void,
+  onError: Spotify.ErrorListener;
+  onStateChange: Spotify.PlaybackStateListener;
+  onReady: (instance: Spotify.WebPlaybackInstance) => void;
+  onNotReady: (instance: Spotify.WebPlaybackInstance) => void;
 }
 
 export class SpotifyService {
@@ -16,10 +16,10 @@ export class SpotifyService {
   spotifyPlayer?: Spotify.SpotifyPlayer;
 
   constructor(
-    public api: SpotifyWebApi, 
+    public api: SpotifyWebApi,
   ) {}
 
-  async mount() {
+  async mount(): Promise<void> {
     const {script, spotify} = await mountSpotifyScript();
 
     this.script = script;
@@ -28,7 +28,7 @@ export class SpotifyService {
 
   initPlayer(
     getToken: (callback: (token: string) => void) => void,
-  ) {
+  ): void {
     if (!this.spotify) {
       throw new Error('Spotify wasn\'t mounted');
     }
@@ -39,16 +39,16 @@ export class SpotifyService {
     });
   }
 
-  setActiveDevice(deviceId: string, accessToken: string) {
+  setActiveDevice(deviceId: string, accessToken: string): Promise<void> {
     return this.api.setActiveDevice(deviceId, accessToken);
   }
 
-  async connect() {
+  async connect(): Promise<void> {
     const {player} = this;
 
     if (!player) {
       throw new Error('Player wasn\'t mounted');
-    };
+    }
 
     const isConnected = await player.connect();
 
@@ -57,30 +57,30 @@ export class SpotifyService {
     }
   }
 
-  getState() {
+  getState(): Promise<Spotify.PlaybackState | null> {
     const {player} = this;
 
     if (!player) {
       throw new Error('Player wasn\'t mounted');
-    };
+    }
 
     return player.getCurrentState();
   }
 
-  disconnect() {
+  disconnect(): void {
     this.player && this.player.disconnect();
   }
 
-  unmount() {
+  unmount(): void {
     this.script && this.script.remove();
   }
 
-  search(options: SpotifySearchOptions, accessToken: string) {
+  search(options: SpotifySearchOptions, accessToken: string): Promise<SpotifyApi.SearchResponse> {
     return this.api.search(options, accessToken);
   }
 
   get player(): Spotify.SpotifyPlayer {
-    if (!this.spotifyPlayer) throw new Error('Spotify Player wasn\'t initialized')
+    if (!this.spotifyPlayer) throw new Error('Spotify Player wasn\'t initialized');
 
     return this.spotifyPlayer;
   }

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import classNames from 'classnames/bind';
-import { SearchResult } from '@app/state/search/types';
-import { SearchedItem } from './components/searched-item';
+import {SearchResult} from '@app/state/search/types';
+import {SearchedItem} from './components/searched-item';
 
 import styles from './search-results.scss';
 
@@ -20,13 +20,14 @@ export class SearchResultsComponent extends Component<SearchResultsProps> {
       className,
       currentPage,
       isPending,
-      error
+      error,
     } = this.props;
 
     return (
       <div className={cx('results', className, {
         pending: isPending,
-      })}>
+      })}
+      >
         {error && (
           <div>{error.message}</div>
         )}
@@ -35,12 +36,12 @@ export class SearchResultsComponent extends Component<SearchResultsProps> {
         )}
         {!error && currentPage && currentPage.length > 0 && (
           <ul className={cx('results-list')}>
-            {currentPage.map((item, index) => (
+            {currentPage.map((item) => (
               <SearchedItem key={item.id} item={item} />
             ))}
           </ul>
         )}
-      </div>        
+      </div>
     );
   }
 }

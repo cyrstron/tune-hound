@@ -1,15 +1,11 @@
 import {takeEvery, getContext, select, put} from 'redux-saga/effects';
-import { PAUSE } from '@app/state/player/consts';
-import { SPOTIFY_SERVICE_CTX_KEY } from '@app/consts';
-import { selectPlayingSource } from '@app/state/player/selectors';
-import { SpotifyService } from '@app/state/spotify/services/spotify-service';
-import { setSpotifyPlayerError } from '@app/state/spotify/actions';
+import {PAUSE} from '@app/state/player/consts';
+import {SPOTIFY_SERVICE_CTX_KEY} from '@app/consts';
+import {selectPlayingSource} from '@app/state/player/selectors';
+import {SpotifyService} from '@app/state/spotify/services/spotify-service';
+import {setSpotifyPlayerError} from '@app/state/spotify/actions';
 
-export function* watchPause() {
-  yield takeEvery(PAUSE, updatePause)
-}
-
-export function* updatePause() {
+export function* updatePause(): any {
   const spotifyService: SpotifyService = yield getContext(SPOTIFY_SERVICE_CTX_KEY);
 
   const playingSource = yield select(selectPlayingSource);
@@ -24,4 +20,8 @@ export function* updatePause() {
 
     yield put(errorAction);
   }
+}
+
+export function* watchPause(): any {
+  yield takeEvery(PAUSE, updatePause);
 }

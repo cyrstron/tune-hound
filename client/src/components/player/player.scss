@@ -1,3 +1,47 @@
 .seek-bar {
   width: 100%;
 }
+
+.player {
+  display: flex;
+}
+
+.info-wrapper {
+  width: 20%;
+  box-sizing: border-box;
+  padding: 5px;
+}
+
+.track-info {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60%;
+}
+
+.top-controls {
+  display: flex;
+  align-items: center;
+}
+
+.info-wrapper,
+.volume-wrapper {
+  width: 20%;
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+}
+
+.top-controls {
+  display: flex;
+}
+
+.play-control {
+  margin: 0 5px;
+}

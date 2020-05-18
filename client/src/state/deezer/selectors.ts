@@ -1,4 +1,4 @@
-import { AppState } from "state";
+import {AppState} from 'state';
 
 export const selectDeezerIsConnected = (
   {deezer}: AppState,
@@ -38,12 +38,12 @@ export const selectDeezerIsPremium = (
 
 export const selectDeezerCurrentTrack = (
   {deezer}: AppState,
-) => deezer.playingTrack;
+): DeezerSdk.Track | null => deezer.playingTrack;
 
 export const selectDeezerIsPlaying = (
   {deezer}: AppState,
-) => deezer.isPlaying;
+): boolean => deezer.isPlaying;
 
 export const selectCanDeezerPlay = (
   state: AppState,
-) => selectDeezerIsPremium(state) && selectFlashEnabled(state);
+): boolean => selectDeezerIsPremium(state) && selectFlashEnabled(state);

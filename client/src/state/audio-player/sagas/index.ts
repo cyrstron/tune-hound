@@ -1,6 +1,6 @@
-import { watchInitAudio } from "./init-saga";
+import {watchInitAudio} from './init-saga';
 import {spawn} from 'redux-saga/effects';
 
-export function* audioSaga() {
+export function* audioSaga(): any {
   yield spawn(watchInitAudio);
 }

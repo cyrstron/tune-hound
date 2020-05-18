@@ -1,15 +1,11 @@
-import {takeEvery, getContext, select, delay} from 'redux-saga/effects';
-import { SET_CURRENT_TRACK } from '@app/state/player/consts';
-import { DEEZER_SERVICE_CTX_KEY } from '@app/consts';
-import { DeezerService } from '@app/state/deezer/services';
-import { SetCurrentTrackAction } from '@app/state/player/actions';
-import { selectDeezerCurrentTrack, selectDeezerIsPlaying } from '@app/state/deezer/selectors';
+import {takeEvery, getContext, select} from 'redux-saga/effects';
+import {SET_CURRENT_TRACK} from '@app/state/player/consts';
+import {DEEZER_SERVICE_CTX_KEY} from '@app/consts';
+import {DeezerService} from '@app/state/deezer/services';
+import {SetCurrentTrackAction} from '@app/state/player/actions';
+import {selectDeezerCurrentTrack} from '@app/state/deezer/selectors';
 
-export function* watchCurrentTrack() {
-  yield takeEvery(SET_CURRENT_TRACK, setCurrentTrack);
-}
-
-export function* setCurrentTrack({payload: {track, isAutoplay}}: SetCurrentTrackAction) {
+export function* setCurrentTrack({payload: {track, isAutoplay}}: SetCurrentTrackAction): any {
   const deezerService: DeezerService = yield getContext(DEEZER_SERVICE_CTX_KEY);
 
   if (track.source !== 'deezer') return;
@@ -25,4 +21,8 @@ export function* setCurrentTrack({payload: {track, isAutoplay}}: SetCurrentTrack
     deezerService.player.seek(0);
     deezerService.player.pause();
   }
+}
+
+export function* watchCurrentTrack(): any {
+  yield takeEvery(SET_CURRENT_TRACK, setCurrentTrack);
 }

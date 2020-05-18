@@ -1,11 +1,11 @@
 import {select, call} from 'redux-saga/effects';
 
 import {selectIsSpotifyTokenExpired} from '../selectors';
-import { 
-  updateSpotifyTokenSaga
+import {
+  updateSpotifyTokenSaga,
 } from './update-token';
 
-export function* checkSpotifyTokenSaga() {
+export function* checkSpotifyTokenSaga(): any {
   const isExpired: string = yield select(selectIsSpotifyTokenExpired);
 
   if (!isExpired) return;

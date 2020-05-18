@@ -21,7 +21,7 @@ const TrackItemComponent: FC<TrackItemProps> = ({
     <div className={cx('track', className)}>
       <div><b>{title}</b> by <b>{artists.join(', ')}</b></div>
     </div>
-  )
-}
+  );
+};
 
-export {TrackItemComponent}
+export {TrackItemComponent};

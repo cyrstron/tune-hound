@@ -14,7 +14,7 @@ export class AudioService {
   audioElement?: HTMLAudioElement;
 
   defaultVolume?: number;
-  defaultMute: boolean = false;
+  defaultMute = false;
 
   onPlay?: (e: Event) => void;
   onPause?: (e: Event) => void;
@@ -25,8 +25,9 @@ export class AudioService {
   onWaiting?: (e: Event) => void;
   onPlaying?: (e: Event) => void;
   onUrlChange?: (url: string) => void;
+  onTrackEnded?: (e: Event) => void;
 
-  mountAudio() {
+  mountAudio(): void {
     this.onPlay && this.audio.addEventListener('play', this.onPlay);
     this.onPause && this.audio.addEventListener('pause', this.onPause);
     this.onProgress && this.audio.addEventListener('progress', this.onProgress);
@@ -35,12 +36,13 @@ export class AudioService {
     this.onVolumeChange && this.audio.addEventListener('volumechange', this.onVolumeChange);
     this.onWaiting && this.audio.addEventListener('waiting', this.onWaiting);
     this.onPlaying && this.audio.addEventListener('playing', this.onPlaying);
+    this.onTrackEnded && this.audio.addEventListener('ended', this.onTrackEnded);
   }
 
-  unmountAudio() {
+  unmountAudio(): void {
     if (!this.audioElement) return;
 
-    this.audio.addEventListener
+    this.audio.addEventListener;
 
     if (!this.audioElement.paused) {
       this.audio.pause();
@@ -54,6 +56,7 @@ export class AudioService {
     this.onVolumeChange && this.audio.removeEventListener('volumechange', this.onVolumeChange);
     this.onWaiting && this.audio.removeEventListener('waiting', this.onWaiting);
     this.onPlaying && this.audio.removeEventListener('playing', this.onPlaying);
+    this.onTrackEnded && this.audio.removeEventListener('ended', this.onTrackEnded);
   }
 
   get currentUrl(): string | null {
@@ -70,45 +73,61 @@ export class AudioService {
   addEventListener(eventType: 'timeupdate', handler: (e: Event) => void): void;
   addEventListener(eventType: 'volumechange', handler: (e: Event) => void): void;
   addEventListener(eventType: 'waiting', handler: (e: Event) => void): void;
+  addEventListener(eventType: 'ended', handler: (e: Event) => void): void;
   addEventListener(eventType: 'playing', handler: (e: Event) => void): void;
   addEventListener(eventType: 'progress', handler: (e: ProgressEvent<EventTarget>) => void): void;
   addEventListener(eventType: 'urlchange', handler: (url: string) => void): void;
   addEventListener(
-    eventType: 'urlchange' | 'play' | 'pause' | 'seekend' | 'timeupdate' | 'volumechange' | 'waiting' | 'playing' | 'progress', 
-    handler: ((e: Event) => void) | ((e: ProgressEvent<EventTarget>) => void) | ((url: string) => void),
+    eventType: 'urlchange' |
+      'ended' |
+      'play' |
+      'pause' |
+      'seekend' |
+      'timeupdate' |
+      'volumechange' |
+      'waiting' |
+      'playing' |
+      'progress',
+    handler: (
+      (e: Event) => void) |
+      ((e: ProgressEvent<EventTarget>) => void) |
+      ((url: string) => void),
   ): void {
     switch (eventType) {
-      case 'play':
-        this.onPlay = handler as (e: Event) => void;
-        break;
-      case 'pause':
-        this.onPause = handler as (e: Event) => void;
-        break;
-      case 'seekend':
-        this.onSeekend = handler as (e: Event) => void;
-        break;
-      case 'timeupdate':
-        this.onTimeUpdated = handler as (e: Event) => void;
-        break;
-      case 'volumechange':
-        this.onVolumeChange = handler as (e: Event) => void;
-        break;
-      case 'waiting':
-        this.onWaiting = handler as (e: Event) => void;
-        break;
-      case 'urlchange':
-        this.onUrlChange = handler as (url: string) => void;
-        break;
-      case 'playing':
-        this.onPlaying = handler as (e: Event) => void;
-        break;
-      case 'progress':
-        this.onProgress = handler as (e: ProgressEvent<EventTarget>) => void;
-        break;
+    case 'play':
+      this.onPlay = handler as (e: Event) => void;
+      break;
+    case 'pause':
+      this.onPause = handler as (e: Event) => void;
+      break;
+    case 'seekend':
+      this.onSeekend = handler as (e: Event) => void;
+      break;
+    case 'timeupdate':
+      this.onTimeUpdated = handler as (e: Event) => void;
+      break;
+    case 'volumechange':
+      this.onVolumeChange = handler as (e: Event) => void;
+      break;
+    case 'waiting':
+      this.onWaiting = handler as (e: Event) => void;
+      break;
+    case 'urlchange':
+      this.onUrlChange = handler as (url: string) => void;
+      break;
+    case 'playing':
+      this.onPlaying = handler as (e: Event) => void;
+      break;
+    case 'progress':
+      this.onProgress = handler as (e: ProgressEvent<EventTarget>) => void;
+      break;
+    case 'ended':
+      this.onTrackEnded = handler as (e: Event) => void;
+      break;
     }
   }
 
-  async setAudio(url: string, isAutoplay: boolean = true) {
+  async setAudio(url: string, isAutoplay = true): Promise<void> {
     this.unmountAudio();
 
     const audio = new Audio(url);
@@ -123,19 +142,20 @@ export class AudioService {
     this.onUrlChange && this.onUrlChange(url);
 
     await new Promise((resolve, reject) => {
-      const onReady = () => {
+      const onReady = (): void => {
         audio.removeEventListener('canplay', onReady);
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         audio.removeEventListener('error', onError);
 
         resolve();
-      }
-      
-      const onError = (err: ErrorEvent) => {
+      };
+
+      const onError = (err: ErrorEvent): void => {
         audio.removeEventListener('canplay', onReady);
         audio.removeEventListener('error', onError);
 
         reject(err);
-      }
+      };
 
       audio.addEventListener('canplay', onReady);
       audio.addEventListener('error', onError);
@@ -146,31 +166,31 @@ export class AudioService {
     this.play();
   }
 
-  async seek(seek: number) {
+  async seek(seek: number): Promise<void> {
     const audio = this.audio;
 
     audio.currentTime = seek;
 
     await new Promise((res) => {
-      const onSeekEnd = () => {
+      const onSeekEnd = (): void => {
         audio.removeEventListener('seeked', onSeekEnd);
 
         res();
-      }
-      
+      };
+
       audio.addEventListener('seeked', onSeekEnd);
     });
   }
 
-  play() {
+  play(): void {
     this.audio?.play();
   }
 
-  pause() {
+  pause(): void {
     this.audio?.pause();
   }
 
-  setMute(isMuted: boolean) {
+  setMute(isMuted: boolean): void {
     this.defaultMute = isMuted;
 
     if (!this.audioElement) return;
@@ -178,7 +198,7 @@ export class AudioService {
     this.audioElement.muted = isMuted;
   }
 
-  setVolume(volume: number) {
+  setVolume(volume: number): void {
     this.defaultVolume = volume;
 
     if (!this.audioElement) return;
@@ -214,5 +234,4 @@ export class AudioService {
 
     return progress;
   }
-  
 }

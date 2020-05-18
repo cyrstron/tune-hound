@@ -1,8 +1,8 @@
-import React, {Component, HTMLProps, ChangeEvent} from 'react';
+import React, {Component} from 'react';
 import {IndexatedInput} from './indexated-input';
 
 export interface IndexatedInputsProps {
-  values?: string[]
+  values?: string[];
   onChange: (values: string[]) => void;
   label: string;
   disabled?: boolean;
@@ -25,15 +25,15 @@ class IndexatedInputs extends Component<IndexatedInputsProps> {
     } else if (values.length > 1 && !value) {
       onChange([
         ...values.slice(0, index),
-        ...values.slice(index + 1)
+        ...values.slice(index + 1),
       ]);
     } else {
       onChange([
         ...values.slice(0, index),
         value,
-        ...values.slice(index + 1)
+        ...values.slice(index + 1),
       ]);
-    };
+    }
   }
 
   render() {
@@ -45,10 +45,10 @@ class IndexatedInputs extends Component<IndexatedInputsProps> {
       <div>
         <div>{label}</div>
         {(values || ['']).map((value, index) => (
-          <IndexatedInput 
-            value={value} 
-            onChange={this.onAndChange} 
-            index={index} 
+          <IndexatedInput
+            value={value}
+            onChange={this.onAndChange}
+            index={index}
             key={index}
             disabled={disabled}
           />
@@ -61,4 +61,4 @@ class IndexatedInputs extends Component<IndexatedInputsProps> {
   }
 }
 
-export {IndexatedInputs}
+export {IndexatedInputs};

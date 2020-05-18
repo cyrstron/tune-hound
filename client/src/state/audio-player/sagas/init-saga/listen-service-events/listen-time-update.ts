@@ -1,17 +1,16 @@
 import {eventChannel, EventChannel, END} from 'redux-saga';
 import throttle from 'lodash/throttle';
 import {take, put, select, all} from 'redux-saga/effects';
-import { DeezerService } from '@app/state/deezer/services';
-import { selectIsPlaying, selectCurrentTrack } from '@app/state/player/selectors';
-import { setPosition } from '@app/state/player/actions';
-import { PlayerTrack } from '@app/state/player/types';
-import { AudioService } from '@app/state/audio-player/services/audio-service';
-import { setAudioCurrentTime } from '@app/state/audio-player/actions';
+import {selectIsPlaying, selectCurrentTrack} from '@app/state/player/selectors';
+import {setPosition} from '@app/state/player/actions';
+import {PlayerTrack} from '@app/state/player/types';
+import {AudioService} from '@app/state/audio-player/services/audio-service';
+import {setAudioCurrentTime} from '@app/state/audio-player/actions';
 
 export function createAudioCurrentTimeChannel(
-  audioService: AudioService
+  audioService: AudioService,
 ): EventChannel<number> {
-  return eventChannel(emitter => {
+  return eventChannel((emitter) => {
     const onTimeChanged = throttle(() => {
       const currentTime = audioService.currentTime;
 
@@ -19,15 +18,20 @@ export function createAudioCurrentTimeChannel(
     }, 200);
 
     audioService.addEventListener('timeupdate', onTimeChanged);
-      
-    return () => {};
+
+    return (): void => {
+      return;
+    };
   });
 }
 
-export function* watchAudioCurrentTimeChange(audioService: AudioService, channel: EventChannel<number>) {
+export function* watchAudioCurrentTimeChange(
+  audioService: AudioService,
+  channel: EventChannel<number>,
+): any {
   while (true) {
     const currentTime: number | END = yield take(channel);
-    
+
     if (typeof currentTime !== 'number') return;
 
     const action = setAudioCurrentTime(currentTime);

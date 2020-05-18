@@ -1,6 +1,6 @@
 import React, {Component, createRef} from 'react';
 import classNames from 'classnames/bind';
-import { SourceTooltip } from '../tooltip';
+import {SourceTooltip} from '../tooltip';
 
 import styles from './source-link.scss';
 
@@ -16,7 +16,7 @@ export interface SourceLinkProps {
   externalUrls: {
     spotifyUrl?: string;
     deezerUrl?: string;
-  }
+  };
 }
 
 class SourceLinkComponent extends Component<SourceLinkProps, SourceLinkState> {
@@ -30,7 +30,7 @@ class SourceLinkComponent extends Component<SourceLinkProps, SourceLinkState> {
     this.setState({parentElem: this.parentRef.current});
   }
 
-  render() { 
+  render() {
     const {children, externalUrls, className} = this.props;
     const {parentElem} = this.state;
 
@@ -41,7 +41,7 @@ class SourceLinkComponent extends Component<SourceLinkProps, SourceLinkState> {
         </span>
         {parentElem && (
           <SourceTooltip
-            parent={parentElem} 
+            parent={parentElem}
             spotifyUrl={externalUrls.spotifyUrl}
             deezerUrl={externalUrls.deezerUrl}
           />

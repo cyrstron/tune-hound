@@ -1,35 +1,37 @@
 import {eventChannel, EventChannel, END} from 'redux-saga';
 import {take, put, select} from 'redux-saga/effects';
-import { selectCurrentTrack } from '@app/state/player/selectors';
-import { PlayerTrack } from '@app/state/player/types';
-import { AudioService } from '../../../services/audio-service';
-import { setAudioUrl } from '../../../actions';
+import {selectCurrentTrack} from '@app/state/player/selectors';
+import {PlayerTrack} from '@app/state/player/types';
+import {AudioService} from '../../../services/audio-service';
+import {setAudioUrl} from '../../../actions';
 
 export function createAudioUrlChangeChannel(
   audioService: AudioService,
 ): EventChannel<string | null> {
-  return eventChannel(emitter => {
+  return eventChannel((emitter) => {
     audioService.addEventListener('urlchange', (url) => {
       emitter(url);
     });
-      
-    return () => {};
+
+    return (): void => {
+      return;
+    };
   });
 }
 
 export function* watchAudioUrlChange(
-  audioService: AudioService, 
-  channel: EventChannel<string | null>
-) {
+  audioService: AudioService,
+  channel: EventChannel<string | null>,
+): any {
   const url = audioService.currentUrl;
 
   const action = setAudioUrl(url);
 
   yield put(action);
-  
+
   while (true) {
     const url: string | null | END = yield take(channel);
-    
+
     if (!url || typeof url !== 'string') return;
 
     const action = setAudioUrl(url);

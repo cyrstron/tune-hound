@@ -2,8 +2,8 @@ import React, {FC, useCallback} from 'react';
 import classNames from 'classnames/bind';
 
 import styles from './album-tile.scss';
-import { CoverPlayBtn } from '@app/components/cover-play-btn';
-import { SearchSource } from '@app/state/search/types';
+import {CoverPlayBtn} from '@app/components/cover-play-btn';
+import {SearchSource} from '@app/state/search/types';
 
 const cx = classNames.bind(styles);
 
@@ -35,12 +35,12 @@ const AlbumTileComponent: FC<AlbumTileProps> = ({
   isPaused,
 }) => {
   const handlePlay = useCallback(() => {
-    onPlay(id, source)
+    onPlay(id, source);
   }, [onPlay, id, source]);
 
   return (
     <div className={cx('album', className)}>
-      <CoverPlayBtn 
+      <CoverPlayBtn
         className={cx('cover')}
         src={coverUrl}
         title={title}
@@ -54,6 +54,6 @@ const AlbumTileComponent: FC<AlbumTileProps> = ({
       {year && (<div>Year: {year}</div>)}
     </div>
   );
-}
+};
 
-export {AlbumTileComponent}
+export {AlbumTileComponent};

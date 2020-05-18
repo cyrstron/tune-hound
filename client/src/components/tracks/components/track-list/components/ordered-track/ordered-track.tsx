@@ -1,6 +1,6 @@
 import React, {FC, useCallback} from 'react';
 import classNames from 'classnames/bind';
-import { TrackItem, TrackItemProps } from '../../../track-item';
+import {TrackItem, TrackItemProps} from '../../../track-item';
 
 import styles from './ordered-track.scss';
 
@@ -35,7 +35,7 @@ const OrderedTrackComponent: FC<OrderedTrackProps> = ({
     } else {
       onPlay(index);
     }
-  }, [index, onPause, onPlay, isPlaying, isPending, isPaused]);
+  }, [index, onPause, onPlay, isPlaying, isPending]);
 
   return (
     <li className={cx('track-item', className)}>
@@ -52,6 +52,6 @@ const OrderedTrackComponent: FC<OrderedTrackProps> = ({
       <TrackItem className={cx('track-content')} {...props}/>
     </li>
   );
-}
+};
 
-export {OrderedTrackComponent}
+export {OrderedTrackComponent};

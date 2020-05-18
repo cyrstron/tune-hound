@@ -1,14 +1,10 @@
-import {takeEvery, all, select, put, delay} from 'redux-saga/effects';
-import { PLAY_NEXT } from '../consts';
-import { selectPlaylist, selectPlayedIndexes, selectNextIndex, selectIsPlaying, selectIsPlayerPending } from '../selectors';
-import { PlayerTrack } from '../types';
-import { resetPlayedIndexes, setCurrentTrack, setIsPlayerPending} from '../actions';
+import {takeEvery, all, select, put} from 'redux-saga/effects';
+import {PLAY_NEXT} from '../consts';
+import {selectPlaylist, selectPlayedIndexes, selectNextIndex} from '../selectors';
+import {PlayerTrack} from '../types';
+import {resetPlayedIndexes, setCurrentTrack} from '../actions';
 
-export function* watchPlayNext() {
-  yield takeEvery(PLAY_NEXT, playNextSaga);
-}
-
-export function* playNextSaga() {
+export function* playNextSaga(): any {
   const [
     playedIndexes,
     tracks,
@@ -35,4 +31,8 @@ export function* playNextSaga() {
   const action = setCurrentTrack(track, index, isAutoplayed);
 
   yield put(action);
+}
+
+export function* watchPlayNext(): any {
+  yield takeEvery(PLAY_NEXT, playNextSaga);
 }

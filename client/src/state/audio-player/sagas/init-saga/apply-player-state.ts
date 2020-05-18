@@ -1,8 +1,8 @@
-import { all, select } from "redux-saga/effects";
-import { selectIsMuted, selectVolume } from "@app/state/player/selectors";
-import { AudioService } from "../../services/audio-service";
+import {all, select} from 'redux-saga/effects';
+import {selectIsMuted, selectVolume} from '@app/state/player/selectors';
+import {AudioService} from '../../services/audio-service';
 
-export function* applyPlayerState(audioService: AudioService) {
+export function* applyPlayerState(audioService: AudioService): any {
   const [isMuted, volume]: [
     boolean,
     number,
@@ -11,6 +11,6 @@ export function* applyPlayerState(audioService: AudioService) {
     select(selectVolume),
   ]);
 
-  audioService.setMute(isMuted);  
-  audioService.setVolume(volume / 100);  
+  audioService.setMute(isMuted);
+  audioService.setVolume(volume / 100);
 }

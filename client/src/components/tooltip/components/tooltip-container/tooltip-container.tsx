@@ -10,9 +10,9 @@ import styles from './tooltip-container.scss';
 const cx = classNames.bind(styles);
 
 export interface TooltipState {
-  isMouseOnParent: boolean,
-  isMouseOnTooltip: boolean,
-  isShown: boolean,
+  isMouseOnParent: boolean;
+  isMouseOnTooltip: boolean;
+  isShown: boolean;
 }
 
 export interface TooltipProps {
@@ -60,7 +60,7 @@ class TooltipContainerComponent extends Component<TooltipProps, TooltipState> {
     const tooltipElem = this.tooltipRef.current;
 
     this.mousePosition = {
-      clientX, 
+      clientX,
       clientY,
     };
 
@@ -75,11 +75,11 @@ class TooltipContainerComponent extends Component<TooltipProps, TooltipState> {
     const {parent} = this.props;
 
     const {
-      className, 
+      className,
       style: {
-        top, 
+        top,
         left,
-      }
+      },
     } = computePosition(this.mousePosition, parent, tooltip);
 
     tooltip.className = cx(this.tooltipClassName, className);
@@ -92,7 +92,7 @@ class TooltipContainerComponent extends Component<TooltipProps, TooltipState> {
     const {parent} = this.props;
 
     this.mousePosition = {clientX, clientY};
-  
+
     parent.addEventListener('mousemove', this.onParentMouseMove);
 
     this.setState({isMouseOnParent: true});
@@ -106,7 +106,7 @@ class TooltipContainerComponent extends Component<TooltipProps, TooltipState> {
     this.mousePosition = undefined;
   }
 
-  onTooltipMouseEnter = () => {  
+  onTooltipMouseEnter = () => {
     this.setState({isMouseOnTooltip: true});
   }
 
@@ -178,8 +178,8 @@ class TooltipContainerComponent extends Component<TooltipProps, TooltipState> {
 
   render() {
     const {
-      children, 
-      className, 
+      children,
+      className,
     } = this.props;
 
     const {
@@ -189,13 +189,13 @@ class TooltipContainerComponent extends Component<TooltipProps, TooltipState> {
     if (!isShown) return null;
 
     return (
-      <div 
+      <div
         ref={this.tooltipRef}
         className={cx('tooltip-container')}
         onMouseEnter={this.onTooltipMouseEnter}
         onMouseLeave={this.onTooltipMouseLeave}
       >
-        <div 
+        <div
           className={cx('tooltip', className)}
         >
           {children}
@@ -205,4 +205,4 @@ class TooltipContainerComponent extends Component<TooltipProps, TooltipState> {
   }
 }
 
-export {TooltipContainerComponent}
+export {TooltipContainerComponent};

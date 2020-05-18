@@ -1,17 +1,17 @@
 import React, {FC, Fragment, useCallback} from 'react';
 import classNames from 'classnames/bind';
-import { SearchedTrack } from '@app/state/search/types';
+import {SearchedTrack} from '@app/state/search/types';
 import {SourceLink} from '@app/components/source-link';
 
 import styles from './searched-track.scss';
-import { SourceDetails } from '../sources-details';
-import { useDispatch, useSelector } from 'react-redux';
-import { playSearchResult } from '@app/state/search/actions';
-import { pause } from '@app/state/player/actions';
-import { CoverPlayBtn } from '@app/components/cover-play-btn';
-import { AppState } from '@app/state';
-import { selectIsTrackActive, selectIsPlaying, selectIsPlayerPending } from '@app/state/player/selectors';
-import { selectOneOfExtensionsPending } from '@app/state/search/selectors';
+import {SourceDetails} from '../sources-details';
+import {useDispatch, useSelector} from 'react-redux';
+import {playSearchResult} from '@app/state/search/actions';
+import {pause} from '@app/state/player/actions';
+import {CoverPlayBtn} from '@app/components/cover-play-btn';
+import {AppState} from '@app/state';
+import {selectIsTrackActive, selectIsPlaying, selectIsPlayerPending} from '@app/state/player/selectors';
+import {selectOneOfExtensionsPending} from '@app/state/search/selectors';
 
 const cx = classNames.bind(styles);
 
@@ -36,7 +36,9 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
   const isPlaying = useSelector(selectIsPlaying);
   const isPending = useSelector(selectIsPlayerPending);
 
-  const isExtending = useSelector<AppState, boolean>((state) => selectOneOfExtensionsPending(state, id));
+  const isExtending = useSelector<AppState, boolean>(
+    (state) => selectOneOfExtensionsPending(state, id),
+  );
 
   const onPlay = useCallback(() => {
     const action = playSearchResult(id);
@@ -53,7 +55,7 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
   return (
     <article className={cx('track', className)}>
       <div className={cx('content')}>
-        <CoverPlayBtn 
+        <CoverPlayBtn
           src={coverUrl}
           title={`"${track.name}" by ${artists.join(', ')}`}
           className={cx('cover')}
@@ -67,7 +69,7 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
           <h1 className={cx('track-title')}>
             <SourceLink
               externalUrls={{
-                spotifyUrl: spotify?.external_urls.spotify,
+                spotifyUrl: spotify?.['external_urls'].spotify,
                 deezerUrl: deezer?.link,
               }}
             >
@@ -80,7 +82,7 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
             <SourceLink
               className={cx('album-link')}
               externalUrls={{
-                spotifyUrl: spotify?.album.external_urls.spotify,
+                spotifyUrl: spotify?.album['external_urls'].spotify,
                 deezerUrl: deezer ? `https://www.deezer.com/album/${deezer.album.id}` : undefined,
               }}
             >
@@ -95,7 +97,7 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
                 <SourceLink
                   className={cx('artist-link')}
                   externalUrls={{
-                    spotifyUrl: spotify?.artists.find(({name}) => name === artist)?.external_urls.spotify,
+                    spotifyUrl: spotify?.artists.find(({name}) => name === artist)?.['external_urls'].spotify,
                     deezerUrl: deezer?.artist.link,
                   }}
                 >
@@ -105,11 +107,17 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
               </Fragment>
             ))}
           </div>
-          <SourceDetails id={id} isCrossExtendable={isCrossExtendable} spotify={spotify} deezer={deezer} className={cx('details')} />
+          <SourceDetails
+            id={id}
+            isCrossExtendable={isCrossExtendable}
+            spotify={spotify}
+            deezer={deezer}
+            className={cx('details')}
+          />
         </div>
       </div>
     </article>
   );
-}
+};
 
 export {SearchedTrackComponent};

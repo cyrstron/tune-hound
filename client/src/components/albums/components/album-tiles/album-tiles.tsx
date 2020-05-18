@@ -1,10 +1,10 @@
 import React, {FC} from 'react';
 import classNames from 'classnames/bind';
-import { AlbumTileItem } from './components/album-tile-item';
+import {AlbumTileItem} from './components/album-tile-item';
 import {AlbumShort} from '../..';
 
 import styles from './album-tiles.scss';
-import { SearchSource } from '@app/state/search/types';
+import {SearchSource} from '@app/state/search/types';
 
 const cx = classNames.bind(styles);
 
@@ -21,7 +21,7 @@ export interface AlbumTilesProps {
 }
 
 const AlbumTilesComponent: FC<AlbumTilesProps> = ({
-  albums, 
+  albums,
   className,
   activeId,
   isPlaying,
@@ -34,22 +34,22 @@ const AlbumTilesComponent: FC<AlbumTilesProps> = ({
     <ul className={cx('album-list', className)}>
       {albums.map((album) => {
         const isActive = activeId === album.id;
-        
+
         return (
-          <AlbumTileItem 
-            key={album.id} 
-            className={cx('album-item')} 
+          <AlbumTileItem
+            key={album.id}
+            className={cx('album-item')}
             isPlaying={isActive && isPlaying}
             isPending={isActive && isPending}
             isPaused={isActive && isPaused}
             onPlay={onPlay}
             onPause={onPause}
-            {...album}        
+            {...album}
           />
         );
       })}
     </ul>
-  )
-}
+  );
+};
 
-export {AlbumTilesComponent}
+export {AlbumTilesComponent};

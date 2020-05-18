@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import classNames from 'classnames/bind';
-import { DeezerAlbum } from '@app/state/deezer/types';
+import {DeezerAlbum} from '@app/state/deezer/types';
 
 import styles from './deezer-short-album.scss';
 
@@ -12,7 +12,7 @@ export interface DeezerShortAlbumProps {
 }
 
 const DeezerShortAlbumComponent: FC<DeezerShortAlbumProps> = ({
-  album: {title, cover}, 
+  album: {cover},
   className,
 }) => {
   return (
@@ -21,6 +21,6 @@ const DeezerShortAlbumComponent: FC<DeezerShortAlbumProps> = ({
       <div className={cx('title')} title={name}><b>{name}</b></div>
     </div>
   );
-}
+};
 
-export {DeezerShortAlbumComponent}
+export {DeezerShortAlbumComponent};

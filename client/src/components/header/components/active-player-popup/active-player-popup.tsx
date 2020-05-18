@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import classNames from 'classnames/bind';
 
 import styles from './active-player-popup.scss';
-import { Popup } from '@app/components/popup';
+import {Popup} from '@app/components/popup';
 
 const cx = classNames.bind(styles);
 
@@ -35,8 +35,9 @@ class ActivePlayerPopupComponent extends Component<ActivePlayerPopupProps, {}> {
           You have to enable 'Tune Hound Preview Player' in your
           {' '}
           <a
-            href='https://open.spotify.com/' 
+            href='https://open.spotify.com/'
             target='_blank'
+            rel="noreferrer"
           >
             devices list
           </a>
@@ -47,9 +48,8 @@ class ActivePlayerPopupComponent extends Component<ActivePlayerPopupProps, {}> {
           </div>
         </div>
       </Popup>
-    )
+    );
   }
-
 }
 
-export {ActivePlayerPopupComponent}
+export {ActivePlayerPopupComponent};

@@ -1,12 +1,12 @@
 import React, {Component, FormEvent, ChangeEvent} from 'react';
 import {SearchSource, SearchOptions} from '@app/state/search/types';
-import { DeezerSearchForm } from './components/deezer-search-form';
-import { SpotifySearchForm } from './components/spotify-search-form';
-import { DeezerSearchOptions } from '@app/state/deezer/types';
-import { SpotifySearchOptions } from '@app/state/spotify/types';
+import {DeezerSearchForm} from './components/deezer-search-form';
+import {SpotifySearchForm} from './components/spotify-search-form';
+import {DeezerSearchOptions} from '@app/state/deezer/types';
+import {SpotifySearchOptions} from '@app/state/spotify/types';
 
 export interface SearchFormProps {
-  executeSearch: (    
+  executeSearch: (
     source: SearchSource,
     options: SearchOptions,
   ) => void;
@@ -29,8 +29,8 @@ class SearchFormComponent extends Component<SearchFormProps, SearchState> {
     super(props);
 
     const {
-      isSpotifyConnected, 
-      isDeezerConnected
+      isSpotifyConnected,
+      isDeezerConnected,
     } = props;
 
     if (isSpotifyConnected) {
@@ -38,16 +38,16 @@ class SearchFormComponent extends Component<SearchFormProps, SearchState> {
         source: 'spotify' as 'spotify',
         type: 'track',
         query: '',
-      }
+      };
     } else if (isDeezerConnected) {
       this.state = {
         source: 'deezer' as 'deezer',
         namespace: 'track',
         query: {track: ''},
-      }
+      };
     }
   }
-  
+
   get sources() {
     const {isDeezerConnected, isSpotifyConnected} = this.props;
 
@@ -59,7 +59,7 @@ class SearchFormComponent extends Component<SearchFormProps, SearchState> {
       label: string;
       isDisabled: boolean;
     }>;
-  };
+  }
 
   onSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -74,22 +74,22 @@ class SearchFormComponent extends Component<SearchFormProps, SearchState> {
     const {value} = target;
 
     switch (value) {
-      case 'deezer':
-        this.setState({
-          source: 'deezer',
-          namespace: 'track',
-          query: {track: ''},
-        });
-        break;
-      case 'spotify':
-        this.setState({
-          source: 'spotify',
-          type: 'track',
-          query: '',
-        });
-        break;
-      default:
-        break;
+    case 'deezer':
+      this.setState({
+        source: 'deezer',
+        namespace: 'track',
+        query: {track: ''},
+      });
+      break;
+    case 'spotify':
+      this.setState({
+        source: 'spotify',
+        type: 'track',
+        query: '',
+      });
+      break;
+    default:
+      break;
     }
   }
 
@@ -107,10 +107,10 @@ class SearchFormComponent extends Component<SearchFormProps, SearchState> {
       <form onSubmit={this.onSubmit}>
         {this.sources.map(({value, label, isDisabled}) => (
           <label key={value}>
-            <input 
-              value={value} 
-              name='source' 
-              onChange={this.onSourceChange} 
+            <input
+              value={value}
+              name='source'
+              onChange={this.onSourceChange}
               checked={source === value}
               type='radio'
               disabled={isDisabled}
@@ -118,13 +118,13 @@ class SearchFormComponent extends Component<SearchFormProps, SearchState> {
           </label>
         ))}
         {source === 'deezer' && (
-          <DeezerSearchForm 
+          <DeezerSearchForm
             searchParams={searchParams as DeezerSearchOptions}
             onChange={this.onParamsChange}
           />
         )}
         {source === 'spotify' && (
-          <SpotifySearchForm 
+          <SpotifySearchForm
             searchParams={searchParams as SpotifySearchOptions}
             onChange={this.onParamsChange}
           />

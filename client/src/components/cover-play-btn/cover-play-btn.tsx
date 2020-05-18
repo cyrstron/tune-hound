@@ -27,26 +27,27 @@ const CoverPlayBtn: FC<CoverPlayBtnProps> = ({
   isPending,
 }) => {
   return (
-    <div className={cx('cover-wrapper', className, {
-      'playing': isPlaying,
-      'paused': isPaused,
-      'pending': isPending,
-    })}>
-      <button 
+    <div
+      className={cx('cover-wrapper', className, {
+        'playing': isPlaying,
+        'paused': isPaused,
+        'pending': isPending,
+      })}
+    >
+      <button
         className={cx('btn')}
         onClick={isPlaying ? onPause : onPlay}
         disabled={isPending}
       >
         {isPlaying ? 'Pause' : 'Play'}
       </button>
-      <img 
+      <img
         className={cx('cover')}
-        src={src} 
-        alt={title} 
+        src={src}
+        alt={title}
       />
     </div>
   );
-
-}
+};
 
 export {CoverPlayBtn};

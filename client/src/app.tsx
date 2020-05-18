@@ -1,19 +1,17 @@
 import classNames from 'classnames/bind';
-import React, {Component, useEffect} from 'react';
-import { Header } from 'components/header';
-import { Search } from './scenes/search';
-import { Footer } from './components/footer';
+import React, {FC, useEffect} from 'react';
+import {Header} from 'components/header';
+import {Search} from './scenes/search';
+import {Footer} from './components/footer';
 
 import styles from './app.scss';
-import { useDispatch } from 'react-redux';
-import { initApp } from './state/actions';
+import {useDispatch} from 'react-redux';
+import {initApp} from './state/actions';
 
 const cx = classNames.bind(styles);
 
-interface AppState {
-}
 
-const App = () => {
+const App: FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,6 +29,6 @@ const App = () => {
       <Footer className={'footer'} />
     </div>
   );
-}
+};
 
 export {App};

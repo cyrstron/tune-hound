@@ -1,18 +1,18 @@
 import {put, select, call} from 'redux-saga/effects';
-import { 
-  ExtendSearchResultAction, 
-  extendSearchResultPending, 
-  extendSearchResultFailure, 
-  extendSearchResultSuccess
-} from "../../actions";
-import { SourceItem, SourceItemShort, SearchResult, SearchResultType } from '../../types';
-import { selectSearchResultById } from '../../selectors';
-import { findSourceItem } from './find-source-item';
-import { fetchSourceDetails } from './fetch-source-details';
+import {
+  ExtendSearchResultAction,
+  extendSearchResultPending,
+  extendSearchResultFailure,
+  extendSearchResultSuccess,
+} from '../../actions';
+import {SourceItem, SourceItemShort, SearchResult} from '../../types';
+import {selectSearchResultById} from '../../selectors';
+import {findSourceItem} from './find-source-item';
+import {fetchSourceDetails} from './fetch-source-details';
 
 export function* extendSearchResult({
-  payload: {itemId, source}
-}: ExtendSearchResultAction) {
+  payload: {itemId, source},
+}: ExtendSearchResultAction): any {
   const pendingAction = extendSearchResultPending(itemId, source);
 
   const searchItem: SearchResult = yield select(selectSearchResultById, itemId);
@@ -35,9 +35,9 @@ export function* extendSearchResult({
     }
 
     const successAction = extendSearchResultSuccess(
-      itemId, 
+      itemId,
       source,
-      {[source]: result}
+      {[source]: result},
     );
 
     yield put(successAction);

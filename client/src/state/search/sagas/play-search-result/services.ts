@@ -1,16 +1,16 @@
-import { 
-  SearchedTrack, 
-  SearchedAlbum, 
-  DeezerAlbumSourceItemFull, 
-  SpotifyAlbumSourceItemFull, 
-  SearchedArtist, 
-  DeezerArtistSourceItemFull, 
-  SpotifyArtistSourceItemFull, 
-  SearchedPlaylist, 
+import {
+  SearchedTrack,
+  SearchedAlbum,
+  DeezerAlbumSourceItemFull,
+  SpotifyAlbumSourceItemFull,
+  SearchedArtist,
+  DeezerArtistSourceItemFull,
+  SpotifyArtistSourceItemFull,
+  SearchedPlaylist,
   SpotifyPlaylistSourceItemFull,
   DeezerPlaylistSourceItemFull,
-} from "../../types";
-import { PlayerTrack } from "@app/state/player/types";
+} from '../../types';
+import {PlayerTrack} from '@app/state/player/types';
 
 export const mapPlayerTrackFromDeezer = (track: SearchedTrack, canPlay: boolean): PlayerTrack => {
   const sourceObject = track.sources.deezer!;
@@ -23,7 +23,6 @@ export const mapPlayerTrackFromDeezer = (track: SearchedTrack, canPlay: boolean)
     duration: canPlay ? track.duration : 30,
     trackSource: canPlay ? {id: sourceObject.id} : {url: sourceObject.preview},
   } as PlayerTrack;
-
 };
 
 export const mapPlayerTrackFromSpotify = (track: SearchedTrack, canPlay: boolean): PlayerTrack => {
@@ -52,7 +51,10 @@ export const mapPlayerAlbumFromDeezer = (album: SearchedAlbum, canPlay: boolean)
   }) as PlayerTrack);
 };
 
-export const mapPlayerAlbumFromSpotify = (album: SearchedAlbum, canPlay: boolean): PlayerTrack[] => {
+export const mapPlayerAlbumFromSpotify = (
+  album: SearchedAlbum,
+  canPlay: boolean,
+): PlayerTrack[] => {
   const sourceObject = album.sources.spotify! as SpotifyAlbumSourceItemFull;
 
   return sourceObject.tracks.items.map((track) => ({
@@ -65,7 +67,10 @@ export const mapPlayerAlbumFromSpotify = (album: SearchedAlbum, canPlay: boolean
   }) as PlayerTrack);
 };
 
-export const mapPlaylistFromDeezerArtist = (artist: SearchedArtist, canPlay: boolean): PlayerTrack[] => {
+export const mapPlaylistFromDeezerArtist = (
+  artist: SearchedArtist,
+  canPlay: boolean,
+): PlayerTrack[] => {
   const sourceObject = artist.sources.deezer! as DeezerArtistSourceItemFull;
 
   return sourceObject.topTracks.data.map((track) => ({
@@ -78,7 +83,10 @@ export const mapPlaylistFromDeezerArtist = (artist: SearchedArtist, canPlay: boo
   }) as PlayerTrack);
 };
 
-export const mapPlaylistFromSpotifyArtist = (artist: SearchedArtist, canPlay: boolean): PlayerTrack[] => {
+export const mapPlaylistFromSpotifyArtist = (
+  artist: SearchedArtist,
+  canPlay: boolean,
+): PlayerTrack[] => {
   const sourceObject = artist.sources.spotify! as SpotifyArtistSourceItemFull;
 
   return sourceObject.topTracks.map((track) => ({
@@ -90,7 +98,10 @@ export const mapPlaylistFromSpotifyArtist = (artist: SearchedArtist, canPlay: bo
     trackSource: canPlay ? {id: track.id} : {url: track.preview_url},
   }) as PlayerTrack);
 };
-export const mapPlaylistFromDeezer = (playlist: SearchedPlaylist, canPlay: boolean): PlayerTrack[] => {
+export const mapPlaylistFromDeezer = (
+  playlist: SearchedPlaylist,
+  canPlay: boolean,
+): PlayerTrack[] => {
   const sourceObject = playlist.sources.deezer! as DeezerPlaylistSourceItemFull;
 
   return sourceObject.tracks.data.map((track) => ({
@@ -103,7 +114,10 @@ export const mapPlaylistFromDeezer = (playlist: SearchedPlaylist, canPlay: boole
   }) as PlayerTrack);
 };
 
-export const mapPlaylistFromSpotify = (playlist: SearchedPlaylist, canPlay: boolean): PlayerTrack[] => {
+export const mapPlaylistFromSpotify = (
+  playlist: SearchedPlaylist,
+  canPlay: boolean,
+): PlayerTrack[] => {
   const sourceObject = playlist.sources.spotify! as SpotifyPlaylistSourceItemFull;
 
   return sourceObject.tracks.items.map(({track}) => ({

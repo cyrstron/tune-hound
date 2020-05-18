@@ -1,7 +1,7 @@
 import {mountDeezerScript} from './helpers';
 import {DeezerWebApi} from './deezer-web-api';
-import { DeezerSearchOptions } from '../types';
-import { DeezerPlayer } from './deezer-player';
+import {DeezerSearchOptions, DeezerUser, DeezerSearchResult} from '../types';
+import {DeezerPlayer} from './deezer-player';
 
 export class DeezerService {
   script?: HTMLScriptElement;
@@ -13,7 +13,7 @@ export class DeezerService {
 
   onLogout?: () => void;
 
-  async mount() {
+  async mount(): Promise<void> {
     const {script, root, DZ} = await mountDeezerScript();
 
     this.webApi = new DeezerWebApi(DZ);
@@ -24,32 +24,32 @@ export class DeezerService {
     this.root = root;
   }
 
-  async init(options: DeezerSdk.InitOptions) {
+  async init(options: DeezerSdk.InitOptions): Promise<DeezerSdk.SdkOptions> {
     const response = await this.api.init(options);
 
     return response;
   }
 
-  async me() {
+  async me(): Promise<DeezerUser> {
     const response = await this.api.me();
 
     return response;
   }
 
-  async connect() {
+  async connect(): Promise<DeezerSdk.LoginResponse> {
     return this.api && this.api.login();
   }
 
-  disconnect() {
+  disconnect(): void {
     this.api && this.api.logout();
   }
 
-  unmount() {
+  unmount(): void {
     this.script && this.script.remove();
     this.root && this.root.remove();
   }
 
-  get isMounted() {
+  get isMounted(): boolean {
     return !!this.script;
   }
 
@@ -57,7 +57,7 @@ export class DeezerService {
     return !!this.api && this.api.isLoggedIn();
   }
 
-  search(options: DeezerSearchOptions) {
+  search(options: DeezerSearchOptions): Promise<DeezerSearchResult> {
     return this.api.search(options);
   }
 

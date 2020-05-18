@@ -1,19 +1,19 @@
 import React, {FC, useState, useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import classNames from 'classnames/bind';
-import { 
-  SpotifySourceItemShort, 
-  DeezerSourceItemShort, 
-  SourceItemShort, 
+import {
+  SpotifySourceItemShort,
+  DeezerSourceItemShort,
+  SourceItemShort,
   SearchSource,
 } from '@app/state/search/types';
-import { pickOptionForExtend, resetOptionsForExtend, fetchNextOptionsForExtend } from '@app/state/search';
-import { selectExtensionHasMoreItemsToFetch } from '@app/state/search/selectors';
-import { ClosingPopup } from '@app/components/popup';
-import { ExtensionItem }from './components/extension-item';
+import {pickOptionForExtend, resetOptionsForExtend, fetchNextOptionsForExtend} from '@app/state/search';
+import {selectExtensionHasMoreItemsToFetch} from '@app/state/search/selectors';
+import {ClosingPopup} from '@app/components/popup';
+import {ExtensionItem} from './components/extension-item';
 
 import styles from './extension-popup.scss';
-import { AppState } from '@app/state';
+import {AppState} from '@app/state';
 
 const cx = classNames.bind(styles);
 
@@ -36,7 +36,9 @@ const ExtensionPopupComponent: FC<ExtensionPopupProps> = ({spotify, deezer, id})
     source = 'deezer';
   }
 
-  const hasToLoadMore = useSelector<AppState>((state) => !!source && selectExtensionHasMoreItemsToFetch(state, id, source))
+  const hasToLoadMore = useSelector<AppState>(
+    (state) => !!source && selectExtensionHasMoreItemsToFetch(state, id, source),
+  );
 
   const onClick = useCallback((item: SourceItemShort) => {
     setSelected(item);
@@ -83,7 +85,7 @@ const ExtensionPopupComponent: FC<ExtensionPopupProps> = ({spotify, deezer, id})
   if (spotify) {
     propItems = spotify.map((item) => ({spotify: item, isSelected: item.id === selectedItem?.id}));
   } else if (deezer) {
-    propItems = deezer.map((item) => ({deezer: item,  isSelected: item.id === selectedItem?.id}));
+    propItems = deezer.map((item) => ({deezer: item, isSelected: item.id === selectedItem?.id}));
   }
 
   if (!propItems || propItems.length <= 1) return null;
@@ -93,7 +95,11 @@ const ExtensionPopupComponent: FC<ExtensionPopupProps> = ({spotify, deezer, id})
       <div className={cx('content')}>
         <ul className={cx('items-list')}>
           {propItems.map((props) => (
-            <ExtensionItem {...props} onClick={onClick} key={props.deezer?.id || props.spotify?.id} />
+            <ExtensionItem
+              {...props}
+              onClick={onClick}
+              key={props.deezer?.id || props.spotify?.id}
+            />
           ))}
         </ul>
         <div>
@@ -105,6 +111,6 @@ const ExtensionPopupComponent: FC<ExtensionPopupProps> = ({spotify, deezer, id})
       </div>
     </ClosingPopup>
   );
-}
+};
 
-export {ExtensionPopupComponent}
+export {ExtensionPopupComponent};

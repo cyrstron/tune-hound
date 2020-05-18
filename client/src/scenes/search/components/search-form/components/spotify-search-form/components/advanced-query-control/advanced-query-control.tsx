@@ -1,20 +1,19 @@
 import React, {Component, ChangeEvent} from 'react';
 import {
-  SpotifyAdvancedSearchQuery, 
+  SpotifyAdvancedSearchQuery,
   SpotifySearchItemType,
   SpotifyAlbumAdvancedSearchQuery,
   SpotifyArtistAdvancedSearchQuery,
   SpotifyTrackAdvancedSearchQuery,
-  SpotifySearchTagType
+  SpotifySearchTagType,
 } from '@app/state/spotify/types';
-import {IndexatedInput} from '../indexated-input';
-import { IndexatedInputs } from '../indexated-inputs';
-import { YearRangeInput } from '../year-range-input';
+import {IndexatedInputs} from '../indexated-inputs';
+import {YearRangeInput} from '../year-range-input';
 
 export interface AdvancedQueryControl {
   query?: SpotifyAdvancedSearchQuery;
   type: SpotifySearchItemType;
-  onChange: (query: SpotifyAdvancedSearchQuery) => void
+  onChange: (query: SpotifyAdvancedSearchQuery) => void;
 }
 
 export class AdvancedQueryControlComponent extends Component<AdvancedQueryControl> {
@@ -54,7 +53,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
     const {onChange, query, type} = this.props;
 
     if (type === 'playlist' || type === 'track') return;
-    
+
     onChange({
       ...query || {},
       track: value,
@@ -66,7 +65,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
     const {onChange, query, type} = this.props;
 
     if (type === 'playlist' || type === 'album') return;
-    
+
     onChange({
       ...query || {},
       album: value,
@@ -78,7 +77,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
     const {onChange, query, type} = this.props;
 
     if (type === 'playlist' || type === 'artist') return;
-    
+
     onChange({
       ...query || {},
       artist: value,
@@ -90,13 +89,13 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
     const {onChange, query, type} = this.props;
 
     if (type === 'playlist') return;
-    
+
     onChange({
       ...query || {},
       genre: value,
     } as (
-      SpotifyTrackAdvancedSearchQuery | 
-      SpotifyAlbumAdvancedSearchQuery | 
+      SpotifyTrackAdvancedSearchQuery |
+      SpotifyAlbumAdvancedSearchQuery |
       SpotifyArtistAdvancedSearchQuery
     ));
   }
@@ -106,7 +105,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
     const {onChange, query, type} = this.props;
 
     if (type !== 'album') return;
-    
+
     onChange({
       ...query || {},
       tag: value ? value as SpotifySearchTagType : undefined,
@@ -115,7 +114,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
 
   onYearChange = (fromYear?: number, toYear?: number) => {
     const {onChange, query} = this.props;
-    
+
     onChange({
       ...query || {},
       year: toYear !== undefined ? {
@@ -132,21 +131,21 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
 
     return (
       <div>
-        <IndexatedInputs 
+        <IndexatedInputs
           label='Search keys:'
-          values={query && query.and} 
-          onChange={this.onAndChange} 
+          values={query && query.and}
+          onChange={this.onAndChange}
         />
-        <IndexatedInputs 
+        <IndexatedInputs
           label='Include:'
-          values={query && query.or} 
+          values={query && query.or}
           onChange={this.onOrChange}
           disabled={!hasOtherFields}
         />
-        <IndexatedInputs 
+        <IndexatedInputs
           label='Exclude:'
-          values={query && query.not} 
-          onChange={this.onNotChange} 
+          values={query && query.not}
+          onChange={this.onNotChange}
           disabled={!hasOtherFields}
         />
         {type !== 'track' && type !== 'playlist' && (
@@ -154,7 +153,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
             <label>
               Track:
               {' '}
-              <input 
+              <input
                 value={query && 'track' in query ? query.track : ''}
                 onChange={this.onTrackChange}
                 disabled={!hasOtherFields}
@@ -167,7 +166,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
             <label>
               Album:
               {' '}
-              <input 
+              <input
                 value={query && 'album' in query ? query.album : ''}
                 onChange={this.onAlbumChange}
                 disabled={!hasOtherFields}
@@ -180,7 +179,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
             <label>
               Artist:
               {' '}
-              <input 
+              <input
                 value={query && 'artist' in query ? query.artist : ''}
                 onChange={this.onArtistChange}
                 disabled={!hasOtherFields}
@@ -193,7 +192,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
             <label>
               Genre:
               {' '}
-              <input 
+              <input
                 value={query && 'genre' in query ? query.genre : ''}
                 onChange={this.onGenreChange}
                 disabled={!hasOtherFields}
@@ -206,7 +205,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
             Tag:
             <br/>
             <label>
-              <input 
+              <input
                 name='spotify-search-tag'
                 checked={!query || !('tag' in query) || !query.tag}
                 onChange={this.onTagChange}
@@ -218,7 +217,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
               None
             </label>
             <label>
-              <input 
+              <input
                 name='spotify-search-tag'
                 checked={query && 'tag' in query && query.tag === 'new'}
                 onChange={this.onTagChange}
@@ -230,7 +229,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
               New
             </label>
             <label>
-              <input 
+              <input
                 name='spotify-search-tag'
                 checked={query && 'tag' in query && query.tag === 'hipster'}
                 onChange={this.onTagChange}
@@ -243,7 +242,7 @@ export class AdvancedQueryControlComponent extends Component<AdvancedQueryContro
             </label>
           </div>
         )}
-        <YearRangeInput 
+        <YearRangeInput
           onChange={this.onYearChange}
           fromValue={query && (typeof query.year === 'object' ? query.year.from : query.year)}
           toValue={(query?.year && typeof query.year === 'object') ? query.year.to : undefined}
