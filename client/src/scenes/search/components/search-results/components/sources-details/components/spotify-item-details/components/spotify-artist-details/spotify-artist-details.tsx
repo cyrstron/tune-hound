@@ -28,7 +28,7 @@ const SpotifyArtistDetailsComponent: FC<SpotifyArtistDetailsProps> = ({
   const mappedTracks = mapSpotifyTracks(topTracks);
 
   return (
-    <div className={cx('album-details', className)}>
+    <div className={cx('artist-details', className)}>
       {!!genres.length && (
         <div>Genres: {genres.join(', ')}</div>
       )}

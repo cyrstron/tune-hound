@@ -5,7 +5,7 @@ const doCache = false;
 const CACHE_NAME = 'my-pwa-cache-v1';
 
 // Delete old caches that are not our current one!
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', (event: any) => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
       caches.keys()
@@ -20,7 +20,7 @@ self.addEventListener('activate', (event) => {
 });
 
 // The first time the user starts up the PWA, 'install' is triggered.
-self.addEventListener('install', function(event) {
+self.addEventListener('install', function(event: any) {
   if (doCache) {
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -29,7 +29,7 @@ self.addEventListener('install', function(event) {
               // This is because webpack hashes it
               fetch('asset-manifest.json')
                   .then((response) => {
-                    response.json();
+                    return response.json();
                   })
                   .then((assets) => {
                     const urlsToCache = [
@@ -44,7 +44,7 @@ self.addEventListener('install', function(event) {
   }
 });
 
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', function(event: any) {
   if (doCache) {
     event.respondWith(
         caches.match(event.request).then(function(response) {

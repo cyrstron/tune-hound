@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import React, {FC, useEffect} from 'react';
-import {Header} from 'components/header';
+import {Header} from './components/header';
 import {Search} from './scenes/search';
 import {Footer} from './components/footer';
 
@@ -9,7 +9,6 @@ import {useDispatch} from 'react-redux';
 import {initApp} from './state/actions';
 
 const cx = classNames.bind(styles);
-
 
 const App: FC = () => {
   const dispatch = useDispatch();

@@ -28,7 +28,7 @@ const DeezerArtistDetailsComponent: FC<DeezerArtistDetailsProps> = ({
   const mappedTracks = mapDeezerTracks(tracks);
 
   return (
-    <div className={cx('album-details', className)}>
+    <div className={cx('artist-details', className)}>
       {!!mappedTracks.length && (
         <div>
           Top tracks:
