@@ -15,21 +15,24 @@ module.exports = (_env, argv) => {
             loader: 'css-loader',
             options: {
                 modules: {
-                    localIdentName: '[name]__[local]___[hash:base64:5]',
+                    localIdentName: '[name]__[local]___[chunkhash:base64:5]',
                 },
                 sourceMap: true,
             },
         },
     ];
 
-    const outputPath = path.join(__dirname, './dist');
+    const outputPath = path.join(__dirname, './.dist');
     
-    return [{   
+    return {   
         target: 'web',
-        entry: './src/index.tsx',
+        entry: {
+            bundle: './src/index.tsx', 
+            'service-worker': './src/service-worker/service-worker.ts',
+        },
         output: {
             path: outputPath,
-            filename: 'bundle.min.js',
+            filename: ({chunk}) => chunk.name === 'service-worker' ? '[name].js' : '[name].[chunkhash].js',
             clean: true,
         },
         resolve: {
@@ -56,19 +59,19 @@ module.exports = (_env, argv) => {
                 {loader: 'sass-loader', options: {sourceMap: isDevelopment}},
               ],
             },
-            isDevelopment && {
+             {
               test: /\.svg$/,
-              use: 'svg-url-loader',
+              use: isDevelopment ? 'svg-url-loader' : 'svg-inline-loader',
             },
-          ].filter((rule) => !!rule),
+          ],
         },
         plugins: [
             new HtmlWebpackPlugin({
                 template: './src/index.html',
             }),
             new MiniCssExtractPlugin({
-                filename: isDevelopment ? 'style.css' : 'style.[hash].css',
-                chunkFilename: isDevelopment ? '[name].css' : '[name].[hash].css',
+                filename: isDevelopment ? 'style.css' : 'style.[chunkhash].css',
+                chunkFilename: isDevelopment ? '[name].css' : '[name].[chunkhash].css',
             }),
             new Dotenv({
                 path: '../.env',
@@ -101,27 +104,7 @@ module.exports = (_env, argv) => {
                 };
 
                 return proxies;
-            }, {                
-                entry: './src/service-worker/service-worker.ts',
-                output: {
-                    path: outputPath,
-                    filename: 'service-worker.js',
-                    clean: true,
-                },
-                module: {
-                  rules: [
-                        {
-                            test: /\.tsx?$/,
-                            loader: 'ts-loader',
-                        },
-                    ]
-                },
-                devServer: {
-                    host: '127.0.0.1',
-                    port: 3000,
-                    contentBase: outputPath,
-                }
-            }),
+            }, {}),
         },
-    }];
+    };
 }
