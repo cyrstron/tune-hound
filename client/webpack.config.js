@@ -68,6 +68,8 @@ module.exports = (_env, argv) => {
         plugins: [
             new HtmlWebpackPlugin({
                 template: './src/index.html',
+                excludeChunks: ['service-worker'],
+                minify: !isDevelopment,
             }),
             new MiniCssExtractPlugin({
                 filename: isDevelopment ? 'style.css' : 'style.[chunkhash].css',

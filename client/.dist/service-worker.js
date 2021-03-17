@@ -1,0 +1,1 @@
+(()=>{"use strict";self.addEventListener("activate",(e=>{const t=["my-pwa-cache-v1"];e.waitUntil(caches.keys().then((e=>Promise.all(e.map((e=>{if(!t.includes(e))return console.log("Deleting cache: "+e),caches.delete(e)}))))))})),self.addEventListener("install",(function(e){})),self.addEventListener("fetch",(function(e){}))})();
