@@ -9,7 +9,7 @@ module.exports = (_env, argv) => {
 
     const cssLoaders = [
         {
-            loader: MiniCssExtractPlugin.loader,
+            loader: isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
         },
         {
             loader: 'css-loader',
@@ -71,7 +71,7 @@ module.exports = (_env, argv) => {
                 excludeChunks: ['service-worker'],
                 minify: !isDevelopment,
             }),
-            new MiniCssExtractPlugin({
+            !isDevelopment && new MiniCssExtractPlugin({
                 filename: isDevelopment ? 'style.css' : 'style.[chunkhash].css',
                 chunkFilename: isDevelopment ? '[name].css' : '[name].[chunkhash].css',
             }),
@@ -80,7 +80,7 @@ module.exports = (_env, argv) => {
                 systemvars: true,
                 silent: !isDevelopment,
             }),
-        ],
+        ].filter((item) => !!item),
         devtool: isDevelopment ? 'eval-source-map' : undefined,
         devServer: {
             host: '127.0.0.1',
@@ -88,7 +88,7 @@ module.exports = (_env, argv) => {
             contentBase: outputPath,
             historyApiFallback: true,
             open: true,
-            // hot: true,
+            hot: true,
             proxy: [
                 '/deezer-test', 
                 '/manifest.json',
