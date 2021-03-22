@@ -34,17 +34,18 @@ export const selectSpotifyCurrentUser = ({
 export const selectIsSpotifyPremium = (state: AppState): boolean => {
   const user = selectSpotifyCurrentUser(state);
 
-  return !!user && user.product === 'product';
+  return user?.product === 'premium';
 };
 
 export const selectIsSpotifyConnected = ({spotify}: AppState): boolean => spotify.isConnected;
 export const selectIsSpotifyMounted = ({spotify}: AppState): boolean => spotify.isMounted;
 export const selectIsSpotifyPlayerInited = ({spotify}: AppState): boolean => spotify.isPlayerInited;
 export const selectSpotifyWasConnected = ({spotify}: AppState): boolean => spotify.wasConnected;
+export const selectIsSpotifyPlayerReady = (({spotify}: AppState) => spotify.isPlaybackReady);
 
 export const selectIsSpotifyPlayerActive = ({
   spotify,
-}: AppState): boolean => spotify.playbackState !== null;
+}: AppState): boolean => !!spotify.playbackState;
 
 export const selectIsSpotifyPlayerMsgIgnored = ({
   spotify,

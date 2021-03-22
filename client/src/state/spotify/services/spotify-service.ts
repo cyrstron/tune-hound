@@ -13,7 +13,7 @@ export class SpotifyService {
   script?: HTMLScriptElement;
   spotify?: typeof Spotify;
 
-  spotifyPlayer?: Spotify.SpotifyPlayer;
+  private spotifyPlayer?: Spotify.SpotifyPlayer;
 
   constructor(
     public api: SpotifyWebApi,
@@ -44,13 +44,7 @@ export class SpotifyService {
   }
 
   async connect(): Promise<void> {
-    const {player} = this;
-
-    if (!player) {
-      throw new Error('Player wasn\'t mounted');
-    }
-
-    const isConnected = await player.connect();
+    const isConnected = await this.player.connect();
 
     if (!isConnected) {
       throw new Error('Connection failed');
@@ -58,21 +52,15 @@ export class SpotifyService {
   }
 
   getState(): Promise<Spotify.PlaybackState | null> {
-    const {player} = this;
-
-    if (!player) {
-      throw new Error('Player wasn\'t mounted');
-    }
-
-    return player.getCurrentState();
+    return this.player.getCurrentState();
   }
 
   disconnect(): void {
-    this.player && this.player.disconnect();
+    this.spotifyPlayer?.disconnect();
   }
 
   unmount(): void {
-    this.script && this.script.remove();
+    this.script?.remove();
   }
 
   search(options: SpotifySearchOptions, accessToken: string): Promise<SpotifyApi.SearchResponse> {

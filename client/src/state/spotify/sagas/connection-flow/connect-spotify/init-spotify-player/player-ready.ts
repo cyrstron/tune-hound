@@ -1,55 +1,15 @@
 import {eventChannel, EventChannel, END} from 'redux-saga';
 import {take, put, select, all, getContext} from 'redux-saga/effects';
-import { SpotifyService } from '../../../../../services/spotify-service';
+import { SpotifyService } from '../../../../services/spotify-service';
 import { setSpotifyPlayerReady } from '@app/state/spotify/actions';
 import { selectIsSpotifyPremium, selectIsSpotifyPlayerActive, selectSpotifyAccessToken, selectSpotifyPlayerDeviceId } from '@app/state/spotify/selectors';
 import { SPOTIFY_SERVICE_CTX_KEY } from '@app/consts';
 
-export function createPlayerReadyChannel(
-  spotifyService: SpotifyService
-): EventChannel<{
-  instance: Spotify.WebPlaybackInstance;
-  isReady: boolean;
-}> {
-  const {player} = spotifyService;
-
-  if (!player) {
-    throw new Error('Spotify player wasn\'t mounted')
-  };
-
-  return eventChannel<{
-    instance: Spotify.WebPlaybackInstance;
-    isReady: boolean;
-  }>(emitter => {
-    const onReady = (instance: Spotify.WebPlaybackInstance) => {
-      emitter({
-        instance,
-        isReady: true,
-      });
-    };
-    const onNotReady = (instance: Spotify.WebPlaybackInstance) => {
-      emitter({
-        instance,
-        isReady: false,
-      });
-    };
-
-    player.addListener('ready', onReady);
-    player.addListener('not_ready', onNotReady);
-      
-    return () => {
-      player.removeListener('ready', onReady);
-      player.removeListener('not_ready', onNotReady);
-    };
-  });
-}
-
 export function* watchPlayerReady(
-  channel: EventChannel<{
-    instance: Spotify.WebPlaybackInstance;
-    isReady: boolean;
-  }>
+  spotifyService: SpotifyService,
 ) {
+  const channel = createPlayerReadyChannel(spotifyService);
+  
   while (true) {
     const readyEvent: {
       instance: Spotify.WebPlaybackInstance;
@@ -76,7 +36,6 @@ export function* watchPlayerReady(
       getContext(SPOTIFY_SERVICE_CTX_KEY),
       select(selectIsSpotifyPremium),
       select(selectIsSpotifyPlayerActive),
-      select(selectIsSpotifyPlayerActive),
       select(selectSpotifyAccessToken),
       select(selectSpotifyPlayerDeviceId),
     ]);
@@ -91,4 +50,39 @@ export function* watchPlayerReady(
     
     yield put(readyAction);
   }
+}
+
+export function createPlayerReadyChannel(
+  spotifyService: SpotifyService
+): EventChannel<{
+  instance: Spotify.WebPlaybackInstance;
+  isReady: boolean;
+}> {
+  const {player} = spotifyService;
+  
+  return eventChannel<{
+    instance: Spotify.WebPlaybackInstance;
+    isReady: boolean;
+  }>(emitter => {
+    const onReady = (instance: Spotify.WebPlaybackInstance) => {
+      emitter({
+        instance,
+        isReady: true,
+      });
+    };
+    const onNotReady = (instance: Spotify.WebPlaybackInstance) => {
+      emitter({
+        instance,
+        isReady: false,
+      });
+    };
+
+    player.addListener('ready', onReady);
+    player.addListener('not_ready', onNotReady);
+      
+    return () => {
+      player.removeListener('ready', onReady);
+      player.removeListener('not_ready', onNotReady);
+    };
+  });
 }

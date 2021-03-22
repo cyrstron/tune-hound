@@ -1,4 +1,4 @@
-import {getContext, put, select, call, all} from 'redux-saga/effects';
+import {getContext, put, select, call, all, fork, take, delay} from 'redux-saga/effects';
 import {
   connectSpotifyPending,
   spotifyMounted,
@@ -14,13 +14,16 @@ import {
   selectIsSpotifyTokenExpired,
   selectSpotifyAccessToken,
   selectIsSpotifyMounted,
+  selectIsSpotifyPlayerReady,
 } from '../../../selectors';
 import {SpotifyAuthData, setSpotifyAuthState} from '../../../services/helpers';
 import {updateSpotifyTokenSaga} from '../../update-token';
-import {EventChannel} from 'redux-saga';
-import {setUpSpotifyPlayer} from './set-up-player';
+import { initSpotifyPlayer } from './init-spotify-player';
+import { watchPlayerState } from './watch-player-state';
+import { AppAction } from '@app/state/actions';
+import { SET_SPOTIFY_PLAYER_READY } from '@app/state/spotify/consts';
 
-export function* connectSpotifySaga(): any {
+export function* connectSpotify(): any {
   const pendingAction = connectSpotifyPending();
 
   yield put(pendingAction);
@@ -67,21 +70,28 @@ export function* connectSpotifySaga(): any {
       yield put(mountAction);
     }
 
-    const channels: {[key: string]: EventChannel<any>} = yield call(
-      setUpSpotifyPlayer,
-      spotifyService,
-    );
+    yield fork(initSpotifyPlayer, spotifyService);
+
+    yield delay(200);
+
+    yield spotifyService.connect();
+
+    const isReady = yield select(selectIsSpotifyPlayerReady);
+
+    if (!isReady) {
+      yield take(
+        (action: AppAction) => action.type === SET_SPOTIFY_PLAYER_READY && action.payload.isReady
+      );
+    }
+      
+    yield fork(watchPlayerState);
 
     const successAction = connectSpotifySuccess();
 
     yield put(successAction);
-
-    return channels;
   } catch (err) {
     const failureAction = connectSpotifyFailure(err);
 
     yield put(failureAction);
-
-    return;
   }
 }

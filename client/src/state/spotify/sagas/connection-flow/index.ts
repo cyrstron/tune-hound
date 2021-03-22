@@ -1,21 +1,16 @@
-import {take, call} from 'redux-saga/effects';
-import {CONNECT_SPOTIFY, DISCONNECT_SPOTIFY} from '../../consts';
+import {take, call, fork, cancel} from 'redux-saga/effects';
+import {DISCONNECT_SPOTIFY} from '../../consts';
 import {disconnectSpotifySaga} from './disconnect-spotify';
-import {EventChannel} from 'redux-saga';
+import {Task} from 'redux-saga';
 
 export function* spotifyConnectionFlow(): any {
-  while (true) {
-    yield take(CONNECT_SPOTIFY);
+  const {connectSpotify} = yield import('./connect-spotify');
 
-    const {connectSpotifySaga} = yield import('./connect-spotify');
+  const task: Task = yield fork(connectSpotify);
 
-    const channels: {
-      [key: string]: EventChannel<any>;
-    } = yield call(connectSpotifySaga);
+  yield take(DISCONNECT_SPOTIFY);
 
-    if (channels) {
-      yield take(DISCONNECT_SPOTIFY);
-      yield call(disconnectSpotifySaga, channels);
-    }
-  }
+  yield cancel(task);
+
+  yield call(disconnectSpotifySaga);
 }

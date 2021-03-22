@@ -1,15 +1,36 @@
 import {eventChannel, EventChannel, END} from 'redux-saga';
-import {take} from 'redux-saga/effects';
-import { SpotifyService } from '../../../../../services/spotify-service';
+import {cancelled, take} from 'redux-saga/effects';
+import { SpotifyService } from '../../../../services/spotify-service';
+
+
+export function* watchPlayerErrors(spotifyService: SpotifyService) {
+  const channel = createPlayerErrorsChannel(spotifyService);
+  
+  while (true) {
+    try {
+      const error: Spotify.Error | END = yield take(channel);
+
+      if (
+        typeof error === 'object' && 
+        'type' in error && 
+        error.type === END.type
+      ) {
+        return;
+      }
+  
+      console.error(error);
+    } finally {
+      if ((yield cancelled()) as boolean) {
+        channel.close();
+      }
+    }
+  }
+}
 
 export function createPlayerErrorsChannel(
   spotifyService: SpotifyService
 ): EventChannel<Spotify.Error> {
   const {player} = spotifyService;
-
-  if (!player) {
-    throw new Error('Spotify player wasn\'t mounted');
-  };
 
   return eventChannel<Spotify.Error>(emitter => {
     player.addListener('initialization_error', emitter);
@@ -24,20 +45,4 @@ export function createPlayerErrorsChannel(
       player.removeListener('playback_error', emitter);
     };
   });
-}
-
-export function* watchPlayerErrors(channel: EventChannel<Spotify.Error>) {
-  while (true) {
-    const error: Spotify.Error | END = yield take(channel);
-
-    if (
-      typeof error === 'object' && 
-      'type' in error && 
-      error.type === END.type
-    ) {
-      return;
-    }
-
-    console.log(error);
-  }
 }

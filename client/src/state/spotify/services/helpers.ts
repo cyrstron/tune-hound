@@ -57,7 +57,6 @@ export function resetSpotifyAuthState(): void {
   localStorage.removeItem(SPOTIFY_AUTH_KEY);
 }
 
-
 export async function mountSpotifyScript(): Promise<{
   script: HTMLScriptElement;
   spotify: typeof Spotify;
@@ -71,14 +70,12 @@ export async function mountSpotifyScript(): Promise<{
     document.body.append(script);
 
     script.onerror = (e): void => {
-      delete script.onerror;
+      script.onerror = null;
 
       script.remove();
       reject(e);
     };
     window.onSpotifyWebPlaybackSDKReady = (): void => {
-      delete window.onSpotifyWebPlaybackSDKReady;
-
       resolve(window.Spotify);
     };
   });
