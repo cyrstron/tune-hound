@@ -5,7 +5,7 @@
   $icon-height: $size * 2 / 5;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     display: block;
     top: 50%;
@@ -28,7 +28,7 @@
   $shadow-offset: $element-width * 1.6;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     display: block;
     top: 50%;

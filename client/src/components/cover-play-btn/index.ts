@@ -1,1 +1,1 @@
-export {CoverPlayBtn, CoverPlayBtnProps} from './cover-play-btn';
+export { CoverPlayBtn, CoverPlayBtnProps } from './cover-play-btn';

@@ -2,7 +2,5 @@ export function computePages(pageIndex: number, totalPages: number, length: numb
   const firstPage = Math.max(0, pageIndex - length);
   const lastPage = Math.min(totalPages, pageIndex + length);
 
-  return new Array(lastPage - firstPage)
-    .fill(undefined)
-    .map((_item, index) => index + firstPage);
+  return new Array(lastPage - firstPage).fill(undefined).map((_item, index) => index + firstPage);
 }

@@ -1,16 +1,14 @@
-import {eventChannel, EventChannel, END} from 'redux-saga';
-import {take, put, all, select} from 'redux-saga/effects';
-import {PlayerTrack} from '@app/state/player/types';
-import {selectIsPlaying, selectCurrentTrack} from '@app/state/player/selectors';
-import {setIsPlaying} from '@app/state/player/actions';
-import {AudioService} from '@app/state/audio-player';
-import {setAudioIsPlaying} from '@app/state/audio-player/actions';
-import {selectAudioUrl} from '@app/state/audio-player/selectors';
+import { eventChannel, EventChannel, END } from 'redux-saga';
+import { take, put, all, select } from 'redux-saga/effects';
+import { PlayerTrack } from '@app/state/player/types';
+import { selectIsPlaying, selectCurrentTrack } from '@app/state/player/selectors';
+import { setIsPlaying } from '@app/state/player/actions';
+import { AudioService } from '@app/state/audio-player';
+import { setAudioIsPlaying } from '@app/state/audio-player/actions';
+import { selectAudioUrl } from '@app/state/audio-player/selectors';
 
-export function createAudioPauseChannel(
-  audioService: AudioService,
-): EventChannel<false> {
-  return eventChannel((emitter) => {
+export function createAudioPauseChannel(audioService: AudioService): EventChannel<false> {
+  return eventChannel(emitter => {
     audioService.addEventListener('pause', () => {
       emitter(false);
     });
@@ -34,15 +32,11 @@ export function* watchAudioPauseChange(channel: EventChannel<false>): any {
     const [currentTrack, isPlayerPlaying, currentUrl]: [
       PlayerTrack | undefined,
       boolean,
-      string | null
-    ] = yield all([
-      select(selectCurrentTrack),
-      select(selectIsPlaying),
-      select(selectAudioUrl),
-    ]);
+      string | null,
+    ] = yield all([select(selectCurrentTrack), select(selectIsPlaying), select(selectAudioUrl)]);
 
-    const isCurrentTrackSet = currentTrack?.source === 'url' &&
-      currentUrl && currentUrl === currentTrack.trackSource.url;
+    const isCurrentTrackSet =
+      currentTrack?.source === 'url' && currentUrl && currentUrl === currentTrack.trackSource.url;
 
     if (!isCurrentTrackSet || !isPlayerPlaying) continue;
 

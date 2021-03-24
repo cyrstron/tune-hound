@@ -1,1 +1,1 @@
-export {getSearchOptions} from './get-search-options';
+export { getSearchOptions } from './get-search-options';

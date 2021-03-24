@@ -1,10 +1,10 @@
-import React, {FC, useCallback} from 'react';
-import classNames from 'classnames/bind';
-import {useDispatch, useSelector} from 'react-redux';
-import {selectHasPrevTrack} from '@app/state/player/selectors';
-import {playPrev} from '@app/state/player/actions';
+import React, { FC, useCallback } from "react";
+import classNames from "classnames/bind";
+import { useDispatch, useSelector } from "react-redux";
+import { selectHasPrevTrack } from "@app/state/player/selectors";
+import { playPrev } from "@app/state/player/actions";
 
-import styles from './play-prev-control.scss';
+import styles from "./play-prev-control.scss";
 
 const cx = classNames.bind(styles);
 
@@ -12,7 +12,7 @@ export interface PlayPrevControlProps {
   className?: string;
 }
 
-const PlayPrevControl: FC<PlayPrevControlProps> = ({className}) => {
+const PlayPrevControl: FC<PlayPrevControlProps> = ({ className }) => {
   const dispatch = useDispatch();
 
   const hasPrevTrack = useSelector(selectHasPrevTrack);
@@ -24,11 +24,11 @@ const PlayPrevControl: FC<PlayPrevControlProps> = ({className}) => {
   }, [dispatch]);
 
   return (
-    <div className={cx('play-prev-control', className)}>
+    <div className={cx("play-prev-control", className)}>
       <button
         onClick={onPlayPrev}
         disabled={!hasPrevTrack}
-        className={cx('play-prev-btn')}
+        className={cx("play-prev-btn")}
       >
         Play Previous
       </button>
@@ -36,4 +36,4 @@ const PlayPrevControl: FC<PlayPrevControlProps> = ({className}) => {
   );
 };
 
-export {PlayPrevControl};
+export { PlayPrevControl };

@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import classNames from 'classnames/bind';
+import React, { Component } from "react";
+import classNames from "classnames/bind";
 
-import styles from './header.scss';
-import {FlashPopup} from './components/flash-popup';
-import {ActivePlayerPopup} from './components/active-player-popup';
+import styles from "./header.scss";
+import { FlashPopup } from "./components/flash-popup";
+import { ActivePlayerPopup } from "./components/active-player-popup";
 
 const cx = classNames.bind(styles);
 
@@ -44,28 +44,28 @@ class HeaderComponent extends Component<Props> {
   }
 
   connectDeezer = async () => {
-    const {connectDeezer} = this.props;
+    const { connectDeezer } = this.props;
 
     await connectDeezer();
-  }
+  };
 
   disconnectDeezer = async () => {
-    const {disconnectDeezer} = this.props;
+    const { disconnectDeezer } = this.props;
 
     await disconnectDeezer();
-  }
+  };
 
   connectSpotify = async () => {
-    const {connectSpotify} = this.props;
+    const { connectSpotify } = this.props;
 
     connectSpotify();
-  }
+  };
 
   disconnectSpotify = () => {
-    const {disconnectSpotify} = this.props;
+    const { disconnectSpotify } = this.props;
 
     disconnectSpotify();
-  }
+  };
 
   render() {
     const {
@@ -78,46 +78,28 @@ class HeaderComponent extends Component<Props> {
 
     return (
       <>
-        <div className={cx('header', className)}>
-          App
-        </div>
+        <div className={cx("header", className)}>App</div>
         <div>
-          {isDeezerPending && (
-            <span>
-              Loading...
-            </span>
-          )}
+          {isDeezerPending && <span>Loading...</span>}
           {!isDeezerConnected && !isDeezerPending && (
-            <button onClick={this.connectDeezer}>
-              Connect Deezer
-            </button>
+            <button onClick={this.connectDeezer}>Connect Deezer</button>
           )}
           {isDeezerConnected && (
-            <button onClick={this.disconnectDeezer}>
-              Disconnect Deezer
-            </button>
+            <button onClick={this.disconnectDeezer}>Disconnect Deezer</button>
           )}
-          {isSpotifyPending && (
-            <span>
-              Checking Spotify connection...
-            </span>
-          )}
+          {isSpotifyPending && <span>Checking Spotify connection...</span>}
           {!isSpotifyConnected && !isSpotifyPending && (
-            <button onClick={this.connectSpotify}>
-              Connect Spotify
-            </button>
+            <button onClick={this.connectSpotify}>Connect Spotify</button>
           )}
           {isSpotifyConnected && (
-            <button onClick={this.disconnectSpotify}>
-              Disconnect Spotify
-            </button>
+            <button onClick={this.disconnectSpotify}>Disconnect Spotify</button>
           )}
         </div>
         <FlashPopup />
-        <ActivePlayerPopup/>
+        <ActivePlayerPopup />
       </>
     );
   }
 }
 
-export {HeaderComponent};
+export { HeaderComponent };

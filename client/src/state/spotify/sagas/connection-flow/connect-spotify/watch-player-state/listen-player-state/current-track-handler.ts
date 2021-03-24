@@ -1,8 +1,8 @@
-import {SpotifyService} from '@app/state/spotify/services/spotify-service';
-import {selectCurrentTrack} from '@app/state/player/selectors';
-import {select, put} from 'redux-saga/effects';
-import {PlayerTrack} from '@app/state/player/types';
-import {setSpotifyPlayerError} from '@app/state/spotify/actions';
+import { SpotifyService } from '@app/state/spotify/services/spotify-service';
+import { selectCurrentTrack } from '@app/state/player/selectors';
+import { select, put } from 'redux-saga/effects';
+import { PlayerTrack } from '@app/state/player/types';
+import { setSpotifyPlayerError } from '@app/state/spotify/actions';
 
 export function* onCurrentTrackChange(
   spotifyService: SpotifyService,
@@ -14,7 +14,8 @@ export function* onCurrentTrackChange(
     currentTrack &&
     currentTrack.source === 'spotify' &&
     currentTrack.trackSource.id === track?.id
-  ) return;
+  )
+    return;
 
   try {
     yield spotifyService.player.pause();

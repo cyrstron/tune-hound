@@ -1,1 +1,1 @@
-export {DeezerAlbumSearchFormComponent as DeezerAlbumSearchForm} from './deezer-album-search-form';
+export { DeezerAlbumSearchFormComponent as DeezerAlbumSearchForm } from './deezer-album-search-form';

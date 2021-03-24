@@ -1,1 +1,1 @@
-export {ClosingPopupComponent as ClosingPopup} from './closing-popup';
+export { ClosingPopupComponent as ClosingPopup } from './closing-popup';

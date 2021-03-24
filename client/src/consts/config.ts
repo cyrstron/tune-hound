@@ -6,6 +6,4 @@ export const deezerConfig = {
   connectionTimeout: 5000,
 };
 
-export const spotifyConfig = {
-
-};
+export const spotifyConfig = {};

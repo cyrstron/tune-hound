@@ -1,9 +1,11 @@
 export type SpotifySearchItemType = 'album' | 'artist' | 'playlist' | 'track';
 
-export type SpotifyYearSearchTag = number | {
-  from: number;
-  to: number;
-};
+export type SpotifyYearSearchTag =
+  | number
+  | {
+      from: number;
+      to: number;
+    };
 
 export interface SpotifyBasicAdvancedSearchQuery {
   and: string[];
@@ -41,7 +43,8 @@ export interface SpotifyPlaylistAdvancedSearchQuery extends SpotifyBasicAdvanced
   year?: SpotifyYearSearchTag;
 }
 
-export type SpotifyAdvancedSearchQuery = SpotifyTrackAdvancedSearchQuery
+export type SpotifyAdvancedSearchQuery =
+  | SpotifyTrackAdvancedSearchQuery
   | SpotifyArtistAdvancedSearchQuery
   | SpotifyPlaylistAdvancedSearchQuery
   | SpotifyAlbumAdvancedSearchQuery;
@@ -75,7 +78,8 @@ export interface SpotifyPlaylistSearchOptions extends SpotifyGeneralSearchOption
   query: string | SpotifyPlaylistAdvancedSearchQuery;
 }
 
-export type SpotifySearchOptions = SpotifyTrackSearchOptions
+export type SpotifySearchOptions =
+  | SpotifyTrackSearchOptions
   | SpotifyArtistSearchOptions
   | SpotifyAlbumSearchOptions
   | SpotifyPlaylistSearchOptions;

@@ -1,12 +1,9 @@
-import {all, select} from 'redux-saga/effects';
-import {DeezerService} from '../../../../services';
-import {selectIsMuted, selectVolume} from '@app/state/player/selectors';
+import { all, select } from 'redux-saga/effects';
+import { DeezerService } from '../../../../services';
+import { selectIsMuted, selectVolume } from '@app/state/player/selectors';
 
 export function* applyPlayerState(deezerService: DeezerService): any {
-  const [isMuted, volume]: [
-    boolean,
-    number,
-  ] = yield all([
+  const [isMuted, volume]: [boolean, number] = yield all([
     select(selectIsMuted),
     select(selectVolume),
   ]);

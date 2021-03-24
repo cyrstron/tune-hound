@@ -1,10 +1,10 @@
-import {SearchResult, SearchOptions, SearchSource} from '../types';
+import { SearchResult, SearchOptions, SearchSource } from '../types';
 
 function getSpotifySearchOptions(item: SearchResult): SearchOptions[] {
   if (item.type === 'track') {
-    const {name, album, artists} = item;
+    const { name, album, artists } = item;
 
-    return artists.map((artist) => ({
+    return artists.map(artist => ({
       type: 'track',
       query: {
         and: [name],
@@ -13,9 +13,9 @@ function getSpotifySearchOptions(item: SearchResult): SearchOptions[] {
       },
     }));
   } else if (item.type === 'album') {
-    const {title, artists} = item;
+    const { title, artists } = item;
 
-    return artists.map((artist) => ({
+    return artists.map(artist => ({
       type: 'album',
       query: {
         and: [title],
@@ -23,14 +23,16 @@ function getSpotifySearchOptions(item: SearchResult): SearchOptions[] {
       },
     }));
   } else if (item.type === 'artist') {
-    const {name} = item;
+    const { name } = item;
 
-    return [{
-      type: 'artist',
-      query: {
-        and: [name],
+    return [
+      {
+        type: 'artist',
+        query: {
+          and: [name],
+        },
       },
-    }];
+    ];
   } else {
     return [];
   }
@@ -38,9 +40,9 @@ function getSpotifySearchOptions(item: SearchResult): SearchOptions[] {
 
 function getDeezerSearchOptions(item: SearchResult): SearchOptions[] {
   if (item.type === 'track') {
-    const {name, album, artists} = item;
+    const { name, album, artists } = item;
 
-    return artists.map((artist) => ({
+    return artists.map(artist => ({
       namespace: 'track',
       query: {
         track: name,
@@ -50,21 +52,23 @@ function getDeezerSearchOptions(item: SearchResult): SearchOptions[] {
       strict: true,
     }));
   } else if (item.type === 'album') {
-    const {title, artists} = item;
+    const { title, artists } = item;
 
-    return artists.map((artist) => ({
+    return artists.map(artist => ({
       namespace: 'album',
-      query: {album: title, artist: artist},
+      query: { album: title, artist: artist },
       strict: true,
     }));
   } else if (item.type === 'artist') {
-    const {name} = item;
+    const { name } = item;
 
-    return [{
-      namespace: 'artist',
-      query: {artist: name},
-      strict: true,
-    }];
+    return [
+      {
+        namespace: 'artist',
+        query: { artist: name },
+        strict: true,
+      },
+    ];
   } else {
     return [];
   }

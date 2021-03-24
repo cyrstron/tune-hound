@@ -1,1 +1,1 @@
-export {TrackListComponent as TrackList} from './track-list';
+export { TrackListComponent as TrackList } from './track-list';

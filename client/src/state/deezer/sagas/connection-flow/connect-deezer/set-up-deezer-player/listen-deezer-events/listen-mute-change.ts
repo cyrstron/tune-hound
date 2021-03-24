@@ -1,14 +1,12 @@
-import {eventChannel, EventChannel, END} from 'redux-saga';
-import {take, put, select} from 'redux-saga/effects';
-import {DeezerService} from '@app/state/deezer/services';
-import {setIsPlayerNotMuted} from '@app/state/deezer/actions';
-import {selectIsMuted} from '@app/state/player/selectors';
+import { eventChannel, EventChannel, END } from 'redux-saga';
+import { take, put, select } from 'redux-saga/effects';
+import { DeezerService } from '@app/state/deezer/services';
+import { setIsPlayerNotMuted } from '@app/state/deezer/actions';
+import { selectIsMuted } from '@app/state/player/selectors';
 
-export function createMuteChangeChannel(
-  deezerService: DeezerService,
-): EventChannel<boolean> {
-  return eventChannel((emitter) => {
-    deezerService.events.subscribe('mute_changed', (isMuted) => {
+export function createMuteChangeChannel(deezerService: DeezerService): EventChannel<boolean> {
+  return eventChannel(emitter => {
+    deezerService.events.subscribe('mute_changed', isMuted => {
       emitter(isMuted);
     });
 

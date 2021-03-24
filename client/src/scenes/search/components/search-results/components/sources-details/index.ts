@@ -1,1 +1,1 @@
-export {SourceDetailsComponent as SourceDetails} from './source-details';
+export { SourceDetailsComponent as SourceDetails } from './source-details';

@@ -1,13 +1,11 @@
-import {eventChannel, EventChannel, END} from 'redux-saga';
-import {take, put, select} from 'redux-saga/effects';
-import {selectPlayingSource} from '@app/state/player/selectors';
-import {playNext} from '@app/state/player/actions';
-import {AudioService} from '@app/state/audio-player/services/audio-service';
+import { eventChannel, EventChannel, END } from 'redux-saga';
+import { take, put, select } from 'redux-saga/effects';
+import { selectPlayingSource } from '@app/state/player/selectors';
+import { playNext } from '@app/state/player/actions';
+import { AudioService } from '@app/state/audio-player/services/audio-service';
 
-export function createEndedChannel(
-  audioService: AudioService,
-): EventChannel<true> {
-  return eventChannel((emitter) => {
+export function createEndedChannel(audioService: AudioService): EventChannel<true> {
+  return eventChannel(emitter => {
     audioService.addEventListener('ended', () => {
       emitter(true);
     });

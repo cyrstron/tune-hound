@@ -1,13 +1,11 @@
-import {eventChannel, EventChannel, END} from 'redux-saga';
-import {take, put} from 'redux-saga/effects';
-import {DeezerService} from '@app/state/deezer/services';
-import {setPlayerShuffle} from '@app/state/deezer/actions';
+import { eventChannel, EventChannel, END } from 'redux-saga';
+import { take, put } from 'redux-saga/effects';
+import { DeezerService } from '@app/state/deezer/services';
+import { setPlayerShuffle } from '@app/state/deezer/actions';
 
-export function createShuffleModeChannel(
-  deezerService: DeezerService,
-): EventChannel<boolean> {
-  return eventChannel((emitter) => {
-    deezerService.events.subscribe('shuffle_changed', (isShuffled) => {
+export function createShuffleModeChannel(deezerService: DeezerService): EventChannel<boolean> {
+  return eventChannel(emitter => {
+    deezerService.events.subscribe('shuffle_changed', isShuffled => {
       emitter(isShuffled);
     });
 

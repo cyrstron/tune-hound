@@ -1,5 +1,5 @@
-import {HeaderComponent} from './header';
-import {AppState} from '@app/state';
+import { HeaderComponent } from './header';
+import { AppState } from '@app/state';
 import {
   selectDeezerIsConnected,
   selectDeezerWasConnected,
@@ -16,9 +16,11 @@ import {
   selectSpotifyConnectPending,
   selectSpotifyConnectError,
 } from '@app/state/spotify';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
-const mapStateToProps = (state: AppState): {
+const mapStateToProps = (
+  state: AppState,
+): {
   isDeezerConnected: boolean;
   wasDeezerConnected: boolean;
   isDeezerPending: boolean;

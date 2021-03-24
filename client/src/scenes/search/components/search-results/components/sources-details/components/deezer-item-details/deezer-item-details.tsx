@@ -1,10 +1,10 @@
-import React, {FC} from 'react';
-import classNames from 'classnames/bind';
-import {DeezerSourceItemFull} from '@app/state/search/types';
-import {DeezerTrackDetails} from './components/deezer-track-details';
-import {DeezerAlbumDetails} from './components/deezer-album-details';
-import {DeezerPlaylistDetails} from './components/deezer-playlist-details';
-import {DeezerArtistDetails} from './components/deezer-artist-details';
+import React, { FC } from "react";
+import classNames from "classnames/bind";
+import { DeezerSourceItemFull } from "@app/state/search/types";
+import { DeezerTrackDetails } from "./components/deezer-track-details";
+import { DeezerAlbumDetails } from "./components/deezer-album-details";
+import { DeezerPlaylistDetails } from "./components/deezer-playlist-details";
+import { DeezerArtistDetails } from "./components/deezer-artist-details";
 
 const cx = classNames.bind({});
 
@@ -14,27 +14,35 @@ export interface DeezerItemDetailsProps {
   className?: string;
 }
 
-const DeezerItemDetailsComponent: FC<DeezerItemDetailsProps> = ({id, item, className}) => {
+const DeezerItemDetailsComponent: FC<DeezerItemDetailsProps> = ({
+  id,
+  item,
+  className,
+}) => {
   switch (item.type) {
-  case 'track':
-    return (
-      <DeezerTrackDetails id={id} track={item} className={cx(className)}/>
-    );
-  case 'album':
-    return (
-      <DeezerAlbumDetails id={id} album={item} className={cx(className)}/>
-    );
-  case 'playlist':
-    return (
-      <DeezerPlaylistDetails id={id} playlist={item} className={cx(className)}/>
-    );
-  case 'artist':
-    return (
-      <DeezerArtistDetails id={id} artist={item} className={cx(className)}/>
-    );
-  default:
-    return null;
+    case "track":
+      return (
+        <DeezerTrackDetails id={id} track={item} className={cx(className)} />
+      );
+    case "album":
+      return (
+        <DeezerAlbumDetails id={id} album={item} className={cx(className)} />
+      );
+    case "playlist":
+      return (
+        <DeezerPlaylistDetails
+          id={id}
+          playlist={item}
+          className={cx(className)}
+        />
+      );
+    case "artist":
+      return (
+        <DeezerArtistDetails id={id} artist={item} className={cx(className)} />
+      );
+    default:
+      return null;
   }
 };
 
-export {DeezerItemDetailsComponent};
+export { DeezerItemDetailsComponent };

@@ -1,1 +1,1 @@
-export {DeezerFullTrackItemComponent as DeezerFullTrackItem} from './deezer-full-track-item';
+export { DeezerFullTrackItemComponent as DeezerFullTrackItem } from './deezer-full-track-item';

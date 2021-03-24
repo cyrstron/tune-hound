@@ -1,6 +1,5 @@
-
-@import '@app/styles/mixins/pending-icon.scss';
-@import '@app/styles/mixins/player-icons.scss';
+@import "@app/styles/mixins/pending-icon.scss";
+@import "@app/styles/mixins/player-icons.scss";
 
 .track-item {
   display: flex;
@@ -22,7 +21,6 @@
   border: none;
   border-radius: 50%;
   margin-right: 5px;
-
 
   &.playing,
   &:not(.pending):not(.playing):hover {

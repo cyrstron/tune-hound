@@ -1,8 +1,8 @@
-import React, {Component, ChangeEvent, MouseEvent} from 'react';
+import React, { Component, ChangeEvent, MouseEvent } from "react";
 import {
   DeezerSearchOptions,
   DeezerAdvancedArtistSearchOptions,
-} from '@app/state/deezer/types';
+} from "@app/state/deezer/types";
 
 export interface DeezerArtistSearchFormProps {
   onChange: (params: DeezerSearchOptions) => void;
@@ -16,11 +16,11 @@ class DeezerArtistSearchFormComponent extends Component<DeezerArtistSearchFormPr
     e.preventDefault();
 
     this.props.toggleAdvance();
-  }
+  };
 
-  onQueryChange = ({target}: ChangeEvent<HTMLInputElement>) => {
-    const {value} = target;
-    const {searchParams, onChange} = this.props;
+  onQueryChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const { value } = target;
+    const { searchParams, onChange } = this.props;
 
     onChange({
       ...searchParams,
@@ -29,26 +29,26 @@ class DeezerArtistSearchFormComponent extends Component<DeezerArtistSearchFormPr
         artist: value,
       },
     });
-  }
+  };
 
   render() {
     const {
       searchParams: {
-        query: {artist},
+        query: { artist },
       },
       isAdvanced,
     } = this.props;
 
     return (
       <>
-        <input type="text" onChange={this.onQueryChange} value={artist}/>
-        <button type='submit'>Search</button>
+        <input type="text" onChange={this.onQueryChange} value={artist} />
+        <button type="submit">Search</button>
         <button onClick={this.onToggleAdvance}>
-          Advanced {isAdvanced ? '⇑' : '⇓'}
+          Advanced {isAdvanced ? "⇑" : "⇓"}
         </button>
       </>
     );
   }
 }
 
-export {DeezerArtistSearchFormComponent};
+export { DeezerArtistSearchFormComponent };

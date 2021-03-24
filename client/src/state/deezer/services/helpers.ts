@@ -1,9 +1,5 @@
-import {
-  IS_DEEZER_CONNECTED_KEY,
-  FLASH_MSG_IGNORED_KEY,
-  IS_DEEZER_DISABLED_KEY,
-} from 'consts';
-import {DeezerAdvancedQueryParams} from '../types';
+import { IS_DEEZER_CONNECTED_KEY, FLASH_MSG_IGNORED_KEY, IS_DEEZER_DISABLED_KEY } from 'consts';
+import { DeezerAdvancedQueryParams } from '../types';
 
 export function getDeezerConnectedState(): boolean {
   return !!localStorage.getItem(IS_DEEZER_CONNECTED_KEY) || false;
@@ -41,14 +37,14 @@ export function setFlashIgnored(isIgnored: boolean): void {
   }
 }
 
-
 export function getIsFlashEnabled(): boolean {
   let isFlashEnabled;
 
   try {
-    isFlashEnabled = !!(new ActiveXObject('ShockwaveFlash.ShockwaveFlash'));
+    isFlashEnabled = !!new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
   } catch (exception) {
-    isFlashEnabled = 'application/x-shockwave-flash' in navigator.mimeTypes &&
+    isFlashEnabled =
+      'application/x-shockwave-flash' in navigator.mimeTypes &&
       typeof navigator.mimeTypes['application/x-shockwave-flash'] !== 'undefined';
   }
 
@@ -116,18 +112,15 @@ export const deezerSearchOptionsKeys: {
   bpmMax: 'bpm_max',
 };
 
-export function getAdvancedSearchString(
-  props: DeezerAdvancedQueryParams = {},
-): string {
-  return Object.keys(props)
-    .reduce<string>((queryString, propKey) => {
-      const value = (props)[propKey];
-      const key = deezerSearchOptionsKeys[propKey];
+export function getAdvancedSearchString(props: DeezerAdvancedQueryParams = {}): string {
+  return Object.keys(props).reduce<string>((queryString, propKey) => {
+    const value = props[propKey];
+    const key = deezerSearchOptionsKeys[propKey];
 
-      if (!value) return queryString;
+    if (!value) return queryString;
 
-      const params = `${key}:"${value}"`;
+    const params = `${key}:"${value}"`;
 
-      return queryString ? `${queryString} ${params}` : params;
-    }, '');
+    return queryString ? `${queryString} ${params}` : params;
+  }, '');
 }

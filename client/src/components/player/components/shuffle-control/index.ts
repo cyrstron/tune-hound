@@ -1,1 +1,1 @@
-export {ShuffleControl} from './shuffle-control';
+export { ShuffleControl } from './shuffle-control';

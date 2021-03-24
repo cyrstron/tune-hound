@@ -1,16 +1,14 @@
-import {eventChannel, EventChannel, END} from 'redux-saga';
+import { eventChannel, EventChannel, END } from 'redux-saga';
 import throttle from 'lodash/throttle';
-import {take, put, select, all} from 'redux-saga/effects';
-import {selectIsPlaying, selectCurrentTrack} from '@app/state/player/selectors';
-import {setPosition} from '@app/state/player/actions';
-import {PlayerTrack} from '@app/state/player/types';
-import {AudioService} from '@app/state/audio-player/services/audio-service';
-import {setAudioCurrentTime} from '@app/state/audio-player/actions';
+import { take, put, select, all } from 'redux-saga/effects';
+import { selectIsPlaying, selectCurrentTrack } from '@app/state/player/selectors';
+import { setPosition } from '@app/state/player/actions';
+import { PlayerTrack } from '@app/state/player/types';
+import { AudioService } from '@app/state/audio-player/services/audio-service';
+import { setAudioCurrentTime } from '@app/state/audio-player/actions';
 
-export function createAudioCurrentTimeChannel(
-  audioService: AudioService,
-): EventChannel<number> {
-  return eventChannel((emitter) => {
+export function createAudioCurrentTimeChannel(audioService: AudioService): EventChannel<number> {
+  return eventChannel(emitter => {
     const onTimeChanged = throttle(() => {
       const currentTime = audioService.currentTime;
 
@@ -46,7 +44,7 @@ export function* watchAudioCurrentTimeChange(
     if (playingTrack.source !== 'url' || !isPlayerPlaying) {
       audioService.pause();
     } else {
-      const action = setPosition(currentTime / playingTrack.duration * 100);
+      const action = setPosition((currentTime / playingTrack.duration) * 100);
 
       yield put(action);
     }

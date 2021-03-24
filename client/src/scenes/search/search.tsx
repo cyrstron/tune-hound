@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import classNames from 'classnames/bind';
-import {SearchResults} from './components/search-results';
-import {SearchForm} from './components/search-form';
-import {Pagination} from '../../components/pagination';
+import React, { Component } from "react";
+import classNames from "classnames/bind";
+import { SearchResults } from "./components/search-results";
+import { SearchForm } from "./components/search-form";
+import { Pagination } from "../../components/pagination";
 
-import styles from './search.scss';
+import styles from "./search.scss";
 
 const cx = classNames.bind(styles);
 
@@ -35,9 +35,9 @@ export class SearchComponent extends Component<SearchProps> {
     if (!isDeezerConnected && !isSpotifyConnected) return null;
 
     return (
-      <div className={cx('search', className)}>
+      <div className={cx("search", className)}>
         <SearchForm />
-        <SearchResults className={cx('results')} />
+        <SearchResults className={cx("results")} />
         <div>
           {totalPages && (
             <Pagination

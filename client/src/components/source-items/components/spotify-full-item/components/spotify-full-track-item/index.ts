@@ -1,1 +1,1 @@
-export {SpotifyFullTrackItemComponent as SpotifyFullTrackItem} from './spotify-full-track-item';
+export { SpotifyFullTrackItemComponent as SpotifyFullTrackItem } from './spotify-full-track-item';

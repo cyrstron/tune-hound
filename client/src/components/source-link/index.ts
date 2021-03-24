@@ -1,1 +1,1 @@
-export {SourceLinkComponent as SourceLink} from './source-link';
+export { SourceLinkComponent as SourceLink } from './source-link';

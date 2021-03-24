@@ -1,6 +1,6 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import classNames from 'classnames/bind';
-import {Player} from '../player/player';
+import { Player } from '../player/player';
 
 import styles from './footer.scss';
 
@@ -10,7 +10,7 @@ export interface FooterProps {
   className?: string;
 }
 
-const Footer: FC<FooterProps> = ({className}) => {
+const Footer: FC<FooterProps> = ({ className }) => {
   return (
     <div className={cx('footer', className)}>
       <Player />
@@ -18,4 +18,4 @@ const Footer: FC<FooterProps> = ({className}) => {
   );
 };
 
-export {Footer};
+export { Footer };

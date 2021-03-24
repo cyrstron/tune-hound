@@ -78,52 +78,53 @@ export class AudioService {
   addEventListener(eventType: 'progress', handler: (e: ProgressEvent<EventTarget>) => void): void;
   addEventListener(eventType: 'urlchange', handler: (url: string) => void): void;
   addEventListener(
-    eventType: 'urlchange' |
-      'ended' |
-      'play' |
-      'pause' |
-      'seekend' |
-      'timeupdate' |
-      'volumechange' |
-      'waiting' |
-      'playing' |
-      'progress',
-    handler: (
-      (e: Event) => void) |
-      ((e: ProgressEvent<EventTarget>) => void) |
-      ((url: string) => void),
+    eventType:
+      | 'urlchange'
+      | 'ended'
+      | 'play'
+      | 'pause'
+      | 'seekend'
+      | 'timeupdate'
+      | 'volumechange'
+      | 'waiting'
+      | 'playing'
+      | 'progress',
+    handler:
+      | ((e: Event) => void)
+      | ((e: ProgressEvent<EventTarget>) => void)
+      | ((url: string) => void),
   ): void {
     switch (eventType) {
-    case 'play':
-      this.onPlay = handler as (e: Event) => void;
-      break;
-    case 'pause':
-      this.onPause = handler as (e: Event) => void;
-      break;
-    case 'seekend':
-      this.onSeekend = handler as (e: Event) => void;
-      break;
-    case 'timeupdate':
-      this.onTimeUpdated = handler as (e: Event) => void;
-      break;
-    case 'volumechange':
-      this.onVolumeChange = handler as (e: Event) => void;
-      break;
-    case 'waiting':
-      this.onWaiting = handler as (e: Event) => void;
-      break;
-    case 'urlchange':
-      this.onUrlChange = handler as (url: string) => void;
-      break;
-    case 'playing':
-      this.onPlaying = handler as (e: Event) => void;
-      break;
-    case 'progress':
-      this.onProgress = handler as (e: ProgressEvent<EventTarget>) => void;
-      break;
-    case 'ended':
-      this.onTrackEnded = handler as (e: Event) => void;
-      break;
+      case 'play':
+        this.onPlay = handler as (e: Event) => void;
+        break;
+      case 'pause':
+        this.onPause = handler as (e: Event) => void;
+        break;
+      case 'seekend':
+        this.onSeekend = handler as (e: Event) => void;
+        break;
+      case 'timeupdate':
+        this.onTimeUpdated = handler as (e: Event) => void;
+        break;
+      case 'volumechange':
+        this.onVolumeChange = handler as (e: Event) => void;
+        break;
+      case 'waiting':
+        this.onWaiting = handler as (e: Event) => void;
+        break;
+      case 'urlchange':
+        this.onUrlChange = handler as (url: string) => void;
+        break;
+      case 'playing':
+        this.onPlaying = handler as (e: Event) => void;
+        break;
+      case 'progress':
+        this.onProgress = handler as (e: ProgressEvent<EventTarget>) => void;
+        break;
+      case 'ended':
+        this.onTrackEnded = handler as (e: Event) => void;
+        break;
     }
   }
 
@@ -141,7 +142,7 @@ export class AudioService {
 
     this.onUrlChange && this.onUrlChange(url);
 
-    await new Promise((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
       const onReady = (): void => {
         audio.removeEventListener('canplay', onReady);
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -171,7 +172,7 @@ export class AudioService {
 
     audio.currentTime = seek;
 
-    await new Promise((res) => {
+    await new Promise<void>(res => {
       const onSeekEnd = (): void => {
         audio.removeEventListener('seeked', onSeekEnd);
 
@@ -221,15 +222,12 @@ export class AudioService {
   get buffered(): [number, number][] {
     if (!this.audioElement) return [];
 
-    const {buffered} = this.audioElement;
+    const { buffered } = this.audioElement;
 
     const progress: [number, number][] = [];
 
     for (let i = 0, len = buffered.length; i < len; i += 1) {
-      progress.push([
-        buffered.start(i),
-        buffered.end(i),
-      ]);
+      progress.push([buffered.start(i), buffered.end(i)]);
     }
 
     return progress;

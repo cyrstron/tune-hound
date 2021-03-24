@@ -1,1 +1,1 @@
-export {VolumeControl} from './volume-control';
+export { VolumeControl } from './volume-control';

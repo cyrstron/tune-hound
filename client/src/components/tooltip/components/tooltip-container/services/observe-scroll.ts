@@ -1,7 +1,4 @@
-export function observeScroll(
-  elem: HTMLElement,
-  callback: () => void,
-): () => void {
+export function observeScroll(elem: HTMLElement, callback: () => void): () => void {
   let observedElem: HTMLElement = elem;
 
   while (observedElem.parentElement) {

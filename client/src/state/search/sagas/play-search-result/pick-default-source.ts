@@ -1,7 +1,7 @@
-import {SearchResult, SearchSource} from '../../types';
-import {select, all} from 'redux-saga/effects';
-import {selectCanDeezerPlay} from '@app/state/deezer';
-import {selectCanSpotifyPlay} from '@app/state/spotify';
+import { SearchResult, SearchSource } from '../../types';
+import { select, all } from 'redux-saga/effects';
+import { selectCanDeezerPlay } from '@app/state/deezer';
+import { selectCanSpotifyPlay } from '@app/state/spotify';
 
 export function* pickDefaultSource(searchItem: SearchResult): any {
   const availableSources = Object.keys(searchItem.sources) as SearchSource[];
@@ -18,5 +18,5 @@ export function* pickDefaultSource(searchItem: SearchResult): any {
     spotify: canSpotifyPlay,
   };
 
-  return availableSources.find((source) => canSourcesPlay[source]) || availableSources[0];
+  return availableSources.find(source => canSourcesPlay[source]) || availableSources[0];
 }

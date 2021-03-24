@@ -26,11 +26,9 @@ export interface SetAudioUrlAction {
   };
 }
 
-export const setAudioUrl = (
-  url: string | null,
-): SetAudioUrlAction => ({
+export const setAudioUrl = (url: string | null): SetAudioUrlAction => ({
   type: SET_CURRENT_AUDIO_URL,
-  payload: {url},
+  payload: { url },
 });
 
 export interface SetAudioIsPlayingAction {
@@ -40,11 +38,9 @@ export interface SetAudioIsPlayingAction {
   };
 }
 
-export const setAudioIsPlaying = (
-  isPlaying: boolean,
-): SetAudioIsPlayingAction => ({
+export const setAudioIsPlaying = (isPlaying: boolean): SetAudioIsPlayingAction => ({
   type: SET_IS_AUDIO_PLAYING,
-  payload: {isPlaying},
+  payload: { isPlaying },
 });
 
 export interface SetAudioIsPendingAction {
@@ -54,48 +50,39 @@ export interface SetAudioIsPendingAction {
   };
 }
 
-export const setAudioIsPending = (
-  isPending: boolean,
-): SetAudioIsPendingAction => ({
+export const setAudioIsPending = (isPending: boolean): SetAudioIsPendingAction => ({
   type: SET_AUDIO_PENDING,
-  payload: {isPending},
+  payload: { isPending },
 });
 
 export interface SetAudioCurrentTimeAction {
   type: typeof SET_AUDIO_TIME;
-  payload: {time: number};
+  payload: { time: number };
 }
 
-export const setAudioCurrentTime = (
-  time: number,
-): SetAudioCurrentTimeAction => ({
+export const setAudioCurrentTime = (time: number): SetAudioCurrentTimeAction => ({
   type: SET_AUDIO_TIME,
-  payload: {time},
+  payload: { time },
 });
 
 export interface SetAudioProgressAction {
   type: typeof SET_AUDIO_PROGRESS;
-  payload: {buffered: [number, number][]};
+  payload: { buffered: [number, number][] };
 }
 
-export const setAudioProgress = (
-  buffered: [number, number][],
-): SetAudioProgressAction => ({
+export const setAudioProgress = (buffered: [number, number][]): SetAudioProgressAction => ({
   type: SET_AUDIO_PROGRESS,
-  payload: {buffered},
+  payload: { buffered },
 });
-
 
 export interface SetAudioVolumeAction {
   type: typeof SET_AUDIO_VOLUME;
-  payload: {volume: number};
+  payload: { volume: number };
 }
 
-export const setAudioVolume = (
-  volume: number,
-): SetAudioVolumeAction => ({
+export const setAudioVolume = (volume: number): SetAudioVolumeAction => ({
   type: SET_AUDIO_VOLUME,
-  payload: {volume},
+  payload: { volume },
 });
 
 export interface SetAudioIsWaitingAction {
@@ -113,11 +100,9 @@ export interface SetAudioErrorAction {
   };
 }
 
-export const setAudioError = (
-  error: Error,
-): SetAudioErrorAction => ({
+export const setAudioError = (error: Error): SetAudioErrorAction => ({
   type: SET_AUDIO_ERROR,
-  payload: {error},
+  payload: { error },
 });
 
 export interface SetAudioMountedAction {
@@ -128,7 +113,8 @@ export const setAudioMounted = (): SetAudioMountedAction => ({
   type: SET_AUDIO_MOUNTED,
 });
 
-export type AudioAction = SetAudioIsWaitingAction
+export type AudioAction =
+  | SetAudioIsWaitingAction
   | SetAudioIsPendingAction
   | SetAudioCurrentTimeAction
   | SetAudioIsPlayingAction

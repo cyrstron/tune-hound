@@ -1,1 +1,1 @@
-export {DeezerBasicSearchFormComponent as DeezerBasicSearchForm} from './deezer-basic-search-form';
+export { DeezerBasicSearchFormComponent as DeezerBasicSearchForm } from './deezer-basic-search-form';

@@ -1,1 +1,1 @@
-export {PlayPrevControl} from './play-prev-control';
+export { PlayPrevControl } from './play-prev-control';

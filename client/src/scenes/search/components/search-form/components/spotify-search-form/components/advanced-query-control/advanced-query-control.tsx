@@ -1,4 +1,4 @@
-import React, {Component, ChangeEvent} from 'react';
+import React, { Component, ChangeEvent } from "react";
 import {
   SpotifyAdvancedSearchQuery,
   SpotifySearchItemType,
@@ -6,9 +6,9 @@ import {
   SpotifyArtistAdvancedSearchQuery,
   SpotifyTrackAdvancedSearchQuery,
   SpotifySearchTagType,
-} from '@app/state/spotify/types';
-import {IndexatedInputs} from '../indexated-inputs';
-import {YearRangeInput} from '../year-range-input';
+} from "@app/state/spotify/types";
+import { IndexatedInputs } from "../indexated-inputs";
+import { YearRangeInput } from "../year-range-input";
 
 export interface AdvancedQueryControl {
   query?: SpotifyAdvancedSearchQuery;
@@ -18,234 +18,234 @@ export interface AdvancedQueryControl {
 
 export class AdvancedQueryControlComponent extends Component<AdvancedQueryControl> {
   onAndChange = (values: string[]) => {
-    const {onChange, query} = this.props;
+    const { onChange, query } = this.props;
 
     onChange({
-      ...query || {},
+      ...(query || {}),
       and: values,
     });
-  }
+  };
 
   onOrChange = (values: string[]) => {
-    const {onChange, query} = this.props;
+    const { onChange, query } = this.props;
 
     if (!query) return;
 
     onChange({
-      ...query || {},
+      ...(query || {}),
       or: values,
     });
-  }
+  };
 
   onNotChange = (values: string[]) => {
-    const {onChange, query} = this.props;
+    const { onChange, query } = this.props;
 
     if (!query) return;
 
     onChange({
-      ...query || {},
+      ...(query || {}),
       not: values,
     });
-  }
+  };
 
   onTrackChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {value} = e.target;
-    const {onChange, query, type} = this.props;
+    const { value } = e.target;
+    const { onChange, query, type } = this.props;
 
-    if (type === 'playlist' || type === 'track') return;
+    if (type === "playlist" || type === "track") return;
 
     onChange({
-      ...query || {},
+      ...(query || {}),
       track: value,
     } as SpotifyArtistAdvancedSearchQuery | SpotifyAlbumAdvancedSearchQuery);
-  }
+  };
 
   onAlbumChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {value} = e.target;
-    const {onChange, query, type} = this.props;
+    const { value } = e.target;
+    const { onChange, query, type } = this.props;
 
-    if (type === 'playlist' || type === 'album') return;
+    if (type === "playlist" || type === "album") return;
 
     onChange({
-      ...query || {},
+      ...(query || {}),
       album: value,
     } as SpotifyArtistAdvancedSearchQuery | SpotifyTrackAdvancedSearchQuery);
-  }
+  };
 
   onArtistChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {value} = e.target;
-    const {onChange, query, type} = this.props;
+    const { value } = e.target;
+    const { onChange, query, type } = this.props;
 
-    if (type === 'playlist' || type === 'artist') return;
+    if (type === "playlist" || type === "artist") return;
 
     onChange({
-      ...query || {},
+      ...(query || {}),
       artist: value,
     } as SpotifyTrackAdvancedSearchQuery | SpotifyAlbumAdvancedSearchQuery);
-  }
+  };
 
   onGenreChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {value} = e.target;
-    const {onChange, query, type} = this.props;
+    const { value } = e.target;
+    const { onChange, query, type } = this.props;
 
-    if (type === 'playlist') return;
+    if (type === "playlist") return;
 
     onChange({
-      ...query || {},
+      ...(query || {}),
       genre: value,
-    } as (
-      SpotifyTrackAdvancedSearchQuery |
-      SpotifyAlbumAdvancedSearchQuery |
-      SpotifyArtistAdvancedSearchQuery
-    ));
-  }
+    } as SpotifyTrackAdvancedSearchQuery | SpotifyAlbumAdvancedSearchQuery | SpotifyArtistAdvancedSearchQuery);
+  };
 
   onTagChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {value} = e.target;
-    const {onChange, query, type} = this.props;
+    const { value } = e.target;
+    const { onChange, query, type } = this.props;
 
-    if (type !== 'album') return;
+    if (type !== "album") return;
 
     onChange({
-      ...query || {},
-      tag: value ? value as SpotifySearchTagType : undefined,
+      ...(query || {}),
+      tag: value ? (value as SpotifySearchTagType) : undefined,
     } as SpotifyAlbumAdvancedSearchQuery);
-  }
+  };
 
   onYearChange = (fromYear?: number, toYear?: number) => {
-    const {onChange, query} = this.props;
+    const { onChange, query } = this.props;
 
     onChange({
-      ...query || {},
-      year: toYear !== undefined ? {
-        from: fromYear,
-        to: toYear,
-      } : fromYear,
+      ...(query || {}),
+      year:
+        toYear !== undefined
+          ? {
+              from: fromYear,
+              to: toYear,
+            }
+          : fromYear,
     } as SpotifyAlbumAdvancedSearchQuery);
-  }
+  };
 
   render() {
-    const {query, type} = this.props;
+    const { query, type } = this.props;
 
-    const hasOtherFields = query && (query.and?.length > 1 || query.and?.[0] !== '');
+    const hasOtherFields =
+      query && (query.and?.length > 1 || query.and?.[0] !== "");
 
     return (
       <div>
         <IndexatedInputs
-          label='Search keys:'
+          label="Search keys:"
           values={query && query.and}
           onChange={this.onAndChange}
         />
         <IndexatedInputs
-          label='Include:'
+          label="Include:"
           values={query && query.or}
           onChange={this.onOrChange}
           disabled={!hasOtherFields}
         />
         <IndexatedInputs
-          label='Exclude:'
+          label="Exclude:"
           values={query && query.not}
           onChange={this.onNotChange}
           disabled={!hasOtherFields}
         />
-        {type !== 'track' && type !== 'playlist' && (
+        {type !== "track" && type !== "playlist" && (
           <div>
             <label>
-              Track:
-              {' '}
+              Track:{" "}
               <input
-                value={query && 'track' in query ? query.track : ''}
+                value={query && "track" in query ? query.track : ""}
                 onChange={this.onTrackChange}
                 disabled={!hasOtherFields}
               />
             </label>
           </div>
         )}
-        {type !== 'album' && type !== 'playlist' && (
+        {type !== "album" && type !== "playlist" && (
           <div>
             <label>
-              Album:
-              {' '}
+              Album:{" "}
               <input
-                value={query && 'album' in query ? query.album : ''}
+                value={query && "album" in query ? query.album : ""}
                 onChange={this.onAlbumChange}
                 disabled={!hasOtherFields}
               />
             </label>
           </div>
         )}
-        {type !== 'artist' && type !== 'playlist' && (
+        {type !== "artist" && type !== "playlist" && (
           <div>
             <label>
-              Artist:
-              {' '}
+              Artist:{" "}
               <input
-                value={query && 'artist' in query ? query.artist : ''}
+                value={query && "artist" in query ? query.artist : ""}
                 onChange={this.onArtistChange}
                 disabled={!hasOtherFields}
               />
             </label>
           </div>
         )}
-        {type !== 'playlist' && (
+        {type !== "playlist" && (
           <div>
             <label>
-              Genre:
-              {' '}
+              Genre:{" "}
               <input
-                value={query && 'genre' in query ? query.genre : ''}
+                value={query && "genre" in query ? query.genre : ""}
                 onChange={this.onGenreChange}
                 disabled={!hasOtherFields}
               />
             </label>
           </div>
         )}
-        {type === 'album' && (
+        {type === "album" && (
           <div>
             Tag:
-            <br/>
+            <br />
             <label>
               <input
-                name='spotify-search-tag'
-                checked={!query || !('tag' in query) || !query.tag}
+                name="spotify-search-tag"
+                checked={!query || !("tag" in query) || !query.tag}
                 onChange={this.onTagChange}
                 disabled={!hasOtherFields}
-                type='radio'
-                value=''
-              />
-              {' '}
+                type="radio"
+                value=""
+              />{" "}
               None
             </label>
             <label>
               <input
-                name='spotify-search-tag'
-                checked={query && 'tag' in query && query.tag === 'new'}
+                name="spotify-search-tag"
+                checked={query && "tag" in query && query.tag === "new"}
                 onChange={this.onTagChange}
                 disabled={!hasOtherFields}
-                type='radio'
-                value='new'
-              />
-              {' '}
+                type="radio"
+                value="new"
+              />{" "}
               New
             </label>
             <label>
               <input
-                name='spotify-search-tag'
-                checked={query && 'tag' in query && query.tag === 'hipster'}
+                name="spotify-search-tag"
+                checked={query && "tag" in query && query.tag === "hipster"}
                 onChange={this.onTagChange}
                 disabled={!hasOtherFields}
-                type='radio'
-                value='hipster'
-              />
-              {' '}
+                type="radio"
+                value="hipster"
+              />{" "}
               Rare
             </label>
           </div>
         )}
         <YearRangeInput
           onChange={this.onYearChange}
-          fromValue={query && (typeof query.year === 'object' ? query.year.from : query.year)}
-          toValue={(query?.year && typeof query.year === 'object') ? query.year.to : undefined}
+          fromValue={
+            query &&
+            (typeof query.year === "object" ? query.year.from : query.year)
+          }
+          toValue={
+            query?.year && typeof query.year === "object"
+              ? query.year.to
+              : undefined
+          }
           disabled={!hasOtherFields}
         />
       </div>

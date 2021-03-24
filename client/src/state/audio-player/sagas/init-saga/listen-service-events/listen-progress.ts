@@ -1,12 +1,12 @@
-import {eventChannel, EventChannel, END} from 'redux-saga';
-import {take, put} from 'redux-saga/effects';
-import {AudioService} from '@app/state/audio-player';
-import {setAudioProgress} from '../../../actions';
+import { eventChannel, EventChannel, END } from 'redux-saga';
+import { take, put } from 'redux-saga/effects';
+import { AudioService } from '@app/state/audio-player';
+import { setAudioProgress } from '../../../actions';
 
 export function createAudioProgressChannel(
   audioService: AudioService,
 ): EventChannel<[number, number][]> {
-  return eventChannel((emitter) => {
+  return eventChannel(emitter => {
     audioService.addEventListener('progress', () => {
       emitter(audioService.buffered);
     });

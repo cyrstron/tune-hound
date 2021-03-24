@@ -1,1 +1,1 @@
-export {SearchedAlbumComponent as SearchedAlbum} from './searched-album';
+export { SearchedAlbumComponent as SearchedAlbum } from './searched-album';

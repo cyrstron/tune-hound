@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import classNames from 'classnames/bind';
+import React, { Component } from "react";
+import classNames from "classnames/bind";
 
-import styles from './active-player-popup.scss';
-import {Popup} from '@app/components/popup';
+import styles from "./active-player-popup.scss";
+import { Popup } from "@app/components/popup";
 
 const cx = classNames.bind(styles);
 
@@ -15,33 +15,23 @@ interface ActivePlayerPopupProps {
 
 class ActivePlayerPopupComponent extends Component<ActivePlayerPopupProps, {}> {
   onIgnore = () => {
-    const {setIgnored} = this.props;
+    const { setIgnored } = this.props;
 
     setIgnored(true);
-  }
+  };
 
   render() {
-    const {
-      isConnected,
-      isIgnored,
-      isActive,
-    } = this.props;
+    const { isConnected, isIgnored, isActive } = this.props;
 
     if (!isConnected || isIgnored || isActive) return null;
 
     return (
       <Popup>
-        <div className={cx('notification')}>
-          You have to enable 'Tune Hound Preview Player' in your
-          {' '}
-          <a
-            href='https://open.spotify.com/'
-            target='_blank'
-            rel="noreferrer"
-          >
+        <div className={cx("notification")}>
+          You have to enable 'Tune Hound Preview Player' in your{" "}
+          <a href="https://open.spotify.com/" target="_blank" rel="noreferrer">
             devices list
-          </a>
-          {' '}
+          </a>{" "}
           to stream audio files from Spotify.
           <div>
             <button onClick={this.onIgnore}>Ignore</button>
@@ -52,4 +42,4 @@ class ActivePlayerPopupComponent extends Component<ActivePlayerPopupProps, {}> {
   }
 }
 
-export {ActivePlayerPopupComponent};
+export { ActivePlayerPopupComponent };

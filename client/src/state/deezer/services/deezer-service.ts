@@ -1,7 +1,7 @@
-import {mountDeezerScript} from './helpers';
-import {DeezerWebApi} from './deezer-web-api';
-import {DeezerSearchOptions, DeezerUser, DeezerSearchResult} from '../types';
-import {DeezerPlayer} from './deezer-player';
+import { mountDeezerScript } from './helpers';
+import { DeezerWebApi } from './deezer-web-api';
+import { DeezerSearchOptions, DeezerUser, DeezerSearchResult } from '../types';
+import { DeezerPlayer } from './deezer-player';
 
 export class DeezerService {
   script?: HTMLScriptElement;
@@ -14,7 +14,7 @@ export class DeezerService {
   onLogout?: () => void;
 
   async mount(): Promise<void> {
-    const {script, root, DZ} = await mountDeezerScript();
+    const { script, root, DZ } = await mountDeezerScript();
 
     this.webApi = new DeezerWebApi(DZ);
     this.playerService = new DeezerPlayer(DZ.player);
@@ -24,7 +24,7 @@ export class DeezerService {
     this.root = root;
   }
 
-  async init(options: DeezerSdk.InitOptions): Promise<DeezerSdk.SdkOptions> {
+  async init(options: DeezerSdk.InitOptions): Promise<DeezerSdk.SdkOptions | undefined> {
     const response = await this.api.init(options);
 
     return response;
@@ -72,7 +72,6 @@ export class DeezerService {
 
     return this.deezerEvent;
   }
-
 
   get player(): DeezerPlayer {
     if (!this.playerService) throw new Error('Deezer Player is not mounted');

@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import classNames from 'classnames/bind';
-import {Popup} from 'components/popup';
+import React, { Component } from "react";
+import classNames from "classnames/bind";
+import { Popup } from "components/popup";
 
-import styles from './flash-popup.scss';
+import styles from "./flash-popup.scss";
 
 const cx = classNames.bind(styles);
 
@@ -17,27 +17,22 @@ export interface FlashPopupProps {
 class FlashPopupComponent extends Component<FlashPopupProps, {}> {
   onApply = () => {
     location.reload();
-  }
+  };
 
   onIgnore = () => {
-    const {setIgnored} = this.props;
+    const { setIgnored } = this.props;
 
     setIgnored(true);
-  }
+  };
 
   render() {
-    const {
-      isEnabled,
-      isIgnored,
-      isPremium,
-      isConnected,
-    } = this.props;
+    const { isEnabled, isIgnored, isPremium, isConnected } = this.props;
 
     if (!isConnected || isIgnored || isEnabled || !isPremium) return null;
 
     return (
       <Popup>
-        <div className={cx('notification')}>
+        <div className={cx("notification")}>
           You should enable Flash to stream audio files from Deezer.
           <div>
             <button onClick={this.onApply}>Done</button>
@@ -49,4 +44,4 @@ class FlashPopupComponent extends Component<FlashPopupProps, {}> {
   }
 }
 
-export {FlashPopupComponent};
+export { FlashPopupComponent };

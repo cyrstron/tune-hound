@@ -1,1 +1,1 @@
-export {SpotifyArtistDetailsComponent as SpotifyArtistDetails} from './spotify-artist-details';
+export { SpotifyArtistDetailsComponent as SpotifyArtistDetails } from './spotify-artist-details';

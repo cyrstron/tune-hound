@@ -1,8 +1,8 @@
-import React, {FC} from 'react';
-import classNames from 'classnames/bind';
+import React, { FC } from "react";
+import classNames from "classnames/bind";
 
-import styles from './spotify-artist-item.scss';
-import {SpotifyArtistSourceItemShort} from '@app/state/search/types';
+import styles from "./spotify-artist-item.scss";
+import { SpotifyArtistSourceItemShort } from "@app/state/search/types";
 
 const cx = classNames.bind(styles);
 
@@ -12,14 +12,14 @@ export interface SpotifyArtistItemProps {
 }
 
 const SpotifyArtistItemComponent: FC<SpotifyArtistItemProps> = ({
-  artist: {name},
+  artist: { name },
   className,
 }) => {
   return (
-    <div className={cx('artist', className)}>
+    <div className={cx("artist", className)}>
       <div>Name: {name}</div>
     </div>
   );
 };
 
-export {SpotifyArtistItemComponent};
+export { SpotifyArtistItemComponent };

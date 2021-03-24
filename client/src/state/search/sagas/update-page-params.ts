@@ -1,6 +1,6 @@
-import {all, select, put} from 'redux-saga/effects';
-import {selectPageIndex} from '../selectors';
-import {setSearchPageIndex, setSearchPageSize} from '../actions';
+import { all, select, put } from 'redux-saga/effects';
+import { selectPageIndex } from '../selectors';
+import { setSearchPageIndex, setSearchPageSize } from '../actions';
 
 export function* updatePageParamsSaga(pageIndex: number, pageSize: number): any {
   const [currentPageIndex, currentPageSize]: [number, number] = yield all([

@@ -1,1 +1,1 @@
-export {RepeatControl} from './repeat-control';
+export { RepeatControl } from './repeat-control';

@@ -1,6 +1,6 @@
-import {put, call, all, select} from 'redux-saga/effects';
-import {SearchResult, SearchSource, SourceItemShort} from '@app/state/search/types';
-import {getSearchOptions} from '../../../helpers';
+import { put, call, all, select } from 'redux-saga/effects';
+import { SearchResult, SearchSource, SourceItemShort } from '@app/state/search/types';
+import { getSearchOptions } from '../../../helpers';
 import {
   fetchOptionsForExtendPending,
   fetchOptionsForExtendSuccess,
@@ -14,7 +14,7 @@ import {
   selectItemsForExtensionTotalsById,
   selectItemsForExtension,
 } from '@app/state/search/selectors';
-import {fetchSearchItems} from './fetch-search-items';
+import { fetchSearchItems } from './fetch-search-items';
 
 export function* fetchMoreItems(searchResultItem: SearchResult, source: SearchSource): any {
   const searchOptions = getSearchOptions(searchResultItem, source);
@@ -58,7 +58,10 @@ export function* fetchMoreItems(searchResultItem: SearchResult, source: SearchSo
     let requestOffset = total !== undefined ? offset - prevTotal : 0;
 
     while (results.length < limit && (fullTotal === undefined || fullTotal > currentOffset)) {
-      let {results: items, total: totalItems}: {
+      let {
+        results: items,
+        total: totalItems,
+      }: {
         total: number;
         results: SourceItemShort[];
       } = yield call(
@@ -73,10 +76,10 @@ export function* fetchMoreItems(searchResultItem: SearchResult, source: SearchSo
       currentOffset += items.length;
 
       if (queryIndex > 0) {
-        items = items.filter(({id}) => (
-          !extensionItems.some(
-            (item) => item.id === id) && !results.some((item) => item.id === id)
-        ));
+        items = items.filter(
+          ({ id }) =>
+            !extensionItems.some(item => item.id === id) && !results.some(item => item.id === id),
+        );
       }
 
       results.push(...items);
@@ -88,9 +91,10 @@ export function* fetchMoreItems(searchResultItem: SearchResult, source: SearchSo
       total = currentTotals[queryIndex];
       prevTotal = currentTotals[queryIndex - 1] || 0;
 
-      requestLimit = total !== undefined ?
-        Math.min(currentOffset - offset, total - currentOffset) :
-        limit - (currentOffset - offset);
+      requestLimit =
+        total !== undefined
+          ? Math.min(currentOffset - offset, total - currentOffset)
+          : limit - (currentOffset - offset);
       requestOffset = total !== undefined ? currentOffset - prevTotal : 0;
     }
 
@@ -98,11 +102,7 @@ export function* fetchMoreItems(searchResultItem: SearchResult, source: SearchSo
     const setTotalsAction = setExtensionTotals(searchResultItem.id, source, currentTotals);
     const successAction = fetchOptionsForExtendSuccess(searchResultItem.id, source, results);
 
-    yield all([
-      put(successAction),
-      put(setOffsetAction),
-      put(setTotalsAction),
-    ]);
+    yield all([put(successAction), put(setOffsetAction), put(setTotalsAction)]);
   } catch (err) {
     const failureAction = fetchOptionsForExtendFailure(searchResultItem.id, source, err);
 

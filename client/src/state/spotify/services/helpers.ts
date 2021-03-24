@@ -1,8 +1,5 @@
-import {
-  SPOTIFY_PLAYER_MSG_IGNORED_KEY,
-  SPOTIFY_AUTH_KEY,
-} from 'consts';
-import {SpotifyAdvancedSearchQuery} from '../types';
+import { SPOTIFY_PLAYER_MSG_IGNORED_KEY, SPOTIFY_AUTH_KEY } from 'consts';
+import { SpotifyAdvancedSearchQuery } from '../types';
 
 export function getSpotifyPlayerMsgState(): boolean {
   return !!localStorage.getItem(SPOTIFY_PLAYER_MSG_IGNORED_KEY);
@@ -29,9 +26,11 @@ export function getSpotifyAuthState(): SpotifyAuthData | undefined {
   let spotifyAuthData: SpotifyAuthData | undefined;
 
   try {
-    const parsedAuthData: Omit<SpotifyAuthData, 'expiresIn'> & {
-      expiresIn: number;
-    } | undefined = spotifyAuthDataString ? JSON.parse(spotifyAuthDataString) : undefined;
+    const parsedAuthData:
+      | (Omit<SpotifyAuthData, 'expiresIn'> & {
+          expiresIn: number;
+        })
+      | undefined = spotifyAuthDataString ? JSON.parse(spotifyAuthDataString) : undefined;
 
     spotifyAuthData = parsedAuthData && {
       ...parsedAuthData,
@@ -80,20 +79,24 @@ export async function mountSpotifyScript(): Promise<{
     };
   });
 
-  return {script, spotify};
+  return { script, spotify };
 }
 
-export function getAdvancedSearchString(
-  {and, or, not, year, ...options}: SpotifyAdvancedSearchQuery,
-): string {
-  let string = and.map((item) => `"${item}"`).join(' ');
+export function getAdvancedSearchString({
+  and,
+  or,
+  not,
+  year,
+  ...options
+}: SpotifyAdvancedSearchQuery): string {
+  let string = and.map(item => `"${item}"`).join(' ');
 
   if (or && or.length) {
-    string += ` OR ${or.map((item) => `"${item}"`).join(' ')}`;
+    string += ` OR ${or.map(item => `"${item}"`).join(' ')}`;
   }
 
   if (not && not.length) {
-    string += ` NOT ${not.map((item) => `"${item}"`).join(' ')}`;
+    string += ` NOT ${not.map(item => `"${item}"`).join(' ')}`;
   }
 
   if ('track' in options && options.track) {
@@ -119,7 +122,7 @@ export function getAdvancedSearchString(
   if (typeof year === 'number') {
     string += ` year:${year}`;
   } else if (typeof year === 'object') {
-    const {from, to} = year;
+    const { from, to } = year;
 
     string += ` year:${from}-${to}`;
   }

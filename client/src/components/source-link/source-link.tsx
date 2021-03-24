@@ -1,8 +1,8 @@
-import React, {Component, createRef} from 'react';
-import classNames from 'classnames/bind';
-import {SourceTooltip} from '../tooltip';
+import React, { Component, createRef } from "react";
+import classNames from "classnames/bind";
+import { SourceTooltip } from "../tooltip";
 
-import styles from './source-link.scss';
+import styles from "./source-link.scss";
 
 const cx = classNames.bind(styles);
 
@@ -24,19 +24,19 @@ class SourceLinkComponent extends Component<SourceLinkProps, SourceLinkState> {
 
   state: SourceLinkState = {
     parentElem: null,
-  }
+  };
 
   componentDidMount() {
-    this.setState({parentElem: this.parentRef.current});
+    this.setState({ parentElem: this.parentRef.current });
   }
 
   render() {
-    const {children, externalUrls, className} = this.props;
-    const {parentElem} = this.state;
+    const { children, externalUrls, className } = this.props;
+    const { parentElem } = this.state;
 
     return (
       <>
-        <span ref={this.parentRef} className={cx('source-link', className)}>
+        <span ref={this.parentRef} className={cx("source-link", className)}>
           {children}
         </span>
         {parentElem && (
@@ -51,4 +51,4 @@ class SourceLinkComponent extends Component<SourceLinkProps, SourceLinkState> {
   }
 }
 
-export {SourceLinkComponent};
+export { SourceLinkComponent };

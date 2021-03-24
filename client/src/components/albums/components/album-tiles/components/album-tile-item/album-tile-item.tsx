@@ -1,9 +1,9 @@
-import React, {FC} from 'react';
-import classNames from 'classnames/bind';
-import {AlbumTileProps} from '../../../album-tile/album-tile';
-import {AlbumTile} from '../../../album-tile';
+import React, { FC } from "react";
+import classNames from "classnames/bind";
+import { AlbumTileProps } from "../../../album-tile/album-tile";
+import { AlbumTile } from "../../../album-tile";
 
-import styles from './album-tile-item.scss';
+import styles from "./album-tile-item.scss";
 
 const cx = classNames.bind(styles);
 
@@ -16,10 +16,10 @@ const AlbumTileItemComponent: FC<AlbumTileItemProps> = ({
   ...props
 }) => {
   return (
-    <li className={cx('album-item', className)}>
-      <AlbumTile className={cx('tile')} {...props} />
+    <li className={cx("album-item", className)}>
+      <AlbumTile className={cx("tile")} {...props} />
     </li>
   );
 };
 
-export {AlbumTileItemComponent};
+export { AlbumTileItemComponent };

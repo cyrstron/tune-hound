@@ -1,1 +1,1 @@
-export {SearchedTrackComponent as SearchedTrack} from './searched-track';
+export { SearchedTrackComponent as SearchedTrack } from './searched-track';

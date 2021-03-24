@@ -1,15 +1,13 @@
-import {eventChannel, EventChannel, END} from 'redux-saga';
-import {take, put, select} from 'redux-saga/effects';
-import {DeezerService} from '@app/state/deezer/services';
-import {deezerTrackEnd} from '@app/state/deezer/actions';
-import {selectPlayingSource} from '@app/state/player/selectors';
-import {playNext} from '@app/state/player/actions';
+import { eventChannel, EventChannel, END } from 'redux-saga';
+import { take, put, select } from 'redux-saga/effects';
+import { DeezerService } from '@app/state/deezer/services';
+import { deezerTrackEnd } from '@app/state/deezer/actions';
+import { selectPlayingSource } from '@app/state/player/selectors';
+import { playNext } from '@app/state/player/actions';
 
-export function createTrackEndChannel(
-  deezerService: DeezerService,
-): EventChannel<number> {
-  return eventChannel((emitter) => {
-    deezerService.events.subscribe('track_end', (trackIndex) => {
+export function createTrackEndChannel(deezerService: DeezerService): EventChannel<number> {
+  return eventChannel(emitter => {
+    deezerService.events.subscribe('track_end', trackIndex => {
       emitter(trackIndex);
     });
 
@@ -19,10 +17,7 @@ export function createTrackEndChannel(
   });
 }
 
-export function* watchTrackEnd(
-  deezerService: DeezerService,
-  channel: EventChannel<number>,
-): any {
+export function* watchTrackEnd(deezerService: DeezerService, channel: EventChannel<number>): any {
   while (true) {
     const trackIndex: number | END = yield take(channel);
 

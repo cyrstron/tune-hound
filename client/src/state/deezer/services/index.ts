@@ -1,1 +1,1 @@
-export {DeezerService} from './deezer-service';
+export { DeezerService } from './deezer-service';

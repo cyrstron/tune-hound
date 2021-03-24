@@ -1,19 +1,23 @@
-import React, {FC, useState, useCallback} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import classNames from 'classnames/bind';
+import React, { FC, useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import classNames from "classnames/bind";
 import {
   SpotifySourceItemShort,
   DeezerSourceItemShort,
   SourceItemShort,
   SearchSource,
-} from '@app/state/search/types';
-import {pickOptionForExtend, resetOptionsForExtend, fetchNextOptionsForExtend} from '@app/state/search';
-import {selectExtensionHasMoreItemsToFetch} from '@app/state/search/selectors';
-import {ClosingPopup} from '@app/components/popup';
-import {ExtensionItem} from './components/extension-item';
+} from "@app/state/search/types";
+import {
+  pickOptionForExtend,
+  resetOptionsForExtend,
+  fetchNextOptionsForExtend,
+} from "@app/state/search";
+import { selectExtensionHasMoreItemsToFetch } from "@app/state/search/selectors";
+import { ClosingPopup } from "@app/components/popup";
+import { ExtensionItem } from "./components/extension-item";
 
-import styles from './extension-popup.scss';
-import {AppState} from '@app/state';
+import styles from "./extension-popup.scss";
+import { AppState } from "@app/state";
 
 const cx = classNames.bind(styles);
 
@@ -23,7 +27,11 @@ export interface ExtensionPopupProps {
   deezer?: DeezerSourceItemShort[];
 }
 
-const ExtensionPopupComponent: FC<ExtensionPopupProps> = ({spotify, deezer, id}) => {
+const ExtensionPopupComponent: FC<ExtensionPopupProps> = ({
+  spotify,
+  deezer,
+  id,
+}) => {
   const dispatch = useDispatch();
 
   const [selectedItem, setSelected] = useState<SourceItemShort | undefined>();
@@ -31,18 +39,21 @@ const ExtensionPopupComponent: FC<ExtensionPopupProps> = ({spotify, deezer, id})
   let source: SearchSource | undefined;
 
   if (spotify) {
-    source = 'spotify';
+    source = "spotify";
   } else if (deezer) {
-    source = 'deezer';
+    source = "deezer";
   }
 
   const hasToLoadMore = useSelector<AppState>(
-    (state) => !!source && selectExtensionHasMoreItemsToFetch(state, id, source),
+    (state) => !!source && selectExtensionHasMoreItemsToFetch(state, id, source)
   );
 
-  const onClick = useCallback((item: SourceItemShort) => {
-    setSelected(item);
-  }, [setSelected]);
+  const onClick = useCallback(
+    (item: SourceItemShort) => {
+      setSelected(item);
+    },
+    [setSelected]
+  );
 
   const onApply = useCallback(() => {
     if (!selectedItem || !source) return;
@@ -76,24 +87,32 @@ const ExtensionPopupComponent: FC<ExtensionPopupProps> = ({spotify, deezer, id})
     dispatch(action);
   }, [source, id, dispatch]);
 
-  let propItems: Array<{
-    spotify?: SpotifySourceItemShort;
-    deezer?: DeezerSourceItemShort;
-    isSelected: boolean;
-  }> | undefined;
+  let propItems:
+    | Array<{
+        spotify?: SpotifySourceItemShort;
+        deezer?: DeezerSourceItemShort;
+        isSelected: boolean;
+      }>
+    | undefined;
 
   if (spotify) {
-    propItems = spotify.map((item) => ({spotify: item, isSelected: item.id === selectedItem?.id}));
+    propItems = spotify.map((item) => ({
+      spotify: item,
+      isSelected: item.id === selectedItem?.id,
+    }));
   } else if (deezer) {
-    propItems = deezer.map((item) => ({deezer: item, isSelected: item.id === selectedItem?.id}));
+    propItems = deezer.map((item) => ({
+      deezer: item,
+      isSelected: item.id === selectedItem?.id,
+    }));
   }
 
   if (!propItems || propItems.length <= 1) return null;
 
   return (
     <ClosingPopup title="Choose the similar item" onClose={onCancel} isBlocking>
-      <div className={cx('content')}>
-        <ul className={cx('items-list')}>
+      <div className={cx("content")}>
+        <ul className={cx("items-list")}>
           {propItems.map((props) => (
             <ExtensionItem
               {...props}
@@ -106,11 +125,13 @@ const ExtensionPopupComponent: FC<ExtensionPopupProps> = ({spotify, deezer, id})
           <button onClick={onCancel}>Cancel</button>
           <button onClick={onNotFound}>Not found</button>
           <button onClick={onApply}>Apply</button>
-          <button onClick={onLoadMore} disabled={!hasToLoadMore}>Load More</button>
+          <button onClick={onLoadMore} disabled={!hasToLoadMore}>
+            Load More
+          </button>
         </div>
       </div>
     </ClosingPopup>
   );
 };
 
-export {ExtensionPopupComponent};
+export { ExtensionPopupComponent };

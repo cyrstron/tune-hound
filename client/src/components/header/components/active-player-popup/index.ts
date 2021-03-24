@@ -1,9 +1,9 @@
-import {connect} from 'react-redux';
-import {ActivePlayerPopupComponent} from './active-player-popup';
-import {AppState} from '@app/state';
+import { connect } from 'react-redux';
+import { ActivePlayerPopupComponent } from './active-player-popup';
+import { AppState } from '@app/state';
 import {
-  selectIsSpotifyPlayerActive, 
-  selectIsSpotifyPlayerMsgIgnored, 
+  selectIsSpotifyPlayerActive,
+  selectIsSpotifyPlayerMsgIgnored,
   selectIsSpotifyConnected,
   setSpotifyActivePlayerIgnored,
 } from '@app/state/spotify';
@@ -18,4 +18,4 @@ const ActivePlayerPopup = connect(mapStateToProps, {
   setIgnored: setSpotifyActivePlayerIgnored,
 })(ActivePlayerPopupComponent);
 
-export {ActivePlayerPopup};
+export { ActivePlayerPopup };

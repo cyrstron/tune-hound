@@ -1,10 +1,10 @@
-import {takeEvery, getContext, select} from 'redux-saga/effects';
-import {PLAY} from '@app/state/player/consts';
-import {DEEZER_SERVICE_CTX_KEY} from '@app/consts';
-import {DeezerService} from '@app/state/deezer/services';
-import {selectCurrentTrack} from '@app/state/player/selectors';
-import {PlayerTrack} from '@app/state/player/types';
-import {selectDeezerCurrentTrack} from '@app/state/deezer/selectors';
+import { takeEvery, getContext, select } from 'redux-saga/effects';
+import { PLAY } from '@app/state/player/consts';
+import { DEEZER_SERVICE_CTX_KEY } from '@app/consts';
+import { DeezerService } from '@app/state/deezer/services';
+import { selectCurrentTrack } from '@app/state/player/selectors';
+import { PlayerTrack } from '@app/state/player/types';
+import { selectDeezerCurrentTrack } from '@app/state/deezer/selectors';
 
 export function* updatePlay(): any {
   const deezerService: DeezerService = yield getContext(DEEZER_SERVICE_CTX_KEY);

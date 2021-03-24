@@ -1,7 +1,7 @@
-import React, {FC, useCallback} from 'react';
-import classNames from 'classnames/bind';
+import React, { FC, useCallback } from "react";
+import classNames from "classnames/bind";
 
-import styles from './page-item.scss';
+import styles from "./page-item.scss";
 
 const cx = classNames.bind(styles);
 
@@ -27,17 +27,17 @@ const PageItemComponent: FC<PageItemProps> = ({
 
   return (
     <li
-      className={cx('page', {
-        'active': isActive,
+      className={cx("page", {
+        active: isActive,
       })}
     >
-      {isActive && (
-        <span className={cx('page-button')}>
-          {label}
-        </span>
-      )}
+      {isActive && <span className={cx("page-button")}>{label}</span>}
       {!isActive && (
-        <button onClick={onClick} className={cx('page-button')} disabled={isDisabled}>
+        <button
+          onClick={onClick}
+          className={cx("page-button")}
+          disabled={isDisabled}
+        >
           {label}
         </button>
       )}
@@ -45,4 +45,4 @@ const PageItemComponent: FC<PageItemProps> = ({
   );
 };
 
-export {PageItemComponent};
+export { PageItemComponent };

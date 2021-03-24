@@ -1,1 +1,1 @@
-export {ExtensionItemComponent as ExtensionItem} from './extension-item';
+export { ExtensionItemComponent as ExtensionItem } from './extension-item';

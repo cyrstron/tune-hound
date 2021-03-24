@@ -15,7 +15,7 @@
 1. Go to your [Spotify App Player](https://open.spotify.com/) and click desktop icon near volume control
 2. Choose `Tune Hound Preview Player`
 
-*It is recommended to disable your ad blocker to avoid multiple error messages in your console*
+_It is recommended to disable your ad blocker to avoid multiple error messages in your console_
 
 ## Deezer connection development setup
 
@@ -28,5 +28,5 @@
 7. Add them to root `.env` file as `DEEZER_PLAYER_ID` and `DEEZER_PLAYER_SECRET`
 8. **Enable Flash support in your browser to stream Deezer audio files in the app**
 
-* **Deezer SDK works properly only on `127.0.0.1`. Do not use `localhost`!**
-* **Deezer SDK sometimes has problems with connection while devtools are open!**
+- **Deezer SDK works properly only on `127.0.0.1`. Do not use `localhost`!**
+- **Deezer SDK sometimes has problems with connection while devtools are open!**

@@ -21,9 +21,8 @@ import {
   PLAY_BY_SOURCE_ID,
   SET_PLAYER_ERROR,
 } from './consts';
-import {PlayerTrack, RepeatMode, PlaylistType} from './types';
-import {SearchSource} from '../search/types';
-
+import { PlayerTrack, RepeatMode, PlaylistType } from './types';
+import { SearchSource } from '../search/types';
 
 export interface SetPlaylistAction {
   type: typeof SET_PLAYLIST;
@@ -44,7 +43,7 @@ export const setPlaylist = (
   index?: number,
 ): SetPlaylistAction => ({
   type: SET_PLAYLIST,
-  payload: {id, type, tracks, nativeId, index},
+  payload: { id, type, tracks, nativeId, index },
 });
 
 export interface PlayTrackAction {
@@ -109,42 +108,42 @@ export const playPrev = (): PlayPrevAction => ({
 
 export interface SeekAction {
   type: typeof SEEK;
-  payload: {position: number};
+  payload: { position: number };
 }
 
 export const seek = (position: number): SeekAction => ({
   type: SEEK,
-  payload: {position},
+  payload: { position },
 });
 
 export interface SetIsPlayerPendingAction {
   type: typeof SET_IS_PENDING;
-  payload: {isPending: boolean};
+  payload: { isPending: boolean };
 }
 
 export const setIsPlayerPending = (isPending: boolean): SetIsPlayerPendingAction => ({
   type: SET_IS_PENDING,
-  payload: {isPending},
+  payload: { isPending },
 });
 
 export interface SetPlayerErrorAction {
   type: typeof SET_PLAYER_ERROR;
-  payload: {error: Error};
+  payload: { error: Error };
 }
 
 export const setPlayerError = (error: Error): SetPlayerErrorAction => ({
   type: SET_PLAYER_ERROR,
-  payload: {error},
+  payload: { error },
 });
 
 export interface SetIsPlayingAction {
   type: typeof SET_IS_PLAYING;
-  payload: {isPlaying: boolean};
+  payload: { isPlaying: boolean };
 }
 
 export const setIsPlaying = (isPlaying: boolean): SetIsPlayingAction => ({
   type: SET_IS_PLAYING,
-  payload: {isPlaying},
+  payload: { isPlaying },
 });
 
 export interface PlayBySourceIdAction {
@@ -162,72 +161,72 @@ export const playBySourceId = (
   source: SearchSource,
 ): PlayBySourceIdAction => ({
   type: PLAY_BY_SOURCE_ID,
-  payload: {id, type, source},
+  payload: { id, type, source },
 });
 
 export interface SetIsMutedAction {
   type: typeof SET_IS_MUTED;
-  payload: {isMuted: boolean};
+  payload: { isMuted: boolean };
 }
 
 export const setIsMuted = (isMuted: boolean): SetIsMutedAction => ({
   type: SET_IS_MUTED,
-  payload: {isMuted},
+  payload: { isMuted },
 });
 
 export interface SetVolumeAction {
   type: typeof SET_VOLUME;
-  payload: {volume: number};
+  payload: { volume: number };
 }
 
 export const setVolume = (volume: number): SetVolumeAction => ({
   type: SET_VOLUME,
-  payload: {volume},
+  payload: { volume },
 });
 
 export interface SetRepeatModeAction {
   type: typeof SET_REPEAT_MODE;
-  payload: {repeatMode: RepeatMode};
+  payload: { repeatMode: RepeatMode };
 }
 
 export const setRepeatMode = (repeatMode: RepeatMode): SetRepeatModeAction => ({
   type: SET_REPEAT_MODE,
-  payload: {repeatMode},
+  payload: { repeatMode },
 });
 
 export interface SetIsShuffledAction {
   type: typeof SET_IS_SHUFFLED;
-  payload: {isShuffled: boolean};
+  payload: { isShuffled: boolean };
 }
 
 export const setIsShuffled = (isShuffled: boolean): SetIsShuffledAction => ({
   type: SET_IS_SHUFFLED,
-  payload: {isShuffled},
+  payload: { isShuffled },
 });
 
 export interface SetPositionAction {
   type: typeof SET_POSITION;
-  payload: {position: number};
+  payload: { position: number };
 }
 
 export const setPosition = (position: number): SetPositionAction => ({
   type: SET_POSITION,
-  payload: {position},
+  payload: { position },
 });
 
 export interface SetPlayerHistoryAction {
   type: typeof SET_PLAYER_HISTORY;
-  payload: {history: number[]};
+  payload: { history: number[] };
 }
 
 export const setPlayerHistory = (history: number[]): SetPlayerHistoryAction => ({
   type: SET_PLAYER_HISTORY,
-  payload: {history},
+  payload: { history },
 });
 
 export interface SetCurrentTrackAction {
   type: typeof SET_CURRENT_TRACK;
-  payload: {track: PlayerTrack; index: number; isAutoplay: boolean};
+  payload: { track: PlayerTrack; index: number; isAutoplay: boolean };
 }
 
 export const setCurrentTrack = (
@@ -236,7 +235,7 @@ export const setCurrentTrack = (
   isAutoplay = false,
 ): SetCurrentTrackAction => ({
   type: SET_CURRENT_TRACK,
-  payload: {track, index, isAutoplay},
+  payload: { track, index, isAutoplay },
 });
 
 export interface ResetCurrentTrackAction {
@@ -282,4 +281,3 @@ export type PlayerAction =
   | ResetPlayHistoryAction
   | SetIsShuffledAction
   | SetVolumeAction;
-

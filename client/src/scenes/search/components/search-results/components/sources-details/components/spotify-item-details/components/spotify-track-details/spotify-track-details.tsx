@@ -1,8 +1,8 @@
-import React, {FC} from 'react';
-import classNames from 'classnames/bind';
-import {SpotifyTrackSourceItemFull} from '@app/state/search/types';
+import React, { FC } from "react";
+import classNames from "classnames/bind";
+import { SpotifyTrackSourceItemFull } from "@app/state/search/types";
 
-import styles from './spotify-track-details.scss';
+import styles from "./spotify-track-details.scss";
 
 const cx = classNames.bind(styles);
 
@@ -13,17 +13,15 @@ export interface SpotifyTrackDetailsProps {
 }
 
 const SpotifyTrackDetailsComponent: FC<SpotifyTrackDetailsProps> = ({
-  track: {popularity, explicit},
+  track: { popularity, explicit },
   className,
 }) => {
   return (
-    <div className={cx('track-details', className)}>
+    <div className={cx("track-details", className)}>
       <div>Popularity: {popularity}</div>
-      {explicit && (
-        <div>Explicit</div>
-      )}
+      {explicit && <div>Explicit</div>}
     </div>
   );
 };
 
-export {SpotifyTrackDetailsComponent};
+export { SpotifyTrackDetailsComponent };

@@ -1,15 +1,17 @@
-import {connect} from 'react-redux';
-import {AppState} from '@app/state';
+import { connect } from 'react-redux';
+import { AppState } from '@app/state';
 import {
   selectResultsPage,
   selectSearchError,
   selectIsSearchPending,
 } from '@app/state/search/selectors';
 
-import {SearchResultsComponent} from './search-results';
-import {SearchResult} from '@app/state/search/types';
+import { SearchResultsComponent } from './search-results';
+import { SearchResult } from '@app/state/search/types';
 
-const mapStateToProps = (state: AppState): {
+const mapStateToProps = (
+  state: AppState,
+): {
   currentPage: SearchResult[] | undefined;
   error: Error | undefined;
   isPending: boolean;

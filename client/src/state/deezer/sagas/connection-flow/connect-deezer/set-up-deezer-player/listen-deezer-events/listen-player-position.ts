@@ -1,17 +1,17 @@
-import {eventChannel, EventChannel, END} from 'redux-saga';
+import { eventChannel, EventChannel, END } from 'redux-saga';
 import throttle from 'lodash/throttle';
-import {take, put, select, all} from 'redux-saga/effects';
-import {DeezerService} from '@app/state/deezer/services';
-import {setPlayerPosition} from '@app/state/deezer/actions';
-import {selectPlayingSource, selectIsPlaying} from '@app/state/player/selectors';
-import {setPosition} from '@app/state/player/actions';
-import {PlayerSource} from '@app/state/player/types';
+import { take, put, select, all } from 'redux-saga/effects';
+import { DeezerService } from '@app/state/deezer/services';
+import { setPlayerPosition } from '@app/state/deezer/actions';
+import { selectPlayingSource, selectIsPlaying } from '@app/state/player/selectors';
+import { setPosition } from '@app/state/player/actions';
+import { PlayerSource } from '@app/state/player/types';
 
 export function createPlayerPositionChannel(
   deezerService: DeezerService,
 ): EventChannel<[number, number]> {
-  return eventChannel((emitter) => {
-    const onPlayerPositionChange = throttle((position) => {
+  return eventChannel(emitter => {
+    const onPlayerPositionChange = throttle(position => {
       emitter(position);
     }, 200);
 
@@ -44,7 +44,7 @@ export function* watchPlayerPositionChange(
     if (playingSource !== 'deezer' || !isPlayerPlaying) {
       deezerService.player.pause();
     } else {
-      const action = setPosition(position[0] / position[1] * 100);
+      const action = setPosition((position[0] / position[1]) * 100);
 
       yield put(action);
     }

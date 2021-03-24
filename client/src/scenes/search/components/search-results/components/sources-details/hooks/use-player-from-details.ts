@@ -1,12 +1,18 @@
-import {useDispatch, useSelector} from 'react-redux';
-import {selectCurrentIndex, selectIsNativePlaylistActive, selectIsPlayerPending, selectIsPlaying} from '@app/state/player/selectors';
-import {AppState} from '@app/state';
-import {playSearchResult} from '@app/state/search';
-import {useCallback} from 'react';
-import {selectExtensionPending} from '@app/state/search/selectors';
-import {pause} from '@app/state/player/actions';
-import {PlaylistType} from '@app/state/player/types';
-import {SearchSource} from '@app/state/search/types';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectCurrentIndex,
+  createIsNativePlaylistActiveSelector,
+  selectIsPlayerPending,
+  selectIsPlaying,
+} from '@app/state/player/selectors';
+import { AppState } from '@app/state';
+import { playSearchResult } from '@app/state/search';
+import { useCallback } from 'react';
+import { selectExtensionPending } from '@app/state/search/selectors';
+import { pause } from '@app/state/player/actions';
+import { PlaylistType } from '@app/state/player/types';
+import { SearchSource } from '@app/state/search/types';
+import { useSelectorCreator } from '@app/hooks/use-params-selector';
 
 export const usePlayerFromDetails = (
   id: string,
@@ -25,21 +31,22 @@ export const usePlayerFromDetails = (
 
   const currentIndex = useSelector(selectCurrentIndex);
 
-  const isPlaylistActive = useSelector<AppState, boolean>(
-    (state) => selectIsNativePlaylistActive(state, nativeId, type),
-  );
+  const isPlaylistActive = useSelectorCreator(createIsNativePlaylistActiveSelector, nativeId, type);
   const isPlaying = useSelector(selectIsPlaying);
   const isPending = useSelector(selectIsPlayerPending);
 
-  const isExtending = useSelector<AppState, boolean>(
-    (state) => selectExtensionPending(state, id, source),
+  const isExtending = useSelector<AppState, boolean>(state =>
+    selectExtensionPending(state, id, source),
   );
 
-  const onPlay = useCallback((index: number) => {
-    const action = playSearchResult(id, source, index);
+  const onPlay = useCallback(
+    (index: number) => {
+      const action = playSearchResult(id, source, index);
 
-    dispatch(action);
-  }, [id, dispatch, source]);
+      dispatch(action);
+    },
+    [id, dispatch, source],
+  );
 
   const onPause = useCallback(() => {
     const action = pause();

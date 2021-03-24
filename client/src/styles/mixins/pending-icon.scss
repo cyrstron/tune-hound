@@ -18,7 +18,7 @@
   cursor: wait;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     display: block;
     top: 50%;
@@ -30,14 +30,11 @@
     animation-name: pending-rotation;
     animation-duration: 2s;
     animation-iteration-count: infinite;
-    box-shadow:
-      $angular-offset $angular-offset 0 0 $bg-color,
+    box-shadow: $angular-offset $angular-offset 0 0 $bg-color,
       -$angular-offset $angular-offset 0 0 $bg-color,
       -$angular-offset (-$angular-offset) 0 0 $bg-color,
-      $angular-offset (-$angular-offset) 0 0 $bg-color,
-      0 $offset 0 0 $bg-color,
-      0 (-$offset) 0 0 $bg-color,
-      $offset 0 0 0 $bg-color,
+      $angular-offset (-$angular-offset) 0 0 $bg-color, 0 $offset 0 0 $bg-color,
+      0 (-$offset) 0 0 $bg-color, $offset 0 0 0 $bg-color,
       -$offset 0 0 0 $bg-color;
   }
 }

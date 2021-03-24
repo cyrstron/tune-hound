@@ -1,1 +1,1 @@
-export {PlayNextControl} from './play-next-control';
+export { PlayNextControl } from './play-next-control';

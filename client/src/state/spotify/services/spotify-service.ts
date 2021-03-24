@@ -1,6 +1,6 @@
-import {SpotifyWebApi} from './spotify-web-api';
-import {mountSpotifyScript} from './helpers';
-import {SpotifySearchOptions} from '../types';
+import { SpotifyWebApi } from './spotify-web-api';
+import { mountSpotifyScript } from './helpers';
+import { SpotifySearchOptions } from '../types';
 
 export interface SpotifyServiceHandlets {
   onError: Spotify.ErrorListener;
@@ -15,22 +15,18 @@ export class SpotifyService {
 
   private spotifyPlayer?: Spotify.SpotifyPlayer;
 
-  constructor(
-    public api: SpotifyWebApi,
-  ) {}
+  constructor(public api: SpotifyWebApi) {}
 
   async mount(): Promise<void> {
-    const {script, spotify} = await mountSpotifyScript();
+    const { script, spotify } = await mountSpotifyScript();
 
     this.script = script;
     this.spotify = spotify;
   }
 
-  initPlayer(
-    getToken: (callback: (token: string) => void) => void,
-  ): void {
+  initPlayer(getToken: (callback: (token: string) => void) => void): void {
     if (!this.spotify) {
-      throw new Error('Spotify wasn\'t mounted');
+      throw new Error("Spotify wasn't mounted");
     }
 
     this.spotifyPlayer = new window.Spotify.Player({
@@ -68,7 +64,7 @@ export class SpotifyService {
   }
 
   get player(): Spotify.SpotifyPlayer {
-    if (!this.spotifyPlayer) throw new Error('Spotify Player wasn\'t initialized');
+    if (!this.spotifyPlayer) throw new Error("Spotify Player wasn't initialized");
 
     return this.spotifyPlayer;
   }

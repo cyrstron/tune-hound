@@ -1,1 +1,1 @@
-export {AlbumTilesComponent as AlbumTiles} from './album-tiles';
+export { AlbumTilesComponent as AlbumTiles } from './album-tiles';

@@ -1,5 +1,5 @@
-import {getContext, put, select, call} from 'redux-saga/effects';
-import {deezerConfig, DEEZER_SERVICE_CTX_KEY} from 'consts';
+import { getContext, put, select, call } from 'redux-saga/effects';
+import { deezerConfig, DEEZER_SERVICE_CTX_KEY } from 'consts';
 import {
   connectDeezerPending,
   connectDeezerSuccess,
@@ -8,13 +8,13 @@ import {
   setDeezerInited,
   setDeezerCurrentUser,
 } from '../../../actions';
-import {DeezerService} from '../../../services';
-import {setDeezerConnectedState} from '../../../services/helpers';
-import {selectDeezerMounted, selectDeezerInited} from '../../../selectors';
-import {DeezerUser} from '../../../types';
-import {setUpDeezerPlayer} from './set-up-deezer-player';
+import { DeezerService } from '../../../services';
+import { setDeezerConnectedState } from '../../../services/helpers';
+import { selectDeezerMounted, selectDeezerInited } from '../../../selectors';
+import { DeezerUser } from '../../../types';
+import { setUpDeezerPlayer } from './set-up-deezer-player';
 
-const {initConfig} = deezerConfig;
+const { initConfig } = deezerConfig;
 
 export function* connectDeezerSaga(): any {
   const pendingAction = connectDeezerPending();

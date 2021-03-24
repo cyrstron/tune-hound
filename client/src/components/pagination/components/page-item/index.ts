@@ -1,1 +1,1 @@
-export {PageItemComponent as PageItem} from './page-item';
+export { PageItemComponent as PageItem } from './page-item';

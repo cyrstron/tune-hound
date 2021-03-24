@@ -1,17 +1,22 @@
-import React, {FC, Fragment, useCallback} from 'react';
+import React, { FC, Fragment, useCallback } from 'react';
 import classNames from 'classnames/bind';
-import {SearchedTrack} from '@app/state/search/types';
-import {SourceLink} from '@app/components/source-link';
+import { SearchedTrack } from '@app/state/search/types';
+import { SourceLink } from '@app/components/source-link';
 
 import styles from './searched-track.scss';
-import {SourceDetails} from '../sources-details';
-import {useDispatch, useSelector} from 'react-redux';
-import {playSearchResult} from '@app/state/search/actions';
-import {pause} from '@app/state/player/actions';
-import {CoverPlayBtn} from '@app/components/cover-play-btn';
-import {AppState} from '@app/state';
-import {selectIsTrackActive, selectIsPlaying, selectIsPlayerPending} from '@app/state/player/selectors';
-import {selectOneOfExtensionsPending} from '@app/state/search/selectors';
+import { SourceDetails } from '../sources-details';
+import { useDispatch, useSelector } from 'react-redux';
+import { playSearchResult } from '@app/state/search/actions';
+import { pause } from '@app/state/player/actions';
+import { CoverPlayBtn } from '@app/components/cover-play-btn';
+import { AppState } from '@app/state';
+import {
+  createIsTrackActiveSelector,
+  selectIsPlaying,
+  selectIsPlayerPending,
+} from '@app/state/player/selectors';
+import { selectOneOfExtensionsPending } from '@app/state/search/selectors';
+import { useSelectorCreator } from '@app/hooks/use-params-selector';
 
 const cx = classNames.bind(styles);
 
@@ -20,24 +25,24 @@ export interface SearchedTrackProps {
   className?: string;
 }
 
-const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
+const SearchedTrackComponent: FC<SearchedTrackProps> = ({ track, className }) => {
   const {
     id,
     coverUrl,
     artists,
     album,
-    sources: {spotify, deezer},
+    sources: { spotify, deezer },
     isCrossExtendable,
   } = track;
 
   const dispatch = useDispatch();
 
-  const isTrackActive = useSelector<AppState, boolean>((state) => selectIsTrackActive(state, id));
+  const isTrackActive = useSelectorCreator(createIsTrackActiveSelector, id);
   const isPlaying = useSelector(selectIsPlaying);
   const isPending = useSelector(selectIsPlayerPending);
 
-  const isExtending = useSelector<AppState, boolean>(
-    (state) => selectOneOfExtensionsPending(state, id),
+  const isExtending = useSelector<AppState, boolean>(state =>
+    selectOneOfExtensionsPending(state, id),
   );
 
   const onPlay = useCallback(() => {
@@ -77,8 +82,7 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
             </SourceLink>
           </h1>
           <div>
-            Album:
-            {' '}
+            Album:{' '}
             <SourceLink
               className={cx('album-link')}
               externalUrls={{
@@ -90,14 +94,15 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
             </SourceLink>
           </div>
           <div>
-            {artists.length === 1 ? 'Artist' : 'Artists'}:
-            {' '}
+            {artists.length === 1 ? 'Artist' : 'Artists'}:{' '}
             {artists.map((artist, index) => (
               <Fragment key={artist}>
                 <SourceLink
                   className={cx('artist-link')}
                   externalUrls={{
-                    spotifyUrl: spotify?.artists.find(({name}) => name === artist)?.['external_urls'].spotify,
+                    spotifyUrl: spotify?.artists.find(({ name }) => name === artist)?.[
+                      'external_urls'
+                    ].spotify,
                     deezerUrl: deezer?.artist.link,
                   }}
                 >
@@ -120,4 +125,4 @@ const SearchedTrackComponent: FC<SearchedTrackProps> = ({track, className}) => {
   );
 };
 
-export {SearchedTrackComponent};
+export { SearchedTrackComponent };

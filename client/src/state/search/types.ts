@@ -1,5 +1,15 @@
-import {DeezerTrack, DeezerSearchOptions, DeezerAlbum, DeezerArtist, DeezerPlaylist, DeezerTrackFull, DeezerAlbumFull, DeezerArtistFull, DeezerPlaylistFull} from '../deezer/types';
-import {SpotifySearchOptions} from '../spotify/types';
+import {
+  DeezerTrack,
+  DeezerSearchOptions,
+  DeezerAlbum,
+  DeezerArtist,
+  DeezerPlaylist,
+  DeezerTrackFull,
+  DeezerAlbumFull,
+  DeezerArtistFull,
+  DeezerPlaylistFull,
+} from '../deezer/types';
+import { SpotifySearchOptions } from '../spotify/types';
 
 export type SearchOptions = DeezerSearchOptions | SpotifySearchOptions;
 
@@ -122,7 +132,6 @@ export interface SearchedPlaylist {
   };
 }
 
-
 export interface SpotifyPlaylistSourceItemShort extends SpotifyApi.PlaylistObjectSimplified {
   isFull?: false;
 }
@@ -139,25 +148,29 @@ export interface DeezerPlaylistSourceItemFull extends DeezerPlaylistFull {
   isFull: true;
 }
 
-export type DeezerSourceItemShort = DeezerTrackSourceItemShort |
-  DeezerAlbumSourceItemShort |
-  DeezerArtistSourceItemShort |
-  DeezerPlaylistSourceItemShort;
+export type DeezerSourceItemShort =
+  | DeezerTrackSourceItemShort
+  | DeezerAlbumSourceItemShort
+  | DeezerArtistSourceItemShort
+  | DeezerPlaylistSourceItemShort;
 
-export type DeezerSourceItemFull = DeezerTrackSourceItemFull |
-  DeezerAlbumSourceItemFull |
-  DeezerArtistSourceItemFull |
-  DeezerPlaylistSourceItemFull;
+export type DeezerSourceItemFull =
+  | DeezerTrackSourceItemFull
+  | DeezerAlbumSourceItemFull
+  | DeezerArtistSourceItemFull
+  | DeezerPlaylistSourceItemFull;
 
-export type SpotifySourceItemShort = SpotifyTrackSourceItemShort |
-  SpotifyAlbumSourceItemShort |
-  SpotifyArtistSourceItemShort |
-  SpotifyPlaylistSourceItemShort;
+export type SpotifySourceItemShort =
+  | SpotifyTrackSourceItemShort
+  | SpotifyAlbumSourceItemShort
+  | SpotifyArtistSourceItemShort
+  | SpotifyPlaylistSourceItemShort;
 
-export type SpotifySourceItemFull = SpotifyTrackSourceItemFull |
-  SpotifyAlbumSourceItemFull |
-  SpotifyArtistSourceItemFull |
-  SpotifyPlaylistSourceItemFull;
+export type SpotifySourceItemFull =
+  | SpotifyTrackSourceItemFull
+  | SpotifyAlbumSourceItemFull
+  | SpotifyArtistSourceItemFull
+  | SpotifyPlaylistSourceItemFull;
 
 export type SourceItemShort = SpotifySourceItemShort | DeezerSourceItemShort;
 export type SourceItemFull = SpotifySourceItemFull | DeezerSourceItemFull;

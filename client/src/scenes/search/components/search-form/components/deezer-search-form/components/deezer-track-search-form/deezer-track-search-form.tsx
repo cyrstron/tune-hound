@@ -1,9 +1,9 @@
-import React, {Component, ChangeEvent, MouseEvent} from 'react';
+import React, { Component, ChangeEvent, MouseEvent } from "react";
 import {
   DeezerSearchOptions,
   DeezerAdvancedTrackSearchOptions,
   DeezerAdvancedQueryParams,
-} from '@app/state/deezer/types';
+} from "@app/state/deezer/types";
 
 export interface DeezerSearchFormProps {
   onChange: (params: DeezerSearchOptions) => void;
@@ -17,11 +17,11 @@ class DeezerTrackSearchFormComponent extends Component<DeezerSearchFormProps> {
     e.preventDefault();
 
     this.props.toggleAdvance();
-  }
+  };
 
-  onQueryChange = ({target}: ChangeEvent<HTMLInputElement>) => {
-    const {value} = target;
-    const {searchParams, onChange} = this.props;
+  onQueryChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const { value } = target;
+    const { searchParams, onChange } = this.props;
 
     onChange({
       ...searchParams,
@@ -30,12 +30,12 @@ class DeezerTrackSearchFormComponent extends Component<DeezerSearchFormProps> {
         track: value,
       },
     });
-  }
+  };
 
-  onAdvancedChange = ({target}: ChangeEvent<HTMLInputElement>) => {
-    const {name, value: inputValue} = target;
+  onAdvancedChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const { name, value: inputValue } = target;
     const {
-      searchParams: {query, ...searchParams},
+      searchParams: { query, ...searchParams },
       onChange,
     } = this.props;
     const value = inputValue ? inputValue : undefined;
@@ -43,30 +43,30 @@ class DeezerTrackSearchFormComponent extends Component<DeezerSearchFormProps> {
     let params: Partial<DeezerAdvancedQueryParams>;
 
     switch (name) {
-    case 'artist':
-      params = {artist: value};
-      break;
-    case 'album':
-      params = {album: value};
-      break;
-    case 'label':
-      params = {label: value};
-      break;
-    case 'dur-min':
-      params = {durMin: value === undefined ? value : +value};
-      break;
-    case 'dur-max':
-      params = {durMax: value === undefined ? value : +value};
-      break;
-    case 'bpm-min':
-      params = {bpmMin: value === undefined ? value : +value};
-      break;
-    case 'bpm-max':
-      params = {bpmMax: value === undefined ? value : +value};
-      break;
-    default:
-      params = {};
-      break;
+      case "artist":
+        params = { artist: value };
+        break;
+      case "album":
+        params = { album: value };
+        break;
+      case "label":
+        params = { label: value };
+        break;
+      case "dur-min":
+        params = { durMin: value === undefined ? value : +value };
+        break;
+      case "dur-max":
+        params = { durMax: value === undefined ? value : +value };
+        break;
+      case "bpm-min":
+        params = { bpmMin: value === undefined ? value : +value };
+        break;
+      case "bpm-max":
+        params = { bpmMax: value === undefined ? value : +value };
+        break;
+      default:
+        params = {};
+        break;
     }
 
     onChange({
@@ -76,22 +76,22 @@ class DeezerTrackSearchFormComponent extends Component<DeezerSearchFormProps> {
         ...params,
       },
     });
-  }
+  };
 
   render() {
     const {
       searchParams: {
-        query: {track, artist, album, label, durMin, durMax, bpmMin, bpmMax},
+        query: { track, artist, album, label, durMin, durMax, bpmMin, bpmMax },
       },
       isAdvanced,
     } = this.props;
 
     return (
       <>
-        <input type="text" onChange={this.onQueryChange} value={track}/>
-        <button type='submit'>Search</button>
+        <input type="text" onChange={this.onQueryChange} value={track} />
+        <button type="submit">Search</button>
         <button onClick={this.onToggleAdvance}>
-          Advanced {isAdvanced ? '⇑' : '⇓'}
+          Advanced {isAdvanced ? "⇑" : "⇓"}
         </button>
         {isAdvanced && (
           <div>
@@ -101,31 +101,31 @@ class DeezerTrackSearchFormComponent extends Component<DeezerSearchFormProps> {
                 type="text"
                 onChange={this.onAdvancedChange}
                 value={artist}
-                name='artist'
+                name="artist"
               />
             </label>
-            <br/>
+            <br />
             <label>
               Album:
               <input
                 type="text"
                 onChange={this.onAdvancedChange}
                 value={album}
-                name='album'
+                name="album"
               />
             </label>
-            <br/>
+            <br />
             <label>
               Label:
               <input
                 type="text"
                 onChange={this.onAdvancedChange}
                 value={label}
-                name='label'
+                name="label"
               />
             </label>
-            <br/>
-            Duration{' '}
+            <br />
+            Duration{" "}
             <label>
               Min:
               <input
@@ -133,7 +133,7 @@ class DeezerTrackSearchFormComponent extends Component<DeezerSearchFormProps> {
                 onChange={this.onAdvancedChange}
                 value={durMin}
                 max={durMax}
-                name='dur-min'
+                name="dur-min"
               />
               Max:
               <input
@@ -141,11 +141,11 @@ class DeezerTrackSearchFormComponent extends Component<DeezerSearchFormProps> {
                 onChange={this.onAdvancedChange}
                 value={durMax}
                 min={durMin}
-                name='dur-max'
+                name="dur-max"
               />
             </label>
-            <br/>
-            BPM{' '}
+            <br />
+            BPM{" "}
             <label>
               Min:
               <input
@@ -153,7 +153,7 @@ class DeezerTrackSearchFormComponent extends Component<DeezerSearchFormProps> {
                 onChange={this.onAdvancedChange}
                 value={bpmMin}
                 max={bpmMax}
-                name='bpm-min'
+                name="bpm-min"
               />
               Max:
               <input
@@ -161,7 +161,7 @@ class DeezerTrackSearchFormComponent extends Component<DeezerSearchFormProps> {
                 onChange={this.onAdvancedChange}
                 value={bpmMax}
                 min={bpmMin}
-                name='bpm-max'
+                name="bpm-max"
               />
             </label>
           </div>
@@ -171,4 +171,4 @@ class DeezerTrackSearchFormComponent extends Component<DeezerSearchFormProps> {
   }
 }
 
-export {DeezerTrackSearchFormComponent};
+export { DeezerTrackSearchFormComponent };

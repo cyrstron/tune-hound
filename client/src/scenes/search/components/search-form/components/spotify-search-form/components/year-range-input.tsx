@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {YearInput} from './year-input';
+import React, { Component } from "react";
+import { YearInput } from "./year-input";
 
 export interface YearRangeInputProps {
   onChange: (from?: number, to?: number) => void;
@@ -12,14 +12,17 @@ export interface YearRangeInputState {
   isRange: boolean;
 }
 
-class YearRangeInput extends Component<YearRangeInputProps, YearRangeInputState> {
+class YearRangeInput extends Component<
+  YearRangeInputProps,
+  YearRangeInputState
+> {
   state: YearRangeInputState = {
     isRange: false,
-  }
+  };
 
   onRangeToggle = () => {
-    const {onChange, fromValue} = this.props;
-    const {isRange} = this.state;
+    const { onChange, fromValue } = this.props;
+    const { isRange } = this.state;
 
     const nextIsRange = !isRange;
 
@@ -32,14 +35,14 @@ class YearRangeInput extends Component<YearRangeInputProps, YearRangeInputState>
     this.setState({
       isRange: nextIsRange,
     });
-  }
+  };
 
   onFromChange = (year: number) => {
-    const {onChange, toValue} = this.props;
-    const {isRange} = this.state;
+    const { onChange, toValue } = this.props;
+    const { isRange } = this.state;
 
     if (year === undefined && isRange) {
-      this.setState({isRange: false});
+      this.setState({ isRange: false });
     }
 
     if (isRange && toValue !== undefined && toValue < year) {
@@ -49,10 +52,10 @@ class YearRangeInput extends Component<YearRangeInputProps, YearRangeInputState>
     } else {
       onChange(year);
     }
-  }
+  };
 
   onToChange = (year?: number) => {
-    const {onChange, fromValue} = this.props;
+    const { onChange, fromValue } = this.props;
 
     if (year === undefined) {
       this.onRangeToggle();
@@ -61,37 +64,37 @@ class YearRangeInput extends Component<YearRangeInputProps, YearRangeInputState>
     } else {
       onChange(fromValue, year);
     }
-  }
+  };
 
   render() {
-    const {toValue, fromValue, disabled} = this.props;
-    const {isRange} = this.state;
+    const { toValue, fromValue, disabled } = this.props;
+    const { isRange } = this.state;
 
     return (
       <div>
         {isRange && (
           <>
             Years:'
-            <br/>
+            <br />
           </>
         )}
         <YearInput
           onChange={this.onFromChange}
           value={fromValue || null}
-          label={isRange ? 'From:' : 'Years:'}
+          label={isRange ? "From:" : "Years:"}
           disabled={disabled}
         />
         {isRange && (
           <YearInput
             onChange={this.onToChange}
             value={toValue || null}
-            label='To:'
+            label="To:"
             disabled={disabled}
           />
         )}
         {!disabled && fromValue !== undefined && (
           <button onClick={this.onRangeToggle}>
-            {isRange ? 'Distinct' : 'Range'}
+            {isRange ? "Distinct" : "Range"}
           </button>
         )}
       </div>
@@ -99,4 +102,4 @@ class YearRangeInput extends Component<YearRangeInputProps, YearRangeInputState>
   }
 }
 
-export {YearRangeInput};
+export { YearRangeInput };

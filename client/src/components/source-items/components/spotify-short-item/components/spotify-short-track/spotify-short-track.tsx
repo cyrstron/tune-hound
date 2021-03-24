@@ -1,7 +1,7 @@
-import React, {FC} from 'react';
-import classNames from 'classnames/bind';
+import React, { FC } from "react";
+import classNames from "classnames/bind";
 
-import styles from './spotify-short-track.scss';
+import styles from "./spotify-short-track.scss";
 
 const cx = classNames.bind(styles);
 
@@ -11,14 +11,16 @@ export interface SpotifyShortTrackProps {
 }
 
 const SpotifyShortTrackComponent: FC<SpotifyShortTrackProps> = ({
-  track: {name, artists},
+  track: { name, artists },
   className,
 }) => {
   return (
-    <div className={cx('track', className)}>
-      <div><b>{name}</b> by <b>{artists.map(({name}) => name).join(', ')}</b></div>
+    <div className={cx("track", className)}>
+      <div>
+        <b>{name}</b> by <b>{artists.map(({ name }) => name).join(", ")}</b>
+      </div>
     </div>
   );
 };
 
-export {SpotifyShortTrackComponent};
+export { SpotifyShortTrackComponent };

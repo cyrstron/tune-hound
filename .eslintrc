@@ -1,0 +1,71 @@
+{
+  "extends": ["plugin:prettier/recommended", "prettier"],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint", "prettier"],
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "env": {
+    "commonjs": true,
+    "node": true
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": [
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "settings": {},
+      "rules": {
+        "no-unused-vars": 0,
+        "@typescript-eslint/no-unused-vars": [
+          "error", {
+            "ignoreRestSiblings": true
+            }
+          ],
+        "no-invalid-this": 0,
+        "require-jsdoc": 0,
+        "no-unsafe-finally": 0,
+        "@typescript-eslint/no-explicit-any": 0,
+        "linebreak-style": 0,
+        "@typescript-eslint/no-non-null-assertion": 0,
+        "camelcase": 0,
+        "indent": 0,
+        "@typescript-eslint/camelcase": 0
+      }
+    },
+    {
+      "files": ["*.tsx"],
+      "extends": ["plugin:react/recommended"],
+      "rules": {
+        "react/prop-types": 0,
+        "react/no-unescaped-entities": 0,
+        "react/jsx-indent-props": ["error", 2],
+        "react/jsx-closing-bracket-location": ["error"],
+        "react/jsx-wrap-multilines": [
+          "error",
+          {
+            "declaration": "parens-new-line",
+            "assignment": "parens-new-line",
+            "return": "parens-new-line",
+            "arrow": "parens-new-line",
+            "condition": "ignore",
+            "logical": "ignore",
+            "prop": "ignore"
+          }
+        ],
+        "@typescript-eslint/explicit-function-return-type": 0
+      }
+    }
+  ]
+}

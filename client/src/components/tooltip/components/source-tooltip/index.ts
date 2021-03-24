@@ -1,1 +1,1 @@
-export {SourceTooltipComponent as SourceTooltip} from './source-tooltip';
+export { SourceTooltipComponent as SourceTooltip } from './source-tooltip';

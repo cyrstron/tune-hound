@@ -1,8 +1,8 @@
-import React, {FC} from 'react';
-import classNames from 'classnames/bind';
-import {DeezerAlbumSourceItemShort} from '@app/state/search/types';
+import React, { FC } from "react";
+import classNames from "classnames/bind";
+import { DeezerAlbumSourceItemShort } from "@app/state/search/types";
 
-import styles from './deezer-album-item.scss';
+import styles from "./deezer-album-item.scss";
 
 const cx = classNames.bind(styles);
 
@@ -12,12 +12,12 @@ export interface DeezerAlbumItemProps {
 }
 
 const DeezerAlbumItemComponent: FC<DeezerAlbumItemProps> = ({
-  album: {title, artist, 'nb_tracks': tracksNumber},
+  album: { title, artist, nb_tracks: tracksNumber },
   className,
 }) => {
   return (
     <>
-      <div className={cx('album', className)}>
+      <div className={cx("album", className)}>
         <div>Name: {title}</div>
         <div>Artist: {artist.name}</div>
         <div>{tracksNumber} tracks</div>
@@ -26,4 +26,4 @@ const DeezerAlbumItemComponent: FC<DeezerAlbumItemProps> = ({
   );
 };
 
-export {DeezerAlbumItemComponent};
+export { DeezerAlbumItemComponent };

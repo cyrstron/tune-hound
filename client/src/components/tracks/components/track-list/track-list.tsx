@@ -1,9 +1,9 @@
-import React, {FC} from 'react';
-import classNames from 'classnames/bind';
-import {TrackShort} from '../..';
+import React, { FC } from "react";
+import classNames from "classnames/bind";
+import { TrackShort } from "../..";
 
-import styles from './track-list.scss';
-import {OrderedTrack} from './components/ordered-track';
+import styles from "./track-list.scss";
+import { OrderedTrack } from "./components/ordered-track";
 
 const cx = classNames.bind(styles);
 
@@ -29,14 +29,14 @@ const TrackListComponent: FC<TrackListProps> = ({
   onPause,
 }) => {
   return (
-    <ul className={cx('tracks-list', className)}>
+    <ul className={cx("tracks-list", className)}>
       {tracks.map((track, index) => {
         const isTrackActive = index === currentIndex;
 
         return (
           <OrderedTrack
             key={track.id}
-            className={cx('track-item')}
+            className={cx("track-item")}
             index={index}
             isPlaying={isTrackActive && isPlaying}
             isPaused={isTrackActive && isPaused}
@@ -51,4 +51,4 @@ const TrackListComponent: FC<TrackListProps> = ({
   );
 };
 
-export {TrackListComponent};
+export { TrackListComponent };

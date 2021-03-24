@@ -1,1 +1,1 @@
-export {OrderedTrackComponent as OrderedTrack} from './ordered-track';
+export { OrderedTrackComponent as OrderedTrack } from './ordered-track';

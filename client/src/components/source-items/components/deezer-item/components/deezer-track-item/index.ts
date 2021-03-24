@@ -1,1 +1,1 @@
-export {DeezerTrackItemComponent as DeezerTrackItem} from './deezer-track-item';
+export { DeezerTrackItemComponent as DeezerTrackItem } from './deezer-track-item';

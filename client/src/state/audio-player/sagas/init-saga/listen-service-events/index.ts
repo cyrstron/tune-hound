@@ -1,13 +1,13 @@
-import {all, spawn} from 'redux-saga/effects';
-import {AudioService} from '@app/state/audio-player';
-import {createAudioPlayChannel, watchAudioPlayChange} from './listen-play';
-import {createAudioUrlChangeChannel, watchAudioUrlChange} from './listen-url-change';
-import {createAudioPauseChannel, watchAudioPauseChange} from './listen-pause';
-import {createAudioProgressChannel, watchAudioProgressChange} from './listen-progress';
-import {createAudioCurrentTimeChannel, watchAudioCurrentTimeChange} from './listen-time-update';
-import {createAudioWaitingChannel, watchAudioWaitingChange} from './listen-waiting';
-import {createAudioVolumeChannel, watchAudioVolumeChange} from './listen-volume-change';
-import {createEndedChannel, watchEnded} from './listen-ended';
+import { all, spawn } from 'redux-saga/effects';
+import { AudioService } from '@app/state/audio-player';
+import { createAudioPlayChannel, watchAudioPlayChange } from './listen-play';
+import { createAudioUrlChangeChannel, watchAudioUrlChange } from './listen-url-change';
+import { createAudioPauseChannel, watchAudioPauseChange } from './listen-pause';
+import { createAudioProgressChannel, watchAudioProgressChange } from './listen-progress';
+import { createAudioCurrentTimeChannel, watchAudioCurrentTimeChange } from './listen-time-update';
+import { createAudioWaitingChannel, watchAudioWaitingChange } from './listen-waiting';
+import { createAudioVolumeChannel, watchAudioVolumeChange } from './listen-volume-change';
+import { createEndedChannel, watchEnded } from './listen-ended';
 
 export function* listenAudioEvents(audioService: AudioService): any {
   const playChannel = createAudioPlayChannel(audioService);

@@ -1,1 +1,1 @@
-export {DeezerItemDetailsComponent as DeezerItemDetails} from './deezer-item-details';
+export { DeezerItemDetailsComponent as DeezerItemDetails } from './deezer-item-details';

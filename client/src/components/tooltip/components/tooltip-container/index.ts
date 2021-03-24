@@ -1,1 +1,1 @@
-export {TooltipContainerComponent as TooltipContainer} from './tooltip-container';
+export { TooltipContainerComponent as TooltipContainer } from './tooltip-container';

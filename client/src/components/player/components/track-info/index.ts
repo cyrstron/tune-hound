@@ -1,1 +1,1 @@
-export {TrackInfo} from './track-info';
+export { TrackInfo } from './track-info';

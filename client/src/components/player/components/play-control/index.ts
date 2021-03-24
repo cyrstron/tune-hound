@@ -1,1 +1,1 @@
-export {PlayControl} from './play-control';
+export { PlayControl } from './play-control';

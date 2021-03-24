@@ -1,1 +1,1 @@
-export {SpotifyShortTrackComponent as SpotifyShortTrack} from './spotify-short-track';
+export { SpotifyShortTrackComponent as SpotifyShortTrack } from './spotify-short-track';

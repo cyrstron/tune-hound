@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {TooltipCtxProvider} from '.';
+import React, { Component } from "react";
+import { TooltipCtxProvider } from ".";
 
 export interface PopupProviderState {
   container?: HTMLDivElement;
@@ -7,17 +7,15 @@ export interface PopupProviderState {
 
 export class TooltipProvider extends Component<{}, PopupProviderState> {
   state: PopupProviderState = {
-    container: document.getElementById('app-tooltip') as HTMLDivElement,
+    container: document.getElementById("app-tooltip") as HTMLDivElement,
   };
 
   render() {
-    const {children} = this.props;
-    const {container} = this.state;
+    const { children } = this.props;
+    const { container } = this.state;
 
     return (
-      <TooltipCtxProvider value={container}>
-        {children}
-      </TooltipCtxProvider>
+      <TooltipCtxProvider value={container}>{children}</TooltipCtxProvider>
     );
   }
 }

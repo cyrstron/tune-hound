@@ -1,11 +1,11 @@
-import {takeEvery, getContext, put} from 'redux-saga/effects';
-import {SET_CURRENT_TRACK} from '@app/state/player/consts';
-import {AUDIO_SERVICE_CTX_KEY} from '@app/consts';
-import {SetCurrentTrackAction} from '@app/state/player/actions';
-import {AudioService} from '../../../services/audio-service';
-import {setAudioError} from '@app/state/audio-player/actions';
+import { takeEvery, getContext, put } from 'redux-saga/effects';
+import { SET_CURRENT_TRACK } from '@app/state/player/consts';
+import { AUDIO_SERVICE_CTX_KEY } from '@app/consts';
+import { SetCurrentTrackAction } from '@app/state/player/actions';
+import { AudioService } from '../../../services/audio-service';
+import { setAudioError } from '@app/state/audio-player/actions';
 
-export function* setCurrentTrack({payload: {track, isAutoplay}}: SetCurrentTrackAction): any {
+export function* setCurrentTrack({ payload: { track, isAutoplay } }: SetCurrentTrackAction): any {
   const audioService: AudioService = yield getContext(AUDIO_SERVICE_CTX_KEY);
 
   if (track.source !== 'url') return;

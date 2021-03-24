@@ -1,7 +1,5 @@
 export class DeezerPlayer {
-  constructor(
-    public player: DeezerSdk.Player,
-  ) {}
+  constructor(public player: DeezerSdk.Player) {}
 
   playTracks(
     tracksIds: number[],
@@ -9,8 +7,8 @@ export class DeezerPlayer {
     index = 0,
     trackOffset = 0,
   ): Promise<DeezerSdk.PlayQueue> {
-    return new Promise<DeezerSdk.PlayQueue>((res) => {
-      this.player.playTracks(tracksIds as any[] as string[], isAutoPlay, index, trackOffset, res);
+    return new Promise<DeezerSdk.PlayQueue>(res => {
+      this.player.playTracks((tracksIds as any[]) as string[], isAutoPlay, index, trackOffset, res);
     });
   }
 

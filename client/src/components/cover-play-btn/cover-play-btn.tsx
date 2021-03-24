@@ -1,7 +1,7 @@
-import React, {FC} from 'react';
-import classNames from 'classnames/bind';
+import React, { FC } from "react";
+import classNames from "classnames/bind";
 
-import styles from './cover-play-btn.scss';
+import styles from "./cover-play-btn.scss";
 
 const cx = classNames.bind(styles);
 
@@ -28,26 +28,22 @@ const CoverPlayBtn: FC<CoverPlayBtnProps> = ({
 }) => {
   return (
     <div
-      className={cx('cover-wrapper', className, {
-        'playing': isPlaying,
-        'paused': isPaused,
-        'pending': isPending,
+      className={cx("cover-wrapper", className, {
+        playing: isPlaying,
+        paused: isPaused,
+        pending: isPending,
       })}
     >
       <button
-        className={cx('btn')}
+        className={cx("btn")}
         onClick={isPlaying ? onPause : onPlay}
         disabled={isPending}
       >
-        {isPlaying ? 'Pause' : 'Play'}
+        {isPlaying ? "Pause" : "Play"}
       </button>
-      <img
-        className={cx('cover')}
-        src={src}
-        alt={title}
-      />
+      <img className={cx("cover")} src={src} alt={title} />
     </div>
   );
 };
 
-export {CoverPlayBtn};
+export { CoverPlayBtn };

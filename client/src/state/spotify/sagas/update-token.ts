@@ -1,14 +1,14 @@
-import {put, select, getContext} from 'redux-saga/effects';
-import {SPOTIFY_SERVICE_CTX_KEY} from '@app/consts';
+import { put, select, getContext } from 'redux-saga/effects';
+import { SPOTIFY_SERVICE_CTX_KEY } from '@app/consts';
 
-import {SpotifyService} from '../services/spotify-service';
-import {selectSpotifyRefreshToken, selectSpotifyAuthData} from '../selectors';
+import { SpotifyService } from '../services/spotify-service';
+import { selectSpotifyRefreshToken, selectSpotifyAuthData } from '../selectors';
 import {
   updateSpotifyAccessTokenPending,
   updateSpotifyAccessTokenFailure,
   updateSpotifyAccessTokenSuccess,
 } from '../actions';
-import {SpotifyAuthData, setSpotifyAuthState} from '../services/helpers';
+import { SpotifyAuthData, setSpotifyAuthState } from '../services/helpers';
 
 export function* updateSpotifyTokenSaga(): any {
   const refreshToken: string = yield select(selectSpotifyRefreshToken);

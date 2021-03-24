@@ -1,4 +1,4 @@
-import {AppState} from '..';
+import { AppState } from '..';
 import {
   SearchSource,
   SourceItem,
@@ -7,47 +7,30 @@ import {
   SearchResult,
   SearchOptions,
 } from './types';
-import {ExtensionSubState} from './reducer';
-import {getSearchOptions} from './helpers';
+import { ExtensionSubState } from './reducer';
+import { getSearchOptions } from './helpers';
 
-export const selectSearchResult = (
-  state: AppState,
-): SearchResult[] | undefined => state.search.result;
+export const selectSearchResult = (state: AppState): SearchResult[] | undefined =>
+  state.search.result;
 
-export const selectPageIndex = (
-  state: AppState,
-): number => state.search.pageIndex;
+export const selectPageIndex = (state: AppState): number => state.search.pageIndex;
 
-export const selectPageSize = (
-  state: AppState,
-): number => state.search.pageSize;
+export const selectPageSize = (state: AppState): number => state.search.pageSize;
 
-export const selectSearchQuery = (
-  state: AppState,
-): SearchOptions | undefined => state.search.searchQuery;
+export const selectSearchQuery = (state: AppState): SearchOptions | undefined =>
+  state.search.searchQuery;
 
-export const selectSearchSource = (
-  state: AppState,
-): SearchSource | undefined => state.search.searchSource;
+export const selectSearchSource = (state: AppState): SearchSource | undefined =>
+  state.search.searchSource;
 
-export const selectTotalItems = (
-  state: AppState,
-): number | undefined => state.search.total;
+export const selectTotalItems = (state: AppState): number | undefined => state.search.total;
 
-export const selectIsSearchPending = (
-  state: AppState,
-): boolean => state.search.isPending;
+export const selectIsSearchPending = (state: AppState): boolean => state.search.isPending;
 
-export const selectSearchError = (
-  state: AppState,
-): Error | undefined => state.search.error;
+export const selectSearchError = (state: AppState): Error | undefined => state.search.error;
 
-export const selectSearchResultById = (
-  state: AppState,
-  id: string,
-): SearchResult | undefined => selectSearchResult(state)?.find(
-  (item) => !!item && item.id === id
-);
+export const selectSearchResultById = (state: AppState, id: string): SearchResult | undefined =>
+  selectSearchResult(state)?.find(item => !!item && item.id === id);
 
 export const selectResultsPage = (state: AppState): SearchResult[] | undefined => {
   const result = selectSearchResult(state);
@@ -64,9 +47,7 @@ export const selectTotalPages = (state: AppState): number | undefined => {
   const totalItems = selectTotalItems(state);
   const pageSize = selectPageSize(state);
 
-  return totalItems === undefined ?
-    undefined :
-    Math.ceil(totalItems / pageSize);
+  return totalItems === undefined ? undefined : Math.ceil(totalItems / pageSize);
 };
 
 export function selectExtensionSubState(
@@ -85,19 +66,20 @@ export function selectItemsForExtension(
   return selectExtensionSubState(state, id, source)?.results;
 }
 
-export function selectExtensionPending(
-  state: AppState,
-  id: string,
-  source: SearchSource,
-): boolean {
+export function selectExtensionPending(state: AppState, id: string, source: SearchSource): boolean {
   return !!selectExtensionSubState(state, id, source)?.isPending;
 }
 
 export function selectOneOfExtensionsPending(state: AppState, id: string): boolean {
-  return selectExtensionPending(state, id, 'deezer') || selectExtensionPending(state, id, 'spotify');
+  return (
+    selectExtensionPending(state, id, 'deezer') || selectExtensionPending(state, id, 'spotify')
+  );
 }
 
-export const selectItemsForExtensionById = (state: AppState, id: string): {
+export const selectItemsForExtensionById = (
+  state: AppState,
+  id: string,
+): {
   deezer?: DeezerSourceItemShort[];
   spotify?: SpotifySourceItemShort[];
 } => {
@@ -130,14 +112,12 @@ export const selectExtensionHasMoreItemsToFetch = (
 
   const searchOptions = getSearchOptions(item, source);
 
-  const fullTotal = selectItemsForExtensionTotalsById(
-    state,
-    id,
-    source,
-  )?.[searchOptions.length - 1];
+  const fullTotal = selectItemsForExtensionTotalsById(state, id, source)?.[
+    searchOptions.length - 1
+  ];
   const offset = selectItemsForExtensionOffsetById(state, id, source);
 
-  return (fullTotal !== undefined && offset !== undefined && fullTotal > offset);
+  return fullTotal !== undefined && offset !== undefined && fullTotal > offset;
 };
 
 export const selectItemsForExtensionLimitById = (

@@ -1,15 +1,15 @@
-import {SearchSource, SearchedAlbum} from '../../types';
+import { SearchSource, SearchedAlbum } from '../../types';
 import {
-  selectIsAlbumActive,
+  createIsAlbumActiveSelector,
   selectPlayingSource,
   selectCurrentIndex,
   selectPlaylist,
 } from '@app/state/player/selectors';
-import {select, all, put} from 'redux-saga/effects';
-import {PlayerSource, PlayerTrack} from '@app/state/player/types';
-import {play, playAlbum} from '@app/state/player/actions';
-import {mapPlayerAlbumFromDeezer, mapPlayerAlbumFromSpotify} from './services';
-import {setCurrentTrack} from '@app/state/player/actions';
+import { select, all, put } from 'redux-saga/effects';
+import { PlayerSource, PlayerTrack } from '@app/state/player/types';
+import { play, playAlbum } from '@app/state/player/actions';
+import { mapPlayerAlbumFromDeezer, mapPlayerAlbumFromSpotify } from './services';
+import { setCurrentTrack } from '@app/state/player/actions';
 
 export function* playSearchedAlbumSaga(
   album: SearchedAlbum,
@@ -17,17 +17,18 @@ export function* playSearchedAlbumSaga(
   index: number | undefined,
   canPlay: boolean,
 ): any {
-  const [
-    isAlbumActive,
-    playingSource,
-    currentIndex,
-  ]: [boolean, PlayerSource, number | undefined] = yield all([
-    select(selectIsAlbumActive, album.id),
+  const [isAlbumActive, playingSource, currentIndex]: [
+    boolean,
+    PlayerSource,
+    number | undefined,
+  ] = yield all([
+    select(createIsAlbumActiveSelector(album.id)),
     select(selectPlayingSource),
     select(selectCurrentIndex),
   ]);
 
-  const isPlaylistActive = isAlbumActive && (source === playingSource || (!canPlay && playingSource === 'url'));
+  const isPlaylistActive =
+    isAlbumActive && (source === playingSource || (!canPlay && playingSource === 'url'));
   const isTrackActive = isPlaylistActive && (index === currentIndex || index === undefined);
 
   if (isTrackActive) {

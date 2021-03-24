@@ -14,7 +14,7 @@ export function calcNextRandomIndex(length: number, playedIndexes: number[]): nu
   const availableIndexes = new Array(length)
     .fill(undefined)
     .map((_item, index) => index)
-    .filter((index) => !playedIndexes.includes(index));
+    .filter(index => !playedIndexes.includes(index));
 
   const randomIndex = Math.floor(Math.random() * availableIndexes.length);
 

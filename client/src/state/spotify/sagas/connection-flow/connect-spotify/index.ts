@@ -1,4 +1,4 @@
-import {getContext, put, select, call, all, fork, take, delay} from 'redux-saga/effects';
+import { getContext, put, select, call, all, fork, take, delay } from 'redux-saga/effects';
 import {
   connectSpotifyPending,
   spotifyMounted,
@@ -7,8 +7,8 @@ import {
   connectSpotifyFailure,
   connectSpotifySuccess,
 } from '../../../actions';
-import {SPOTIFY_SERVICE_CTX_KEY} from '@app/consts';
-import {SpotifyService} from '../../../services/spotify-service';
+import { INJECT_REDUCER_KEY, SPOTIFY_SERVICE_CTX_KEY } from '@app/consts';
+import { SpotifyService } from '../../../services/spotify-service';
 import {
   selectIsSpotifyLoggedIn,
   selectIsSpotifyTokenExpired,
@@ -16,8 +16,8 @@ import {
   selectIsSpotifyMounted,
   selectIsSpotifyPlayerReady,
 } from '../../../selectors';
-import {SpotifyAuthData, setSpotifyAuthState} from '../../../services/helpers';
-import {updateSpotifyTokenSaga} from '../../update-token';
+import { SpotifyAuthData, setSpotifyAuthState } from '../../../services/helpers';
+import { updateSpotifyTokenSaga } from '../../update-token';
 import { initSpotifyPlayer } from './init-spotify-player';
 import { watchPlayerState } from './watch-player-state';
 import { AppAction } from '@app/state/actions';
@@ -28,11 +28,7 @@ export function* connectSpotify(): any {
 
   yield put(pendingAction);
 
-  const [
-    spotifyService,
-    isLoggedIn,
-    isExpired,
-  ]: [SpotifyService, boolean, boolean] = yield all([
+  const [spotifyService, isLoggedIn, isExpired]: [SpotifyService, boolean, boolean] = yield all([
     getContext(SPOTIFY_SERVICE_CTX_KEY),
     select(selectIsSpotifyLoggedIn),
     select(selectIsSpotifyTokenExpired),
@@ -53,8 +49,9 @@ export function* connectSpotify(): any {
 
     const accessToken: string = yield select(selectSpotifyAccessToken);
 
-    const currentUser: SpotifyApi.CurrentUsersProfileResponse = yield spotifyService.api
-      .getCurrentUser(accessToken);
+    const currentUser: SpotifyApi.CurrentUsersProfileResponse = yield spotifyService.api.getCurrentUser(
+      accessToken,
+    );
 
     const setCurrentUserAction = setSpotifyCurrentUser(currentUser);
 
@@ -80,10 +77,10 @@ export function* connectSpotify(): any {
 
     if (!isReady) {
       yield take(
-        (action: AppAction) => action.type === SET_SPOTIFY_PLAYER_READY && action.payload.isReady
+        (action: AppAction) => action.type === SET_SPOTIFY_PLAYER_READY && action.payload.isReady,
       );
     }
-      
+
     yield fork(watchPlayerState);
 
     const successAction = connectSpotifySuccess();

@@ -1,4 +1,4 @@
-import {call} from 'redux-saga/effects';
+import { call } from 'redux-saga/effects';
 import {
   SearchSource,
   SourceItemShort,
@@ -6,8 +6,8 @@ import {
   SpotifySourceItemShort,
   SourceItem,
 } from '@app/state/search/types';
-import {fetchDeezerDetails} from './fetch-deezer-details';
-import {fetchSpotifyDetails} from './fetch-spotify-details';
+import { fetchDeezerDetails } from './fetch-deezer-details';
+import { fetchSpotifyDetails } from './fetch-spotify-details';
 
 export function* fetchSourceDetails(searchItem: SourceItemShort, source: SearchSource): any {
   let result: SourceItem = searchItem;

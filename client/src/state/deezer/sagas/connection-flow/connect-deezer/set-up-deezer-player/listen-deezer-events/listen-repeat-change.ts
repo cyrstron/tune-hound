@@ -1,13 +1,13 @@
-import {eventChannel, EventChannel, END} from 'redux-saga';
-import {take, put} from 'redux-saga/effects';
-import {DeezerService} from '@app/state/deezer/services';
-import {setPlayerRepeatMode} from '@app/state/deezer/actions';
+import { eventChannel, EventChannel, END } from 'redux-saga';
+import { take, put } from 'redux-saga/effects';
+import { DeezerService } from '@app/state/deezer/services';
+import { setPlayerRepeatMode } from '@app/state/deezer/actions';
 
 export function createRepeatModeChangeChannel(
   deezerService: DeezerService,
 ): EventChannel<DeezerSdk.RepeatMode> {
-  return eventChannel((emitter) => {
-    deezerService.events.subscribe('repeat_changed', (repeatMode) => {
+  return eventChannel(emitter => {
+    deezerService.events.subscribe('repeat_changed', repeatMode => {
       emitter(repeatMode);
     });
 

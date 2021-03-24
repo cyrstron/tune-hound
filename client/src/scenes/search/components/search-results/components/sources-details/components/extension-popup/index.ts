@@ -1,1 +1,1 @@
-export {ExtensionPopupComponent as ExtensionPopup} from './extension-popup';
+export { ExtensionPopupComponent as ExtensionPopup } from './extension-popup';

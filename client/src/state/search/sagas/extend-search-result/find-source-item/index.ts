@@ -1,6 +1,6 @@
-import {take, call, race, select, all} from 'redux-saga/effects';
-import {SearchResult, SearchSource, SourceItemShort} from '@app/state/search/types';
-import {fetchMoreItems} from './fetch-more-items';
+import { take, call, race, select, all } from 'redux-saga/effects';
+import { SearchResult, SearchSource, SourceItemShort } from '@app/state/search/types';
+import { fetchMoreItems } from './fetch-more-items';
 import {
   PICK_OPTION_FOR_EXTEND,
   RESET_OPTIONS_FOR_EXTEND,
@@ -11,7 +11,10 @@ import {
   ResetOptionsForExtendAction,
   FetchNextOptionsForExtendAction,
 } from '@app/state/search/actions';
-import {selectExtensionHasMoreItemsToFetch, selectItemsForExtension} from '@app/state/search/selectors';
+import {
+  selectExtensionHasMoreItemsToFetch,
+  selectItemsForExtension,
+} from '@app/state/search/selectors';
 
 export function* findSourceItem(searchResultItem: SearchResult, source: SearchSource): any {
   yield call(fetchMoreItems, searchResultItem, source);
@@ -30,7 +33,11 @@ export function* findSourceItem(searchResultItem: SearchResult, source: SearchSo
   let picked: SourceItemShort | null | undefined;
 
   while (picked === undefined) {
-    const {pick, reset, fetchMore}: {
+    const {
+      pick,
+      reset,
+      fetchMore,
+    }: {
       pick?: PickOptionForExtendAction;
       reset?: ResetOptionsForExtendAction;
       fetchMore?: FetchNextOptionsForExtendAction;
@@ -44,15 +51,17 @@ export function* findSourceItem(searchResultItem: SearchResult, source: SearchSo
 
     if (!action) continue;
 
-    const {itemId, source} = action.payload;
+    const { itemId, source } = action.payload;
 
     if (itemId !== searchResultItem.id || source !== source) continue;
 
     if (action.type === FETCH_NEXT_OPTIONS_FOR_EXTEND) {
       yield call(fetchMoreItems, searchResultItem, source);
-    } if (action.type === PICK_OPTION_FOR_EXTEND) {
+    }
+    if (action.type === PICK_OPTION_FOR_EXTEND) {
       picked = action.payload.pickedItem;
-    } if (action.type === RESET_OPTIONS_FOR_EXTEND) break;
+    }
+    if (action.type === RESET_OPTIONS_FOR_EXTEND) break;
   }
 
   return picked;

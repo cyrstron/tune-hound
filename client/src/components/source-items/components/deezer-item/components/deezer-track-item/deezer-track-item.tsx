@@ -1,8 +1,8 @@
-import React, {FC} from 'react';
-import classNames from 'classnames/bind';
+import React, { FC } from "react";
+import classNames from "classnames/bind";
 
-import styles from './deezer-track-item.scss';
-import {DeezerTrackSourceItemShort} from '@app/state/search/types';
+import styles from "./deezer-track-item.scss";
+import { DeezerTrackSourceItemShort } from "@app/state/search/types";
 
 const cx = classNames.bind(styles);
 
@@ -12,11 +12,11 @@ export interface DeezerTrackItemProps {
 }
 
 const DeezerTrackItemComponent: FC<DeezerTrackItemProps> = ({
-  track: {title, album, artist},
+  track: { title, album, artist },
   className,
 }) => {
   return (
-    <div className={cx('track', className)}>
+    <div className={cx("track", className)}>
       <div>Name: {title}</div>
       <div>Album: {album.title}</div>
       <div>Artist: {artist.name}</div>
@@ -24,4 +24,4 @@ const DeezerTrackItemComponent: FC<DeezerTrackItemProps> = ({
   );
 };
 
-export {DeezerTrackItemComponent};
+export { DeezerTrackItemComponent };

@@ -1,16 +1,16 @@
-import {call, put} from 'redux-saga/effects';
-import {SearchSource, SearchOptions, SearchResult} from '../../types';
-import {DeezerSearchOptions} from '@app/state/deezer/types';
-import {SpotifySearchOptions} from '@app/state/spotify/types';
-import {executeDeezerSearchSaga} from './execute-deezer-search';
-import {executeSpotifySearchSaga} from './execute-spotify-search';
+import { call, put } from 'redux-saga/effects';
+import { SearchSource, SearchOptions, SearchResult } from '../../types';
+import { DeezerSearchOptions } from '@app/state/deezer/types';
+import { SpotifySearchOptions } from '@app/state/spotify/types';
+import { executeDeezerSearchSaga } from './execute-deezer-search';
+import { executeSpotifySearchSaga } from './execute-spotify-search';
 import {
   executeSearchPending,
   executeSearchSuccess,
   executeSearchFailure,
   resetSearchResults,
 } from '../../actions';
-import {updatePageParamsSaga} from '../update-page-params';
+import { updatePageParamsSaga } from '../update-page-params';
 
 export function* executeSearchRequest(
   searchSource: SearchSource,
@@ -27,7 +27,7 @@ export function* executeSearchRequest(
     let response: {
       total: number;
       results: SearchResult[];
-    } = {total: 0, results: []};
+    } = { total: 0, results: [] };
 
     if (searchSource === 'deezer') {
       response = yield call(
@@ -51,7 +51,7 @@ export function* executeSearchRequest(
 
     yield call(updatePageParamsSaga, pageIndex, pageSize);
 
-    const {results, total} = response;
+    const { results, total } = response;
 
     const successAction = executeSearchSuccess(results, total);
 

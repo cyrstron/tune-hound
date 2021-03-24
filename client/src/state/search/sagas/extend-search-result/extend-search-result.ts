@@ -1,17 +1,17 @@
-import {put, select, call} from 'redux-saga/effects';
+import { put, select, call } from 'redux-saga/effects';
 import {
   ExtendSearchResultAction,
   extendSearchResultPending,
   extendSearchResultFailure,
   extendSearchResultSuccess,
 } from '../../actions';
-import {SourceItem, SourceItemShort, SearchResult} from '../../types';
-import {selectSearchResultById} from '../../selectors';
-import {findSourceItem} from './find-source-item';
-import {fetchSourceDetails} from './fetch-source-details';
+import { SourceItem, SourceItemShort, SearchResult } from '../../types';
+import { selectSearchResultById } from '../../selectors';
+import { findSourceItem } from './find-source-item';
+import { fetchSourceDetails } from './fetch-source-details';
 
 export function* extendSearchResult({
-  payload: {itemId, source},
+  payload: { itemId, source },
 }: ExtendSearchResultAction): any {
   const pendingAction = extendSearchResultPending(itemId, source);
 
@@ -34,11 +34,9 @@ export function* extendSearchResult({
       result = yield call(fetchSourceDetails, result as SourceItemShort, source);
     }
 
-    const successAction = extendSearchResultSuccess(
-      itemId,
-      source,
-      {[source]: result},
-    );
+    const successAction = extendSearchResultSuccess(itemId, source, {
+      [source]: result,
+    });
 
     yield put(successAction);
   } catch (err) {

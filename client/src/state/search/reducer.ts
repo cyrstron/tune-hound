@@ -1,9 +1,4 @@
-import {
-  SearchResult,
-  SearchOptions,
-  SearchSource,
-  SourceItemShort,
-} from './types';
+import { SearchResult, SearchOptions, SearchSource, SourceItemShort } from './types';
 import {
   SearchAction,
   ExtendSearchResultSuccessAction,
@@ -65,14 +60,11 @@ const initialSearchState: SearchState = {
   result: undefined,
 };
 
-
 function setExtendSearchResultPending(
   state: SearchState,
-  {payload: {itemId, source}}: ExtendSearchResultPendingAction,
+  { payload: { itemId, source } }: ExtendSearchResultPendingAction,
 ): SearchState {
-  const {
-    extensions,
-  } = state;
+  const { extensions } = state;
 
   const updatedExtensions = {
     ...extensions,
@@ -95,13 +87,10 @@ function setExtendSearchResultPending(
 
 function setExtendSearchResultSuccess(
   state: SearchState,
-  {payload: {itemId, source, result}}: ExtendSearchResultSuccessAction,
+  { payload: { itemId, source, result } }: ExtendSearchResultSuccessAction,
 ): SearchState {
-  const {
-    result: results,
-    extensions,
-  } = state;
-  const itemIndex = results?.findIndex((item) => item?.id === itemId);
+  const { result: results, extensions } = state;
+  const itemIndex = results?.findIndex(item => item?.id === itemId);
 
   if (itemIndex === undefined || itemIndex === -1 || !results) return state;
 
@@ -130,22 +119,16 @@ function setExtendSearchResultSuccess(
 
   return {
     ...state,
-    result: [
-      ...results.slice(0, itemIndex),
-      extendedItem,
-      ...results.slice(itemIndex + 1),
-    ],
+    result: [...results.slice(0, itemIndex), extendedItem, ...results.slice(itemIndex + 1)],
     extensions: updatedExtensions,
   };
 }
 
 function setExtendSearchResultFailure(
   state: SearchState,
-  {payload: {itemId, source, error}}: ExtendSearchResultFailureAction,
+  { payload: { itemId, source, error } }: ExtendSearchResultFailureAction,
 ): SearchState {
-  const {
-    extensions,
-  } = state;
+  const { extensions } = state;
 
   const updatedExtensions = {
     ...extensions,
@@ -167,11 +150,9 @@ function setExtendSearchResultFailure(
 
 function setOptionsForExtend(
   state: SearchState,
-  {payload: {itemId, source, results}}: FetchOptionsForExtendSuccessAction,
+  { payload: { itemId, source, results } }: FetchOptionsForExtendSuccessAction,
 ): SearchState {
-  const {
-    extensions,
-  } = state;
+  const { extensions } = state;
 
   const updatedExtensions = {
     ...extensions,
@@ -192,11 +173,9 @@ function setOptionsForExtend(
 
 function setExtensionTotals(
   state: SearchState,
-  {payload: {itemId, source, totals}}: SetExtensionTotalsAction,
+  { payload: { itemId, source, totals } }: SetExtensionTotalsAction,
 ): SearchState {
-  const {
-    extensions,
-  } = state;
+  const { extensions } = state;
 
   const updatedExtensions = {
     ...extensions,
@@ -217,11 +196,9 @@ function setExtensionTotals(
 
 function setExtensionOffset(
   state: SearchState,
-  {payload: {itemId, source, offset}}: SetExtensionOffsetAction,
+  { payload: { itemId, source, offset } }: SetExtensionOffsetAction,
 ): SearchState {
-  const {
-    extensions,
-  } = state;
+  const { extensions } = state;
 
   const updatedExtensions = {
     ...extensions,
@@ -245,69 +222,72 @@ export function searchReducer(
   action: SearchAction,
 ): SearchState {
   switch (action.type) {
-  case EXECUTE_SEARCH:
-    return {
-      ...state,
-      searchQuery: action.payload.options,
-      searchSource: action.payload.source,
-    };
-  case EXECUTE_SEARCH_PENDING:
-    return {
-      ...state,
-      isPending: true,
-      error: undefined,
-    };
-  case EXECUTE_SEARCH_SUCCESS:
-    return {
-      ...state,
-      isPending: false,
-      result: action.payload.data.reduce<SearchResult[]>((results, item, index) => {
-        results[state.pageIndex * state.pageSize + index] = item;
+    case EXECUTE_SEARCH:
+      return {
+        ...state,
+        searchQuery: action.payload.options,
+        searchSource: action.payload.source,
+      };
+    case EXECUTE_SEARCH_PENDING:
+      return {
+        ...state,
+        isPending: true,
+        error: undefined,
+      };
+    case EXECUTE_SEARCH_SUCCESS:
+      return {
+        ...state,
+        isPending: false,
+        result: action.payload.data.reduce<SearchResult[]>(
+          (results, item, index) => {
+            results[state.pageIndex * state.pageSize + index] = item;
 
-        return results;
-      }, [...(state.result || [])]),
-      total: action.payload.total,
-    };
-  case EXECUTE_SEARCH_FAILURE:
-    return {
-      ...state,
-      isPending: false,
-      error: action.payload.error,
-    };
-  case RESET_SEARCH:
-    return {
-      ...initialSearchState,
-    };
-  case RESET_SEARCH_RESULTS:
-    return {
-      ...state,
-      extensions: {},
-      result: undefined,
-      total: undefined,
-    };
-  case SET_SEARCH_PAGE_INDEX:
-    return {
-      ...state,
-      pageIndex: action.payload.pageIndex,
-    };
-  case SET_SEARCH_PAGE_SIZE:
-    return {
-      ...state,
-      pageSize: action.payload.pageSize,
-    };
-  case EXTEND_SEARCH_RESULT_PENDING:
-    return setExtendSearchResultPending(state, action);
-  case EXTEND_SEARCH_RESULT_SUCCESS:
-    return setExtendSearchResultSuccess(state, action);
-  case EXTEND_SEARCH_RESULT_FAILURE:
-    return setExtendSearchResultFailure(state, action);
-  case FETCH_OPTIONS_FOR_EXTEND_SUCCESS:
-    return setOptionsForExtend(state, action);
-  case SET_EXTENSION_TOTALS:
-    return setExtensionTotals(state, action);
-  case SET_EXTENSION_OFFSET:
-    return setExtensionOffset(state, action);
-  default:
-    return state;
+            return results;
+          },
+          [...(state.result || [])],
+        ),
+        total: action.payload.total,
+      };
+    case EXECUTE_SEARCH_FAILURE:
+      return {
+        ...state,
+        isPending: false,
+        error: action.payload.error,
+      };
+    case RESET_SEARCH:
+      return {
+        ...initialSearchState,
+      };
+    case RESET_SEARCH_RESULTS:
+      return {
+        ...state,
+        extensions: {},
+        result: undefined,
+        total: undefined,
+      };
+    case SET_SEARCH_PAGE_INDEX:
+      return {
+        ...state,
+        pageIndex: action.payload.pageIndex,
+      };
+    case SET_SEARCH_PAGE_SIZE:
+      return {
+        ...state,
+        pageSize: action.payload.pageSize,
+      };
+    case EXTEND_SEARCH_RESULT_PENDING:
+      return setExtendSearchResultPending(state, action);
+    case EXTEND_SEARCH_RESULT_SUCCESS:
+      return setExtendSearchResultSuccess(state, action);
+    case EXTEND_SEARCH_RESULT_FAILURE:
+      return setExtendSearchResultFailure(state, action);
+    case FETCH_OPTIONS_FOR_EXTEND_SUCCESS:
+      return setOptionsForExtend(state, action);
+    case SET_EXTENSION_TOTALS:
+      return setExtensionTotals(state, action);
+    case SET_EXTENSION_OFFSET:
+      return setExtensionOffset(state, action);
+    default:
+      return state;
   }
 }

@@ -1,12 +1,12 @@
-import {getContext, call, select} from 'redux-saga/effects';
-import {SearchSource} from '@app/state/search/types';
-import {SpotifyService} from '@app/state/spotify/services/spotify-service';
-import {SPOTIFY_SERVICE_CTX_KEY, DEEZER_SERVICE_CTX_KEY} from '@app/consts';
-import {retrieveAccessToken} from '@app/state/spotify/sagas/retrieve-access-token';
-import {DeezerService, selectCanDeezerPlay} from '@app/state/deezer';
-import {DeezerAlbumFull} from '@app/state/deezer/types';
-import {selectCanSpotifyPlay} from '@app/state/spotify';
-import {mapPlayerAlbumFromDeezer, mapPlayerAlbumFromSpotify} from './services';
+import { getContext, call, select } from 'redux-saga/effects';
+import { SearchSource } from '@app/state/search/types';
+import { SpotifyService } from '@app/state/spotify/services/spotify-service';
+import { SPOTIFY_SERVICE_CTX_KEY, DEEZER_SERVICE_CTX_KEY } from '@app/consts';
+import { retrieveAccessToken } from '@app/state/spotify/sagas/retrieve-access-token';
+import { DeezerService, selectCanDeezerPlay } from '@app/state/deezer';
+import { DeezerAlbumFull } from '@app/state/deezer/types';
+import { selectCanSpotifyPlay } from '@app/state/spotify';
+import { mapPlayerAlbumFromDeezer, mapPlayerAlbumFromSpotify } from './services';
 
 export function* getPlaylistByAlbumId(id: string | number, source: SearchSource): any {
   if (source === 'spotify') {

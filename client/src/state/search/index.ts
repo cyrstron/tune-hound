@@ -1,3 +1,3 @@
-export {searchReducer, SearchState} from './reducer';
+export { searchReducer, SearchState } from './reducer';
 export * from './actions';
-export {searchSaga} from './sagas';
+export { searchSaga } from './sagas';

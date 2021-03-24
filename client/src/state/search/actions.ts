@@ -33,18 +33,20 @@ import {
   SpotifySourceItemFull,
   SourceItemShort,
 } from './types';
-import {DeezerSearchOptions} from '../deezer/types';
-import {SpotifySearchOptions} from '../spotify/types';
+import { DeezerSearchOptions } from '../deezer/types';
+import { SpotifySearchOptions } from '../spotify/types';
 
 export interface ExecuteSearchAction {
   type: typeof EXECUTE_SEARCH;
-  payload: {
-    source: 'deezer';
-    options: DeezerSearchOptions;
-  } | {
-    source: 'spotify';
-    options: SpotifySearchOptions;
-  };
+  payload:
+    | {
+        source: 'deezer';
+        options: DeezerSearchOptions;
+      }
+    | {
+        source: 'spotify';
+        options: SpotifySearchOptions;
+      };
 }
 
 export const executeSearch = (
@@ -52,33 +54,35 @@ export const executeSearch = (
   options: SearchOptions,
 ): ExecuteSearchAction => ({
   type: EXECUTE_SEARCH,
-  payload: {source, options} as {
-    source: 'deezer';
-    options: DeezerSearchOptions;
-  } | {
-    source: 'spotify';
-    options: SpotifySearchOptions;
-  },
+  payload: { source, options } as
+    | {
+        source: 'deezer';
+        options: DeezerSearchOptions;
+      }
+    | {
+        source: 'spotify';
+        options: SpotifySearchOptions;
+      },
 });
 
 export interface ExecuteSearchByPageIndexAction {
   type: typeof EXECUTE_SEARCH_BY_PAGE_INDEX;
-  payload: {pageIndex: number};
+  payload: { pageIndex: number };
 }
 
 export const executeSearchByPageIndex = (pageIndex: number): ExecuteSearchByPageIndexAction => ({
   type: EXECUTE_SEARCH_BY_PAGE_INDEX,
-  payload: {pageIndex},
+  payload: { pageIndex },
 });
 
 export interface ExecuteSearchByPageSizeAction {
   type: typeof EXECUTE_SEARCH_BY_PAGE_SIZE;
-  payload: {pageSize: number};
+  payload: { pageSize: number };
 }
 
 export const executeSearchByPageSize = (pageSize: number): ExecuteSearchByPageSizeAction => ({
   type: EXECUTE_SEARCH_BY_PAGE_SIZE,
-  payload: {pageSize},
+  payload: { pageSize },
 });
 
 export interface ExecuteSearchPendingAction {
@@ -102,7 +106,7 @@ export const executeSearchSuccess = (
   total: number,
 ): ExecuteSearchSuccessAction => ({
   type: EXECUTE_SEARCH_SUCCESS,
-  payload: {data, total},
+  payload: { data, total },
 });
 
 export interface ExecuteSearchFailureAction {
@@ -114,7 +118,7 @@ export interface ExecuteSearchFailureAction {
 
 export const executeSearchFailure = (error: Error): ExecuteSearchFailureAction => ({
   type: EXECUTE_SEARCH_FAILURE,
-  payload: {error},
+  payload: { error },
 });
 
 export interface ResetSearchAction {
@@ -135,22 +139,22 @@ export const resetSearchResults = (): ResetSearchResultsAction => ({
 
 export interface SetSearchPageIndexAction {
   type: typeof SET_SEARCH_PAGE_INDEX;
-  payload: {pageIndex: number};
+  payload: { pageIndex: number };
 }
 
 export const setSearchPageIndex = (pageIndex: number): SetSearchPageIndexAction => ({
   type: SET_SEARCH_PAGE_INDEX,
-  payload: {pageIndex},
+  payload: { pageIndex },
 });
 
 export interface SetSearchPageSizeAction {
   type: typeof SET_SEARCH_PAGE_SIZE;
-  payload: {pageSize: number};
+  payload: { pageSize: number };
 }
 
 export const setSearchPageSize = (pageSize: number): SetSearchPageSizeAction => ({
   type: SET_SEARCH_PAGE_SIZE,
-  payload: {pageSize},
+  payload: { pageSize },
 });
 
 export interface ExtendSearchResultAction {
@@ -166,7 +170,7 @@ export const extendSearchResult = (
   source: SearchSource,
 ): ExtendSearchResultAction => ({
   type: EXTEND_SEARCH_RESULT,
-  payload: {itemId, source},
+  payload: { itemId, source },
 });
 
 export interface PlaySearchResultAction {
@@ -184,7 +188,7 @@ export const playSearchResult = (
   index?: number,
 ): PlaySearchResultAction => ({
   type: PLAY_SEARCH_RESULT,
-  payload: {itemId, source, index},
+  payload: { itemId, source, index },
 });
 
 export interface ExtendSearchResultPendingAction {
@@ -200,7 +204,7 @@ export const extendSearchResultPending = (
   source: SearchSource,
 ): ExtendSearchResultPendingAction => ({
   type: EXTEND_SEARCH_RESULT_PENDING,
-  payload: {itemId, source},
+  payload: { itemId, source },
 });
 
 export interface ExtendSearchResultSuccessAction {
@@ -224,7 +228,7 @@ export const extendSearchResultSuccess = (
   },
 ): ExtendSearchResultSuccessAction => ({
   type: EXTEND_SEARCH_RESULT_SUCCESS,
-  payload: {itemId, source, result},
+  payload: { itemId, source, result },
 });
 
 export interface ExtendSearchResultFailureAction {
@@ -242,7 +246,7 @@ export const extendSearchResultFailure = (
   error: Error,
 ): ExtendSearchResultFailureAction => ({
   type: EXTEND_SEARCH_RESULT_FAILURE,
-  payload: {itemId, source, error},
+  payload: { itemId, source, error },
 });
 
 export interface PickOptionForExtendAction {
@@ -260,7 +264,7 @@ export const pickOptionForExtend = (
   pickedItem: SourceItemShort | null,
 ): PickOptionForExtendAction => ({
   type: PICK_OPTION_FOR_EXTEND,
-  payload: {itemId, source, pickedItem},
+  payload: { itemId, source, pickedItem },
 });
 
 export interface ResetOptionsForExtendAction {
@@ -276,7 +280,7 @@ export const resetOptionsForExtend = (
   source: SearchSource,
 ): ResetOptionsForExtendAction => ({
   type: RESET_OPTIONS_FOR_EXTEND,
-  payload: {itemId, source},
+  payload: { itemId, source },
 });
 
 export interface FetchOptionsForExtendAction {
@@ -292,7 +296,7 @@ export const fetchOptionsForExtend = (
   source: SearchSource,
 ): FetchOptionsForExtendAction => ({
   type: FETCH_OPTIONS_FOR_EXTEND,
-  payload: {itemId, source},
+  payload: { itemId, source },
 });
 
 export interface FetchOptionsForExtendPendingAction {
@@ -308,7 +312,7 @@ export const fetchOptionsForExtendPending = (
   source: SearchSource,
 ): FetchOptionsForExtendPendingAction => ({
   type: FETCH_OPTIONS_FOR_EXTEND_PENDING,
-  payload: {itemId, source},
+  payload: { itemId, source },
 });
 
 export interface FetchOptionsForExtendFailureAction {
@@ -326,7 +330,7 @@ export const fetchOptionsForExtendFailure = (
   error: Error,
 ): FetchOptionsForExtendFailureAction => ({
   type: FETCH_OPTIONS_FOR_EXTEND_FAILURE,
-  payload: {itemId, source, error},
+  payload: { itemId, source, error },
 });
 
 export interface FetchOptionsForExtendSuccessAction {
@@ -344,7 +348,7 @@ export const fetchOptionsForExtendSuccess = (
   results: SourceItemShort[],
 ): FetchOptionsForExtendSuccessAction => ({
   type: FETCH_OPTIONS_FOR_EXTEND_SUCCESS,
-  payload: {itemId, source, results},
+  payload: { itemId, source, results },
 });
 
 export interface SetExtensionOffsetAction {
@@ -362,7 +366,7 @@ export const setExtensionOffset = (
   offset: number,
 ): SetExtensionOffsetAction => ({
   type: SET_EXTENSION_OFFSET,
-  payload: {itemId, source, offset},
+  payload: { itemId, source, offset },
 });
 
 export interface SetExtensionLimitAction {
@@ -380,7 +384,7 @@ export const setExtensionLimit = (
   limit: number,
 ): SetExtensionLimitAction => ({
   type: SET_EXTENSION_LIMIT,
-  payload: {itemId, source, limit},
+  payload: { itemId, source, limit },
 });
 
 export interface SetExtensionTotalsAction {
@@ -398,7 +402,7 @@ export const setExtensionTotals = (
   totals: Array<number | undefined>,
 ): SetExtensionTotalsAction => ({
   type: SET_EXTENSION_TOTALS,
-  payload: {itemId, source, totals},
+  payload: { itemId, source, totals },
 });
 
 export interface FetchNextOptionsForExtendAction {
@@ -414,28 +418,29 @@ export const fetchNextOptionsForExtend = (
   source: SearchSource,
 ): FetchNextOptionsForExtendAction => ({
   type: FETCH_NEXT_OPTIONS_FOR_EXTEND,
-  payload: {itemId, source},
+  payload: { itemId, source },
 });
 
-export type SearchAction = ExecuteSearchAction |
-  ExecuteSearchPendingAction |
-  ExecuteSearchSuccessAction |
-  ExecuteSearchFailureAction |
-  SetSearchPageIndexAction |
-  SetSearchPageSizeAction |
-  ResetSearchResultsAction |
-  ExtendSearchResultAction |
-  ExtendSearchResultPendingAction |
-  ExtendSearchResultSuccessAction |
-  ExtendSearchResultFailureAction |
-  PlaySearchResultAction |
-  PickOptionForExtendAction |
-  ResetSearchAction |
-  ResetOptionsForExtendAction |
-  FetchOptionsForExtendPendingAction |
-  FetchOptionsForExtendFailureAction |
-  FetchOptionsForExtendSuccessAction |
-  SetExtensionOffsetAction |
-  SetExtensionLimitAction |
-  FetchNextOptionsForExtendAction |
-  SetExtensionTotalsAction;
+export type SearchAction =
+  | ExecuteSearchAction
+  | ExecuteSearchPendingAction
+  | ExecuteSearchSuccessAction
+  | ExecuteSearchFailureAction
+  | SetSearchPageIndexAction
+  | SetSearchPageSizeAction
+  | ResetSearchResultsAction
+  | ExtendSearchResultAction
+  | ExtendSearchResultPendingAction
+  | ExtendSearchResultSuccessAction
+  | ExtendSearchResultFailureAction
+  | PlaySearchResultAction
+  | PickOptionForExtendAction
+  | ResetSearchAction
+  | ResetOptionsForExtendAction
+  | FetchOptionsForExtendPendingAction
+  | FetchOptionsForExtendFailureAction
+  | FetchOptionsForExtendSuccessAction
+  | SetExtensionOffsetAction
+  | SetExtensionLimitAction
+  | FetchNextOptionsForExtendAction
+  | SetExtensionTotalsAction;
