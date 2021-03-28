@@ -1,9 +1,10 @@
-import React, { Component, FormEvent, ChangeEvent } from "react";
-import { SearchSource, SearchOptions } from "@app/state/search/types";
-import { DeezerSearchForm } from "./components/deezer-search-form";
-import { SpotifySearchForm } from "./components/spotify-search-form";
-import { DeezerSearchOptions } from "@app/state/deezer/types";
-import { SpotifySearchOptions } from "@app/state/spotify/types";
+import React, { Component, FormEvent, ChangeEvent } from 'react';
+import { SearchSource, SearchOptions } from '@app/state/search/types';
+import { DeezerSearchForm } from './components/deezer-search-form';
+import { SpotifySearchForm } from './components/spotify-search-form';
+import { DeezerSearchOptions } from '@app/state/deezer/types';
+import { SpotifySearchOptions } from '@app/state/spotify/types';
+import { PlaylistType } from '@app/state/player/types';
 
 export interface SearchFormProps {
   executeSearch: (source: SearchSource, options: SearchOptions) => void;
@@ -12,10 +13,10 @@ export interface SearchFormProps {
 }
 
 export type DeezerSearchParams = DeezerSearchOptions & {
-  source: "deezer";
+  source: SearchSource.DEEZER;
 };
 
-export type SpotifySearchParams = SpotifySearchOptions & { source: "spotify" };
+export type SpotifySearchParams = SpotifySearchOptions & { source: SearchSource.SPOTIFY };
 
 export type SearchState =
   | DeezerSearchParams
@@ -31,15 +32,15 @@ class SearchFormComponent extends Component<SearchFormProps, SearchState> {
 
     if (isSpotifyConnected) {
       this.state = {
-        source: "spotify" as "spotify",
-        type: "track",
-        query: "",
+        source: SearchSource.SPOTIFY,
+        type: PlaylistType.TRACK,
+        query: '',
       };
     } else if (isDeezerConnected) {
       this.state = {
-        source: "deezer" as "deezer",
-        namespace: "track",
-        query: { track: "" },
+        source: SearchSource.DEEZER,
+        namespace: 'track',
+        query: { track: '' },
       };
     }
   }
@@ -48,9 +49,9 @@ class SearchFormComponent extends Component<SearchFormProps, SearchState> {
     const { isDeezerConnected, isSpotifyConnected } = this.props;
 
     return [
-      { value: "deezer", label: "Deezer", isDisabled: !isDeezerConnected },
-      { value: "spotify", label: "Spotify", isDisabled: !isSpotifyConnected },
-    ].filter((item) => !!item) as Array<{
+      { value: SearchSource.DEEZER, label: 'Deezer', isDisabled: !isDeezerConnected },
+      { value: SearchSource.SPOTIFY, label: 'Spotify', isDisabled: !isSpotifyConnected },
+    ].filter(item => !!item) as Array<{
       value: SearchSource;
       label: string;
       isDisabled: boolean;
@@ -70,18 +71,18 @@ class SearchFormComponent extends Component<SearchFormProps, SearchState> {
     const { value } = target;
 
     switch (value) {
-      case "deezer":
+      case SearchSource.DEEZER:
         this.setState({
-          source: "deezer",
-          namespace: "track",
-          query: { track: "" },
+          source: SearchSource.DEEZER,
+          namespace: PlaylistType.TRACK,
+          query: { track: '' },
         });
         break;
-      case "spotify":
+      case SearchSource.SPOTIFY:
         this.setState({
-          source: "spotify",
-          type: "track",
-          query: "",
+          source: SearchSource.SPOTIFY,
+          type: PlaylistType.TRACK,
+          query: '',
         });
         break;
       default:
@@ -90,7 +91,7 @@ class SearchFormComponent extends Component<SearchFormProps, SearchState> {
   };
 
   onParamsChange = (params: SearchOptions) => {
-    this.setState(params as Omit<SearchState, "source">);
+    this.setState(params as Omit<SearchState, 'source'>);
   };
 
   render() {
@@ -107,17 +108,17 @@ class SearchFormComponent extends Component<SearchFormProps, SearchState> {
               checked={source === value}
               type="radio"
               disabled={isDisabled}
-            />{" "}
+            />{' '}
             {label}
           </label>
         ))}
-        {source === "deezer" && (
+        {source === SearchSource.DEEZER && (
           <DeezerSearchForm
             searchParams={searchParams as DeezerSearchOptions}
             onChange={this.onParamsChange}
           />
         )}
-        {source === "spotify" && (
+        {source === SearchSource.SPOTIFY && (
           <SpotifySearchForm
             searchParams={searchParams as SpotifySearchOptions}
             onChange={this.onParamsChange}

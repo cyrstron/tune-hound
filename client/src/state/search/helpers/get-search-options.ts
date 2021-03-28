@@ -75,9 +75,9 @@ function getDeezerSearchOptions(item: SearchResult): SearchOptions[] {
 }
 
 export function getSearchOptions(item: SearchResult, source: SearchSource): SearchOptions[] {
-  if (source === 'spotify') {
+  if (source === SearchSource.SPOTIFY) {
     return getSpotifySearchOptions(item);
-  } else if (source === 'deezer') {
+  } else if (source === SearchSource.DEEZER) {
     return getDeezerSearchOptions(item);
   } else {
     return [];

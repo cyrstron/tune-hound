@@ -4,7 +4,6 @@ import { SearchedAlbum } from '@app/state/search/types';
 import { SourceLink } from '@app/components/source-link';
 import { SourceDetails } from '../sources-details';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '@app/state';
 import {
   createIsAlbumActiveSelector,
   selectIsPlaying,
@@ -15,7 +14,7 @@ import { CoverPlayBtn } from '@app/components/cover-play-btn';
 
 import styles from './searched-album.scss';
 import { playSearchResult } from '@app/state/search';
-import { selectOneOfExtensionsPending } from '@app/state/search/selectors';
+import { createOneOfExtensionsPendingSelector } from '@app/state/search/selectors';
 import { useSelectorCreator } from '@app/hooks/use-params-selector';
 
 const cx = classNames.bind(styles);
@@ -41,9 +40,7 @@ const SearchedAlbumComponent: FC<SearchedAlbumProps> = ({ album, className }) =>
   const isPlaying = useSelector(selectIsPlaying);
   const isPending = useSelector(selectIsPlayerPending);
 
-  const isExtending = useSelector<AppState, boolean>(state =>
-    selectOneOfExtensionsPending(state, id),
-  );
+  const isExtending = useSelectorCreator(createOneOfExtensionsPendingSelector, id);
 
   const onPlay = useCallback(() => {
     const action = playSearchResult(id);

@@ -1,3 +1,7 @@
+import { createSelector } from 'reselect';
 import { AppState } from '..';
+import { AudioState } from './reducer';
 
-export const selectAudioUrl = (state: AppState): string | null => state.audio.currentUrl;
+export const selectAudioState = (state: AppState): AudioState => state.audio;
+
+export const selectAudioUrl = createSelector([selectAudioState], audio => audio.currentUrl);

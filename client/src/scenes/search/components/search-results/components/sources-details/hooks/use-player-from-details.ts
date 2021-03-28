@@ -5,10 +5,9 @@ import {
   selectIsPlayerPending,
   selectIsPlaying,
 } from '@app/state/player/selectors';
-import { AppState } from '@app/state';
 import { playSearchResult } from '@app/state/search';
 import { useCallback } from 'react';
-import { selectExtensionPending } from '@app/state/search/selectors';
+import { createExtensionPendingSelector } from '@app/state/search/selectors';
 import { pause } from '@app/state/player/actions';
 import { PlaylistType } from '@app/state/player/types';
 import { SearchSource } from '@app/state/search/types';
@@ -35,9 +34,7 @@ export const usePlayerFromDetails = (
   const isPlaying = useSelector(selectIsPlaying);
   const isPending = useSelector(selectIsPlayerPending);
 
-  const isExtending = useSelector<AppState, boolean>(state =>
-    selectExtensionPending(state, id, source),
-  );
+  const isExtending = useSelectorCreator(createExtensionPendingSelector, id, source);
 
   const onPlay = useCallback(
     (index: number) => {

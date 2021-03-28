@@ -6,7 +6,7 @@ import {
   extendSearchResultSuccess,
 } from '../../actions';
 import { SourceItem, SourceItemShort, SearchResult } from '../../types';
-import { selectSearchResultById } from '../../selectors';
+import { createSearchResultSelector } from '../../selectors';
 import { findSourceItem } from './find-source-item';
 import { fetchSourceDetails } from './fetch-source-details';
 
@@ -15,7 +15,7 @@ export function* extendSearchResult({
 }: ExtendSearchResultAction): any {
   const pendingAction = extendSearchResultPending(itemId, source);
 
-  const searchItem: SearchResult = yield select(selectSearchResultById, itemId);
+  const searchItem: SearchResult = yield select(createSearchResultSelector(itemId));
 
   if (!searchItem) return;
 

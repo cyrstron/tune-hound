@@ -12,16 +12,16 @@ import {
   FetchNextOptionsForExtendAction,
 } from '@app/state/search/actions';
 import {
-  selectExtensionHasMoreItemsToFetch,
-  selectItemsForExtension,
+  createExtensionHasItemsToFetchSelector,
+  createItemsForExtensionSelector,
 } from '@app/state/search/selectors';
 
 export function* findSourceItem(searchResultItem: SearchResult, source: SearchSource): any {
   yield call(fetchMoreItems, searchResultItem, source);
 
   const [results, hasLadMore]: [SourceItemShort[], boolean] = yield all([
-    select(selectItemsForExtension, searchResultItem.id, source),
-    select(selectExtensionHasMoreItemsToFetch, searchResultItem.id, source),
+    select(createItemsForExtensionSelector(searchResultItem.id, source)),
+    select(createExtensionHasItemsToFetchSelector(searchResultItem.id, source)),
   ]);
 
   if (!hasLadMore && results.length === 0) {

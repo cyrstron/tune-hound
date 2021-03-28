@@ -1,127 +1,137 @@
-import { AppState } from '..';
+import { AppSelector, AppState } from '..';
 import {
   SearchSource,
-  SourceItem,
   DeezerSourceItemShort,
   SpotifySourceItemShort,
-  SearchResult,
-  SearchOptions,
+  SourceItemShort,
 } from './types';
-import { ExtensionSubState } from './reducer';
+import { SearchState } from './reducer';
 import { getSearchOptions } from './helpers';
+import { createSelector } from 'reselect';
+import { memoize } from '@app/utils/memoize';
 
-export const selectSearchResult = (state: AppState): SearchResult[] | undefined =>
-  state.search.result;
+export const selectSearchState = (state: AppState): SearchState => state.search;
 
-export const selectPageIndex = (state: AppState): number => state.search.pageIndex;
+export const selectSearchResult = createSelector([selectSearchState], search => search.result);
 
-export const selectPageSize = (state: AppState): number => state.search.pageSize;
+export const selectPageIndex = createSelector([selectSearchState], search => search.pageIndex);
 
-export const selectSearchQuery = (state: AppState): SearchOptions | undefined =>
-  state.search.searchQuery;
+export const selectPageSize = createSelector([selectSearchState], search => search.pageSize);
 
-export const selectSearchSource = (state: AppState): SearchSource | undefined =>
-  state.search.searchSource;
+export const selectSearchQuery = createSelector([selectSearchState], search => search.searchQuery);
 
-export const selectTotalItems = (state: AppState): number | undefined => state.search.total;
+export const selectSearchSource = createSelector(
+  [selectSearchState],
+  search => search.searchSource,
+);
 
-export const selectIsSearchPending = (state: AppState): boolean => state.search.isPending;
+export const selectTotalItems = createSelector([selectSearchState], search => search.total);
 
-export const selectSearchError = (state: AppState): Error | undefined => state.search.error;
+export const selectTotalPages = createSelector(
+  [selectTotalItems, selectPageSize],
+  (itemsNumber, pageSize) =>
+    itemsNumber !== undefined ? Math.ceil(itemsNumber / pageSize) : undefined,
+);
 
-export const selectSearchResultById = (state: AppState, id: string): SearchResult | undefined =>
-  selectSearchResult(state)?.find(item => !!item && item.id === id);
+export const selectIsSearchPending = createSelector(
+  [selectSearchState],
+  search => search.isPending,
+);
 
-export const selectResultsPage = (state: AppState): SearchResult[] | undefined => {
-  const result = selectSearchResult(state);
+export const selectSearchError = createSelector([selectSearchState], search => search.error);
 
-  if (!result) return undefined;
+export const createSearchResultSelector = memoize((id: string) =>
+  createSelector([selectSearchResult], searchResult => searchResult?.find(item => item.id === id)),
+);
 
-  const pageIndex = selectPageIndex(state);
-  const pageSize = selectPageSize(state);
+export const selectResultsPage = createSelector(
+  [selectSearchResult, selectPageIndex, selectPageSize],
+  (searchResult, pageIndex, pageSize) =>
+    searchResult?.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize),
+);
 
-  return result.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize);
+export const selectSearchExtentions = createSelector(
+  [selectSearchState],
+  search => search.extensions,
+);
+
+export const createExtensionSubStateSelector = memoize((id: string, source?: SearchSource) =>
+  createSelector([selectSearchExtentions], extentions => source && extentions[source]?.[id]),
+);
+
+export type GetItemsForExtensionByIdAndSourceOverload = {
+  (id: string, source: SearchSource.DEEZER): AppSelector<DeezerSourceItemShort[] | undefined>;
+  (id: string, source: SearchSource.SPOTIFY): AppSelector<SpotifySourceItemShort[] | undefined>;
+  (id: string, source: SearchSource): AppSelector<SourceItemShort[] | undefined>;
 };
 
-export const selectTotalPages = (state: AppState): number | undefined => {
-  const totalItems = selectTotalItems(state);
-  const pageSize = selectPageSize(state);
+export const createItemsForExtensionSelector = memoize((id: string, source: SearchSource) =>
+  createSelector([createExtensionSubStateSelector(id, source)], subState => subState?.results),
+) as GetItemsForExtensionByIdAndSourceOverload;
 
-  return totalItems === undefined ? undefined : Math.ceil(totalItems / pageSize);
-};
+export const createExtensionPendingSelector = memoize((id: string, source: SearchSource) =>
+  createSelector([createExtensionSubStateSelector(id, source)], subState => !!subState?.isPending),
+);
 
-export function selectExtensionSubState(
-  state: AppState,
-  id: string,
-  source: SearchSource,
-): ExtensionSubState | undefined {
-  return state.search.extensions[source]?.[id];
-}
+export const createOneOfExtensionsPendingSelector = memoize((id: string) =>
+  createSelector(
+    [
+      createExtensionPendingSelector(id, SearchSource.DEEZER),
+      createExtensionPendingSelector(id, SearchSource.SPOTIFY),
+    ],
+    (isDeezerPending, isSpotifyPending) => isDeezerPending || isSpotifyPending,
+  ),
+);
 
-export function selectItemsForExtension(
-  state: AppState,
-  id: string,
-  source: SearchSource,
-): SourceItem[] | undefined {
-  return selectExtensionSubState(state, id, source)?.results;
-}
+export const createAllItemsForExtensionSelector = memoize((id: string) =>
+  createSelector(
+    [
+      createItemsForExtensionSelector(id, SearchSource.DEEZER),
+      createItemsForExtensionSelector(id, SearchSource.SPOTIFY),
+    ],
+    (deezer, spotify) => ({
+      deezer,
+      spotify,
+    }),
+  ),
+);
 
-export function selectExtensionPending(state: AppState, id: string, source: SearchSource): boolean {
-  return !!selectExtensionSubState(state, id, source)?.isPending;
-}
+export const createItemsForExtensionOffsetSelector = memoize((id: string, source?: SearchSource) =>
+  createSelector([createExtensionSubStateSelector(id, source)], substate => substate?.offset || 0),
+);
 
-export function selectOneOfExtensionsPending(state: AppState, id: string): boolean {
-  return (
-    selectExtensionPending(state, id, 'deezer') || selectExtensionPending(state, id, 'spotify')
-  );
-}
+export const createItemsForExtensionTotalsSelector = memoize((id: string, source?: SearchSource) =>
+  createSelector([createExtensionSubStateSelector(id, source)], subState => subState?.totals ?? []),
+);
 
-export const selectItemsForExtensionById = (
-  state: AppState,
-  id: string,
-): {
-  deezer?: DeezerSourceItemShort[];
-  spotify?: SpotifySourceItemShort[];
-} => {
-  return {
-    deezer: selectItemsForExtension(state, id, 'deezer') as DeezerSourceItemShort[] | undefined,
-    spotify: selectItemsForExtension(state, id, 'spotify') as SpotifySourceItemShort[] | undefined,
-  };
-};
+export const createSearchOptionsSelector = memoize((id: string, source?: SearchSource) =>
+  createSelector([createSearchResultSelector(id)], searchResult => {
+    if (!source) return undefined;
 
-export const selectItemsForExtensionOffsetById = (
-  state: AppState,
-  id: string,
-  source: SearchSource,
-): number => selectExtensionSubState(state, id, source)?.offset || 0;
+    return searchResult && getSearchOptions(searchResult, source);
+  }),
+);
 
-export const selectItemsForExtensionTotalsById = (
-  state: AppState,
-  id: string,
-  source: SearchSource,
-): Array<number | undefined> => selectExtensionSubState(state, id, source)?.totals || [];
+export const createExtensionHasItemsToFetchSelector = memoize((id: string, source?: SearchSource) =>
+  createSelector(
+    [
+      createSearchOptionsSelector(id, source),
+      createItemsForExtensionTotalsSelector(id, source),
+      createItemsForExtensionOffsetSelector(id, source),
+    ],
+    (searchOptions, totals, offset) => {
+      if (!searchOptions) return false;
 
-export const selectExtensionHasMoreItemsToFetch = (
-  state: AppState,
-  id: string,
-  source: SearchSource,
-): boolean => {
-  const item = selectSearchResultById(state, id);
+      const fullTotal = totals?.[searchOptions.length - 1];
 
-  if (!item) return false;
+      return fullTotal !== undefined && offset !== undefined && fullTotal > offset;
+    },
+  ),
+);
 
-  const searchOptions = getSearchOptions(item, source);
-
-  const fullTotal = selectItemsForExtensionTotalsById(state, id, source)?.[
-    searchOptions.length - 1
-  ];
-  const offset = selectItemsForExtensionOffsetById(state, id, source);
-
-  return fullTotal !== undefined && offset !== undefined && fullTotal > offset;
-};
-
-export const selectItemsForExtensionLimitById = (
-  state: AppState,
-  id: string,
-  source: SearchSource,
-): number => selectExtensionSubState(state, id, source)?.limit || 20;
+export const createItemsForExtensionLimitSelector = memoize((id: string, source?: SearchSource) =>
+  createSelector(
+    [createExtensionSubStateSelector(id, source)],
+    substate => (source && substate?.limit) || 20,
+  ),
+);

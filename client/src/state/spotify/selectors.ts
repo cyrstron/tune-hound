@@ -1,68 +1,127 @@
+import { createSelector } from 'reselect';
 import { AppState } from '../';
-import { SpotifyAuthData } from './services/helpers';
+import { SpotifyState } from './reducer';
 
-export const selectSpotifyAuthData = ({ spotify }: AppState): SpotifyAuthData | undefined =>
-  spotify?.authData;
+export const selectSpotifyState = (state: AppState): SpotifyState | undefined => state.spotify;
 
-export const selectIsSpotifyLoggedIn = ({ spotify }: AppState): boolean => !!spotify?.authData;
+export const selectSpotifyAuthData = createSelector(
+  [selectSpotifyState],
+  spotify => spotify?.authData,
+);
 
-export const selectSpotifyConnectPending = ({ spotify }: AppState): boolean => !!spotify?.isPending;
+export const selectIsSpotifyLoggedIn = createSelector(
+  [selectSpotifyAuthData],
+  authData => !!authData,
+);
 
-export const selectSpotifyConnectError = ({ spotify }: AppState): Error | undefined =>
-  spotify?.error;
+export const selectSpotifyConnectPending = createSelector(
+  [selectSpotifyState],
+  spotify => !!spotify?.isPending,
+);
 
-export const selectIsSpotifyTokenExpired = ({ spotify }: AppState): boolean =>
-  !spotify?.authData || spotify?.authData.expiresIn < new Date();
+export const selectSpotifyConnectError = createSelector(
+  [selectSpotifyState],
+  spotify => spotify?.error,
+);
 
-export const selectSpotifyRefreshToken = ({ spotify }: AppState): string | undefined =>
-  spotify?.authData?.refreshToken;
+export const selectAuthData = createSelector([selectSpotifyState], spotify => spotify?.authData);
 
-export const selectSpotifyAccessToken = ({ spotify }: AppState): string | undefined =>
-  spotify?.authData?.accessToken;
+export const selectAuthTokenExpirationDate = createSelector(
+  [selectAuthData],
+  authData => authData?.expiresIn,
+);
 
-export const selectSpotifyCurrentUser = ({
-  spotify,
-}: AppState): SpotifyApi.CurrentUsersProfileResponse | undefined => spotify?.currentUser;
+export const selectIsSpotifyTokenExpired = createSelector(
+  [selectAuthTokenExpirationDate],
+  expirationDate => !expirationDate || expirationDate < new Date(),
+);
 
-export const selectIsSpotifyPremium = (state: AppState): boolean => {
-  const user = selectSpotifyCurrentUser(state);
+export const selectSpotifyRefreshToken = createSelector(
+  [selectAuthData],
+  authData => authData?.refreshToken,
+);
 
-  return user?.product === 'premium';
-};
+export const selectSpotifyAccessToken = createSelector(
+  [selectAuthData],
+  authData => authData?.accessToken,
+);
 
-export const selectIsSpotifyConnected = ({ spotify }: AppState): boolean => !!spotify?.isConnected;
-export const selectIsSpotifyMounted = ({ spotify }: AppState): boolean => !!spotify?.isMounted;
-export const selectIsSpotifyPlayerInited = ({ spotify }: AppState): boolean =>
-  !!spotify?.isPlayerInited;
-export const selectSpotifyWasConnected = ({ spotify }: AppState): boolean =>
-  !!spotify?.wasConnected;
-export const selectIsSpotifyPlayerReady = ({ spotify }: AppState): boolean =>
-  !!spotify?.isPlaybackReady;
+export const selectSpotifyCurrentUser = createSelector(
+  [selectSpotifyState],
+  spotify => spotify?.currentUser,
+);
 
-export const selectIsSpotifyPlayerActive = ({ spotify }: AppState): boolean =>
-  !!spotify?.playbackState;
+export const selectSpotifyCurrentUserProduct = createSelector(
+  [selectSpotifyCurrentUser],
+  currentUser => currentUser?.product,
+);
 
-export const selectIsSpotifyPlayerMsgIgnored = ({ spotify }: AppState): boolean =>
-  !!spotify?.isPlayerMsgIgnored;
+export const selectIsSpotifyPremium = createSelector(
+  [selectSpotifyCurrentUserProduct],
+  product => product === 'premium',
+);
 
-export const selectShouldShowSpotifyPlayerMessage = (state: AppState): boolean => {
-  const isConnected = selectIsSpotifyConnected(state);
-  const isActive = selectIsSpotifyPlayerActive(state);
-  const isIgnored = selectIsSpotifyPlayerMsgIgnored(state);
+export const selectIsSpotifyConnected = createSelector(
+  [selectSpotifyState],
+  spotify => !!spotify?.isConnected,
+);
 
-  return isConnected && !isActive && !isIgnored;
-};
+export const selectIsSpotifyMounted = createSelector(
+  [selectSpotifyState],
+  spotify => !!spotify?.isMounted,
+);
 
-export const selectCanSpotifyPlay = (state: AppState): boolean => {
-  return selectIsSpotifyPremium(state);
-};
+export const selectIsSpotifyPlayerInited = createSelector(
+  [selectSpotifyState],
+  spotify => !!spotify?.isPlayerInited,
+);
 
-export const selectSpotifyPlayerDeviceId = ({ spotify }: AppState): string | undefined =>
-  spotify?.playbackInstance?.['device_id'];
+export const selectSpotifyWasConnected = createSelector(
+  [selectSpotifyState],
+  spotify => !!spotify?.wasConnected,
+);
 
-export const selectSpotifyPlaybackState = ({
-  spotify,
-}: AppState): Spotify.PlaybackState | null | undefined => spotify?.playbackState;
+export const selectIsSpotifyPlayerReady = createSelector(
+  [selectSpotifyState],
+  spotify => !!spotify?.isPlaybackReady,
+);
 
-export const selectSpotifyCurrentTrack = (state: AppState): Spotify.Track | undefined =>
-  selectSpotifyPlaybackState(state)?.['track_window']['current_track'];
+export const selectSpotifyPlaybackState = createSelector(
+  [selectSpotifyState],
+  spotify => spotify?.playbackState,
+);
+
+export const selectIsSpotifyPlayerActive = createSelector(
+  [selectSpotifyPlaybackState],
+  playbackState => !!playbackState,
+);
+
+export const selectIsSpotifyPlayerMsgIgnored = createSelector(
+  [selectSpotifyState],
+  spotify => !!spotify?.isPlayerMsgIgnored,
+);
+
+export const selectShouldShowSpotifyPlayerMessage = createSelector(
+  [selectIsSpotifyConnected, selectIsSpotifyPlayerActive, selectIsSpotifyPlayerMsgIgnored],
+  (isConnected, isActive, isIgnored) => isConnected && !isActive && !isIgnored,
+);
+
+export const selectCanSpotifyPlay = createSelector(
+  [selectIsSpotifyPremium],
+  isPremium => isPremium,
+);
+
+export const selectSpotifyPlaybackInstance = createSelector(
+  [selectSpotifyState],
+  spotify => spotify?.playbackInstance,
+);
+
+export const selectSpotifyPlayerDeviceId = createSelector(
+  [selectSpotifyPlaybackInstance],
+  playbackInstance => playbackInstance?.['device_id'],
+);
+
+export const selectSpotifyCurrentTrack = createSelector(
+  [selectSpotifyPlaybackState],
+  playbackState => playbackState?.['track_window']['current_track'],
+);

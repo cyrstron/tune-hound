@@ -1,5 +1,6 @@
 import { TrackShort } from '@app/components/tracks';
 import { AlbumShort } from '@app/components/albums';
+import { SearchSource } from '@app/state/search/types';
 
 export function mapSpotifyTracks(tracks: SpotifyApi.TrackObjectSimplified[]): TrackShort[] {
   return tracks.map(({ name, artists, id }) => ({
@@ -15,6 +16,6 @@ export function mapSpotifyAlbums(albums: SpotifyApi.AlbumObjectSimplified[]): Al
     coverUrl: url,
     title: name,
     year: new Date(Date.parse(releaseDate)).getFullYear(),
-    source: 'spotify',
+    source: SearchSource.SPOTIFY,
   }));
 }

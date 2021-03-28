@@ -10,7 +10,7 @@ import {
   EXTEND_SEARCH_RESULT_SUCCESS,
   EXTEND_SEARCH_RESULT_FAILURE,
 } from '../../consts';
-import { selectSearchResultById } from '../../selectors';
+import { createSearchResultSelector } from '../../selectors';
 import { pickDefaultSource } from './pick-default-source';
 import { SearchResult, SearchSource } from '../../types';
 import { playSearchedTrackSaga } from './play-searched-track';
@@ -23,7 +23,7 @@ import { selectCanSpotifyPlay } from '@app/state/spotify';
 export function* playSearchResultSaga({
   payload: { itemId, source, index },
 }: PlaySearchResultAction): any {
-  let searchItem: SearchResult = yield select(selectSearchResultById, itemId);
+  let searchItem: SearchResult = yield select(createSearchResultSelector(itemId));
 
   const playSource: SearchSource = source || (yield call(pickDefaultSource, searchItem));
 
@@ -71,7 +71,7 @@ export function* playSearchResultSaga({
 
     if (!isExtended) return;
 
-    searchItem = yield select(selectSearchResultById, itemId);
+    searchItem = yield select(createSearchResultSelector(itemId));
   }
 
   if (searchItem.type === 'track') {

@@ -58,21 +58,21 @@ export const playTrack = (
   track: PlayerTrack,
   nativeId?: string | number,
   index?: number,
-): SetPlaylistAction => setPlaylist(id, 'track', [track], nativeId, index);
+): SetPlaylistAction => setPlaylist(id, PlaylistType.TRACK, [track], nativeId, index);
 
 export const playAlbum = (
   id: string,
   tracks: PlayerTrack[],
   nativeId?: string | number,
   index?: number,
-): SetPlaylistAction => setPlaylist(id, 'album', tracks, nativeId, index);
+): SetPlaylistAction => setPlaylist(id, PlaylistType.ALBUM, tracks, nativeId, index);
 
 export const playPlaylist = (
   id: string,
   tracks: PlayerTrack[],
   nativeId?: string | number,
   index?: number,
-): SetPlaylistAction => setPlaylist(id, 'playlist', tracks, nativeId, index);
+): SetPlaylistAction => setPlaylist(id, PlaylistType.PLAYLIST, tracks, nativeId, index);
 
 export interface PauseAction {
   type: typeof PAUSE;

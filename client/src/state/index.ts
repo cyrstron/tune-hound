@@ -30,6 +30,7 @@ import { rootSaga } from './sagas';
 import { AudioService } from './audio-player/services/audio-service';
 import { audioReducer, AudioState } from './audio-player';
 import { AppAction } from './actions';
+import { Selector } from 'reselect';
 
 export interface AppState {
   auth: AuthState;
@@ -39,6 +40,8 @@ export interface AppState {
   player: PlayerState;
   audio: AudioState;
 }
+
+export type AppSelector<Result> = Selector<AppState, Result>;
 
 const staticReducers = {
   auth: authReducer,

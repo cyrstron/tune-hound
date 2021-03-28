@@ -9,10 +9,10 @@ import {
   setExtensionTotals,
 } from '../../../actions';
 import {
-  selectItemsForExtensionLimitById,
-  selectItemsForExtensionOffsetById,
-  selectItemsForExtensionTotalsById,
-  selectItemsForExtension,
+  createItemsForExtensionLimitSelector,
+  createItemsForExtensionOffsetSelector,
+  createItemsForExtensionTotalsSelector,
+  createItemsForExtensionSelector,
 } from '@app/state/search/selectors';
 import { fetchSearchItems } from './fetch-search-items';
 
@@ -25,10 +25,10 @@ export function* fetchMoreItems(searchResultItem: SearchResult, source: SearchSo
     Array<number | undefined>,
     SourceItemShort[],
   ] = yield all([
-    select(selectItemsForExtensionLimitById, searchResultItem.id, source),
-    select(selectItemsForExtensionOffsetById, searchResultItem.id, source),
-    select(selectItemsForExtensionTotalsById, searchResultItem.id, source),
-    select(selectItemsForExtension, searchResultItem.id, source),
+    select(createItemsForExtensionLimitSelector(searchResultItem.id, source)),
+    select(createItemsForExtensionOffsetSelector(searchResultItem.id, source)),
+    select(createItemsForExtensionTotalsSelector(searchResultItem.id, source)),
+    select(createItemsForExtensionSelector(searchResultItem.id, source)),
   ]);
 
   const fullTotal = totals[searchOptions.length - 1];
@@ -58,10 +58,7 @@ export function* fetchMoreItems(searchResultItem: SearchResult, source: SearchSo
     let requestOffset = total !== undefined ? offset - prevTotal : 0;
 
     while (results.length < limit && (fullTotal === undefined || fullTotal > currentOffset)) {
-      let {
-        results: items,
-        total: totalItems,
-      }: {
+      const response: {
         total: number;
         results: SourceItemShort[];
       } = yield call(
@@ -71,6 +68,9 @@ export function* fetchMoreItems(searchResultItem: SearchResult, source: SearchSo
         requestLimit,
         requestOffset,
       );
+
+      const { total: totalItems } = response;
+      let { results: items } = response;
 
       currentTotals[queryIndex] = totalItems + prevTotal;
       currentOffset += items.length;

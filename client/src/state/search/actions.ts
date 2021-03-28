@@ -40,11 +40,11 @@ export interface ExecuteSearchAction {
   type: typeof EXECUTE_SEARCH;
   payload:
     | {
-        source: 'deezer';
+        source: SearchSource.DEEZER;
         options: DeezerSearchOptions;
       }
     | {
-        source: 'spotify';
+        source: SearchSource.SPOTIFY;
         options: SpotifySearchOptions;
       };
 }
@@ -56,11 +56,11 @@ export const executeSearch = (
   type: EXECUTE_SEARCH,
   payload: { source, options } as
     | {
-        source: 'deezer';
+        source: SearchSource.DEEZER;
         options: DeezerSearchOptions;
       }
     | {
-        source: 'spotify';
+        source: SearchSource.SPOTIFY;
         options: SpotifySearchOptions;
       },
 });

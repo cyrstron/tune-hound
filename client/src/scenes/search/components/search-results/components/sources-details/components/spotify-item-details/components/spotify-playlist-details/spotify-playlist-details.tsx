@@ -1,11 +1,11 @@
-import React, { FC } from "react";
-import classNames from "classnames/bind";
-import { SpotifyPlaylistSourceItemFull } from "@app/state/search/types";
-import { TrackList } from "@app/components/tracks";
-import { mapSpotifyTracks } from "../../services/mapHelpers";
-import { usePlayerFromDetails } from "../../../../hooks/use-player-from-details";
+import React, { FC } from 'react';
+import classNames from 'classnames/bind';
+import { SearchSource, SpotifyPlaylistSourceItemFull } from '@app/state/search/types';
+import { TrackList } from '@app/components/tracks';
+import { mapSpotifyTracks } from '../../services/mapHelpers';
+import { usePlayerFromDetails } from '../../../../hooks/use-player-from-details';
 
-import styles from "./spotify-playlist-details.scss";
+import styles from './spotify-playlist-details.scss';
 
 const cx = classNames.bind(styles);
 
@@ -25,11 +25,11 @@ const SpotifyPlaylistDetailsComponent: FC<SpotifyPlaylistDetailsProps> = ({
   },
   className,
 }) => {
-  const playerProps = usePlayerFromDetails(id, "spotify", nativeId);
+  const playerProps = usePlayerFromDetails(id, SearchSource.SPOTIFY, nativeId);
   const mappedTracks = mapSpotifyTracks(tracks.map(({ track }) => track));
 
   return (
-    <div className={cx("album-details", className)}>
+    <div className={cx('album-details', className)}>
       <div>{description}</div>
       <div>{total} followers</div>
       {!!mappedTracks.length && (

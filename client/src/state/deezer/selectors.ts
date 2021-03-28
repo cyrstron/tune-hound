@@ -1,28 +1,69 @@
+import { createSelector } from 'reselect';
 import { AppState } from 'state';
+import { DeezerState } from './reducer';
 
-export const selectDeezerIsConnected = ({ deezer }: AppState): boolean => !!deezer?.isConnected;
+export const selectDeezerState = (state: AppState): DeezerState | undefined => state.deezer;
 
-export const selectDeezerWasConnected = ({ deezer }: AppState): boolean => !!deezer?.wasConnected;
+export const selectDeezerIsConnected = createSelector(
+  [selectDeezerState],
+  deezer => !!deezer?.isConnected,
+);
 
-export const selectFlashMsgIgnored = ({ deezer }: AppState): boolean => !!deezer?.isFlashMsgIgnored;
+export const selectDeezerWasConnected = createSelector(
+  [selectDeezerState],
+  deezer => !!deezer?.wasConnected,
+);
 
-export const selectFlashEnabled = ({ deezer }: AppState): boolean => !!deezer?.isFlashEnabled;
+export const selectFlashMsgIgnored = createSelector(
+  [selectDeezerState],
+  deezer => !!deezer?.isFlashMsgIgnored,
+);
 
-export const selectDeezerError = ({ deezer }: AppState): Error | undefined => deezer?.error;
+export const selectFlashEnabled = createSelector(
+  [selectDeezerState],
+  deezer => !!deezer?.isFlashEnabled,
+);
 
-export const selectDeezerPending = ({ deezer }: AppState): boolean => !!deezer?.isPending;
+export const selectDeezerError = createSelector([selectDeezerState], deezer => deezer?.error);
 
-export const selectDeezerMounted = ({ deezer }: AppState): boolean => !!deezer?.isMounted;
+export const selectDeezerPending = createSelector(
+  [selectDeezerState],
+  deezer => !!deezer?.isPending,
+);
 
-export const selectDeezerInited = ({ deezer }: AppState): boolean => !!deezer?.isInited;
+export const selectDeezerMounted = createSelector(
+  [selectDeezerState],
+  deezer => !!deezer?.isMounted,
+);
 
-export const selectDeezerIsPremium = ({ deezer }: AppState): boolean =>
-  !!deezer?.currentUser && deezer?.currentUser['status'] > 0;
+export const selectDeezerInited = createSelector([selectDeezerState], deezer => !!deezer?.isInited);
 
-export const selectDeezerCurrentTrack = ({ deezer }: AppState): DeezerSdk.Track | null =>
-  deezer?.playingTrack ?? null;
+export const selectDeezerCurrentUser = createSelector(
+  [selectDeezerState],
+  deezer => deezer?.currentUser,
+);
 
-export const selectDeezerIsPlaying = ({ deezer }: AppState): boolean => !!deezer?.isPlaying;
+export const selectDeezerCurrentUserStatus = createSelector(
+  [selectDeezerCurrentUser],
+  user => user?.['status'],
+);
 
-export const selectCanDeezerPlay = (state: AppState): boolean =>
-  selectDeezerIsPremium(state) && selectFlashEnabled(state);
+export const selectDeezerIsPremium = createSelector(
+  [selectDeezerCurrentUserStatus],
+  userStatus => !!userStatus && userStatus > 0,
+);
+
+export const selectDeezerCurrentTrack = createSelector(
+  [selectDeezerState],
+  deezer => deezer?.playingTrack,
+);
+
+export const selectDeezerIsPlaying = createSelector(
+  [selectDeezerState],
+  deezer => !!deezer?.isPlaying,
+);
+
+export const selectCanDeezerPlay = createSelector(
+  [selectDeezerIsPremium, selectFlashEnabled],
+  (isPremium, isFlashEnabled) => isPremium && isFlashEnabled,
+);

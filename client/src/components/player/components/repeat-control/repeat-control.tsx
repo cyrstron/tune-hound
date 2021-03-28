@@ -1,16 +1,11 @@
-import React, { FC, useCallback } from "react";
-import classNames from "classnames/bind";
-import { useDispatch, useSelector } from "react-redux";
-import { selectRepeatMode } from "@app/state/player/selectors";
-import {
-  noRepeatMode,
-  repeatAllMode,
-  repeatOneMode,
-  RepeatMode,
-} from "@app/state/player/types";
+import React, { FC, useCallback } from 'react';
+import classNames from 'classnames/bind';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectRepeatMode } from '@app/state/player/selectors';
+import { RepeatMode } from '@app/state/player/types';
 
-import styles from "./repeat-control.scss";
-import { setRepeatMode } from "@app/state/player/actions";
+import styles from './repeat-control.scss';
+import { setRepeatMode } from '@app/state/player/actions';
 
 const cx = classNames.bind(styles);
 
@@ -19,9 +14,9 @@ export interface RepeatControlProps {
 }
 
 const repeatModeLabels = {
-  [noRepeatMode]: "No repeat",
-  [repeatOneMode]: "Repeat One",
-  [repeatAllMode]: "Repeat All",
+  [RepeatMode.NO_REPEAT]: 'No repeat',
+  [RepeatMode.REPEAT_ONE]: 'Repeat One',
+  [RepeatMode.REPEAT_ALL]: 'Repeat All',
 };
 
 const RepeatControl: FC<RepeatControlProps> = ({ className }) => {
@@ -33,17 +28,17 @@ const RepeatControl: FC<RepeatControlProps> = ({ className }) => {
     let newRepeatMode: RepeatMode;
 
     switch (repeatMode) {
-      case noRepeatMode:
-        newRepeatMode = repeatAllMode;
+      case RepeatMode.NO_REPEAT:
+        newRepeatMode = RepeatMode.REPEAT_ALL;
         break;
-      case repeatAllMode:
-        newRepeatMode = repeatOneMode;
+      case RepeatMode.REPEAT_ALL:
+        newRepeatMode = RepeatMode.REPEAT_ONE;
         break;
-      case repeatOneMode:
-        newRepeatMode = noRepeatMode;
+      case RepeatMode.REPEAT_ONE:
+        newRepeatMode = RepeatMode.NO_REPEAT;
         break;
       default:
-        newRepeatMode = noRepeatMode;
+        newRepeatMode = RepeatMode.NO_REPEAT;
     }
 
     const action = setRepeatMode(newRepeatMode);
@@ -52,8 +47,8 @@ const RepeatControl: FC<RepeatControlProps> = ({ className }) => {
   }, [dispatch, repeatMode]);
 
   return (
-    <div className={cx("repeat-control", className)}>
-      <button onClick={onRepeatMode} className={cx("repeat-btn")}>
+    <div className={cx('repeat-control', className)}>
+      <button onClick={onRepeatMode} className={cx('repeat-btn')}>
         {repeatModeLabels[repeatMode]}
       </button>
     </div>

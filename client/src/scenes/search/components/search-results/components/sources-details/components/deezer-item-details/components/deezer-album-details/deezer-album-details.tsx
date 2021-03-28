@@ -1,11 +1,12 @@
-import React, { FC } from "react";
-import classNames from "classnames/bind";
-import { DeezerAlbumSourceItemFull } from "@app/state/search/types";
-import { TrackList } from "@app/components/tracks";
-import { mapDeezerTracks } from "../../services/mapHelpers";
+import React, { FC } from 'react';
+import classNames from 'classnames/bind';
+import { DeezerAlbumSourceItemFull, SearchSource } from '@app/state/search/types';
+import { TrackList } from '@app/components/tracks';
+import { mapDeezerTracks } from '../../services/mapHelpers';
 
-import styles from "./deezer-album-details.scss";
-import { usePlayerFromDetails } from "../../../../hooks/use-player-from-details";
+import styles from './deezer-album-details.scss';
+import { usePlayerFromDetails } from '../../../../hooks/use-player-from-details';
+import { PlaylistType } from '@app/state/player/types';
 
 const cx = classNames.bind(styles);
 
@@ -25,14 +26,12 @@ const DeezerAlbumDetailsComponent: FC<DeezerAlbumDetailsProps> = ({
   },
   className,
 }) => {
-  const playerProps = usePlayerFromDetails(id, "deezer", nativeId, "album");
+  const playerProps = usePlayerFromDetails(id, SearchSource.DEEZER, nativeId, PlaylistType.ALBUM);
   const mappedTracks = mapDeezerTracks(tracks);
 
   return (
-    <div className={cx("album-details", className)}>
-      {!!genres.data.length && (
-        <div>Genres: {genres.data.map(({ name }) => name).join(", ")}</div>
-      )}
+    <div className={cx('album-details', className)}>
+      {!!genres.data.length && <div>Genres: {genres.data.map(({ name }) => name).join(', ')}</div>}
       {!!mappedTracks.length && (
         <div>
           Tracks:

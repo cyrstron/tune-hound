@@ -1,9 +1,10 @@
-import { AppState } from '..';
+import { AppSelector, AppState } from '..';
 import { repeatOneMode, repeatAllMode, noRepeatMode, PlaylistType } from './types';
 import { calcNextRandomIndex } from './services';
 import { createSelector } from 'reselect';
+import { memoize } from '@app/utils/memoize';
 
-const selectPlayerState = createSelector([], ({ player }: AppState) => player);
+const selectPlayerState = ({ player }: AppState) => player;
 
 export const selectIsMuted = createSelector([selectPlayerState], player => player.isMuted);
 
@@ -96,26 +97,24 @@ export const selectPlaylistType = createSelector(
   player => player.playlistType,
 );
 
-export const createIsPlaylistActiveSelector = (
-  id: string,
-  type: PlaylistType = 'playlist',
-): ((state: AppState) => boolean) =>
-  createSelector(
-    [selectPlaylistId, selectPlaylistType],
-    (playlistId, playlistType) => id === playlistId && type === playlistType,
-  );
+export const createIsPlaylistActiveSelector = memoize(
+  (id: string, type: PlaylistType = PlaylistType.PLAYLIST): AppSelector<boolean> =>
+    createSelector(
+      [selectPlaylistId, selectPlaylistType],
+      (playlistId, playlistType) => id === playlistId && type === playlistType,
+    ),
+);
 
-export const createIsNativePlaylistActiveSelector = (
-  nativeId: string | number,
-  type: PlaylistType = 'playlist',
-): ((state: AppState) => boolean) =>
-  createSelector(
-    [selectNativePlaylistId, selectPlaylistType],
-    (playlistId, playlistType) => nativeId === playlistId && type === playlistType,
-  );
+export const createIsNativePlaylistActiveSelector = memoize(
+  (nativeId: string | number, type: PlaylistType = PlaylistType.PLAYLIST): AppSelector<boolean> =>
+    createSelector(
+      [selectNativePlaylistId, selectPlaylistType],
+      (playlistId, playlistType) => nativeId === playlistId && type === playlistType,
+    ),
+);
 
-export const createIsAlbumActiveSelector = (id: string): ((state: AppState) => boolean) =>
-  createIsPlaylistActiveSelector(id, 'album');
+export const createIsAlbumActiveSelector = (id: string): AppSelector<boolean> =>
+  createIsPlaylistActiveSelector(id, PlaylistType.ALBUM);
 
-export const createIsTrackActiveSelector = (id: string): ((state: AppState) => boolean) =>
-  createIsPlaylistActiveSelector(id, 'track');
+export const createIsTrackActiveSelector = (id: string): AppSelector<boolean> =>
+  createIsPlaylistActiveSelector(id, PlaylistType.TRACK);

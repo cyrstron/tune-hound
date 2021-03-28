@@ -3,13 +3,12 @@ import classNames from 'classnames/bind';
 import { SearchedPlaylist } from '@app/state/search/types';
 import { SourceDetails } from '../sources-details';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '@app/state';
 import {
   createIsPlaylistActiveSelector,
   selectIsPlaying,
   selectIsPlayerPending,
 } from '@app/state/player/selectors';
-import { selectOneOfExtensionsPending } from '@app/state/search/selectors';
+import { createOneOfExtensionsPendingSelector } from '@app/state/search/selectors';
 import { playSearchResult } from '@app/state/search';
 import { pause } from '@app/state/player/actions';
 import { CoverPlayBtn } from '@app/components/cover-play-btn';
@@ -41,9 +40,7 @@ const SearchedPlaylistComponent: FC<SearchedPlaylistProps> = ({ playlist, classN
   const isPlaying = useSelector(selectIsPlaying);
   const isPending = useSelector(selectIsPlayerPending);
 
-  const isExtending = useSelector<AppState, boolean>(state =>
-    selectOneOfExtensionsPending(state, id),
-  );
+  const isExtending = useSelectorCreator(createOneOfExtensionsPendingSelector, id);
 
   const onPlay = useCallback(() => {
     const action = playSearchResult(id);

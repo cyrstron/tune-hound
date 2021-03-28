@@ -45,7 +45,7 @@ const initialPlayerState: PlayerState = {
   isMuted: false,
   isShuffled: false,
   playlist: [],
-  repeatMode: noRepeatMode,
+  repeatMode: RepeatMode.NO_REPEAT,
   history: [],
   playedIndexes: [],
 };
@@ -62,7 +62,7 @@ export function playerReducer(
         playlistType: action.payload.type,
         playlistId: action.payload.id,
         nativePlaylistId: action.payload.nativeId,
-        repeatMode: noRepeatMode,
+        repeatMode: RepeatMode.NO_REPEAT,
         history: [],
         playedIndexes: [],
         isShuffled: false,

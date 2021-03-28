@@ -1,6 +1,7 @@
 import { DeezerTrack, DeezerAlbum } from '@app/state/deezer/types';
 import { TrackShort } from '@app/components/tracks';
 import { AlbumShort } from '@app/components/albums';
+import { SearchSource } from '@app/state/search/types';
 
 export function mapDeezerTracks(tracks: Omit<DeezerTrack, 'album'>[]): TrackShort[] {
   return tracks.map(({ title, artist: { name: artist }, id }) => ({
@@ -15,6 +16,6 @@ export function mapDeezerAlbums(albums: DeezerAlbum[]): AlbumShort[] {
     id,
     title,
     coverUrl,
-    source: 'deezer',
+    source: SearchSource.DEEZER,
   }));
 }
