@@ -8,7 +8,8 @@ import {
 import { SearchState } from './reducer';
 import { getSearchOptions } from './helpers';
 import { createSelector } from 'reselect';
-import { memoize } from '@app/utils/memoize';
+import { memoize } from '@app/utils/memoize/memoize';
+import { createParamsSelector } from '@app/utils/create-params-selector';
 
 export const selectSearchState = (state: AppState): SearchState => state.search;
 
@@ -39,6 +40,12 @@ export const selectIsSearchPending = createSelector(
 );
 
 export const selectSearchError = createSelector([selectSearchState], search => search.error);
+
+export const selectSearchResultById = createParamsSelector(
+  [selectSearchResult, (...args: [AppState, string]) => args[1]],
+  (searchResult, id) => searchResult?.find(item => item.id === id),
+  { cacheSize: 1000 },
+);
 
 export const createSearchResultSelector = memoize((id: string) =>
   createSelector([selectSearchResult], searchResult => searchResult?.find(item => item.id === id)),
