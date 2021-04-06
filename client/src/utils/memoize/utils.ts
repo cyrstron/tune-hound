@@ -22,7 +22,7 @@ export function getSafeKey(key: any, serializeKey?: (key: any) => Primitive): In
 
 export function safeSet<TObject = any, TValue = any>(
   obj: TObject,
-  path: any[],
+  path: any[] | readonly any[],
   value: TValue,
   serializeKey?: (key: any) => Primitive,
 ): void {
@@ -46,7 +46,7 @@ export function safeSet<TObject = any, TValue = any>(
 
 export function safeGet<TObject = any, TValue = any>(
   obj: TObject,
-  path: Primitive[],
+  path: Primitive[] | readonly Primitive[],
   serializeKey?: (key: any) => Primitive,
 ): TValue {
   let subObj: any = obj;

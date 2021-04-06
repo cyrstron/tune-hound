@@ -11,11 +11,11 @@ export class MemoCache<TPayload> {
     MemoCache.watchGlobalStoreGarbage();
   }
 
-  get(path: Primitive[]): TPayload | undefined {
+  get(path: Primitive[] | readonly Primitive[]): TPayload | undefined {
     return safeGet(this.store, path);
   }
 
-  set(path: Primitive[], value: TPayload): void {
+  set(path: Primitive[] | readonly Primitive[], value: TPayload): void {
     if (this.size >= this.maxSize) {
       this.reset();
       this.size = 0;

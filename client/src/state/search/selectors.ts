@@ -42,7 +42,10 @@ export const selectIsSearchPending = createSelector(
 export const selectSearchError = createSelector([selectSearchState], search => search.error);
 
 export const selectSearchResultById = createParamsSelector(
-  [selectSearchResult, (...args: [AppState, string]) => args[1]],
+  [
+    selectSearchResult as (state: AppState) => ReturnType<typeof selectSearchResult>,
+    (_state: AppState, id: string) => id,
+  ],
   (searchResult, id) => searchResult?.find(item => item.id === id),
   { cacheSize: 1000 },
 );
