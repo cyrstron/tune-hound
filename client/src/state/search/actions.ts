@@ -436,6 +436,7 @@ export type SearchAction =
   | PlaySearchResultAction
   | PickOptionForExtendAction
   | ResetSearchAction
+  | ExecuteSearchByPageIndexAction
   | ResetOptionsForExtendAction
   | FetchOptionsForExtendPendingAction
   | FetchOptionsForExtendFailureAction
