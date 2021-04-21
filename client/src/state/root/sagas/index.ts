@@ -1,8 +1,8 @@
 import { spawn } from '@redux-saga/core/effects';
-import { watchAddingDynamicReducer } from './add-dynamic-reducer';
-import { watchSpawningDynamicSagas } from './spawn-dynamic-saga';
+import { watchInjectingDynamicReducer } from './inject-dynamic-reducer';
+import { watchSpawningDynamicSagas } from './inject-dynamic-saga';
 
 export function* rootSaga(): any {
   yield spawn(watchSpawningDynamicSagas);
-  yield spawn(watchAddingDynamicReducer);
+  yield spawn(watchInjectingDynamicReducer);
 }

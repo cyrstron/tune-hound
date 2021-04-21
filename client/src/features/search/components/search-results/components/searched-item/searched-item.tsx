@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import classNames from "classnames/bind";
-import { SearchResult } from "@app/state/search/types";
+import { SearchResult } from "@app/features/search/search/types";
 import { SearchedTrack } from "../searched-track";
 import { SearchedAlbum } from "../searched-album";
 import { SearchedArtist } from "../searched-artist";

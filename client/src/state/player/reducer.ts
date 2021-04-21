@@ -1,5 +1,4 @@
-import { PlayerAction } from './actions';
-import { PlayerTrack, RepeatMode, noRepeatMode, PlaylistType } from './types';
+import { PlayerTrack, RepeatMode, PlaylistType } from './types';
 import {
   SET_PLAYLIST,
   SET_IS_MUTED,
@@ -18,6 +17,7 @@ import {
   SET_IS_PENDING,
   SET_PLAYER_ERROR,
 } from './consts';
+import { AppAction } from '../actions';
 
 export interface PlayerState {
   isPlaying: boolean;
@@ -52,7 +52,7 @@ const initialPlayerState: PlayerState = {
 
 export function playerReducer(
   state: PlayerState = initialPlayerState,
-  action: PlayerAction,
+  action: AppAction,
 ): PlayerState {
   switch (action.type) {
     case SET_PLAYLIST:

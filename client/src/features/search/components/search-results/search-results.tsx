@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import classNames from "classnames/bind";
-import { SearchResult } from "@app/state/search/types";
+import { SearchResult } from "@app/features/search/search/types";
 import { SearchedItem } from "./components/searched-item";
 
 import styles from "./search-results.scss";

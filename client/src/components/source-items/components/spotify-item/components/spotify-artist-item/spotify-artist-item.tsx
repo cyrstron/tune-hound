@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import classNames from "classnames/bind";
 
 import styles from "./spotify-artist-item.scss";
-import { SpotifyArtistSourceItemShort } from "@app/state/search/types";
+import { SpotifyArtistSourceItemShort } from "@app/features/search/search/types";
 
 const cx = classNames.bind(styles);
 

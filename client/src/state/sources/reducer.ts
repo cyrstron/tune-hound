@@ -1,11 +1,9 @@
-
-export interface SourcesState {
-}
+export interface SourcesState {}
 
 const initialState: SourcesState = {
-  activeSources: 
-}
+  activeSources: {},
+};
 
-export function sourcesReducer(state: SourcesState) {
-
+export function sourcesReducer(state: SourcesState = initialState): SourcesState {
+  return state;
 }

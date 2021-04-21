@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import classNames from 'classnames/bind';
-import { SearchSource, SpotifyAlbumSourceItemFull } from '@app/state/search/types';
+import { SearchSource, SpotifyAlbumSourceItemFull } from '@app/features/search/search/types';
 import { mapSpotifyTracks } from '../../services/mapHelpers';
 import { TrackList } from '@app/components/tracks';
 

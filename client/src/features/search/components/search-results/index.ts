@@ -4,10 +4,10 @@ import {
   selectResultsPage,
   selectSearchError,
   selectIsSearchPending,
-} from '@app/state/search/selectors';
+} from '@app/features/search/search/selectors';
 
 import { SearchResultsComponent } from './search-results';
-import { SearchResult } from '@app/state/search/types';
+import { SearchResult } from '@app/features/search/search/types';
 
 const mapStateToProps = (
   state: AppState,

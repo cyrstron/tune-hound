@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 
 import styles from "./album-tile.scss";
 import { CoverPlayBtn } from "@app/components/cover-play-btn";
-import { SearchSource } from "@app/state/search/types";
+import { SearchSource } from "@app/features/search/search/types";
 
 const cx = classNames.bind(styles);
 

@@ -1,4 +1,4 @@
-import { SearchSource } from '../search/types';
+import { SearchSource } from '../../features/search/search/types';
 
 export type PlayerSource = SearchSource | 'url';
 

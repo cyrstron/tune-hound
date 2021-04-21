@@ -1,6 +1,6 @@
 import React, { FC, Fragment, useCallback } from 'react';
 import classNames from 'classnames/bind';
-import { SearchedAlbum } from '@app/state/search/types';
+import { SearchedAlbum } from '@app/features/search/search/types';
 import { SourceLink } from '@app/components/source-link';
 import { SourceDetails } from '../sources-details';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,9 +13,9 @@ import { pause } from '@app/state/player/actions';
 import { CoverPlayBtn } from '@app/components/cover-play-btn';
 
 import styles from './searched-album.scss';
-import { playSearchResult } from '@app/state/search';
-import { createOneOfExtensionsPendingSelector } from '@app/state/search/selectors';
-import { useSelectorCreator } from '@app/hooks/use-params-selector';
+import { playSearchResult } from '@app/features/search/search';
+import { createOneOfExtensionsPendingSelector } from '@app/features/search/search/selectors';
+import { useSelectorCreator } from '@app/hooks/use-seletor-creator';
 
 const cx = classNames.bind(styles);
 

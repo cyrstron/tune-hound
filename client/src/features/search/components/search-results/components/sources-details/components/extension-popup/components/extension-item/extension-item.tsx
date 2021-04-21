@@ -4,7 +4,7 @@ import {
   SpotifySourceItemShort,
   DeezerSourceItemShort,
   SourceItemShort,
-} from "@app/state/search/types";
+} from "@app/features/search/search/types";
 import { SpotifyItem, DeezerItem } from "@app/components/source-items";
 
 import styles from "./extension-item.scss";

@@ -1,11 +1,11 @@
 import React, { FC, useState, useCallback } from 'react';
 import classNames from 'classnames/bind';
-import { SearchSource, SpotifySourceItem, DeezerSourceItem } from '@app/state/search/types';
+import { SearchSource, SpotifySourceItem, DeezerSourceItem } from '@app/features/search/search/types';
 import deezerLogo from '@app/resources/source-logos/deezer-logo.svg';
 import spotifyLogo from '@app/resources/source-logos/spotify-logo.svg';
-import { extendSearchResult } from '@app/state/search';
+import { extendSearchResult } from '@app/features/search/search';
 import { useDispatch, useSelector } from 'react-redux';
-import { createAllItemsForExtensionSelector } from '@app/state/search/selectors';
+import { createAllItemsForExtensionSelector } from '@app/features/search/search/selectors';
 import { ExtensionPopup } from './components/extension-popup';
 import { SpotifyItemDetails } from './components/spotify-item-details';
 import { DeezerItemDetails } from './components/deezer-item-details';
@@ -13,7 +13,7 @@ import { DeezerItemDetails } from './components/deezer-item-details';
 import styles from './source-details.scss';
 import { selectDeezerIsConnected } from '@app/state/deezer';
 import { selectIsSpotifyConnected } from '@app/state/spotify';
-import { useSelectorCreator } from '@app/hooks/use-params-selector';
+import { useSelectorCreator } from '@app/hooks/use-seletor-creator';
 
 const cx = classNames.bind(styles);
 

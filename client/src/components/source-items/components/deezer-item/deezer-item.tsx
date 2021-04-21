@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { DeezerSourceItemShort } from "@app/state/search/types";
+import { DeezerSourceItemShort } from "@app/features/search/search/types";
 import { DeezerTrackItem } from "./components/deezer-track-item";
 import { DeezerAlbumItem } from "./components/deezer-album-item";
 import { DeezerArtistItem } from "./components/deezer-artist-item";

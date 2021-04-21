@@ -6,18 +6,18 @@ import {
   DeezerSourceItemShort,
   SourceItemShort,
   SearchSource,
-} from '@app/state/search/types';
+} from '@app/features/search/search/types';
 import {
   pickOptionForExtend,
   resetOptionsForExtend,
   fetchNextOptionsForExtend,
-} from '@app/state/search';
-import { createExtensionHasItemsToFetchSelector } from '@app/state/search/selectors';
+} from '@app/features/search/search';
+import { createExtensionHasItemsToFetchSelector } from '@app/features/search/search/selectors';
 import { ClosingPopup } from '@app/components/popup';
 import { ExtensionItem } from './components/extension-item';
 
 import styles from './extension-popup.scss';
-import { useSelectorCreator } from '@app/hooks/use-params-selector';
+import { useSelectorCreator } from '@app/hooks/use-seletor-creator';
 
 const cx = classNames.bind(styles);
 

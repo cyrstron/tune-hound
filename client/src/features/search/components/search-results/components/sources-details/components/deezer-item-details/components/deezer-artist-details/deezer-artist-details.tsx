@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import classNames from 'classnames/bind';
-import { DeezerArtistSourceItemFull, SearchSource } from '@app/state/search/types';
+import { DeezerArtistSourceItemFull, SearchSource } from '@app/features/search/search/types';
 import { AlbumTiles } from '@app/components/albums';
 import { TrackList } from '@app/components/tracks';
 import { mapDeezerAlbums, mapDeezerTracks } from '../../services/mapHelpers';

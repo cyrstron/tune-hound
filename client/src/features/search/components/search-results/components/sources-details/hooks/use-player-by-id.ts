@@ -7,7 +7,7 @@ import {
 import { useCallback } from 'react';
 import { pause, playBySourceId } from '@app/state/player/actions';
 import { PlaylistType } from '@app/state/player/types';
-import { SearchSource } from '@app/state/search/types';
+import { SearchSource } from '@app/features/search/search/types';
 
 export const usePlayerById = (
   type: PlaylistType,

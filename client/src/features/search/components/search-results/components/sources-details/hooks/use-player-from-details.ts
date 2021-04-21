@@ -5,13 +5,13 @@ import {
   selectIsPlayerPending,
   selectIsPlaying,
 } from '@app/state/player/selectors';
-import { playSearchResult } from '@app/state/search';
+import { playSearchResult } from '@app/features/search/search';
 import { useCallback } from 'react';
-import { createExtensionPendingSelector } from '@app/state/search/selectors';
+import { createExtensionPendingSelector } from '@app/features/search/search/selectors';
 import { pause } from '@app/state/player/actions';
 import { PlaylistType } from '@app/state/player/types';
-import { SearchSource } from '@app/state/search/types';
-import { useSelectorCreator } from '@app/hooks/use-params-selector';
+import { SearchSource } from '@app/features/search/search/types';
+import { useSelectorCreator } from '@app/hooks/use-seletor-creator';
 
 export const usePlayerFromDetails = (
   id: string,

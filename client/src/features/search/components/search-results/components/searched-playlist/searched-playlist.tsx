@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react';
 import classNames from 'classnames/bind';
-import { SearchedPlaylist } from '@app/state/search/types';
+import { SearchedPlaylist } from '@app/features/search/search/types';
 import { SourceDetails } from '../sources-details';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -8,13 +8,13 @@ import {
   selectIsPlaying,
   selectIsPlayerPending,
 } from '@app/state/player/selectors';
-import { createOneOfExtensionsPendingSelector } from '@app/state/search/selectors';
-import { playSearchResult } from '@app/state/search';
+import { createOneOfExtensionsPendingSelector } from '@app/features/search/search/selectors';
+import { playSearchResult } from '@app/features/search/search';
 import { pause } from '@app/state/player/actions';
 import { CoverPlayBtn } from '@app/components/cover-play-btn';
 
 import styles from './searched-playlist.scss';
-import { useSelectorCreator } from '@app/hooks/use-params-selector';
+import { useSelectorCreator } from '@app/hooks/use-seletor-creator';
 
 const cx = classNames.bind(styles);
 

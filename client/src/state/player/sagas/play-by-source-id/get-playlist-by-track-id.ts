@@ -1,4 +1,4 @@
-import { SearchSource } from '@app/state/search/types';
+import { SearchSource } from '@app/features/search/search/types';
 import { getContext, call, select } from 'redux-saga/effects';
 import { SPOTIFY_SERVICE_CTX_KEY, DEEZER_SERVICE_CTX_KEY } from '@app/consts';
 import { SpotifyService } from '@app/state/spotify/services/spotify-service';

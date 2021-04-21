@@ -4,7 +4,7 @@ import { AlbumTileItem } from "./components/album-tile-item";
 import { AlbumShort } from "../..";
 
 import styles from "./album-tiles.scss";
-import { SearchSource } from "@app/state/search/types";
+import { SearchSource } from "@app/features/search/search/types";
 
 const cx = classNames.bind(styles);
 

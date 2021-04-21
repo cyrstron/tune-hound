@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { SpotifyPlaylistSourceItemShort } from "@app/state/search/types";
+import { SpotifyPlaylistSourceItemShort } from "@app/features/search/search/types";
 
 export interface SpotifyPlaylistDetailsProps {
   playlist: SpotifyPlaylistSourceItemShort;

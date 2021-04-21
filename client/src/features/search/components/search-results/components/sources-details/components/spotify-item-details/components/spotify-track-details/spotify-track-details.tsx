@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import classNames from "classnames/bind";
-import { SpotifyTrackSourceItemFull } from "@app/state/search/types";
+import { SpotifyTrackSourceItemFull } from "@app/features/search/search/types";
 
 import styles from "./spotify-track-details.scss";
 

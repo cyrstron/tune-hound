@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import classNames from "classnames/bind";
-import { DeezerSourceItemFull } from "@app/state/search/types";
+import { DeezerSourceItemFull } from "@app/features/search/search/types";
 import { DeezerTrackDetails } from "./components/deezer-track-details";
 import { DeezerAlbumDetails } from "./components/deezer-album-details";
 import { DeezerPlaylistDetails } from "./components/deezer-playlist-details";

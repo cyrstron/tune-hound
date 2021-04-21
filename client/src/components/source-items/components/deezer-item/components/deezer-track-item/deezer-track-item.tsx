@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import classNames from "classnames/bind";
 
 import styles from "./deezer-track-item.scss";
-import { DeezerTrackSourceItemShort } from "@app/state/search/types";
+import { DeezerTrackSourceItemShort } from "@app/features/search/search/types";
 
 const cx = classNames.bind(styles);
 

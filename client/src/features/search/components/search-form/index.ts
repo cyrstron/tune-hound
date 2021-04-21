@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { AppState } from '@app/state';
-import { executeSearch } from '@app/state/search';
+import { executeSearch } from '@app/features/search/search';
 
 import { SearchFormComponent } from './search-form';
 import { selectIsSpotifyConnected } from '@app/state/spotify';

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import classNames from "classnames/bind";
-import { SpotifySourceItemFull } from "@app/state/search/types";
+import { SpotifySourceItemFull } from "@app/features/search/search/types";
 import { SpotifyTrackDetails } from "./components/spotify-track-details";
 import { SpotifyAlbumDetails } from "./components/spotify-album-details";
 import { SpotifyPlaylistDetails } from "./components/spotify-playlist-details";

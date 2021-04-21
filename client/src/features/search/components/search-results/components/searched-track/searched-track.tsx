@@ -1,12 +1,12 @@
 import React, { FC, Fragment, useCallback } from 'react';
 import classNames from 'classnames/bind';
-import { SearchedTrack } from '@app/state/search/types';
+import { SearchedTrack } from '@app/features/search/search/types';
 import { SourceLink } from '@app/components/source-link';
 
 import styles from './searched-track.scss';
 import { SourceDetails } from '../sources-details';
 import { useDispatch, useSelector } from 'react-redux';
-import { playSearchResult } from '@app/state/search/actions';
+import { playSearchResult } from '@app/features/search/search/actions';
 import { pause } from '@app/state/player/actions';
 import { CoverPlayBtn } from '@app/components/cover-play-btn';
 import {
@@ -14,8 +14,8 @@ import {
   selectIsPlaying,
   selectIsPlayerPending,
 } from '@app/state/player/selectors';
-import { createOneOfExtensionsPendingSelector } from '@app/state/search/selectors';
-import { useSelectorCreator } from '@app/hooks/use-params-selector';
+import { createOneOfExtensionsPendingSelector } from '@app/features/search/search/selectors';
+import { useSelectorCreator } from '@app/hooks/use-seletor-creator';
 
 const cx = classNames.bind(styles);
 

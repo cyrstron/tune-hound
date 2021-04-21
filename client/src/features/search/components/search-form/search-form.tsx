@@ -1,5 +1,5 @@
 import React, { Component, FormEvent, ChangeEvent } from 'react';
-import { SearchSource, SearchOptions } from '@app/state/search/types';
+import { SearchSource, SearchOptions } from '@app/features/search/search/types';
 import { DeezerSearchForm } from './components/deezer-search-form';
 import { SpotifySearchForm } from './components/spotify-search-form';
 import { DeezerSearchOptions } from '@app/state/deezer/types';

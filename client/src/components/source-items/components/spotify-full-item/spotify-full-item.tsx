@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { SpotifySourceItemFull } from "@app/state/search/types";
+import { SpotifySourceItemFull } from "@app/features/search/search/types";
 import { SpotifyFullTrackItem } from "./components/spotify-full-track-item";
 import { SpotifyFullAlbumItem } from "./components/spotify-full-album-item";
 import { SpotifyFullArtistItem } from "./components/spotify-full-artist-item";

@@ -1,6 +1,6 @@
 import { TrackShort } from '@app/components/tracks';
 import { AlbumShort } from '@app/components/albums';
-import { SearchSource } from '@app/state/search/types';
+import { SearchSource } from '@app/features/search/search/types';
 
 export function mapSpotifyTracks(tracks: SpotifyApi.TrackObjectSimplified[]): TrackShort[] {
   return tracks.map(({ name, artists, id }) => ({
