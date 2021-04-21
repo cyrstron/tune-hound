@@ -1,13 +1,21 @@
 import { Primitive, safeGet, safeSet } from './utils';
 
+export interface MemoCacheOptions {
+  cacheSize?: number;
+  serializeKey?: (key: any) => Primitive;
+}
 export class MemoCache<TPayload> {
   private size = 0;
+  private maxSize: number;
+  private serializeKey?: (key: any) => Primitive;
 
   constructor(
-    private key: (...args: any[]) => any,
-    private maxSize: number = 100,
-    private serializeKey?: (unsafeKey: any) => Primitive,
+    private key: (...args: any) => any,
+    { cacheSize = 100, serializeKey }: MemoCacheOptions = {},
   ) {
+    this.maxSize = cacheSize;
+    this.serializeKey = serializeKey;
+
     MemoCache.watchGlobalStoreGarbage();
   }
 

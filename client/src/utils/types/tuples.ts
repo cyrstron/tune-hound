@@ -1,12 +1,6 @@
-import { AppState } from '@app/state';
-import { createSelector } from 'reselect';
-import { MemoCache } from './memoize/memo-cache';
-import { Primitive } from './memoize/utils';
-
-export interface ParamsSelectorOptions {
-  cacheSize?: number;
-  serializeKey?: (key: any) => Primitive;
-}
+export type NTuple<N extends number, T extends any[] = [], L = any> = T['length'] extends N
+  ? T
+  : NTuple<N, [L, ...T]>;
 
 type OverrideAny<T, Y = T> = 0 extends 1 & T ? Y : T;
 
@@ -61,32 +55,3 @@ type MappedReturnTypes<TFuncs extends ReadonlyArray<(...args: any[]) => any>> = 
     [K in keyof TFuncs]: TFuncs[K] extends (...args: any[]) => infer R ? R : never;
   }
 ];
-
-type OutputSelector<P extends any[], R> = [P] extends [never] ? never : (...args: P) => R;
-
-export function createParamsSelector<
-  TSelectors extends ReadonlyArray<(...args: any[]) => any> | readonly [(...args: any[]) => any],
-  TCombiner extends (...args: MappedReturnTypes<TSelectors>) => any
->(
-  selectors: TSelectors,
-  combiner: TCombiner,
-  options: ParamsSelectorOptions = {},
-): OutputSelector<MergedParameters<TSelectors>, ReturnType<TCombiner>> {
-  const cache = new MemoCache<any>(combiner, options.cacheSize, options.serializeKey);
-
-  function paramsSelector(state: AppState, ...params: any[]): ReturnType<TCombiner> {
-    let selector = cache.get(params);
-
-    if (!selector) {
-      selector = (createSelector(selectors as any, combiner as any) as any) as (
-        ...params: any[]
-      ) => ReturnType<TCombiner>;
-
-      cache.set(params, selector);
-    }
-
-    return selector(state, ...params);
-  }
-
-  return paramsSelector as any;
-}
