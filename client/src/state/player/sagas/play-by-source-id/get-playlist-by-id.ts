@@ -1,5 +1,5 @@
 import { getContext, call, select } from 'redux-saga/effects';
-import { SearchSource } from '@app/state/search/types';
+import { SearchSource } from '@app/features/search/state/types';
 import { SpotifyService } from '@app/state/spotify/services/spotify-service';
 import { SPOTIFY_SERVICE_CTX_KEY, DEEZER_SERVICE_CTX_KEY } from '@app/consts';
 import { retrieveAccessToken } from '@app/state/spotify/sagas/retrieve-access-token';

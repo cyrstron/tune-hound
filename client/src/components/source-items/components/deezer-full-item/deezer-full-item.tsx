@@ -1,8 +1,8 @@
-import React, { FC } from "react";
-import { DeezerSourceItemFull } from "@app/state/search/types";
-import { DeezerFullTrackItem } from "./components/deezer-full-track-item";
-import { DeezerFullAlbumItem } from "./components/deezer-full-album-item";
-import { DeezerFullArtistItem } from "./components/deezer-full-artist-item";
+import React, { FC } from 'react';
+import { DeezerSourceItemFull } from '@app/features/search/state/types';
+import { DeezerFullTrackItem } from './components/deezer-full-track-item';
+import { DeezerFullAlbumItem } from './components/deezer-full-album-item';
+import { DeezerFullArtistItem } from './components/deezer-full-artist-item';
 
 export interface DeezerFullItemProps {
   object: DeezerSourceItemFull;
@@ -10,11 +10,11 @@ export interface DeezerFullItemProps {
 
 const DeezerFullItemComponent: FC<DeezerFullItemProps> = ({ object }) => {
   switch (object.type) {
-    case "track":
+    case 'track':
       return <DeezerFullTrackItem track={object} />;
-    case "album":
+    case 'album':
       return <DeezerFullAlbumItem album={object} />;
-    case "artist":
+    case 'artist':
       return <DeezerFullArtistItem artist={object} />;
     default:
       return null;

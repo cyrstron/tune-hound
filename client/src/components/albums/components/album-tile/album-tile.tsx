@@ -1,9 +1,9 @@
-import React, { FC, useCallback } from "react";
-import classNames from "classnames/bind";
+import React, { FC, useCallback } from 'react';
+import classNames from 'classnames/bind';
 
-import styles from "./album-tile.scss";
-import { CoverPlayBtn } from "@app/components/cover-play-btn";
-import { SearchSource } from "@app/state/search/types";
+import styles from './album-tile.scss';
+import { CoverPlayBtn } from '@app/components/cover-play-btn';
+import { SearchSource } from '@app/features/search/state/types';
 
 const cx = classNames.bind(styles);
 
@@ -39,9 +39,9 @@ const AlbumTileComponent: FC<AlbumTileProps> = ({
   }, [onPlay, id, source]);
 
   return (
-    <div className={cx("album", className)}>
+    <div className={cx('album', className)}>
       <CoverPlayBtn
-        className={cx("cover")}
+        className={cx('cover')}
         src={coverUrl}
         title={title}
         onPlay={handlePlay}

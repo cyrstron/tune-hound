@@ -1,10 +1,10 @@
-import React, { FC } from "react";
-import classNames from "classnames/bind";
-import { AlbumTileItem } from "./components/album-tile-item";
-import { AlbumShort } from "../..";
+import React, { FC } from 'react';
+import classNames from 'classnames/bind';
+import { AlbumTileItem } from './components/album-tile-item';
+import { AlbumShort } from '../..';
 
-import styles from "./album-tiles.scss";
-import { SearchSource } from "@app/state/search/types";
+import styles from './album-tiles.scss';
+import { SearchSource } from '@app/features/search/state/types';
 
 const cx = classNames.bind(styles);
 
@@ -30,14 +30,14 @@ const AlbumTilesComponent: FC<AlbumTilesProps> = ({
   onPause,
 }) => {
   return (
-    <ul className={cx("album-list", className)}>
-      {albums.map((album) => {
+    <ul className={cx('album-list', className)}>
+      {albums.map(album => {
         const isActive = activeId === album.id;
 
         return (
           <AlbumTileItem
             key={album.id}
-            className={cx("album-item")}
+            className={cx('album-item')}
             isPlaying={isActive && isPlaying}
             isPending={isActive && isPending}
             isPaused={isActive && isPaused}

@@ -8,7 +8,7 @@ export function memoize<TFunc extends (...args: any[]) => ReturnType<TFunc>>(
   func: TFunc,
   options: MemoizeOptions = {},
 ): (...args: Parameters<TFunc>) => ReturnType<TFunc> {
-  const cache = new MemoCache<ReturnType<TFunc>>(func, options.cacheSize);
+  const cache = new MemoCache<ReturnType<TFunc>>(func, options);
 
   function memoized(...args: Parameters<TFunc>): ReturnType<TFunc> {
     const cached = cache.get(args);

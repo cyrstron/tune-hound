@@ -1,23 +1,23 @@
 import { AppSelector, AppState } from '..';
-import { repeatOneMode, repeatAllMode, noRepeatMode, PlaylistType } from './types';
+import { repeatOneMode, repeatAllMode, noRepeatMode, PlaylistType, RepeatMode } from './types';
 import { calcNextRandomIndex } from './services';
 import { createSelector } from 'reselect';
-import { memoize } from '@app/utils/memoize';
+import { memoize } from '@app/utils/memoize/memoize';
 
 const selectPlayerState = ({ player }: AppState) => player;
 
-export const selectIsMuted = createSelector([selectPlayerState], player => player.isMuted);
+export const selectIsMuted = createSelector([selectPlayerState], player => !!player?.isMuted);
 
-export const selectVolume = createSelector([selectPlayerState], player => player.volume);
+export const selectVolume = createSelector([selectPlayerState], player => player?.volume ?? 0);
 
 export const selectCurrentTrack = createSelector(
   [selectPlayerState],
-  player => player.currentTrack,
+  player => player?.currentTrack,
 );
 
 export const selectCurrentIndex = createSelector(
   [selectPlayerState],
-  player => player.currentTrackIndex,
+  player => player?.currentTrackIndex,
 );
 
 export const selectPlayingSource = createSelector(
@@ -25,26 +25,32 @@ export const selectPlayingSource = createSelector(
   currentTrack => currentTrack?.source,
 );
 
-export const selectIsPlaying = createSelector([selectPlayerState], player => player.isPlaying);
+export const selectIsPlaying = createSelector([selectPlayerState], player => !!player?.isPlaying);
 
-export const selectPlaylist = createSelector([selectPlayerState], player => player.playlist);
+export const selectPlaylist = createSelector([selectPlayerState], player => player?.playlist ?? []);
 
-export const selectPosition = createSelector([selectPlayerState], player => player.position);
+export const selectPosition = createSelector([selectPlayerState], player => player?.position);
 
-export const selectRepeatMode = createSelector([selectPlayerState], player => player.repeatMode);
+export const selectRepeatMode = createSelector(
+  [selectPlayerState],
+  player => player?.repeatMode ?? RepeatMode.NO_REPEAT,
+);
 
-export const selectIsShuffled = createSelector([selectPlayerState], player => player.isShuffled);
+export const selectIsShuffled = createSelector([selectPlayerState], player => !!player?.isShuffled);
 
 export const selectPlayedIndexes = createSelector(
   [selectPlayerState],
-  player => player.playedIndexes,
+  player => player?.playedIndexes ?? [],
 );
 
-export const selectPlayerHistory = createSelector([selectPlayerState], player => player.history);
+export const selectPlayerHistory = createSelector(
+  [selectPlayerState],
+  player => player?.history ?? [],
+);
 
 export const selectIsPlayerPending = createSelector(
   [selectPlayerState],
-  player => player.isPending,
+  player => !!player?.isPending,
 );
 
 export const selectNextIndex = createSelector(
@@ -85,16 +91,16 @@ export const selectHasPrevTrack = createSelector(
   (playlist, prevIndex) => playlist.length > 1 && prevIndex !== undefined,
 );
 
-export const selectPlaylistId = createSelector([selectPlayerState], player => player.playlistId);
+export const selectPlaylistId = createSelector([selectPlayerState], player => player?.playlistId);
 
 export const selectNativePlaylistId = createSelector(
   [selectPlayerState],
-  player => player.nativePlaylistId,
+  player => player?.nativePlaylistId,
 );
 
 export const selectPlaylistType = createSelector(
   [selectPlayerState],
-  player => player.playlistType,
+  player => player?.playlistType,
 );
 
 export const createIsPlaylistActiveSelector = memoize(

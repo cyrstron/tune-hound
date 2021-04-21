@@ -1,10 +1,9 @@
-import { AppSelector } from '@app/state';
+import { AppState } from '@app/state';
 import { useSelector } from 'react-redux';
 
-export function useSelectorCreator<
-  TFunc extends (...[]: any[]) => AppSelector<ReturnType<ReturnType<TFunc>>>
->(selectorCreator: TFunc, ...params: Parameters<TFunc>): ReturnType<ReturnType<TFunc>> {
-  const selector = selectorCreator(...params);
-
-  return useSelector(selector);
+export function useParamsSelector<TSelector extends (state: AppState, ...[]: any[]) => any>(
+  selector: TSelector,
+  ...params: Parameters<TSelector> extends [any, ...infer P] ? P : []
+): ReturnType<TSelector> {
+  return useSelector((state: AppState) => selector(state, ...params));
 }

@@ -6,14 +6,17 @@ export const SYMBOL_TRUE = Symbol('true');
 export type Primitive = string | number | boolean | null | undefined;
 export type IndexPrimitive = string | number | symbol;
 
-export function getSafeKey(key: any, serializeKey?: (key: any) => Primitive): IndexPrimitive {
-  key = serializeKey ? serializeKey(key) : (key as Primitive);
+export function getSafeKey<TKey = Primitive>(
+  key: TKey | Primitive,
+  serializeKey?: (key: TKey | Primitive) => Primitive,
+): IndexPrimitive {
+  const serializedKey = serializeKey ? serializeKey(key) : (key as Primitive);
 
-  if (typeof key === 'string' || typeof key === 'number') {
-    return key;
-  } else if (typeof key === 'boolean') {
-    return key ? SYMBOL_TRUE : SYMBOL_FALSE;
-  } else if (key === undefined) {
+  if (typeof serializedKey === 'string' || typeof serializedKey === 'number') {
+    return serializedKey;
+  } else if (typeof serializedKey === 'boolean') {
+    return serializedKey ? SYMBOL_TRUE : SYMBOL_FALSE;
+  } else if (serializedKey === undefined) {
     return SYMBOL_UNDEFINED;
   } else {
     return SYMBOL_NULL;

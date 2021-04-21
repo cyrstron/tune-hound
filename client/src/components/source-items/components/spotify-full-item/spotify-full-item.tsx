@@ -1,8 +1,8 @@
-import React, { FC } from "react";
-import { SpotifySourceItemFull } from "@app/state/search/types";
-import { SpotifyFullTrackItem } from "./components/spotify-full-track-item";
-import { SpotifyFullAlbumItem } from "./components/spotify-full-album-item";
-import { SpotifyFullArtistItem } from "./components/spotify-full-artist-item";
+import React, { FC } from 'react';
+import { SpotifySourceItemFull } from '@app/features/search/state/types';
+import { SpotifyFullTrackItem } from './components/spotify-full-track-item';
+import { SpotifyFullAlbumItem } from './components/spotify-full-album-item';
+import { SpotifyFullArtistItem } from './components/spotify-full-artist-item';
 
 export interface SpotifyItemProps {
   object: SpotifySourceItemFull;
@@ -10,11 +10,11 @@ export interface SpotifyItemProps {
 
 const SpotifyFullItemComponent: FC<SpotifyItemProps> = ({ object }) => {
   switch (object.type) {
-    case "track":
+    case 'track':
       return <SpotifyFullTrackItem track={object} />;
-    case "album":
+    case 'album':
       return <SpotifyFullAlbumItem album={object} />;
-    case "artist":
+    case 'artist':
       return <SpotifyFullArtistItem artist={object} />;
     default:
       return null;

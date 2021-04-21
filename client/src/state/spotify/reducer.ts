@@ -1,5 +1,4 @@
 import {
-  SpotifyAction,
   SetSpotifyAuthDataAction,
   UpdateSpotifyAccessTokenSuccessAction,
   SetSpotifyCurrentUserAction,
@@ -28,6 +27,7 @@ import {
   SET_SPOTIFY_PLAYER_ERROR,
   SET_SPOTIFY_ACTIVE_PLAYER_IGNORED,
 } from './consts';
+import { AppAction } from '../actions';
 
 export interface SpotifyState {
   isPlayerMsgIgnored: boolean;
@@ -62,7 +62,7 @@ const initialSpotifyState: SpotifyState = {
 
 export function spotifyReducer(
   state: SpotifyState = initialSpotifyState,
-  action: SpotifyAction,
+  action: AppAction,
 ): SpotifyState {
   switch (action.type) {
     case CONNECT_SPOTIFY_PENDING:

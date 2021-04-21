@@ -2,16 +2,18 @@ import { take, call, fork, cancel, all, getContext } from 'redux-saga/effects';
 import { DISCONNECT_SPOTIFY } from '../../consts';
 import { disconnectSpotifySaga } from './disconnect-spotify';
 import { Task } from 'redux-saga';
-import { INJECT_REDUCER_KEY } from '@app/consts';
+import { REDUCERS_MANAGER_KEY } from '@app/consts';
+import { ReducersManager } from '@app/state/reducers-manager';
 
 export function* spotifyConnectionFlow(): any {
-  const [{ connectSpotify }, { spotifyReducer }, injectReducer] = yield all([
+  const [{ connectSpotify }, { spotifyReducer }] = yield all([
     import('./connect-spotify'),
     import('../../reducer'),
-    getContext(INJECT_REDUCER_KEY),
   ]);
 
-  injectReducer('spotify', spotifyReducer);
+  const reducersManager: ReducersManager = yield getContext(REDUCERS_MANAGER_KEY);
+
+  reducersManager.injectReducer('spotify', spotifyReducer);
 
   const task: Task = yield fork(connectSpotify);
 

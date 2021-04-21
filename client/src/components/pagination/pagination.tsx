@@ -1,15 +1,15 @@
-import React, { FC } from "react";
-import classNames from "classnames/bind";
-import { PageItem } from "./components/page-item";
+import React, { FC } from 'react';
+import classNames from 'classnames/bind';
+import { PageItem } from './components/page-item';
 
-import styles from "./pagination.scss";
-import { computePages } from "./services";
+import styles from './pagination.scss';
+import { computePages } from './services';
 
 const cx = classNames.bind(styles);
 
 export interface PaginationProps {
   pageIndex: number;
-  totalPages: number;
+  totalPages?: number;
   pagesLength?: number;
   isDisabled?: boolean;
   setPage: (page: number) => void;
@@ -22,10 +22,12 @@ const PaginationComponent: FC<PaginationProps> = ({
   setPage,
   isDisabled,
 }) => {
+  if (!totalPages) return null;
+
   const pagesIndexes = computePages(pageIndex, totalPages, pagesLength);
 
   return (
-    <ul className={cx("pages-list")}>
+    <ul className={cx('pages-list')}>
       {pagesIndexes[0] !== 0 && (
         <>
           <PageItem
@@ -34,10 +36,10 @@ const PaginationComponent: FC<PaginationProps> = ({
             isActive={pageIndex === 0}
             isDisabled={isDisabled}
           />
-          {" ... "}
+          {' ... '}
         </>
       )}
-      {pagesIndexes.map((index) => (
+      {pagesIndexes.map(index => (
         <PageItem
           key={index}
           pageIndex={index}
@@ -48,7 +50,7 @@ const PaginationComponent: FC<PaginationProps> = ({
       ))}
       {pagesIndexes[pagesIndexes.length - 1] !== totalPages - 1 && (
         <>
-          {" ... "}
+          {' ... '}
           <PageItem
             pageIndex={totalPages - 1}
             setPage={setPage}

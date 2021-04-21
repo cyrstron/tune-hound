@@ -4,7 +4,7 @@ import { AUDIO_SERVICE_CTX_KEY } from '@app/consts';
 import { listenAudioEvents } from './listen-service-events';
 import { applyPlayerState } from './apply-player-state';
 import { watchPlayerState } from './watch-player-state';
-import { INIT_APP } from '@app/state/consts';
+import { INIT_APP } from '@app/state/root/consts';
 import { setAudioMounted } from '../../actions';
 
 function* initAudioServiceSaga(): any {

@@ -7,7 +7,7 @@ import {
   connectSpotifyFailure,
   connectSpotifySuccess,
 } from '../../../actions';
-import { INJECT_REDUCER_KEY, SPOTIFY_SERVICE_CTX_KEY } from '@app/consts';
+import { SPOTIFY_SERVICE_CTX_KEY } from '@app/consts';
 import { SpotifyService } from '../../../services/spotify-service';
 import {
   selectIsSpotifyLoggedIn,

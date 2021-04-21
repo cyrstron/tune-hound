@@ -1,4 +1,4 @@
-import { AudioAction } from './actions';
+import { AppAction } from '../actions';
 import {
   SET_CURRENT_AUDIO_URL,
   SET_IS_AUDIO_PLAYING,
@@ -31,7 +31,7 @@ const initialDeezerState: AudioState = {
 
 export function audioReducer(
   state: AudioState = initialDeezerState,
-  action: AudioAction,
+  action: AppAction,
 ): AudioState {
   switch (action.type) {
     case SET_CURRENT_AUDIO_URL:

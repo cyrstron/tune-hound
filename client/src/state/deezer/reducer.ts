@@ -1,4 +1,3 @@
-import { DeezerAction } from './actions';
 import {
   getDeezerConnectedState,
   getFlashIgnoredState,
@@ -27,6 +26,7 @@ import {
   DEEZER_TRACK_LIST_CHANGED,
 } from './consts';
 import { DeezerUser } from './types';
+import { AppAction } from '../actions';
 
 export interface DeezerState {
   isMounted: boolean;
@@ -72,7 +72,7 @@ const initialDeezerState: DeezerState = {
 
 export function deezerReducer(
   state: DeezerState = initialDeezerState,
-  action: DeezerAction,
+  action: AppAction,
 ): DeezerState {
   switch (action.type) {
     case SET_DEEZER_IS_CONNECTED:

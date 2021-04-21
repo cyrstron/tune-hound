@@ -22,7 +22,7 @@ import {
   SET_PLAYER_ERROR,
 } from './consts';
 import { PlayerTrack, RepeatMode, PlaylistType } from './types';
-import { SearchSource } from '../search/types';
+import { SearchSource } from '../../features/search/state/types';
 
 export interface SetPlaylistAction {
   type: typeof SET_PLAYLIST;

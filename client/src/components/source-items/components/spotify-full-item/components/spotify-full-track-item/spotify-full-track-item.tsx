@@ -1,8 +1,8 @@
-import React, { FC } from "react";
-import classNames from "classnames/bind";
+import React, { FC } from 'react';
+import classNames from 'classnames/bind';
 
-import styles from "./spotify-full-track-item.scss";
-import { SpotifyTrackSourceItemFull } from "@app/state/search/types";
+import styles from './spotify-full-track-item.scss';
+import { SpotifyTrackSourceItemFull } from '@app/features/search/state/types';
 
 const cx = classNames.bind(styles);
 
@@ -16,12 +16,11 @@ const SpotifyFullTrackItemComponent: FC<SpotifyFullTrackItemProps> = ({
   className,
 }) => {
   return (
-    <div className={cx("track", className)}>
+    <div className={cx('track', className)}>
       <div>Name: {name}</div>
       <div>Album: {album.name}</div>
       <div>
-        {artists.length < 1 ? "Artists:" : "Artist"}{" "}
-        {artists.map(({ name }) => name).join(", ")}
+        {artists.length < 1 ? 'Artists:' : 'Artist'} {artists.map(({ name }) => name).join(', ')}
       </div>
     </div>
   );
