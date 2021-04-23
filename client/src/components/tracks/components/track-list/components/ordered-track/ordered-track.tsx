@@ -1,8 +1,8 @@
-import React, { FC, useCallback } from "react";
-import classNames from "classnames/bind";
-import { TrackItem, TrackItemProps } from "../../../track-item";
+import React, { FC, useCallback } from 'react';
+import classNames from 'classnames/bind';
+import { TrackItem, TrackItemProps } from '../../../track-item';
 
-import styles from "./ordered-track.scss";
+import styles from './ordered-track.scss';
 
 const cx = classNames.bind(styles);
 
@@ -38,18 +38,18 @@ const OrderedTrackComponent: FC<OrderedTrackProps> = ({
   }, [index, onPause, onPlay, isPlaying, isPending]);
 
   return (
-    <li className={cx("track-item", className)}>
+    <li className={cx('track-item', className)}>
       <button
         onClick={onClick}
-        className={cx("index-play-btn", {
+        className={cx('index-play-btn', {
           playing: isPlaying,
           paused: isPaused,
           pending: isPending,
         })}
       >
-        <span className={cx("index")}>{index + 1}</span>
+        <span className={cx('index')}>{index + 1}</span>
       </button>
-      <TrackItem className={cx("track-content")} {...props} />
+      <TrackItem className={cx('track-content')} {...props} />
     </li>
   );
 };

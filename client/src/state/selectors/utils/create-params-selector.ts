@@ -1,8 +1,9 @@
 import { AppState } from '@app/state';
 import { createSelector } from 'reselect';
-import { MappedReturnTypes, MergedParameters, CollapseNever } from '@app/types/index';
+import { MappedReturnTypes, MergedParameters, CollapseNever } from '@app/types/utils/index';
 import { MemoCache } from '@app/utils/memoize/memo-cache';
 import { Primitive } from '@app/utils/memoize/utils';
+import partialRight from 'lodash/partialRight';
 
 export interface ParamsSelectorOptions {
   cacheSize?: number;
@@ -26,17 +27,15 @@ export function createParamsSelector<
   const cache = new MemoCache<any>(combiner, options);
 
   function paramsSelector(state: AppState, ...params: any[]): ReturnType<TCombiner> {
-    let selector = cache.get(params);
+    let selector: (state: AppState) => ReturnType<TCombiner> = cache.get(params);
 
     if (!selector) {
-      selector = (createSelector(selectors as any, combiner as any) as any) as (
-        ...params: any[]
-      ) => ReturnType<TCombiner>;
+      selector = partialRight(createSelector(selectors as any, combiner as any) as any, ...params);
 
       cache.set(params, selector);
     }
 
-    return selector(state, ...params);
+    return selector(state);
   }
 
   return paramsSelector as any;

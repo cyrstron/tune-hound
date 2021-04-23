@@ -1,10 +1,14 @@
-import { TrackShort } from '@app/components/tracks';
 import { AlbumShort } from '@app/components/albums';
 import { SearchSource } from '@app/features/search/state/types';
+import { MediaSource, MediaType, TrackShort } from '@app/types/media';
 
 export function mapSpotifyTracks(tracks: SpotifyApi.TrackObjectSimplified[]): TrackShort[] {
   return tracks.map(({ name, artists, id }) => ({
-    id,
+    type: MediaType.TRACK,
+    id: `${MediaSource.SPOTIFY}:${id}`,
+    sourceIds: {
+      [MediaSource.SPOTIFY]: id,
+    },
     title: name,
     artists: artists.map(({ name }) => name),
   }));

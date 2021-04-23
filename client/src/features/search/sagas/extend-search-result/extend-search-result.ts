@@ -7,14 +7,12 @@ import {
   extendSearchResultPending,
   extendSearchResultSuccess,
 } from '../../state';
-import { selectSearchResultById } from '../../state/selectors';
 import { SearchResult, SourceItem, SourceItemShort } from '../../state/types';
+import { selectSearchResultById } from '../../state/selectors';
 
 export function* extendSearchResultSaga({
   payload: { itemId, source },
 }: ExtendSearchResultAction): any {
-  const pendingAction = extendSearchResultPending(itemId, source);
-
   const searchItem: SearchResult = yield select(selectSearchResultById, itemId);
 
   if (!searchItem) return;
@@ -22,6 +20,8 @@ export function* extendSearchResultSaga({
   let result: SourceItem | null | undefined = searchItem.sources[source];
 
   if (result === undefined && !searchItem.isCrossExtendable) return;
+
+  const pendingAction = extendSearchResultPending(itemId, source);
 
   yield put(pendingAction);
 

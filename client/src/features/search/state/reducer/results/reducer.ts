@@ -1,4 +1,4 @@
-import { SearchResult, SearchOptions, SearchSource, SourceItemShort } from './types';
+import { SearchResult, SearchOptions, SearchSource, SourceItemShort } from '../../types';
 import {
   ExtendSearchResultSuccessAction,
   ExtendSearchResultPendingAction,
@@ -6,96 +6,36 @@ import {
   SetExtensionTotalsAction,
   FetchOptionsForExtendSuccessAction,
   SetExtensionOffsetAction,
-} from './actions';
+} from '../../actions';
 import {
-  EXECUTE_SEARCH_PENDING,
-  EXECUTE_SEARCH_SUCCESS,
-  EXECUTE_SEARCH_FAILURE,
-  RESET_SEARCH,
-  EXECUTE_SEARCH,
-  RESET_SEARCH_RESULTS,
-  SET_SEARCH_PAGE_INDEX,
-  SET_SEARCH_PAGE_SIZE,
   EXTEND_SEARCH_RESULT_PENDING,
   EXTEND_SEARCH_RESULT_SUCCESS,
   EXTEND_SEARCH_RESULT_FAILURE,
   SET_EXTENSION_TOTALS,
   SET_EXTENSION_OFFSET,
   FETCH_OPTIONS_FOR_EXTEND_SUCCESS,
-} from './consts';
-import { AppAction } from '../../../state/actions';
+} from '../../consts';
+import { AppAction } from '@app/state/actions';
 import produce from 'immer';
 import { WritableDraft } from 'immer/dist/internal';
+import { MediaSource, MediaSourceDict } from '@app/types/media';
 
-export type ExtensionSubState = {
+export interface SearchResultState {
+  readonly result?: SearchResult;
   readonly searchOptions?: SearchOptions[];
-  readonly limit?: number;
-  readonly offset?: number;
-  readonly totals?: Array<number | undefined>;
-  readonly error?: Error;
-  readonly isPending?: boolean;
-  readonly isFetchPending?: boolean;
-  readonly results?: SourceItemShort[];
-};
-
-export interface SearchState {
-  readonly extensions: {
-    readonly [key in SearchSource]?: {
-      readonly [key: string]: ExtensionSubState | undefined;
-    };
-  };
-  readonly searchQuery?: SearchOptions;
-  readonly searchSource?: SearchSource;
-  readonly result?: SearchResult[];
-  readonly total?: number;
-  readonly pageIndex: number;
-  readonly pageSize: number;
-  readonly error?: Error;
-  readonly isPending: boolean;
+  readonly limits?: MediaSourceDict<number>;
+  readonly offsets?: MediaSourceDict<number>;
+  readonly totals?: MediaSourceDict<number[]>;
+  readonly errors?: MediaSourceDict<Error>;
+  readonly pendingSources?: MediaSource[];
+  readonly fetchPendings?: MediaSource[];
+  readonly subResults?: MediaSourceDict<SourceItemShort[]>;
 }
 
-const initialSearchState: SearchState = {
-  extensions: {},
-  isPending: false,
-  pageIndex: 0,
-  pageSize: 20,
-  result: undefined,
-};
+const initialSearchResultState: SearchResultState = {};
 
-export const searchReducer = produce((stateDraft, action: AppAction) => {
+export const searchResultReducer = produce((stateDraft, action: AppAction) => {
   switch (action.type) {
-    case EXECUTE_SEARCH:
-      stateDraft.searchQuery = action.payload.options;
-      stateDraft.searchSource = action.payload.source;
-      break;
-    case EXECUTE_SEARCH_PENDING:
-      stateDraft.isPending = true;
-      delete stateDraft.error;
-      break;
-    case EXECUTE_SEARCH_SUCCESS:
-      stateDraft.isPending = false;
-      stateDraft.total = action.payload.total;
-      action.payload.data.forEach((item, index) => {
-        if (!stateDraft.result) stateDraft.result = [];
-
-        stateDraft.result[stateDraft.pageIndex * stateDraft.pageSize + index] = item;
-      });
-      break;
-    case EXECUTE_SEARCH_FAILURE:
-      stateDraft.isPending = false;
-      stateDraft.error = action.payload.error;
-      break;
-    case RESET_SEARCH_RESULTS:
-      stateDraft.extensions = {};
-      stateDraft.result = undefined;
-      stateDraft.total = undefined;
-      break;
-    case SET_SEARCH_PAGE_INDEX:
-      stateDraft.pageIndex = action.payload.pageIndex;
-      break;
-    case SET_SEARCH_PAGE_SIZE:
-      stateDraft.pageSize = action.payload.pageSize;
-      break;
     case EXTEND_SEARCH_RESULT_PENDING:
       return setExtendSearchResultPending(stateDraft, action);
     case EXTEND_SEARCH_RESULT_SUCCESS:
@@ -108,31 +48,36 @@ export const searchReducer = produce((stateDraft, action: AppAction) => {
       return setExtensionTotals(stateDraft, action);
     case SET_EXTENSION_OFFSET:
       return setExtensionOffset(stateDraft, action);
-    case RESET_SEARCH:
-      return initialSearchState;
   }
-}, initialSearchState);
+}, initialSearchResultState);
 
 function setExtendSearchResultPending(
-  stateDraft: WritableDraft<SearchState>,
+  stateDraft: WritableDraft<SearchResultState>,
   { payload: { itemId, source } }: ExtendSearchResultPendingAction,
 ) {
-  const itemsMap = stateDraft.extensions[source] ?? {};
+  const pendingSources = stateDraft.pendingSources ?? [];
 
-  if (!stateDraft.extensions[source]) {
-    stateDraft.extensions[source] = itemsMap;
-  }
+  pendingSources.push(source as WritableDraft<MediaSource>);
 
-  itemsMap[itemId] = {
-    limit: 20,
-    offset: 0,
-    isPending: true,
-    isFetchPending: false,
+  stateDraft.pendingSources = pendingSources;
+
+  stateDraft.fetchPendings = stateDraft.fetchPendings?.filter(
+    pendingSource => pendingSource !== source,
+  );
+
+  stateDraft.offsets = {
+    ...(stateDraft.offsets ?? {}),
+    [source]: 0,
+  };
+
+  stateDraft.limits = {
+    ...(stateDraft.offsets ?? {}),
+    [source]: 20,
   };
 }
 
 function setExtendSearchResultSuccess(
-  stateDraft: WritableDraft<SearchState>,
+  stateDraft: WritableDraft<SearchResultState>,
   { payload: { itemId, source, result } }: ExtendSearchResultSuccessAction,
 ) {
   const { result: results, extensions } = stateDraft;
@@ -145,7 +90,7 @@ function setExtendSearchResultSuccess(
 }
 
 function setExtendSearchResultFailure(
-  stateDraft: WritableDraft<SearchState>,
+  stateDraft: WritableDraft<SearchResultState>,
   { payload: { itemId, source, error } }: ExtendSearchResultFailureAction,
 ) {
   const sourcesMap = stateDraft.extensions[source] ?? {};
@@ -165,7 +110,7 @@ function setExtendSearchResultFailure(
 }
 
 function setOptionsForExtend(
-  stateDraft: WritableDraft<SearchState>,
+  stateDraft: WritableDraft<SearchResultState>,
   { payload: { itemId, source, results } }: FetchOptionsForExtendSuccessAction,
 ) {
   const sourcesMap = stateDraft.extensions[source] ?? {};
@@ -190,7 +135,7 @@ function setOptionsForExtend(
 }
 
 function setExtensionTotals(
-  stateDraft: WritableDraft<SearchState>,
+  stateDraft: WritableDraft<SearchResultState>,
   { payload: { itemId, source, totals } }: SetExtensionTotalsAction,
 ) {
   const sourcesMap = stateDraft.extensions[source] ?? {};
@@ -209,7 +154,7 @@ function setExtensionTotals(
 }
 
 function setExtensionOffset(
-  stateDraft: WritableDraft<SearchState>,
+  stateDraft: WritableDraft<SearchResultState>,
   { payload: { itemId, source, offset } }: SetExtensionOffsetAction,
 ) {
   const sourcesMap = stateDraft.extensions[source] ?? {};

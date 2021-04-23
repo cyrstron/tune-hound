@@ -41,7 +41,6 @@ export class MemoCache<TPayload> {
       store = {};
 
       MemoCache.globalStore.set(this.key, store);
-      333;
       MemoCache.watchGlobalStoreGarbage();
     }
 

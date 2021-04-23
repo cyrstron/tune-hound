@@ -1,7 +1,7 @@
-import React, { FC } from "react";
-import classNames from "classnames/bind";
+import React, { FC } from 'react';
+import classNames from 'classnames/bind';
 
-import styles from "./track-item.scss";
+import styles from './track-item.scss';
 
 const cx = classNames.bind(styles);
 
@@ -12,15 +12,11 @@ export interface TrackItemProps {
   className?: string;
 }
 
-const TrackItemComponent: FC<TrackItemProps> = ({
-  title,
-  artists,
-  className,
-}) => {
+const TrackItemComponent: FC<TrackItemProps> = ({ title, artists, className }) => {
   return (
-    <div className={cx("track", className)}>
+    <div className={cx('track', className)}>
       <div>
-        <b>{title}</b> by <b>{artists.join(", ")}</b>
+        <b>{title}</b> by <b>{artists.join(', ')}</b>
       </div>
     </div>
   );

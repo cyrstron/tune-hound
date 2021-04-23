@@ -26,7 +26,6 @@ import {
   PLAY_SEARCH_RESULT,
 } from './consts';
 import {
-  SearchSource,
   SearchResult,
   SearchOptions,
   DeezerSourceItemFull,
@@ -36,32 +35,33 @@ import {
 } from './types';
 import { DeezerSearchOptions } from '../../../state/deezer/types';
 import { SpotifySearchOptions } from '../../../state/spotify/types';
+import { MediaSource } from '@app/types/media';
 
 export interface ExecuteSearchAction {
   type: typeof EXECUTE_SEARCH;
   payload:
     | {
-        source: SearchSource.DEEZER;
+        source: MediaSource.DEEZER;
         options: DeezerSearchOptions;
       }
     | {
-        source: SearchSource.SPOTIFY;
+        source: MediaSource.SPOTIFY;
         options: SpotifySearchOptions;
       };
 }
 
 export const executeSearch = (
-  source: SearchSource,
+  source: MediaSource,
   options: SearchOptions,
 ): ExecuteSearchAction => ({
   type: EXECUTE_SEARCH,
   payload: { source, options } as
     | {
-        source: SearchSource.DEEZER;
+        source: MediaSource.DEEZER;
         options: DeezerSearchOptions;
       }
     | {
-        source: SearchSource.SPOTIFY;
+        source: MediaSource.SPOTIFY;
         options: SpotifySearchOptions;
       },
 });
@@ -162,13 +162,13 @@ export interface ExtendSearchResultAction {
   type: typeof EXTEND_SEARCH_RESULT;
   payload: {
     itemId: string;
-    source: SearchSource;
+    source: MediaSource;
   };
 }
 
 export const extendSearchResult = (
   itemId: string,
-  source: SearchSource,
+  source: MediaSource,
 ): ExtendSearchResultAction => ({
   type: EXTEND_SEARCH_RESULT,
   payload: { itemId, source },
@@ -178,14 +178,14 @@ export interface PlaySearchResultAction {
   type: typeof PLAY_SEARCH_RESULT;
   payload: {
     itemId: string;
-    source?: SearchSource;
+    source?: MediaSource;
     index?: number;
   };
 }
 
 export const playSearchResult = (
   itemId: string,
-  source?: SearchSource,
+  source?: MediaSource,
   index?: number,
 ): PlaySearchResultAction => ({
   type: PLAY_SEARCH_RESULT,
@@ -196,13 +196,13 @@ export interface ExtendSearchResultPendingAction {
   type: typeof EXTEND_SEARCH_RESULT_PENDING;
   payload: {
     itemId: string;
-    source: SearchSource;
+    source: MediaSource;
   };
 }
 
 export const extendSearchResultPending = (
   itemId: string,
-  source: SearchSource,
+  source: MediaSource,
 ): ExtendSearchResultPendingAction => ({
   type: EXTEND_SEARCH_RESULT_PENDING,
   payload: { itemId, source },
@@ -213,12 +213,12 @@ export interface ExtendSearchResultSuccessAction {
   payload:
     | {
         itemId: string;
-        source: SearchSource.DEEZER;
+        source: MediaSource.DEEZER;
         result: DeezerSourceItemFull | null;
       }
     | {
         itemId: string;
-        source: SearchSource.SPOTIFY;
+        source: MediaSource.SPOTIFY;
         result: SpotifySourceItemFull | null;
       };
 }
@@ -226,32 +226,32 @@ export interface ExtendSearchResultSuccessAction {
 export type ExtendSearchResultSuccessOverload = {
   (
     itemId: string,
-    source: SearchSource.DEEZER,
+    source: MediaSource.DEEZER,
     result: DeezerSourceItemFull,
   ): ExtendSearchResultSuccessAction;
   (
     itemId: string,
-    source: SearchSource.SPOTIFY,
+    source: MediaSource.SPOTIFY,
     result: SpotifySourceItemFull,
   ): ExtendSearchResultSuccessAction;
-  (itemId: string, source: SearchSource, result: SourceItem): ExtendSearchResultSuccessAction;
+  (itemId: string, source: MediaSource, result: SourceItem): ExtendSearchResultSuccessAction;
 };
 
 export const extendSearchResultSuccess: ExtendSearchResultSuccessOverload = (
   itemId: string,
-  source: SearchSource,
+  source: MediaSource,
   result: SourceItem,
 ): ExtendSearchResultSuccessAction => ({
   type: EXTEND_SEARCH_RESULT_SUCCESS,
   payload: { itemId, source, result } as
     | {
         itemId: string;
-        source: SearchSource.DEEZER;
+        source: MediaSource.DEEZER;
         result: DeezerSourceItemFull | null;
       }
     | {
         itemId: string;
-        source: SearchSource.SPOTIFY;
+        source: MediaSource.SPOTIFY;
         result: SpotifySourceItemFull | null;
       },
 });
@@ -260,14 +260,14 @@ export interface ExtendSearchResultFailureAction {
   type: typeof EXTEND_SEARCH_RESULT_FAILURE;
   payload: {
     itemId: string;
-    source: SearchSource;
+    source: MediaSource;
     error: Error;
   };
 }
 
 export const extendSearchResultFailure = (
   itemId: string,
-  source: SearchSource,
+  source: MediaSource,
   error: Error,
 ): ExtendSearchResultFailureAction => ({
   type: EXTEND_SEARCH_RESULT_FAILURE,
@@ -278,14 +278,14 @@ export interface PickOptionForExtendAction {
   type: typeof PICK_OPTION_FOR_EXTEND;
   payload: {
     itemId: string;
-    source: SearchSource;
+    source: MediaSource;
     pickedItem: SourceItemShort | null;
   };
 }
 
 export const pickOptionForExtend = (
   itemId: string,
-  source: SearchSource,
+  source: MediaSource,
   pickedItem: SourceItemShort | null,
 ): PickOptionForExtendAction => ({
   type: PICK_OPTION_FOR_EXTEND,
@@ -296,13 +296,13 @@ export interface ResetOptionsForExtendAction {
   type: typeof RESET_OPTIONS_FOR_EXTEND;
   payload: {
     itemId: string;
-    source: SearchSource;
+    source: MediaSource;
   };
 }
 
 export const resetOptionsForExtend = (
   itemId: string,
-  source: SearchSource,
+  source: MediaSource,
 ): ResetOptionsForExtendAction => ({
   type: RESET_OPTIONS_FOR_EXTEND,
   payload: { itemId, source },
@@ -312,13 +312,13 @@ export interface FetchOptionsForExtendAction {
   type: typeof FETCH_OPTIONS_FOR_EXTEND;
   payload: {
     itemId: string;
-    source: SearchSource;
+    source: MediaSource;
   };
 }
 
 export const fetchOptionsForExtend = (
   itemId: string,
-  source: SearchSource,
+  source: MediaSource,
 ): FetchOptionsForExtendAction => ({
   type: FETCH_OPTIONS_FOR_EXTEND,
   payload: { itemId, source },
@@ -328,13 +328,13 @@ export interface FetchOptionsForExtendPendingAction {
   type: typeof FETCH_OPTIONS_FOR_EXTEND_PENDING;
   payload: {
     itemId: string;
-    source: SearchSource;
+    source: MediaSource;
   };
 }
 
 export const fetchOptionsForExtendPending = (
   itemId: string,
-  source: SearchSource,
+  source: MediaSource,
 ): FetchOptionsForExtendPendingAction => ({
   type: FETCH_OPTIONS_FOR_EXTEND_PENDING,
   payload: { itemId, source },
@@ -344,14 +344,14 @@ export interface FetchOptionsForExtendFailureAction {
   type: typeof FETCH_OPTIONS_FOR_EXTEND_FAILURE;
   payload: {
     itemId: string;
-    source: SearchSource;
+    source: MediaSource;
     error: Error;
   };
 }
 
 export const fetchOptionsForExtendFailure = (
   itemId: string,
-  source: SearchSource,
+  source: MediaSource,
   error: Error,
 ): FetchOptionsForExtendFailureAction => ({
   type: FETCH_OPTIONS_FOR_EXTEND_FAILURE,
@@ -362,14 +362,14 @@ export interface FetchOptionsForExtendSuccessAction {
   type: typeof FETCH_OPTIONS_FOR_EXTEND_SUCCESS;
   payload: {
     itemId: string;
-    source: SearchSource;
+    source: MediaSource;
     results: SourceItemShort[];
   };
 }
 
 export const fetchOptionsForExtendSuccess = (
   itemId: string,
-  source: SearchSource,
+  source: MediaSource,
   results: SourceItemShort[],
 ): FetchOptionsForExtendSuccessAction => ({
   type: FETCH_OPTIONS_FOR_EXTEND_SUCCESS,
@@ -380,14 +380,14 @@ export interface SetExtensionOffsetAction {
   type: typeof SET_EXTENSION_OFFSET;
   payload: {
     itemId: string;
-    source: SearchSource;
+    source: MediaSource;
     offset: number;
   };
 }
 
 export const setExtensionOffset = (
   itemId: string,
-  source: SearchSource,
+  source: MediaSource,
   offset: number,
 ): SetExtensionOffsetAction => ({
   type: SET_EXTENSION_OFFSET,
@@ -398,14 +398,14 @@ export interface SetExtensionLimitAction {
   type: typeof SET_EXTENSION_LIMIT;
   payload: {
     itemId: string;
-    source: SearchSource;
+    source: MediaSource;
     limit: number;
   };
 }
 
 export const setExtensionLimit = (
   itemId: string,
-  source: SearchSource,
+  source: MediaSource,
   limit: number,
 ): SetExtensionLimitAction => ({
   type: SET_EXTENSION_LIMIT,
@@ -416,14 +416,14 @@ export interface SetExtensionTotalsAction {
   type: typeof SET_EXTENSION_TOTALS;
   payload: {
     itemId: string;
-    source: SearchSource;
+    source: MediaSource;
     totals: Array<number | undefined>;
   };
 }
 
 export const setExtensionTotals = (
   itemId: string,
-  source: SearchSource,
+  source: MediaSource,
   totals: Array<number | undefined>,
 ): SetExtensionTotalsAction => ({
   type: SET_EXTENSION_TOTALS,
@@ -434,13 +434,13 @@ export interface FetchNextOptionsForExtendAction {
   type: typeof FETCH_NEXT_OPTIONS_FOR_EXTEND;
   payload: {
     itemId: string;
-    source: SearchSource;
+    source: MediaSource;
   };
 }
 
 export const fetchNextOptionsForExtend = (
   itemId: string,
-  source: SearchSource,
+  source: MediaSource,
 ): FetchNextOptionsForExtendAction => ({
   type: FETCH_NEXT_OPTIONS_FOR_EXTEND,
   payload: { itemId, source },

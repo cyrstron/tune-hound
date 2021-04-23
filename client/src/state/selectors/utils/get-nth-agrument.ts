@@ -1,5 +1,5 @@
 import { AppState } from '@app/state';
-import { NTuple } from '@app/types/tuples';
+import { NTuple } from '@app/types/utils';
 
 export const getState = (state: AppState): AppState => state;
 
