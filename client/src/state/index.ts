@@ -23,9 +23,9 @@ import { AudioService } from './audio-player/services/audio-service';
 import { audioReducer, AudioState } from './audio-player';
 import { AppAction } from './actions';
 import { Selector } from 'reselect';
-import { combineStoredReducers, ReducersStore } from './utils';
-import { ReducersManager } from './reducers-manager';
+import { ReducersManager } from '../utils/redux/reducers-manager';
 import { searchReducer, SearchState } from '@app/features/search/state';
+import { combineNestedReducers, NestedReducersStore } from '@app/utils/redux';
 
 export interface AppState {
   auth: AuthState;
@@ -38,7 +38,7 @@ export interface AppState {
 
 export type AppSelector<Result> = Selector<AppState, Result>;
 
-const staticReducers: ReducersStore<AppState> = {
+const staticReducers: NestedReducersStore<AppState, AppAction> = {
   auth: authReducer,
   audio: audioReducer,
   search: searchReducer,
@@ -46,12 +46,12 @@ const staticReducers: ReducersStore<AppState> = {
 };
 
 export const createAppStore = (): Store<CombinedState<AppState>, AppAction> => {
-  const rootReducer = combineStoredReducers<AppState>(staticReducers);
+  const rootReducer = combineNestedReducers<AppState, AppAction>(staticReducers);
 
   const axiosInstance = axios.create();
 
   const spotifyWebApi = new SpotifyWebApi(axiosInstance);
-  const reducersManager = new ReducersManager(staticReducers);
+  const reducersManager = new ReducersManager<AppState, AppAction>(staticReducers);
 
   const sagaMiddleware = createSagaMiddleware({
     context: {
