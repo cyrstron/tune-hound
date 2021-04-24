@@ -13,11 +13,6 @@ import { SpotifySearchOptions } from '../../../state/spotify/types';
 
 export type SearchOptions = DeezerSearchOptions | SpotifySearchOptions;
 
-export enum SearchSource {
-  DEEZER = 'deezer',
-  SPOTIFY = 'spotify',
-}
-
 export interface SearchedTrack {
   id: string;
   type: 'track';

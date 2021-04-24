@@ -1,4 +1,4 @@
 export * from './combine-nested-reducers';
-export * from './create-dynamic-map-reducer';
-export * from './create-dynamic-nested-reducer';
+export * from './create-map-reducer';
+export * from './create-dynamic-reducer';
 export * from './reducers-manager';

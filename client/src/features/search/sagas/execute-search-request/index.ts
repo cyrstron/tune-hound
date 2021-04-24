@@ -4,16 +4,17 @@ import { SpotifySearchOptions } from '@app/state/spotify/types';
 import { executeDeezerSearchSaga } from './execute-deezer-search';
 import { executeSpotifySearchSaga } from './execute-spotify-search';
 import { updatePageParamsSaga } from '../update-page-params';
-import { SearchOptions, SearchResult, SearchSource } from '../../state/types';
+import { SearchOptions, SearchResult } from '../../state/types';
 import {
   executeSearchFailure,
   executeSearchPending,
   executeSearchSuccess,
   resetSearchResults,
 } from '../../state';
+import { MediaSource } from '@app/types/media';
 
 export function* executeSearchRequest(
-  searchSource: SearchSource,
+  searchSource: MediaSource,
   searchOptions: SearchOptions,
   pageIndex: number,
   pageSize: number,
@@ -29,14 +30,14 @@ export function* executeSearchRequest(
       results: SearchResult[];
     } = { total: 0, results: [] };
 
-    if (searchSource === 'deezer') {
+    if (searchSource === MediaSource.DEEZER) {
       response = yield call(
         executeDeezerSearchSaga,
         searchOptions as DeezerSearchOptions,
         pageIndex,
         pageSize,
       );
-    } else if (searchSource === 'spotify') {
+    } else if (searchSource === MediaSource.SPOTIFY) {
       response = yield call(
         executeSpotifySearchSaga,
         searchOptions as SpotifySearchOptions,
@@ -53,7 +54,17 @@ export function* executeSearchRequest(
 
     const { results, total } = response;
 
-    const successAction = executeSearchSuccess(results, total);
+    const { keys, map } = results.reduce(
+      (results, item) => {
+        results.keys.push(item.id);
+        results.map[item.id] = item;
+
+        return results;
+      },
+      { keys: [], map: {} } as { keys: string[]; map: Record<string, SearchResult> },
+    );
+
+    const successAction = executeSearchSuccess(keys, map, total, pageIndex * pageSize);
 
     yield put(successAction);
   } catch (err) {

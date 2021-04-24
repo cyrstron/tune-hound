@@ -4,15 +4,15 @@ export type MapReducersStore<
   TItemState,
   TAction extends Action,
   TKey extends string | number | symbol = string
-> = Readonly<Partial<Record<TKey, Reducer<TItemState, TAction>>>>;
+> = Array<{ key: TKey; reducer: Reducer<TItemState | undefined, TAction> }>;
 
 export interface MapState<TItemState = any, TKey extends string | number | symbol = string> {
-  ids: TKey[];
+  keys: TKey[];
   map: Partial<Record<TKey, TItemState>>;
 }
 
 export const mapReducerInitialState: MapState = {
-  ids: [],
+  keys: [],
   map: {},
 };
 
@@ -23,50 +23,50 @@ export function getMapReducerInitialState<
   return mapReducerInitialState as MapState<TItemState, TKey>;
 }
 
-export function createDynamicMapReducer<
+export function createMapReducer<
   TItemState,
   TAction extends Action,
   TKey extends string | number | symbol = string
 >(
-  manageReducersMap: (
-    reducers: MapReducersStore<TItemState, TAction, TKey>,
+  metaReducer: (
+    reducers: Readonly<MapReducersStore<TItemState, TAction, TKey>>,
     action: TAction,
   ) => MapReducersStore<TItemState, TAction, TKey>,
-): Reducer<MapState<TItemState, TKey>, TAction> {
-  let currentReducers = {} as MapReducersStore<TItemState, TAction, TKey>;
+): Reducer<MapState<TItemState, TKey> | undefined, TAction> {
+  let currentReducers: MapReducersStore<TItemState, TAction, TKey> = [];
 
   return function (
     state: MapState<TItemState, TKey> = getMapReducerInitialState<TItemState, TKey>(),
     action: TAction,
   ): MapState<TItemState, TKey> {
-    const newReducers = manageReducersMap(currentReducers, action);
+    const newReducers = metaReducer(currentReducers, action);
 
     const newState: MapState<TItemState, TKey> =
       newReducers === currentReducers
         ? state
         : {
-            ids: Object.keys(newReducers) as TKey[],
+            keys: Object.keys(newReducers) as TKey[],
             map: {},
           };
 
     currentReducers = newReducers;
 
-    const newMap: Partial<Record<TKey, TItemState>> = (Object.entries(currentReducers) as [
-      TKey,
-      Reducer<TItemState, TAction>,
-    ][]).reduce((newMap, [key, reducer]) => {
-      const subState = reducer(state.map[key], action);
+    const newMap: Partial<Record<TKey, TItemState>> = currentReducers.reduce(
+      (newMap, { key, reducer }) => {
+        const subState = reducer(state.map[key], action);
 
-      if (subState === state.map[key]) return newMap;
+        if (subState === state.map[key]) return newMap;
 
-      if (newMap === state.map) {
-        newMap = { ...newMap };
-      }
+        if (newMap === state.map) {
+          newMap = { ...newMap };
+        }
 
-      newMap[key] = subState;
+        newMap[key] = subState;
 
-      return newMap;
-    }, newState.map);
+        return newMap;
+      },
+      newState.map,
+    );
 
     return newMap === newState.map
       ? newState

@@ -4,10 +4,10 @@ export type ReducersStore<TState, TAction extends Action> = Readonly<
   Record<keyof TState, Reducer<TState[keyof TState], TAction>>
 >;
 
-export function createDynamicNestedReducer<TState, TAction extends Action>(
+export function createDynamicReducer<TState, TAction extends Action>(
   initialReducers: ReducersStore<TState, TAction>,
   initialState: TState,
-  manageNestedReducers: (
+  metaReducer: (
     reducers: ReducersStore<TState, TAction>,
     action: TAction,
   ) => ReducersStore<TState, TAction>,
@@ -15,7 +15,7 @@ export function createDynamicNestedReducer<TState, TAction extends Action>(
   let currentReducers: ReducersStore<TState, TAction> = initialReducers;
 
   return function (state: TState = initialState, action: TAction): TState {
-    const newReducers = manageNestedReducers(currentReducers, action);
+    const newReducers = metaReducer(currentReducers, action);
 
     const newState: Partial<TState> = newReducers === currentReducers ? state : {};
 

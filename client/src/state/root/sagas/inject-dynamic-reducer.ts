@@ -1,7 +1,7 @@
 import { takeEvery, take, getContext, call } from '@redux-saga/core/effects';
 import { REDUCERS_MANAGER_KEY, REDUCER_PATH_SEPARATOR } from '../../../consts';
 import { AppAction } from '../../actions';
-import { ReducersManager } from '../../reducers-manager';
+import { ReducersManager } from '../../../utils/redux/reducers-manager';
 import { InjectDynamicReducerAction } from '../actions';
 import { INJECT_DYNAMIC_REDUCER, EJECT_DYNAMIC_REDUCER } from '../consts';
 

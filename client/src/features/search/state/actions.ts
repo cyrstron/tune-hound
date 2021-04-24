@@ -97,17 +97,21 @@ export const executeSearchPending = (): ExecuteSearchPendingAction => ({
 export interface ExecuteSearchSuccessAction {
   type: typeof EXECUTE_SEARCH_SUCCESS;
   payload: {
-    data: SearchResult[];
+    keys: string[];
+    map: { [key: string]: SearchResult };
     total: number;
+    offset: number;
   };
 }
 
 export const executeSearchSuccess = (
-  data: SearchResult[],
+  keys: string[],
+  map: { [key: string]: SearchResult },
   total: number,
+  offset = 0,
 ): ExecuteSearchSuccessAction => ({
   type: EXECUTE_SEARCH_SUCCESS,
-  payload: { data, total },
+  payload: { keys, map, total, offset },
 });
 
 export interface ExecuteSearchFailureAction {
