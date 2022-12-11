@@ -18,7 +18,7 @@
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
     "ejs": "^3.0.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "nodemon": "^2.0.2",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
